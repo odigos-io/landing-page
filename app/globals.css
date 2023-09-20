@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,7 +16,6 @@
 .testimonial-01 .swiper-pagination {
   @apply relative pt-[50px];
 }
-
 
 #supportCheckbox:checked ~ div span {
   @apply opacity-100;
@@ -103,12 +102,12 @@
 }
 
 .blog-details blockquote::after {
-  content: "";
+  content: '';
   @apply absolute w-20 h-20 right-0 bottom-0 bg-[url(/images/blog/quote-shape-2.svg)] bg-no-repeat bg-contain bg-right-bottom;
 }
 
 .blog-details blockquote::before {
-  content: "";
+  content: '';
   @apply absolute left-0 top-0 w-[140px] h-[106px] bg-[url(/images/blog/quote-shape-1.svg)] dark:bg-[url(/images/blog/quote-shape-1.svg)] bg-no-repeat bg-contain bg-left-top;
 }
 
@@ -117,9 +116,8 @@ pre {
 }
 .prism-copy-button {
   @apply absolute top-2 right-2 h-[26px] rounded bg-white px-4 text-primary;
-} 
-
+}
 
 .active-tab {
-  @apply text-black dark:text-white dark:bg-blackho bg-stroke
+  @apply text-black dark:text-white dark:bg-blackho bg-stroke;
 }

@@ -95,6 +95,13 @@ const Hero = () => {
                     fill
                   />
                 </div>
+                <Image
+                  className="hidden dark:block shadow-solid-l"
+                  src="/images/hero/overview.jpg"
+                  alt="Hero"
+                  fill
+                  style={{ borderRadius: 10 }}
+                />
               </div>
             </div>
           </div>
