@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
+import React from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const About = () => {
   return (
@@ -61,9 +61,9 @@ const About = () => {
               className="animate_right md:w-1/2"
             >
               <h4 className="text-black dark:text-white font-medium uppercase">
-                <span className="bg-meta text-white text-metatitle inline-flex rounded-full py-1 px-4.5 mr-4 mb-4 uppercase ">
+                <span className="bg-secondary text-white text-metatitle inline-flex rounded-full py-1 px-4.5 mr-4 mb-4 uppercase ">
                   New
-                </span>{" "}
+                </span>{' '}
                 SaaS Boilerplate for Next.js
               </h4>
               <h2 className="relative font-bold text-black dark:text-white text-3xl xl:text-hero mb-6">

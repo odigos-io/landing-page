@@ -31,6 +31,7 @@ module.exports = {
       primary: '#07111A',
       primaryho: '#0EE6F3',
       secondary: '#0EE6F3',
+      secondary_light: '#0ee6f347',
       meta: '#20C5A8',
       waterloo: '#757693',
       manatee: '#999AA1',
