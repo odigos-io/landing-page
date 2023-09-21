@@ -1,8 +1,8 @@
-import Image from "next/image";
-import { getPost, imageBuilder } from "@/sanity/sanity-utils";
-import { PortableText } from "@portabletext/react";
-import SharePost from "@/components/Blog/SharePost";
-import RelatedPost from "@/components/Blog/RelatedPost";
+import Image from 'next/image';
+import { getPost, imageBuilder } from '@/sanity/sanity-utils';
+import { PortableText } from '@portabletext/react';
+import SharePost from '@/components/Blog/SharePost';
+import RelatedPost from '@/components/Blog/RelatedPost';
 
 type Props = {
   params: { slug: string };
@@ -31,7 +31,10 @@ const SingleBlogPage = async ({ params }: Props) => {
                       className="w-full dark:bg-black border border-stroke dark:border-strokedark shadow-solid-12 dark:shadow-none rounded-lg focus:outline-none focus:border-primary dark:focus:border-primary py-4 px-6"
                     />
 
-                    <button className="absolute top-0 right-0 p-5" aria-label="search-icon">
+                    <button
+                      className="absolute top-0 right-0 p-5"
+                      aria-label="search-icon"
+                    >
                       <svg
                         className="fill-black dark:fill-white hover:fill-primary dark:hover:fill-primary transition-all duration-300"
                         width="21"
@@ -77,11 +80,11 @@ const SingleBlogPage = async ({ params }: Props) => {
             <div className="lg:w-2/3">
               <div className="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
                 <div className="mb-10 w-full overflow-hidden ">
-                  {post.mainImage && (
+                  {post?.mainImage && (
                     <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                       <Image
                         src={imageBuilder(post?.mainImage).url()}
-                        alt={post.title}
+                        alt={post?.title}
                         fill
                         className="object-cover object-center rounded-md"
                       />
@@ -90,29 +93,29 @@ const SingleBlogPage = async ({ params }: Props) => {
                 </div>
 
                 <h2 className="font-semibold text-3xl 2xl:text-sectiontitle2 text-black dark:text-white mt-11 mb-5">
-                  {post.title}
+                  {post?.title}
                 </h2>
 
                 <ul className="flex flex-wrap gap-5 2xl:gap-7.5 mb-9">
                   <li>
-                    <span className="text-black dark:text-white">Author: </span>{" "}
+                    <span className="text-black dark:text-white">Author: </span>{' '}
                     {post?.author?.name}
                   </li>
                   <li>
                     <span className="text-black dark:text-white">
-                      Published On:{" "}
-                    </span>{" "}
+                      Published On:{' '}
+                    </span>{' '}
                     {new Date(post?.publishedAt)
                       .toDateString()
-                      .split(" ")
+                      .split(' ')
                       .slice(1)
-                      .join(" ")}
+                      .join(' ')}
                   </li>
                   <li>
                     <span className="text-black dark:text-white">
-                      Category:{" "}
-                    </span>{" "}
-                    {post?.tags ? post?.tags[0] : "Not added"}
+                      Category:{' '}
+                    </span>{' '}
+                    {post?.tags ? post?.tags[0] : 'Not added'}
                   </li>
                 </ul>
 

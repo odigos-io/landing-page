@@ -1,7 +1,7 @@
 const config = {
-  projectId: "nq6dnm34",
-  dataset: "production",
-  apiVersion: "2023-06-19",
+  projectId: 'v4gpg2h5', //'nq6dnm34',
+  dataset: 'production',
+  apiVersion: '2023-06-19',
   useCdn: true,
 };
 

@@ -35,7 +35,7 @@
     "react-hot-toast": "^2.4.1",
     "remark": "^14.0.3",
     "remark-html": "^15.0.2",
-    "sanity": "^3.12.1",
+    "sanity": "^3.16.7",
     "stripe": "^12.9.0",
     "styled-components": "^6.0.3",
     "swiper": "^9.3.2",
