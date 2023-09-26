@@ -82,7 +82,7 @@ const BlogItem = ({ blog }: { blog: any }) => {
             <h4 style={{ marginLeft: 12, fontWeight: 'bold', color: '#fff' }}>
               {author}
             </h4>
-            <h4 style={{ marginLeft: 12, fontWeight: 'bold' }}>{'•'}</h4>
+            {/* <h4 style={{ marginLeft: 12, fontWeight: 'bold' }}>{'•'}</h4> */}
             <h4 style={{ marginLeft: 12 }}>{pubDate}</h4>
           </div>
         </div>
