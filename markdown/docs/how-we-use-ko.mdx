@@ -5,14 +5,15 @@ image: '~/assets/images/ko.png'
 category: 'Tools'
 description: 'In this article, we will describe how we use the ko build tool to build and deploy keyval backend microservices.'
 tags: [ko, ko-build, golang, microservices, k8s]
+authorImage: '/public/amir.png'
+author: Amir Blum
 ---
 
 In this blog post, we will describe how and why we setup the `ko` build tool to deploy our Go microservices in our Kubernetes cluster.
 
-
 ## Prerequisites
 
-- You have a Go project you want to build into a docker image and deploy 
+- You have a Go project you want to build into a docker image and deploy
 - You heard about ko and are looking for reference on how it is being used in practice
 
 I'll explain how we integrate `ko` with `k8s`. If you are deploying using a different platform, this blog will still be helpful in understanding how to integrate ko workflow in your stack.
@@ -29,8 +30,8 @@ At [Keyval](https://keyval.dev/), the backend of our service is built as a set o
   - Build images
   - Push them to our private repository
   - Update the relevant "image:" values in our k8s manifest `.yaml` files
-  - Apply them to our cluster. 
-  
+  - Apply them to our cluster.
+
 ## Useful
 
 ### Links
@@ -67,14 +68,14 @@ Usage:
   ko [command]
 
 Available Commands:
-  apply       Apply the input files with image references resolved to built/pushed image digests.
+  apply       Use resolved references in input files for image digest application.
   build       Build and publish container images from the given import paths.
   completion  Generate the autocompletion script for the specified shell
-  create      Create the input files with image references resolved to built/pushed image digests.
+  create      Generate input files with resolved image references.
   delete      See "kubectl help delete" for detailed usage.
   help        Help about any command
   login       Log in to a registry
-  resolve     Print the input files with image references resolved to built/pushed image digests.
+  resolve     Print files with resolved image references to digests.
   run         A variant of `kubectl run` that containerizes IMPORTPATH first.
   version     Print ko version.
 
@@ -92,6 +93,7 @@ From here you can use `ko build --help` or `ko apply --help` to get more informa
 Setup auto completion for your shell in few seconds: `ko completion --help` and follow instructions for your shell and os.
 
 I use zsh on macOS so my flow was:
+
 ```sh
 $ ko completion --help
 $ ko completion zsh --help
@@ -100,7 +102,7 @@ $ source <(ko completion zsh)
 $ ko completion zsh > $(brew --prefix)/share/zsh/site-functions/_ko
 ```
 
-A few seconds of setup to gain better productivity and less typos. 
+A few seconds of setup to gain better productivity and less typos.
 
 ## How we use `ko`?
 
@@ -111,14 +113,15 @@ Handy for a quick sanity check to see if a simple build works and if the code ca
 ```sh
 $ ko build ./cmd/app --push=false
 ...
-ko.local/app-2cb05dc2132b0f81c2982cca8f717157:f1cd233a86cc3173e8b94f8a144a4423abf369f9944406349e72acf103099a38
+ko.local/app-2cb05dc2132b0f81c2982cca8f717157:f1cd233a86cc3173e8b94f8a144
+a4423abf369f9944406349e72acf103099a38
 ```
 
 #### importpath
 
 The `./cmd/app` part is the "importpath".
 
-This is where you tell `ko` where it can find the package with `func main()`. If you have a mono repo with multiple apps and multiple main functions, you can specify which one you want to build this way. 
+This is where you tell `ko` where it can find the package with `func main()`. If you have a mono repo with multiple apps and multiple main functions, you can specify which one you want to build this way.
 
 If your `main.go` is in the root, you can omit it and just run `ko build --local`.
 
@@ -131,7 +134,7 @@ The import path should be relative, so `./cmd/app` and NOT ~~`cmd/app`~~
 #### Makefile
 
 We added this to our Makefile:
-    
+
 ```Makefile
 build:
     ko build ./cmd/app --push=false
@@ -155,10 +158,11 @@ You should get back a json response with the repository details, and `repository
 #### Login to ECR
 
 ```sh
-$ aws ecr get-login-password --region YOUR_REGION | docker login --username AWS --password-stdin YOUR_REPOSITORY_URI
+$ aws ecr get-login-password --region YOUR_REGION | docker login --username AWS
+--password-stdin YOUR_REPOSITORY_URI
 ```
 
-This works if `aws cli` is setup and you have the right permissions. 
+This works if `aws cli` is setup and you have the right permissions.
 
 ### Build and Publish to ECR
 
@@ -168,7 +172,7 @@ $ KO_DOCKER_REPO=012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app ko build --
 
 #### KO_DOCKER_REPO
 
-`KO_DOCKER_REPO` is how you tell `ko build` where to push the image after it was built. 
+`KO_DOCKER_REPO` is how you tell `ko build` where to push the image after it was built.
 
 For ECR, you can find it in ECR web console, or get it with cli: `aws ecr describe-repositories` or just construct it based on the pattern.
 
@@ -176,14 +180,15 @@ For ECR, you can find it in ECR web console, or get it with cli: `aws ecr descri
 
 Without this flag, `ko` will attempt to push the image as `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app/app-2cb05dc2132b0f81c2982cca8f717157:latest` which includes the package name and hash, and is not supported by ECR. The --bare flag tells `ko` to push the image as `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app:latest` which is what we want.
 
-For other registries, explore the `--bare`, `--base-import-paths` and `--tags` flag. 
+For other registries, explore the `--bare`, `--base-import-paths` and `--tags` flag.
 
 #### Test published image
 
 Test image build + publish + pull + run locally:
 
 ```sh
-$ docker run -p 8080:80 $(KO_DOCKER_REPO=012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app ko build --bare ./cmd/app)
+$ docker run -p 8080:80 $(KO_DOCKER_REPO=012345678901.dkr.ecr
+.us-east-1.amazonaws.com/my-app ko build --bare ./cmd/app)
 ```
 
 ### Deploy to Kubernetes
@@ -213,7 +218,7 @@ We use github actions for our CI/CD. We run `ko build` on pull requests to verif
 This is our workflow file in `.github/workflows/build.yml`:
 
 ```yaml
-name: "build service"
+name: 'build service'
 on:
   pull_request:
 
@@ -227,7 +232,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.21.x"
+          go-version: '1.21.x'
 
       - name: Install dependencies
         run: make install
@@ -248,13 +253,13 @@ name: Deploy
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
 
 env:
-  AWS_REGION: "us-east-2"
-  ECR_REGISTRY: "012345678901.dkr.ecr.us-east-2.amazonaws.com"
-  ECR_REPOSITORY: "YOUR_REPOSITORY_NAME"
-  CLUSTER_NAME: "YOUR_CLUSTER_NAME"
+  AWS_REGION: 'us-east-2'
+  ECR_REGISTRY: '012345678901.dkr.ecr.us-east-2.amazonaws.com'
+  ECR_REPOSITORY: 'YOUR_REPOSITORY_NAME'
+  CLUSTER_NAME: 'YOUR_CLUSTER_NAME'
 
 permissions:
   id-token: write
@@ -283,7 +288,7 @@ jobs:
 
       - uses: actions/setup-go@v4
         with:
-          go-version: "1.21.x"
+          go-version: '1.21.x'
 
       - uses: ko-build/setup-ko@v0.6
         env:

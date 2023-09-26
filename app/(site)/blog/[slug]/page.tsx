@@ -23,7 +23,7 @@ const SingleBlogPage = async ({ params }: Props) => {
   ]);
 
   const post = posts.find((post) => post.slug === slug);
-  console.log({ post });
+
   const content = await markdownToHtml(post.content || '');
 
   return (
@@ -32,7 +32,7 @@ const SingleBlogPage = async ({ params }: Props) => {
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">
         <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
           <div className="flex flex-col-reverse lg:flex-row gap-7.5 xl:gap-12.5">
-            <div className="md:w-1/2 lg:w-[32%]">
+            <div className="md:w-1/2 lg:w-[20%]">
               <div className="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-3.5 mb-10">
                 <form
                   action="https://formbold.com/s/unique_form_id"
@@ -91,7 +91,7 @@ const SingleBlogPage = async ({ params }: Props) => {
               <RelatedPost />
             </div>
 
-            <div className="lg:w-2/3">
+            <div className="lg:w-[80%]">
               <div className="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
                 <div className="mb-10 w-full overflow-hidden ">
                   {post?.image && (
@@ -113,7 +113,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                 <ul className="flex flex-wrap gap-5 2xl:gap-7.5 mb-9">
                   <li>
                     <span className="text-black dark:text-white">Author: </span>{' '}
-                    {post?.author?.name}
+                    {post?.author}
                   </li>
                   <li>
                     <span className="text-black dark:text-white">
@@ -133,7 +133,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                   </li>
                 </ul>
 
-                <div className="w-full px-4 lg:w-3/4">
+                <div className="w-full ">
                   <div
                     className="blog-details"
                     dangerouslySetInnerHTML={{ __html: content }}

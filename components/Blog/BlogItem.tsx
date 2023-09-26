@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const BlogItem = ({ blog }: { blog: any }) => {
-  const { image, title, metadata, slug } = blog;
+  const { image, title, metadata, slug, authorImage } = blog;
 
   function getImage() {
     const url = image.replace('~/assets/images', '');
     return url;
   }
-
+  console.log({ authorImage });
   return (
     <>
       <motion.div
@@ -31,26 +31,37 @@ const BlogItem = ({ blog }: { blog: any }) => {
         whileInView="visible"
         transition={{ duration: 1, delay: 0.5 }}
         viewport={{ once: true }}
-        className="animate_top bg-white dark:bg-blacksection rounded-lg shadow-solid-8 p-4 pb-9"
+        style={{
+          borderTop: 'solid 1px #d0d7de',
+          paddingTop: 24,
+          paddingBottom: 24,
+        }}
+        // className="animate_top bg-white dark:bg-blacksection rounded-lg shadow-solid-8 p-4 pb-9"
       >
         <Link
           href={`/blog/${slug}`}
           className="block relative aspect-[368/239]"
         >
           {image ? (
-            <Image src={getImage()} alt={title} width={368} height={239} />
+            <img
+              style={{
+                objectFit: 'cover',
+                height: '100%',
+                width: '100%',
+                borderRadius: 6,
+              }}
+              src={getImage()}
+              alt={title}
+            />
           ) : (
             'No image'
           )}
         </Link>
 
-        <div className="px-4">
-          <h4 className="font-medium text-lg xl:text-itemtitle2 text-black hover:text-primary dark:hover:text-primary dark:text-white mt-7.5 mb-3.5">
-            <Link href={`/blog/${slug.current}`}>
-              {' '}
-              {`${title.slice(0, 40)}...`}
-            </Link>
-          </h4>
+        <div className="">
+          <h3 style={{ fontSize: 20, color: '#fff', marginTop: 24 }}>
+            <Link href={`/blog/${slug}`}>{title}</Link>
+          </h3>
           <p>{metadata ? `${metadata.slice(0, 100)}...` : ''}</p>
         </div>
       </motion.div>

@@ -62,7 +62,7 @@
 }
 
 .blog-details p strong {
-  @apply text-primary dark:text-waterloo;
+  @apply text-primary dark:text-waterloo font-semibold;
 }
 .blog-details h3 strong,
 .blog-details h3 {
