@@ -5,6 +5,9 @@ image: '~/assets/images/trace_cicd.png'
 category: 'Thought Leadership'
 description: 'This blog will predict developments in distributed tracing that will accelerate its widespread adoption, vital to achieving end-to-end observability.'
 tags: [observability, future, distributed-traces, ebpf]
+authorImage: '/eden.jpg'
+author: Eden Federman
+metadata: Explore our predictions for the evolution of distributed tracing, a critical component in achieving comprehensive observability, as we foresee widespread adoption and groundbreaking advancements.
 ---
 
 This blog will predict developments in distributed tracing that will accelerate its widespread adoption, vital to achieving end-to-end observability.
@@ -34,7 +37,6 @@ This slow adoption is due to the difficulty in implementing distributed tracing 
 
 If you attended KubeCon 2022 in Detroit, you might have heard about the pain of adopting distributed tracing.
 This pain was highlighted in presentations at [EnvoyCon](https://youtu.be/FKFuWnk019s), [eBPF Day](https://youtu.be/0D4GTdv7QQA), and [this one (titled “Distributed Tracing - The Struggle is Real”)](https://youtu.be/Q5Vf8bpTDlI), comparing distributed tracing to Sageway 🤔 (Great hype and potential but an early demise because of lack of adoption and impact).
-
 
 We believe all of this is going to change. Here are 5 of our predictions on the future of distributed
 tracing:
@@ -73,7 +75,6 @@ According to [Data On Kubernetes](https://dok.community/data-on-kubernetes-2022-
 In addition, automatic instrumentation will give us better visibility into Kubernetes.
 There is already work being done by [SIG instrumentation](https://github.com/kubernetes/community/tree/master/sig-instrumentation) and projects like [kspan](https://github.com/weaveworks-experiments/kspan). By using automatic instrumentation for Go, we will be able to perform context propagation across API transactions which will provide complete coverage of what happens inside of Kubernetes and the different Operators.
 
-
 #### Cloud Providers & Frontends
 
 ![Frontend and Cloud Providers Trace](trace_frontend.png)
@@ -96,13 +97,13 @@ Once we achieve coverage of everything that runs code, the next logical step wil
 All these great improvements have a cost. Adding more spans and systems to the traces will require more bandwidth.
 One of the common ways to solve this is by sampling. Doing statistical sampling (i.e. sampling only 5% of the requests) makes our traces useless in debugging requests that were not sampled. One interesting innovation that we expect to see is the [the adoption of columnar encoding for telemetry data](https://github.com/open-telemetry/oteps/pull/171). Columnar encoding (such as Apache Arrow) provides better compression by grouping similar data together (column-oriented vs row-oriented) and has the potential to reduce the amount of bandwidth required for the transmission of telemetry while not dropping important data.
 
-
 ## Prediction #4: Generating metrics based on distributed traces
+
 Metrics can be aggregated based on distributed tracing. In fact, most of the observability vendors will already do it for you today - send them traces and you will also see different metrics graphs. [SpanMetrics Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/spanmetricsprocessor#more-examples) makes this possible, without using an observability vendor. As distributed traces will become commonplace, we expect metrics to be generated based on the distributed traces instead of generating them from the target applications.
 
 ## Prediction #5: Manual instrumentation is here to stay
 
-Manual instrumentation will still have its place.  There is a limit to how deep automatic instrumentation can trace.
+Manual instrumentation will still have its place. There is a limit to how deep automatic instrumentation can trace.
 We do think that signals like [continuous profiling](https://github.com/open-telemetry/oteps/blob/main/text/profiles/0212-profiling-vision.md) especially when correlated with other telemetry signals will reduce the amount of manual instrumentation needed. In addition, as support for OpenTelemetry logs matures, we expect developers to use logs (familiar APIs, no learning curve) to add manual instrumentation as opposed to enriching traces with additional spans.
 
 ## Summary

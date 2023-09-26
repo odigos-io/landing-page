@@ -5,6 +5,9 @@ image: '~/assets/images/ias.png'
 category: 'Odigos'
 description: 'This blog post will compare different ways to extend containers, and why Odigos use Kubernetes Device Plugins to extend containers.'
 tags: [odigos, kubernetes, containers, device-plugins]
+authorImage: '/eden.jpg'
+author: Eden Federman
+metadata: Explore the various methods for extending containers, and learn why Odigos opts for Kubernetes Device Plugins to enhance container functionality.
 ---
 
 At Keyval, we are on a mission to instrument any application, anywhere, at any scale. To achieve this, we need to make instrumentation as easy and accessible as possible. A key part of this is to not require any code changes by extending containers. In this blog post, we will compare different ways to extend containers, and why we chose to use Kubernetes Device Plugins at Odigos.
@@ -14,9 +17,9 @@ At Keyval, we are on a mission to instrument any application, anywhere, at any s
 Adding files and environment variables to containers after they are deployed is a common practice. For example, you may want to add a configuration file, a secret, or in our case, automatic instrumentation.
 Kubernetes provides several ways to extend containers:
 
-* [ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/) and [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
-* [InitContainers with shared volumes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-initialization/)
-* [Device Plugins](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/)
+- [ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/) and [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
+- [InitContainers with shared volumes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-initialization/)
+- [Device Plugins](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/)
 
 In the upcoming sections, we will test these methods and see how they compare.
 
@@ -55,7 +58,7 @@ kind: Pod
 metadata:
   name: my-pod
 spec:
-    containers:
+  containers:
     - name: my-container
       image: my-container-image
 +   resources:
@@ -77,4 +80,3 @@ Automatic instrumentation may not be available on every node. For example, Odigo
 
 ConfigMaps and Secrets are great, they are simple to use and work well for straightforward use cases. However, they are not a good fit for more complex cases like automatic instrumentation. Init containers with shared volumes are a bit more flexible, but they require more YAML changes and do not work well with security contexts. Device Plugins are the best option for automatic instrumentation, as they require minimal YAML changes, work well with security contexts, and are scheduler friendly.
 In the future, device plugins will get even better, when [KEP-3063](https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/3063-dynamic-resource-allocation) is implemented.
-

@@ -5,6 +5,9 @@ image: '~/assets/images/otel_gcs.png'
 category: 'Odigos'
 description: 'This blog post will show you how to send OpenTelemetry data to Google Cloud Storage using Odigos'
 tags: [odigos, open-source, gcs, googlecloud, opentelemetry]
+authorImage: '/eden.jpg'
+author: Eden Federman
+metadata: Learn how to send OpenTelemetry data to Google Cloud Storage using Odigos, improving your data storage and analysis capabilities.
 ---
 
 In this blog post, we will show you how to send OpenTelemetry data to Google Cloud Storage using Odigos.
@@ -37,7 +40,7 @@ For this demo, we will use the [emojivoto](https://github.com/BuoyantIO/emojivot
 kubectl apply -k kubectl apply -k github.com/keyval-dev/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
 ```
 
-## Installing Odigos 
+## Installing Odigos
 
 After installing the demo application, you need to install Odigos to send data to GCS.
 The simplest way to install Odigos is via the helm chart by executing the following commands:

@@ -5,6 +5,9 @@ image: '~/assets/images/otel_s3.png'
 category: 'Odigos'
 description: 'This blog post will show you how to send OpenTelemetry data to Amazon Web Services S3'
 tags: [odigos, open-source, s3, aws, opentelemetry]
+authorImage: '/eden.jpg'
+author: Eden Federman
+metadata: Learn how to generate and send OpenTelemetry data to Amazon Web Services S3 using Odigos, improving your data storage and analysis capabilities.
 ---
 
 In this blog post, we will show you how to generate and send OpenTelemetry data to Amazon Web Services S3 using Odigos.
@@ -48,7 +51,7 @@ For this demo, we will use the [emojivoto](https://github.com/BuoyantIO/emojivot
 kubectl apply -k github.com/keyval-dev/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
 ```
 
-## Installing Odigos 
+## Installing Odigos
 
 After installing the demo application, you need to install Odigos to send data to S3.
 The simplest way to install Odigos is via the helm chart by executing the following commands:
@@ -64,26 +67,22 @@ In order to send data to S3, Odigos needs to have the right permissions. Create 
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject",
-                "s3:PutObjectAcl",
-                "s3:GetObject",
-                "s3:GetObjectAcl",
-                "s3:DeleteObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::otel-data",
-                "arn:aws:s3:::otel-data/*"
-            ]
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:DeleteObject"
+      ],
+      "Resource": ["arn:aws:s3:::otel-data", "arn:aws:s3:::otel-data/*"]
+    }
+  ]
 }
 ```
-
 
 Next, you need to configure the IAM role to be used by Odigos. You can do it by creating a service account and attaching the IAM role to it (replace the account ID with your own):
 
@@ -97,8 +96,6 @@ eksctl create iamserviceaccount \
 --region=us-east-1 \
 --approve
 ```
-
-
 
 ## Sending data to S3
 

@@ -5,10 +5,13 @@ image: '~/assets/images/lang-detection.png'
 category: 'Odigos'
 description: 'Latest improvements to Odigos language detection.'
 tags: [odigos, kubernetes, language-detection, instrumentation, opentelemetry]
+authorImage: '/eden.jpg'
+author: Eden Federman
+metadata: Discover the latest enhancements in language detection within Odigos, including improved speed and efficiency.
 ---
 
 Our vision is seamless automatic instrumentation, provided as a service by the underlying compute platform.
-This will only happen if we can automatically instrument any container image 
+This will only happen if we can automatically instrument any container image
 without any prior knowledge of the application.
 
 In the past few weeks, we have been working hard on improving the language detection in Odigos.
@@ -18,6 +21,7 @@ We are excited to share the latest improvements with you today.
 
 Let's assume that we have a pod named **my-app** that we want to detect the language for.
 Odigos (specifically the Instrumentor) would do the following:
+
 1. Create a new pod named **my-app-lang-detection**, and schedule it to run on the same node as **my-app**.
 2. This new pod should have the **hostPID** flag set to true, which means that it shares the same PID namespace as **my-app**.
    This allows the new pod to examine the processes running inside **my-app**.

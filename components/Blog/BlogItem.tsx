@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const BlogItem = ({ blog }: { blog: any }) => {
-  const { image, title, metadata, slug, authorImage } = blog;
+  const { image, title, metadata, slug, authorImage, author, pubDate } = blog;
 
   function getImage() {
     const url = image.replace('~/assets/images', '');
     return url;
   }
-  console.log({ authorImage });
+
   return (
     <>
       <motion.div
@@ -34,19 +34,14 @@ const BlogItem = ({ blog }: { blog: any }) => {
         style={{
           borderTop: 'solid 1px #d0d7de',
           paddingTop: 24,
-          paddingBottom: 24,
         }}
-        // className="animate_top bg-white dark:bg-blacksection rounded-lg shadow-solid-8 p-4 pb-9"
       >
-        <Link
-          href={`/blog/${slug}`}
-          className="block relative aspect-[368/239]"
-        >
+        <Link href={`/blog/${slug}`}>
           {image ? (
             <img
               style={{
                 objectFit: 'cover',
-                height: '100%',
+                height: 185,
                 width: '100%',
                 borderRadius: 6,
               }}
@@ -59,10 +54,37 @@ const BlogItem = ({ blog }: { blog: any }) => {
         </Link>
 
         <div className="">
-          <h3 style={{ fontSize: 20, color: '#fff', marginTop: 24 }}>
+          <h3
+            style={{
+              fontSize: 20,
+              color: '#fff',
+              marginTop: 24,
+              fontWeight: 600,
+            }}
+          >
             <Link href={`/blog/${slug}`}>{title}</Link>
           </h3>
-          <p>{metadata ? `${metadata.slice(0, 100)}...` : ''}</p>
+          <p style={{ fontSize: 16, lineHeight: 1.4, marginTop: 8 }}>
+            {metadata}
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: 8 }}>
+            {authorImage && (
+              <img
+                style={{
+                  height: 40,
+                  width: 40,
+                  borderRadius: 20,
+                }}
+                src={authorImage}
+                alt={title}
+              />
+            )}
+            <h4 style={{ marginLeft: 12, fontWeight: 'bold', color: '#fff' }}>
+              {author}
+            </h4>
+            <h4 style={{ marginLeft: 12, fontWeight: 'bold' }}>{'•'}</h4>
+            <h4 style={{ marginLeft: 12 }}>{pubDate}</h4>
+          </div>
         </div>
       </motion.div>
     </>

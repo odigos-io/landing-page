@@ -5,12 +5,14 @@ image: '~/assets/images/version_v0_1_4.png'
 category: 'Odigos Versions'
 description: 'This blog will introduce Odigos version v0.1.4'
 tags: [observability, odigos, ebpf, opentelemetry, arm]
+authorImage: '/eden.jpg'
+author: Eden Federman
+metadata: Explore the latest features, improvements, and additions in Odigos version v0.1.4, including ARM support and new destinations.
 ---
 
 Today we are excited to announce version **v0.1.4** of Odigos, an open-source project that automatically generates distributed traces for all applications within minutes without code changes.
 
 This version focuses on ARM Support, new destinations and stability improvements.
-
 
 ## ARM Support
 
@@ -19,6 +21,7 @@ ARM processors are becoming more and more popular and are now supported by Odigo
 ## New Destinations
 
 Odigos now supports the following new destinations:
+
 - **[Google Cloud Storage](https://docs.odigos.io/backends/gcs) (managed)** - Supported signals: Traces and Logs
 - **[Azure Blob Storage](https://docs.odigos.io/backends/azureblob) (managed)** - Supported signals: Traces and Logs
 - **[Sentry](https://docs.odigos.io/backends/sentry) (managed)** - Supported signals: Traces
@@ -29,19 +32,22 @@ Odigos now supports the following new destinations:
 We worked hard on improving the stability of Odigos. We listened to feedback from our community and made a lot of improvements to the stability of Odigos. Improvements include: supporting older linux kernels, avoiding windows-based nodes, better memory allocation, and more.
 
 ## How to install
+
 The easiest way to install Odigos is to use the [Odigos Helm Chart](https://github.com/keyval-dev/odigos-charts):
-    
+
 ```bash
 helm repo add odigos https://keyval-dev.github.io/odigos-charts/
 helm install my-odigos odigos/odigos --namespace odigos-system --create-namespace
 ```
 
 For users upgrading from previous versions, make sure to run the following command before upgrading:
+
 ```bash
 helm repo update
 ```
 
 ## Community feedback & contributions
+
 We are always looking for feedback and contributions from the community. If you have any feedback or would like to contribute, please join our [Slack](https://join.slack.com/t/odigos/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A) or check out our [GitHub repository](https://github.com/keyval-dev/odigos).
 
 We recently added more issues labeled with [good first issue](https://github.com/keyval-dev/odigos/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) which are great for new contributors to get started.
