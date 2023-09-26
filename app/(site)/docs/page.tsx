@@ -1,9 +1,16 @@
-import { getAllPosts } from "@/app/libs/markdown";
-import SidebarLink from "@/components/Docs/SidebarLink";
-
+import { getAllPosts } from '@/app/libs/markdown';
+import SidebarLink from '@/components/Docs/SidebarLink';
 
 export default function DocsPage() {
-  const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
+  const posts = getAllPosts([
+    'title',
+    'pubDate',
+    'category',
+    'slug',
+    'tags',
+    'image',
+  ]);
+
   return (
     <>
       <title>Docs - Startup</title>
@@ -15,7 +22,7 @@ export default function DocsPage() {
               <div className="sticky top-[74px] p-4 border border-white shadow-solid-4 rounded-lg  transition-all  dark:border-strokedark dark:bg-blacksection">
                 <ul className="space-y-2">
                   {posts.map((post, key) => (
-                    <SidebarLink post={post} key={key}/>
+                    <SidebarLink post={post} key={key} />
                   ))}
                 </ul>
               </div>
@@ -31,12 +38,12 @@ export default function DocsPage() {
                   purposes and is not intended for any official use.
                 </p>
                 <p className="text-base text-body-color dark:text-body-color-dark">
-                  Please visit:{" "}
+                  Please visit:{' '}
                   <b>
                     <a href="https://nextjstemplates.com/docs">
                       nextjstemplates.com/docs
                     </a>
-                  </b>{" "}
+                  </b>{' '}
                   to check out the real docs, setup guide and even video
                   instructions
                 </p>

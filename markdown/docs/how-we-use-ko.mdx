@@ -1,0 +1,308 @@
+---
+pubDate: 'Aug 25 2023'
+title: 'How Keyval Automates the Deployment of Go Microservices with ko'
+image: '~/assets/images/ko.png'
+category: 'Tools'
+description: 'In this article, we will describe how we use the ko build tool to build and deploy keyval backend microservices.'
+tags: [ko, ko-build, golang, microservices, k8s]
+---
+
+In this blog post, we will describe how and why we setup the `ko` build tool to deploy our Go microservices in our Kubernetes cluster.
+
+
+## Prerequisites
+
+- You have a Go project you want to build into a docker image and deploy 
+- You heard about ko and are looking for reference on how it is being used in practice
+
+I'll explain how we integrate `ko` with `k8s`. If you are deploying using a different platform, this blog will still be helpful in understanding how to integrate ko workflow in your stack.
+
+## Why `ko`?
+
+At [Keyval](https://keyval.dev/), the backend of our service is built as a set of microservice applications written in Go. We use `Kubernetes` in `EKS` - Amazon Elastic Kubernetes Service.
+
+`ko` gives us the following benefits:
+
+- No need to craft and maintain Dockerfiles for each microservice
+- Images built by `ko` follow container image build best practices, producing more secure, smaller size minimal images
+- Integrates well with our kubernetess workflow, and with just one command line can:
+  - Build images
+  - Push them to our private repository
+  - Update the relevant "image:" values in our k8s manifest `.yaml` files
+  - Apply them to our cluster. 
+  
+## Useful
+
+### Links
+
+- [Install `ko` CLI](https://ko.build/install/)
+- [Docs](https://ko.build/)
+- [Github repo](https://github.com/ko-build/ko)
+- [Github action for CI](https://github.com/ko-build/setup-ko)
+
+### Verify Installation
+
+```sh
+$ ko version
+```
+
+Should produce an output.
+
+### Search Online
+
+If you google or chat-gpt `ko`, you might want to append `build` to your search query, as `ko` is a very common word. For example, use "`ko build getting started`" (instead of just `ko getting started`)
+
+### CLI Help
+
+Like many other tools, you can find most of what you need directly from the CLI help flag, without switching context:
+
+```
+$ ko version
+0.14.1
+$ ko
+Rapidly iterate with Go, Containers, and Kubernetes.
+
+Usage:
+  ko [flags]
+  ko [command]
+
+Available Commands:
+  apply       Apply the input files with image references resolved to built/pushed image digests.
+  build       Build and publish container images from the given import paths.
+  completion  Generate the autocompletion script for the specified shell
+  create      Create the input files with image references resolved to built/pushed image digests.
+  delete      See "kubectl help delete" for detailed usage.
+  help        Help about any command
+  login       Log in to a registry
+  resolve     Print the input files with image references resolved to built/pushed image digests.
+  run         A variant of `kubectl run` that containerizes IMPORTPATH first.
+  version     Print ko version.
+
+Flags:
+  -h, --help      help for ko
+  -v, --verbose   Enable debug logs
+
+Use "ko [command] --help" for more information about a command.
+```
+
+From here you can use `ko build --help` or `ko apply --help` to get more information about the subcommands which is convenient.
+
+### Autocompletion
+
+Setup auto completion for your shell in few seconds: `ko completion --help` and follow instructions for your shell and os.
+
+I use zsh on macOS so my flow was:
+```sh
+$ ko completion --help
+$ ko completion zsh --help
+$ echo "autoload -U compinit; compinit" >> ~/.zshrc
+$ source <(ko completion zsh)
+$ ko completion zsh > $(brew --prefix)/share/zsh/site-functions/_ko
+```
+
+A few seconds of setup to gain better productivity and less typos. 
+
+## How we use `ko`?
+
+### Build the Image Locally
+
+Handy for a quick sanity check to see if a simple build works and if the code can compile.
+
+```sh
+$ ko build ./cmd/app --push=false
+...
+ko.local/app-2cb05dc2132b0f81c2982cca8f717157:f1cd233a86cc3173e8b94f8a144a4423abf369f9944406349e72acf103099a38
+```
+
+#### importpath
+
+The `./cmd/app` part is the "importpath".
+
+This is where you tell `ko` where it can find the package with `func main()`. If you have a mono repo with multiple apps and multiple main functions, you can specify which one you want to build this way. 
+
+If your `main.go` is in the root, you can omit it and just run `ko build --local`.
+
+The import path should be relative, so `./cmd/app` and NOT ~~`cmd/app`~~
+
+#### --push=false
+
+`ko build` is like `docker build` + `docker push`. Confusing, I know. By setting `--push=false` we told it to just build the image so we know it works, but not be bothered with figuring out which repository to use and attempting to push there.
+
+#### Makefile
+
+We added this to our Makefile:
+    
+```Makefile
+build:
+    ko build ./cmd/app --push=false
+```
+
+This is a replacement `go build` command, which also verifies `ko` integration + keep you filesystem clean.
+If the code doesn't compile, `make build` will fail without needing to setup or publishing anything.
+
+### Publishing to ECR
+
+Keyval's cluster runs on EKS which is an aws managed k8s service. We chose to use ECR - Amazon Elastic Container Registry to store our docker images.
+
+#### Create ECR Repository
+
+```sh
+$ aws ecr create-repository --repository-name my-app
+```
+
+You should get back a json response with the repository details, and `repositoryUri` which looks like this: `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app`. You can also find it in the ECR console.
+
+#### Login to ECR
+
+```sh
+$ aws ecr get-login-password --region YOUR_REGION | docker login --username AWS --password-stdin YOUR_REPOSITORY_URI
+```
+
+This works if `aws cli` is setup and you have the right permissions. 
+
+### Build and Publish to ECR
+
+```sh
+$ KO_DOCKER_REPO=012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app ko build --bare ./cmd/app
+```
+
+#### KO_DOCKER_REPO
+
+`KO_DOCKER_REPO` is how you tell `ko build` where to push the image after it was built. 
+
+For ECR, you can find it in ECR web console, or get it with cli: `aws ecr describe-repositories` or just construct it based on the pattern.
+
+#### --bare
+
+Without this flag, `ko` will attempt to push the image as `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app/app-2cb05dc2132b0f81c2982cca8f717157:latest` which includes the package name and hash, and is not supported by ECR. The --bare flag tells `ko` to push the image as `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app:latest` which is what we want.
+
+For other registries, explore the `--bare`, `--base-import-paths` and `--tags` flag. 
+
+#### Test published image
+
+Test image build + publish + pull + run locally:
+
+```sh
+$ docker run -p 8080:80 $(KO_DOCKER_REPO=012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app ko build --bare ./cmd/app)
+```
+
+### Deploy to Kubernetes
+
+In our k8s resource `.yaml` files, we populate the `image:` field with a `ko://` url, and then use `ko apply -f k8s --bare`.
+
+#### `ko apply`
+
+This is the same as running `kubectl apply` but with some extra magic. Before the resources are applied to the cluster, `ko` will search for import paths starting with `ko://` build the images, push them to the registry, and update the `image:` field in the resource `.yaml` files with the resolved image name and tag.
+
+#### ko://
+
+We are using a string like `ko://github.com/keyval-dev/auth/cmd/app` where `ko://` is the prefix, `github.com/keyval-dev/auth` is the module path as ko picked up from our `go.mod` file, and `cmd/app` is the import path to the package with `func main()`.
+
+If you have multiple ko urls, it should work out of the box, applying ko build and replacing the image name everywhere it is found.
+
+#### -f
+
+This is the directory we want to apply to our cluster, the same directory we would use with `kubectl apply -f`.
+
+## `ko` in CI/CD
+
+We use github actions for our CI/CD. We run `ko build` on pull requests to verify we can build the project (no compile errors or missing dependencies), and run `ko apply` on each merge to main to build, push and apply the k8s Deployment with the new artifacts.
+
+### Verify Build
+
+This is our workflow file in `.github/workflows/build.yml`:
+
+```yaml
+name: "build service"
+on:
+  pull_request:
+
+jobs:
+  build-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21.x"
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Setup ko
+        uses: ko-build/setup-ko@v0.6
+
+      - name: ko build
+        run: ko build ./cmd/app --local --push=false
+```
+
+### Deploy to Production
+
+This is our workflow file in `.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  AWS_REGION: "us-east-2"
+  ECR_REGISTRY: "012345678901.dkr.ecr.us-east-2.amazonaws.com"
+  ECR_REPOSITORY: "YOUR_REPOSITORY_NAME"
+  CLUSTER_NAME: "YOUR_CLUSTER_NAME"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deply-service:
+    name: Deploy Service
+    runs-on: ubuntu-latest
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::012345678901:role/github-actions-deploy-service
+          role-session-name: my-service-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      # The following command will update the kube config file with our cluster information.
+      # It will use the credentials exported by the previous action.
+      - name: Update KubeConfig
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region=${{ env.AWS_REGION }}
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.21.x"
+
+      - uses: ko-build/setup-ko@v0.6
+        env:
+          KO_DOCKER_REPO: ${{ format('{0}/{1}', env.ECR_REGISTRY, env.ECR_REPOSITORY) }}
+
+      # ko uses https://github.com/awslabs/amazon-ecr-credential-helper
+      # to automatically login to ECR. no need to `ko login` or `docker login`
+
+      - run: ko apply -f k8s --bare
+```
+
+In the above example, we used OpenID Connect to get temporary credentials for our github workflow to run specific commands in aws. [more info here](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services). For this to work we added the `permissions:` part and the `role-to-assume` and `role-session-name` in the `configure-aws-credentials` step.
+
+## Conclusion
+
+I hope this blog post can help in clarifying how to use `ko` in your project. If you have any questions, feel free to reach out to us on [Odigos Slack](https://join.slack.com/t/odigos/shared_invite/zt-220qxzhpe-dG6o7Jkb3FmfwlBIldXOmA)
+
+## Adding Distributed Tracing to your Go Microservices
+
+After you learned how to deploy your golang microservices with `ko` into your k8s cluster, you might want to add observability to your service with the popular OpenTelemetry framework.
+
+Check out [Odigos](https://odigos.io/) for a quick and easy way to add distributed tracing, metrics and logs to your golang microservices, without needing to change your code. Odigos is open-source and free to use 🤙
