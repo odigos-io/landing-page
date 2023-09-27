@@ -10,7 +10,7 @@ const About = () => {
       {/* <!-- ===== About Start ===== --> */}
       <section className="pb-20 lg:pb-25 xl:pb-30 overflow-hidden">
         <div className="mx-auto max-w-c-1235 px-4 md:px-8 xl:px-0">
-          <div className="flex items-center gap-8 lg:gap-32.5">
+          <div className="flex  gap-8 lg:gap-32.5">
             <motion.div
               variants={{
                 hidden: {
@@ -60,22 +60,19 @@ const About = () => {
               viewport={{ once: true }}
               className="animate_right md:w-1/2"
             >
-              <h4 className="text-black dark:text-white font-medium uppercase">
+              {/* <h4 className="text-black dark:text-white font-medium uppercase">
                 <span className="bg-secondary text-white text-metatitle inline-flex rounded-full py-1 px-4.5 mr-4 mb-4 uppercase ">
                   New
                 </span>{' '}
                 SaaS Boilerplate for Next.js
-              </h4>
+              </h4> */}
               <h2 className="relative font-bold text-black dark:text-white text-3xl xl:text-hero mb-6">
-                A Complete Solution for
-                <span className="inline-block relative before:absolute before:bottom-2.5 before:left-0 before:w-full before:h-3 before:bg-titlebg dark:before:bg-titlebgdark before:-z-1">
-                  SaaS Startup
-                </span>
+                Get Started In 3 Steps
               </h2>
-              <p>
+              {/* <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
                 ultricies lacus non fermentum ultrices. Fusce consectetur le.
-              </p>
+              </p> */}
 
               <div className="mt-7.5 flex items-center gap-5">
                 <div className="w-15 h-15 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center">
@@ -84,10 +81,13 @@ const About = () => {
                   </p>
                 </div>
                 <div className="w-3/4">
-                  <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
-                    React 18, Next.js 13 and TypeScript
-                  </h5>
-                  <p>Ut ultricies lacus non fermentum ultrices.</p>
+                  {/* <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
+                    Step 1
+                  </h5> */}
+                  <p>
+                    Install Odigos on your Kubernetes cluster by executing a
+                    single command.
+                  </p>
                 </div>
               </div>
               <div className="mt-7.5 flex items-center gap-5">
@@ -97,10 +97,29 @@ const About = () => {
                   </p>
                 </div>
                 <div className="w-3/4">
-                  <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
+                  {/* <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
                     Fully Customizable
-                  </h5>
-                  <p>consectetur adipiscing elit fermentum ultricies.</p>
+                  </h5> */}
+                  <p>
+                    Select target applications: choose specific applications, or
+                    let Odigos instrument everything automatically.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-7.5 flex items-center gap-5">
+                <div className="w-15 h-15 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center">
+                  <p className="text-black dark:text-white font-semibold text-metatitle2">
+                    03
+                  </p>
+                </div>
+                <div className="w-3/4">
+                  {/* <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
+                    Fully Customizable
+                  </h5> */}
+                  <p>
+                    Choose where to send the observability data. Both managed
+                    vendors and open source solutions are supported.
+                  </p>
                 </div>
               </div>
             </motion.div>

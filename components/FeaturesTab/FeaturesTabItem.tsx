@@ -1,10 +1,10 @@
-import React from "react";
-import { FeatureTab } from "@/types/featureTab";
-import Image from "next/image";
+import React from 'react';
+import { FeatureTab } from '@/types/featureTab';
+import Image from 'next/image';
 
 const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
   const { title, desc1, desc2, image, imageDark } = featureTab;
-
+  console.log({ image });
   return (
     <>
       <div className="flex items-center gap-8 lg:gap-19">
@@ -15,13 +15,19 @@ const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
           <p className="mb-5">{desc1}</p>
           <p className="w-11/12">{desc2}</p>
         </div>
-        <div className="hidden md:block md:w-1/2 relative mx-auto aspect-[562/366] max-w-[550px]">
-          <Image src={image} alt={title} fill className="dark:hidden" />
+        <div
+          className="hidden md:block md:w-1/2 relative mx-auto aspect-[562/366] max-w-[550px]"
+          style={{
+            boxShadow: '0px 0px 61px -20px rgba(14,230,243,0.75)',
+            borderRadius: 8,
+          }}
+        >
           <Image
-            src={imageDark}
+            src={image}
             alt={title}
             fill
             className="hidden dark:block"
+            style={{ objectFit: 'contain', width: '100%' }}
           />
         </div>
       </div>
