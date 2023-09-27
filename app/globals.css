@@ -58,11 +58,13 @@
 }
 
 .blog-details p {
-  @apply mb-8 text-base leading-relaxed text-titlebgdark dark:text-waterloo;
+  color: text-waterloo;
+  margin-bottom: 8px;
+  /* @apply mb-8 text-base leading-relaxed text-titlebgdark dark:text-waterloo; */
 }
 
 .blog-details p strong {
-  @apply text-primary dark:text-waterloo font-semibold;
+  @apply text-primary dark:text-white font-semibold;
 }
 .blog-details h3 strong,
 .blog-details h3 {
@@ -89,12 +91,13 @@
 
 .blog-details ul,
 .blog-details ol {
-  @apply mb-10 list-inside list-disc text-titlebgdark;
+  @apply mb-10 ml-10 list-inside list-disc;
+  color: text-waterloo;
 }
 
 .blog-details li,
 .blog-details li {
-  @apply mb-2 text-base text-titlebgdark dark:text-waterloo;
+  @apply mb-2 text-base;
 }
 
 .blog-details blockquote {
