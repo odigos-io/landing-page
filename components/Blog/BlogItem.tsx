@@ -1,7 +1,4 @@
 'use client';
-import Image from 'next/image';
-import { Blog } from '@/types/blog';
-import { imageBuilder } from '@/sanity/sanity-utils';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
