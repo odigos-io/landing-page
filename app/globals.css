@@ -63,20 +63,26 @@
 }
 
 .blog-details pre {
+  width: 60vw;
   overflow: auto;
 }
-
+@media (max-width: 768px) {
+  /* You can adjust the max-width to your preferred breakpoint */
+  .blog-details pre {
+    width: 90vw;
+  }
+}
 .blog-details p strong {
   @apply dark:text-socialicon font-semibold;
 }
 .blog-details h3 strong,
 .blog-details h3 {
-  @apply text-xl mb-10 !font-semibold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight;
+  @apply text-xl mt-10 mb-4 !font-semibold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight;
 }
 
 .blog-details h4 strong,
 .blog-details h4 {
-  @apply text-xl !font-semibold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight;
+  @apply mb-2 mt-4 text-xl !font-semibold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight;
 }
 
 .blog-details h5 strong,
@@ -89,12 +95,12 @@
 }
 .blog-details h2 strong,
 .blog-details h2 {
-  @apply mb-4 text-[26px] !font-bold !leading-tight text-black dark:text-white sm:text-3xl md:text-4xl;
+  @apply mb-4 mt-4 text-[26px] !font-bold !leading-tight text-black dark:text-white sm:text-3xl md:text-4xl;
 }
 
 .blog-details ul,
 .blog-details ol {
-  @apply mb-10 ml-10 list-inside list-disc;
+  @apply mb-10 ml-4 list-inside list-disc;
   color: text-white;
 }
 

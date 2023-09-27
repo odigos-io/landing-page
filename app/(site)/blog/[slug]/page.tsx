@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import SharePost from '@/components/Blog/SharePost';
 import RelatedPost from '@/components/Blog/RelatedPost';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
-import { useIsMobile } from '@/hooks/useIsMobile';
 
 type Props = {
   params: { slug: string };
@@ -64,8 +62,6 @@ const SingleBlogPage = async ({ params }: Props) => {
               alignItems: 'center',
             }}
           >
-            {/* <div className="md:w-1/2 lg:w-[0%]"><RelatedPost /></div> */}
-
             <div className="lg:w-[80%]">
               <div className="animate_top rounded-md shadow-solid-13 p-7.5 md:p-10">
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
