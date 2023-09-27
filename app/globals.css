@@ -60,11 +60,14 @@
 .blog-details p {
   color: text-waterloo;
   margin-bottom: 8px;
-  /* @apply mb-8 text-base leading-relaxed text-titlebgdark dark:text-waterloo; */
+}
+
+.blog-details pre {
+  overflow: auto;
 }
 
 .blog-details p strong {
-  @apply text-primary dark:text-white font-semibold;
+  @apply dark:text-socialicon font-semibold;
 }
 .blog-details h3 strong,
 .blog-details h3 {
@@ -92,12 +95,16 @@
 .blog-details ul,
 .blog-details ol {
   @apply mb-10 ml-10 list-inside list-disc;
-  color: text-waterloo;
+  color: text-white;
 }
 
 .blog-details li,
 .blog-details li {
   @apply mb-2 text-base;
+}
+
+.blog-details li strong {
+  color: #fff;
 }
 
 .blog-details blockquote {
