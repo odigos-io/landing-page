@@ -3,6 +3,7 @@ import SharePost from '@/components/Blog/SharePost';
 import RelatedPost from '@/components/Blog/RelatedPost';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 type Props = {
   params: { slug: string };
@@ -23,6 +24,7 @@ const borderGradient = {
 };
 
 const SingleBlogPage = async ({ params }: Props) => {
+  // const isMobile = useIsMobile();
   const { slug } = params;
   // const post = await getPost(slug);
   const posts = getAllBlogs([
@@ -51,9 +53,7 @@ const SingleBlogPage = async ({ params }: Props) => {
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">
         <div
           className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0"
-          style={{
-            width: '100%',
-          }}
+          style={{ width: '100%' }}
         >
           <div
             className="flex flex-col-reverse lg:flex-row gap-7.5 xl:gap-12.5"
@@ -68,12 +68,14 @@ const SingleBlogPage = async ({ params }: Props) => {
 
             <div className="lg:w-[80%]">
               <div className="animate_top rounded-md shadow-solid-13 p-7.5 md:p-10">
-                <div style={{ display: 'flex', gap: 16 }}>{renderTags()}</div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                  {renderTags()}
+                </div>
                 <h1
                   style={{
                     marginTop: 20,
                     fontSize: 48,
-                    width: '65%',
+                    width: '100%',
                     lineHeight: 1.2,
                     color: '#fff',
                     fontWeight: 700,
@@ -85,7 +87,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                   style={{
                     fontSize: 18,
                     marginBottom: 80,
-                    width: '65%',
+                    width: '100%',
                     marginTop: 20,
                   }}
                 >
