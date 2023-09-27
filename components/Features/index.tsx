@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import featuresData from "./featuresData";
-import SingleFeature from "./SingleFeature";
-import SectionHeader from "../Common/SectionHeader";
+'use client';
+import React from 'react';
+import featuresData from './featuresData';
+import SingleFeature from './SingleFeature';
+import SectionHeader from '../Common/SectionHeader';
 
 const Feature = () => {
   return (
@@ -13,11 +13,9 @@ const Feature = () => {
           {/* <!-- Section Title Start --> */}
           <SectionHeader
             headerInfo={{
-              title: "SOLID FEATURES",
-              subtitle: "Core Features of Solid",
-              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-            convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam
-            ante in maximus.`,
+              title: 'ODIGOS FEATURES',
+              subtitle: 'Core Features of Odigos',
+              description: `Odigos automatically instruments any application and manages OpenTelemetry collectors`,
             }}
           />
           {/* <!-- Section Title End --> */}
