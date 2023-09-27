@@ -38,16 +38,12 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
   return items;
 }
 
-export function getBlogBySlug(slug: string, fields: string[] = []) {
+export function getBlogBySlug(slug: string, fields: string[] = []): any {
   const realSlug = slug.replace(/\.mdx$/, '');
   const dirname = join(process.cwd(), 'markdown/blogs');
   const fullPath = join(postsDirectory, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(fileContents);
-
-  type Items = {
-    [key: string]: string;
-  };
 
   const items = {
     ...data,
@@ -72,7 +68,7 @@ export function getBlogBySlug(slug: string, fields: string[] = []) {
 }
 
 export function getAllPosts(fields: string[] = []) {
-  const slugs = getPostSlugs(null);
+  const slugs = getPostSlugs();
   const posts = slugs
     .map((slug) => getPostBySlug(slug, fields))
     // sort posts by date in descending order
@@ -82,8 +78,7 @@ export function getAllPosts(fields: string[] = []) {
 }
 
 export function getAllBlogs(fields: string[] = []) {
-  const dirname = join(process.cwd(), 'markdown/blogs');
-  const slugs = getPostSlugs(postsDirectory);
+  const slugs = getPostSlugs();
 
   const posts = slugs
     .map((slug) => getBlogBySlug(slug, fields))

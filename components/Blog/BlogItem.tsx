@@ -42,7 +42,7 @@ const BlogItem = ({ blog }: { blog: any }) => {
                 width: '100%',
                 borderRadius: 6,
               }}
-              src={getImage()}
+              src={image}
               alt={title}
             />
           ) : (

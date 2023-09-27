@@ -1,42 +1,42 @@
-import React from "react";
-import Image from "next/image";
-import { getPosts } from "@/sanity/sanity-utils";
-import { imageBuilder } from "@/sanity/sanity-utils";
-import Link from "next/link";
+import React from 'react';
+import { getAllBlogs } from '@/app/libs/markdown';
+import BlogItem from './BlogItem';
 
 const RelatedPost = async () => {
-  const posts = await getPosts();
+  // const posts = await getPosts();
+  const posts = getAllBlogs([
+    'title',
+    'date',
+    'excerpt',
+    'coverImage',
+    'slug',
+    'body',
+  ]);
+
+  function getRandomItemsFromArray(originalArray, numItems) {
+    if (numItems >= originalArray.length) {
+      return originalArray.slice(); // Return a shallow copy of the original array if numItems is greater or equal to the array's length
+    }
+
+    const shuffledArray = originalArray.slice().sort(() => Math.random() - 0.5);
+    return shuffledArray.slice(0, numItems);
+  }
 
   return (
     <>
-      <div className="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-9">
-        <h4 className="font-semibold text-2xl text-black dark:text-white mb-7.5">
-          Related Posts
-        </h4>
-
-        <div>
-          {posts.slice(0, 3).map((post, key) => (
-            <div
-              className="flex xl:flex-nowrap flex-wrap gap-4 2xl:gap-6 mb-7.5"
-              key={key}
-            >
-
-              <div className="relative max-w-45 w-45 h-18">
-                {post.mainImage ? (
-                  <Image
-                    fill
-                    src={imageBuilder(post.mainImage).url()}
-                    alt="Blog"
-                  />
-                ) : "No image"}
-              </div>
-              <h5 className="font-medium text-md text-black dark:text-white hover:text-primary dark:hover:text-primary transition-all duration-300">
-                <Link href={`/blog/${post.slug.current}`}> {post.title.slice(0, 40)}...</Link>
-              </h5>
-            </div>
-          ))}
+      <section style={{ marginBottom: 200 }}>
+        <div className="mx-auto max-w-c-1280 px-4 md:px-8 xl:px-0 mt-15 xl:mt-20">
+          <h4 className="font-semibold text-2xl text-black dark:text-white mb-7.5">
+            Related posts
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7.5 xl:gap-10">
+            {posts.length > 0 &&
+              getRandomItemsFromArray(posts, 3).map((post, key) => (
+                <BlogItem key={key} blog={post} />
+              ))}
+          </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

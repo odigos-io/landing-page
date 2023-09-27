@@ -35,7 +35,6 @@ const SingleBlogPage = async ({ params }: Props) => {
   ]);
 
   const post = posts.find((post) => post.slug === slug);
-  console.log({ post });
   const content = await markdownToHtml(post.content || '');
 
   function renderTags() {
@@ -97,7 +96,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                     <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                       <Image
                         style={{ objectFit: 'contain' }}
-                        src={post.image.replace('~/assets/images', '')}
+                        src={post.image}
                         alt={post.title}
                         fill
                         className="object-cover object-center rounded-md"
@@ -165,7 +164,6 @@ const SingleBlogPage = async ({ params }: Props) => {
                   />
                 </div>
                 <RelatedPost />
-                {/* <SharePost /> */}
               </div>
             </div>
           </div>
