@@ -156,34 +156,14 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-6 mt-7 lg:mt-0">
-            {/* <ThemeToggler /> */}
-
-            {session ? (
-              <>
-                <p>{session?.user?.name}</p>
-                <button
-                  aria-label="SignOut"
-                  onClick={() => signOut()}
-                  className="text-waterloo text-regular font-medium hover:text-primary"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/auth/signin"
-                className="text-waterloo text-regular font-medium hover:text-secondary"
-              >
-                Sign In
-              </Link>
-            )}
-
-            <Link
-              href="/auth/signup"
+            <button
+              onClick={() =>
+                window.open('https://app.keyval.dev/waitlist', '_blank')
+              }
               className="flex items-center justify-center bg-primary hover:bg-secondary hover:text-dark_button ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5"
             >
-              Sign Up
-            </Link>
+              Join Waitlist
+            </button>
           </div>
         </div>
       </div>

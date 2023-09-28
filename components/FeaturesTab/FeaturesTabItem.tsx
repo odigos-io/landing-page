@@ -1,6 +1,14 @@
 import React from 'react';
 import { FeatureTab } from '@/types/featureTab';
-import Image from 'next/image';
+
+import styled from 'styled-components';
+
+const BgImage = styled.div<{ image: string }>`
+  background-image: ${({ image }) =>
+    `linear-gradient( to bottom,rgba(245, 246, 252, 0),rgba(7,17,26,1)),url(${image})`};
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
 
 const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
   const { title, desc1, desc2, image, imageDark } = featureTab;
@@ -15,21 +23,11 @@ const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
           <p className="mb-5">{desc1}</p>
           <p className="w-11/12">{desc2}</p>
         </div>
-        <div
+        <BgImage
+          image={image}
           className="hidden md:block md:w-1/2 relative mx-auto aspect-[562/366] max-w-[550px]"
-          style={{
-            boxShadow: '0px 0px 61px -20px rgba(14,230,243,0.75)',
-            borderRadius: 8,
-          }}
-        >
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className="hidden dark:block"
-            style={{ objectFit: 'contain', width: '100%' }}
-          />
-        </div>
+          style={{ borderRadius: 8 }}
+        ></BgImage>
       </div>
     </>
   );
