@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import { motion } from "framer-motion";
+'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 type HeaderInfo = {
   title: string;
@@ -40,7 +40,7 @@ const SectionHeader = ({ headerInfo }: { headerInfo: HeaderInfo }) => {
         <h2 className="font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white md:w-4/5 xl:w-1/2 mx-auto mb-4">
           {subtitle}
         </h2>
-        <p className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[46%]">{description}</p>
+        <p className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[30%]">{description}</p>
       </motion.div>
       {/* <!-- Section Title End --> */}
     </>

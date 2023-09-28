@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 
 import ThemeToggler from './ThemeToggler';
 import menuData from './menuData';
+import GithubButton from '../GithubButtton';
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
@@ -154,7 +155,6 @@ const Header = () => {
               ))}
             </ul>
           </nav>
-
           <div className="flex items-center gap-6 mt-7 lg:mt-0">
             <button
               onClick={() =>
@@ -164,6 +164,7 @@ const Header = () => {
             >
               Join Waitlist
             </button>
+            <GithubButton />
           </div>
         </div>
       </div>
