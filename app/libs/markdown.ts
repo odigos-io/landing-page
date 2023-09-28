@@ -77,13 +77,26 @@ export function getAllPosts(fields: string[] = []) {
   return posts;
 }
 
+function compareByPubDate(a, b) {
+  const dateA = new Date(a.pubDate);
+  const dateB = new Date(b.pubDate);
+
+  if (dateA > dateB) {
+    return -1;
+  } else if (dateA < dateB) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 export function getAllBlogs(fields: string[] = []) {
   const slugs = getPostSlugs();
 
   const posts = slugs
     .map((slug) => getBlogBySlug(slug, fields))
     // sort posts by date in descending order
-    .sort((post1, post2) => (post1.pubDate > post2.pubDate ? -1 : 1));
+    .sort(compareByPubDate);
 
   return posts;
 }
