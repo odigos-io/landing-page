@@ -12,16 +12,16 @@ const BgImage = styled.div<{ image: string }>`
 
 const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
   const { title, desc1, desc2, image, imageDark } = featureTab;
-  console.log({ image });
+
   return (
     <>
-      <div className="flex items-center gap-8 lg:gap-19">
+      <div className="flex  gap-8 lg:gap-19">
         <div className="md:w-1/2">
           <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle2 font-bold mb-7">
             {title}
           </h2>
           <p className="mb-5">{desc1}</p>
-          <p className="w-11/12">{desc2}</p>
+          {/* <p className="w-11/12">{desc2}</p> */}
         </div>
         <BgImage
           image={image}

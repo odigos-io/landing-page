@@ -24,7 +24,9 @@ const Hero = () => {
               <p>
                 Simplify OpenTelemetry complexity with the only platform that
                 can generate distributed tracing across all your applications
-                (without code changes)
+                <strong>
+                  <u style={{ marginLeft: 3 }}>without code changes</u>
+                </strong>
               </p>
 
               <div className="mt-10">

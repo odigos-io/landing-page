@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import featuresTabData from './featuresTabData';
 import FeaturesTabItem from './FeaturesTabItem';
@@ -8,6 +8,32 @@ import { motion } from 'framer-motion';
 
 const FeaturesTab = () => {
   const [currentTab, setCurrentTab] = useState('tabOne');
+  const tabRef = useRef('tabOne');
+  const timerRef = useRef<any>(null);
+  let timer;
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      if (tabRef.current === 'tabOne') {
+        setCurrentTab('tabTwo');
+        tabRef.current = 'tabTwo';
+      } else if (tabRef.current === 'tabTwo') {
+        setCurrentTab('tabThree');
+        tabRef.current = 'tabThree';
+      } else if (tabRef.current === 'tabThree') {
+        setCurrentTab('tabOne');
+        tabRef.current = 'tabOne';
+      }
+    }, 5000);
+
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  function handleTabChange(tab) {
+    setCurrentTab(tab);
+    tabRef.current = tab;
+
+    clearInterval(timerRef.current);
+  }
 
   return (
     <>
@@ -54,14 +80,19 @@ const FeaturesTab = () => {
             className="animate_top border border-stroke dark:border-strokedark dark:bg-blacksection shadow-solid-5 dark:shadow-solid-6 bg-white rounded-[10px] flex flex-wrap md:flex-nowrap md:items-center justify-center lg:gap-7.5 xl:gap-12.5 mb-15 xl:mb-21.5"
           >
             <div
-              onClick={() => setCurrentTab('tabOne')}
+              onClick={() => handleTabChange('tabOne')}
               className={`relative cursor-pointer w-full md:w-auto border-b last:border-0 md:border-0 border-stroke dark:border-strokedark flex items-center gap-4 py-2 xl:py-5 px-6 xl:px-13.5 ${
                 currentTab === 'tabOne'
-                  ? 'active before:w-full before:h-1 before:bg-primary before:absolute before:bottom-0 before:left-0 before:rounded-tl-[4px] before:rounded-tr-[4px]'
+                  ? 'active before:w-full before:h-1 before:bg-white before:absolute before:bottom-0 before:left-0 before:rounded-tl-[4px] before:rounded-tr-[4px]'
                   : ''
               }`}
             >
-              <div className="w-12.5 h-12.5 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center">
+              <div
+                style={{
+                  borderColor: currentTab === 'tabOne' ? '#F8F9FF' : '',
+                }}
+                className="w-12.5 h-12.5 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center"
+              >
                 <p className="text-black dark:text-white font-medium text-metatitle3">
                   01
                 </p>
@@ -73,14 +104,19 @@ const FeaturesTab = () => {
               </div>
             </div>
             <div
-              onClick={() => setCurrentTab('tabTwo')}
+              onClick={() => handleTabChange('tabTwo')}
               className={`relative cursor-pointer w-full md:w-auto border-b last:border-0 md:border-0 border-stroke dark:border-strokedark flex items-center gap-4 py-2 xl:py-5 px-6 xl:px-13.5 ${
                 currentTab === 'tabTwo'
-                  ? 'active before:w-full before:h-1 before:bg-primary before:absolute before:bottom-0 before:left-0 before:rounded-tl-[4px] before:rounded-tr-[4px]'
+                  ? 'active before:w-full before:h-1 before:bg-white before:absolute before:bottom-0 before:left-0 before:rounded-tl-[4px] before:rounded-tr-[4px]'
                   : ''
               }`}
             >
-              <div className="w-12.5 h-12.5 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center">
+              <div
+                style={{
+                  borderColor: currentTab === 'tabTwo' ? '#F8F9FF' : '',
+                }}
+                className="w-12.5 h-12.5 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center"
+              >
                 <p className="text-black dark:text-white font-medium text-metatitle3">
                   02
                 </p>
@@ -92,14 +128,19 @@ const FeaturesTab = () => {
               </div>
             </div>
             <div
-              onClick={() => setCurrentTab('tabThree')}
+              onClick={() => handleTabChange('tabThree')}
               className={`relative cursor-pointer w-full md:w-auto border-b last:border-0 md:border-0 border-stroke dark:border-strokedark flex items-center gap-4 py-2 xl:py-5 px-6 xl:px-13.5 ${
                 currentTab === 'tabThree'
-                  ? 'active before:w-full before:h-1 before:bg-primary before:absolute before:bottom-0 before:left-0 before:rounded-tl-[4px] before:rounded-tr-[4px]'
+                  ? 'active before:w-full before:h-1 before:bg-white before:absolute before:bottom-0 before:left-0 before:rounded-tl-[4px] before:rounded-tr-[4px]'
                   : ''
               }`}
             >
-              <div className="w-12.5 h-12.5 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center">
+              <div
+                style={{
+                  borderColor: currentTab === 'tabThree' ? '#F8F9FF' : '',
+                }}
+                className="w-12.5 h-12.5 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center"
+              >
                 <p className="text-black dark:text-white font-medium text-metatitle3">
                   03
                 </p>
