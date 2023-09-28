@@ -1,0 +1,16 @@
+.d-flex {
+  width: 100vw;
+  display: flex;
+  transform: translateX(calc(100vw));
+  overflow: visible;
+  animation: animateContainer 100s linear forwards infinite;
+  animation-play-state: paused;
+}
+@keyframes animateContainer {
+  from {
+    transform: translateX(calc(50vw));
+  }
+  to {
+    transform: translateX(calc(-500%));
+  }
+}

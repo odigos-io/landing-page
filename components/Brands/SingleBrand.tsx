@@ -1,46 +1,48 @@
-import React, { useRef, useEffect } from "react";
-import Image from "next/image";
-import { Brand } from "@/types/brand";
-import { motion } from "framer-motion";
+import React, { useRef, useEffect } from 'react';
+import Image from 'next/image';
+import { Brand } from '@/types/brand';
+import { motion } from 'framer-motion';
 
-const SingleBrand = ({ brand }: { brand: Brand }) => {
-  const { image, href, name, imageLight, id } = brand;
+const SingleBrand = ({ brand }: { brand: any }) => {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const { image_url, type, display_name, imageLight, id } = brand;
 
   return (
-    <>
-      <motion.a
-        variants={{
-          hidden: {
-            opacity: 0,
-            y: -20,
-          },
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 12,
+        textAlign: 'center',
+        alignItems: 'center',
+        position: 'relative',
 
-          visible: {
-            opacity: 1,
-            y: 0,
-          },
+        justifyContent: 'space-between',
+      }}
+    >
+      <Image
+        width={70}
+        height={70}
+        src={image_url}
+        style={{ filter: isHovered ? 'grayscale(0%)' : 'grayscale(100%)' }}
+        alt="Brand"
+      />
+      <div
+        style={{
+          color: isHovered ? '#fff' : '#424242',
+          width: 150,
+          height: 50,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          fontWeight: 600,
         }}
-        initial="hidden"
-        whileInView="visible"
-        transition={{ duration: 1, delay: id }}
-        viewport={{ once: true }}
-        href={href}
-        className="animate_top block relative h-10 mx-w-full w-[98px]"
       >
-        <Image
-          className="opacity-65 transition-all duration-300 hover:opacity-100 dark:hidden"
-          src={image}
-          alt={name}
-          fill
-        />
-        <Image
-          className="hidden opacity-50 transition-all duration-300 hover:opacity-100 dark:block"
-          src={imageLight}
-          alt={name}
-          fill
-        />
-      </motion.a>
-    </>
+        {display_name}
+      </div>
+    </div>
   );
 };
 
