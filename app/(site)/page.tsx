@@ -12,29 +12,26 @@ import Pricing from '@/components/Pricing';
 import Contact from '@/components/Contact';
 import Blog from '@/components/Blog';
 import Testimonial from '@/components/Testimonial';
+import RelatedPost from '@/components/Blog/RelatedPost';
 
 export const metadata: Metadata = {
   title: 'Odigos',
-  description: 'This is Home for Solid Pro',
-  // other metadata
+  icons: '/images/logo/logo.png',
 };
 
 export default function Home() {
   return (
     <main>
       <Hero />
-      <Brands />
       <Feature />
       <FeaturesTab />
-      <About />
-      <FunFact />
       <Integration />
+      <Brands />
       <CTA />
       <FAQ />
       <Testimonial />
       <Pricing />
-      <Contact />
-      {/* <Blog /> */}
+      <Blog />
     </main>
   );
 }

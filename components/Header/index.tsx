@@ -3,10 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-
-import ThemeToggler from './ThemeToggler';
 import menuData from './menuData';
 import GithubButton from '../GithubButtton';
 
@@ -14,8 +11,6 @@ const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
-
-  const { data: session } = useSession();
 
   const pathUrl = usePathname();
 
@@ -50,16 +45,8 @@ const Header = () => {
               height={30}
               className="w-full hidden dark:block"
             />
-            {/* <Image
-              src="/images/logo/logo-light.svg"
-              alt="logo"
-              width={119.03}
-              height={30}
-              className="w-full dark:hidden"
-            /> */}
           </a>
 
-          {/* <!-- Hamburger Toggle BTN --> */}
           <button
             aria-label="hamburger Toggler"
             className="lg:hidden block"

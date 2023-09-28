@@ -36,7 +36,7 @@ const Hero = () => {
                       }
                       className="flex bg-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
                     >
-                      Join Waitlist
+                      Join Odigos Waitlist
                     </button>
                   </div>
                 </form>

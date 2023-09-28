@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const CTA = () => {
   return (
@@ -29,12 +29,10 @@ const CTA = () => {
               className="animate_left md:w-[70%] lg:w-1/2"
             >
               <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle4 font-bold mb-4 w-11/12">
-                Join With Us Today & Increase Your Productivity
+                Join With Us Today
               </h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-                convallis tortor eros. Donec vitae tortor lacus. Phasellus
-                aliquam ante in maximus.
+                join our waitlist and get early access to the Odigos platform
               </p>
             </motion.div>
             <motion.div
@@ -64,10 +62,12 @@ const CTA = () => {
                   className="hidden xl:block"
                 />
                 <a
-                  href="signup.html"
+                  onClick={() =>
+                    window.open('https://app.keyval.dev/waitlist', '_blank')
+                  }
                   className="inline-flex items-center gap-2.5 font-medium text-white dark:text-black bg-black dark:bg-white rounded-full py-3 px-6 hover:opacity-90"
                 >
-                  Sign up free
+                  Join Odigos Waitlist
                   <Image
                     width={20}
                     height={20}

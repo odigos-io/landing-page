@@ -1,10 +1,18 @@
-import React from "react";
-import SectionHeader from "../Common/SectionHeader";
-import BlogItem from "./BlogItem";
-import { getPosts } from "@/sanity/sanity-utils";
+import React from 'react';
+import SectionHeader from '../Common/SectionHeader';
+import BlogItem from './BlogItem';
+import { getPosts } from '@/sanity/sanity-utils';
+import { getAllBlogs } from '@/app/libs/markdown';
 
 const Blog = async () => {
-  const posts = await getPosts();
+  const posts = getAllBlogs([
+    'title',
+    'date',
+    'excerpt',
+    'coverImage',
+    'slug',
+    'body',
+  ]);
 
   return (
     <section className="py-20 lg:py-25 xl:py-30">
@@ -15,7 +23,7 @@ const Blog = async () => {
             headerInfo={{
               title: `NEWS & BLOGS`,
               subtitle: `Latest News & Blogs`,
-              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam ante in maximus.`,
+              description: `Explore the Freshest Updates and Rich Content in Our Latest News and Blogs Section`,
             }}
           />
         </div>
