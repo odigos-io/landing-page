@@ -48,7 +48,7 @@ const Hero = () => {
                 <div className=" relative aspect-[1800/854] w-full"></div>
                 <Image
                   className="dark:block"
-                  src="/images/hero/overview1.gif"
+                  src="/images/hero/overview.gif"
                   alt="Hero"
                   fill
                   style={{
