@@ -10,7 +10,7 @@ const Hero = () => {
           <div className="flex lg:items-center lg:gap-8 xl:gap-32.5">
             <div className=" md:w-1/3">
               <h1 className="text-black dark:text-white text-3xl xl:text-hero font-bold mb-5 ">
-                Enterprise grade observability pipelines using eBPF and
+                Enterprise grade observability pipelines with eBPF and
                 OpenTelemetry
               </h1>
               <p>
