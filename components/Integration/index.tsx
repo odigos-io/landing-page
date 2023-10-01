@@ -59,7 +59,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="https:/d15jtxgb40qetw.cloudfront.net/datadog.svg"
+                  src="/dest/datadog.svg"
                   alt="Brand"
                 />
               </div>
@@ -106,7 +106,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="https:/d15jtxgb40qetw.cloudfront.net/chronosphere.svg"
+                  src="/dest/chronosphere.svg"
                   alt="Brand"
                 />
               </div>
@@ -155,7 +155,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="https:/d15jtxgb40qetw.cloudfront.net/honeycomb.svg"
+                  src="/dest/honeycomb.svg"
                   alt="Brand"
                 />
               </div>
@@ -223,7 +223,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="https:/d15jtxgb40qetw.cloudfront.net/jaeger.svg"
+                  src="/dest/jaeger.svg"
                   alt="Brand"
                 />
               </div>
@@ -272,7 +272,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="https:/d15jtxgb40qetw.cloudfront.net/lightstep.svg"
+                  src="/dest/lightstep.svg"
                   alt="Brand"
                 />
               </div>
@@ -321,7 +321,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="https:/d15jtxgb40qetw.cloudfront.net/loki.svg"
+                  src="/dest/loki.svg"
                   alt="Brand"
                 />
               </div>
