@@ -1,15 +1,15 @@
-import { getAllPosts, getPostBySlug } from "@/app/libs/markdown";
-import markdownToHtml from "@/app/libs/markdownToHtml";
-import SidebarLink from "@/components/Docs/SidebarLink";
+import { getAllPosts, getPostBySlug } from '@/app/libs/markdown';
+import markdownToHtml from '@/app/libs/markdownToHtml';
+import SidebarLink from '@/components/Docs/SidebarLink';
 
 export default async function Post({ params }: { params: { slug: string } }) {
-  const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
-  const post = getPostBySlug(params.slug, ["title", "author", "content"]);
-  const content = await markdownToHtml(post.content || "");
+  const posts = getAllPosts(['title', 'date', 'excerpt', 'coverImage', 'slug']);
+  const post = getPostBySlug(params.slug, ['title', 'author', 'content']);
+  const content = await markdownToHtml(post.content || '');
 
   return (
     <>
-      <title>{`${post?.title} - Startup`}</title>
+      {/* <title>{`${post?.title} - Startup`}</title> */}
 
       <section className="pb-16 md:pb-20 lg:pb-24 pt-24 md:pt-28 lg:pt-32">
         <div className="container mx-auto">

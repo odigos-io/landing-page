@@ -11,6 +11,7 @@ import '../globals.css';
 
 import AuthProvider from '../context/AuthContext';
 import ToasterContext from '../context/ToastContext';
+import { ThemeProviderWrapper } from '@keyval-dev/design-system';
 
 export default function RootLayout({
   children,
@@ -20,20 +21,22 @@ export default function RootLayout({
   return (
     <html lang="eng">
       <body className={`dark:bg-black`}>
-        <ThemeProvider
-          enableSystem={false}
-          attribute="class"
-          defaultTheme="dark"
-        >
-          <AuthProvider>
-            {/* <Lines /> */}
-            <Header />
-            <ToasterContext />
-            {children}
-            <Footer />
-            <ScrollToTop />
-          </AuthProvider>
-        </ThemeProvider>
+        <ThemeProviderWrapper>
+          <ThemeProvider
+            enableSystem={false}
+            attribute="class"
+            defaultTheme="dark"
+          >
+            <AuthProvider>
+              {/* <Lines /> */}
+              <Header />
+              <ToasterContext />
+              {children}
+              <Footer />
+              <ScrollToTop />
+            </AuthProvider>
+          </ThemeProvider>
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

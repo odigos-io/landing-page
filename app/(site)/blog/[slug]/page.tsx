@@ -47,7 +47,7 @@ const SingleBlogPage = async ({ params }: Props) => {
 
   return (
     <>
-      <title>{`${post?.title}`}</title>
+      {/* <title>{`${post?.title}`}</title> */}
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">
         <div
           className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0"

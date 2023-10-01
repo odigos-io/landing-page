@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@keyval-dev/design-system": "^1.1.9",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@portabletext/react": "^3.0.2",
     "@prisma/client": "^4.15.0",
