@@ -60,19 +60,9 @@ const About = () => {
               viewport={{ once: true }}
               className="animate_right md:w-1/2"
             >
-              {/* <h4 className="text-black dark:text-white font-medium uppercase">
-                <span className="bg-secondary text-white text-metatitle inline-flex rounded-full py-1 px-4.5 mr-4 mb-4 uppercase ">
-                  New
-                </span>{' '}
-                SaaS Boilerplate for Next.js
-              </h4> */}
               <h2 className="relative font-bold text-black dark:text-white text-3xl xl:text-hero mb-6">
                 Get Started In 3 Steps
               </h2>
-              {/* <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-                ultricies lacus non fermentum ultrices. Fusce consectetur le.
-              </p> */}
 
               <div className="mt-7.5 flex items-center gap-5">
                 <div className="w-15 h-15 rounded-[50%] border border-stroke dark:border-strokedark dark:bg-blacksection flex items-center justify-center">
@@ -81,9 +71,6 @@ const About = () => {
                   </p>
                 </div>
                 <div className="w-3/4">
-                  {/* <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
-                    Step 1
-                  </h5> */}
                   <p>
                     Install Odigos on your Kubernetes cluster by executing a
                     single command.
@@ -97,9 +84,6 @@ const About = () => {
                   </p>
                 </div>
                 <div className="w-3/4">
-                  {/* <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
-                    Fully Customizable
-                  </h5> */}
                   <p>
                     Select target applications: choose specific applications, or
                     let Odigos instrument everything automatically.
@@ -113,9 +97,6 @@ const About = () => {
                   </p>
                 </div>
                 <div className="w-3/4">
-                  {/* <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
-                    Fully Customizable
-                  </h5> */}
                   <p>
                     Choose where to send the observability data. Both managed
                     vendors and open source solutions are supported.
@@ -126,9 +107,7 @@ const About = () => {
           </div>
         </div>
       </section>
-      {/* <!-- ===== About End ===== --> */}
 
-      {/* <!-- ===== About Two Start ===== --> */}
       <section>
         <div className="mx-auto max-w-c-1235 px-4 md:px-8 2xl:px-0 overflow-hidden">
           <div className="flex items-center gap-8 lg:gap-32.5">

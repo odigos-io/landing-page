@@ -1,7 +1,6 @@
 import React from 'react';
 import SectionHeader from '../Common/SectionHeader';
 import BlogItem from './BlogItem';
-import { getPosts } from '@/sanity/sanity-utils';
 import { getAllBlogs } from '@/app/libs/markdown';
 
 const Blog = async () => {

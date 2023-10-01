@@ -1,7 +1,6 @@
-import { getPosts } from '@/sanity/sanity-utils';
 import BlogItem from '@/components/Blog/BlogItem';
 import { Metadata } from 'next';
-import { getAllBlogs, getAllPosts } from '@/app/libs/markdown';
+import { getAllBlogs } from '@/app/libs/markdown';
 import SectionHeader from '@/components/Common/SectionHeader';
 
 export const metadata: Metadata = {
