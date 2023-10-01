@@ -1,24 +1,21 @@
-"use client";
-import React from "react";
-import SectionHeader from "../Common/SectionHeader";
-import Image from "next/image";
-import { motion } from "framer-motion";
+'use client';
+import React from 'react';
+import SectionHeader from '../Common/SectionHeader';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const Integration = () => {
   return (
     <>
       <section>
         <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
-          {/* <!-- Section Title Start --> */}
           <SectionHeader
             headerInfo={{
               title: `INTEGRATIONS`,
-              subtitle: `Remotely Maintain Your Data, From Anywhere, Anytime.`,
-              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam ante in maximus.`,
+              subtitle: `Seamless Integration`,
+              description: `Say goodbye to manual data transfers. Odigos platform offers effortless integration options`,
             }}
           />
-
-          {/* <!-- Section Title End --> */}
         </div>
 
         <div className="mx-auto max-w-c-1154 px-4 md:px-8 xl:px-0 relative z-50 mt-15 xl:mt-20 pattern-dots pattern-blue-500 pattern-bg-white pattern-size-4 pattern-opacity-10">
@@ -30,7 +27,7 @@ const Integration = () => {
               src="/images/shape/shape-dotted-light.svg"
               alt="Dotted"
               className="dark:hidden"
-              style={{ position: "static" }}
+              style={{ position: 'static' }}
             />
             <Image
               fill
@@ -62,7 +59,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="./images/brand/brand-07.svg"
+                  src="https:/d15jtxgb40qetw.cloudfront.net/datadog.svg"
                   alt="Brand"
                 />
               </div>
@@ -109,7 +106,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="./images/brand/brand-08.svg"
+                  src="https:/d15jtxgb40qetw.cloudfront.net/chronosphere.svg"
                   alt="Brand"
                 />
               </div>
@@ -158,7 +155,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="./images/brand/brand-09.svg"
+                  src="https:/d15jtxgb40qetw.cloudfront.net/honeycomb.svg"
                   alt="Brand"
                 />
               </div>
@@ -226,7 +223,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="./images/brand/brand-10.svg"
+                  src="https:/d15jtxgb40qetw.cloudfront.net/jaeger.svg"
                   alt="Brand"
                 />
               </div>
@@ -275,7 +272,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="./images/brand/brand-11.svg"
+                  src="https:/d15jtxgb40qetw.cloudfront.net/lightstep.svg"
                   alt="Brand"
                 />
               </div>
@@ -324,7 +321,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="./images/brand/brand-12.svg"
+                  src="https:/d15jtxgb40qetw.cloudfront.net/loki.svg"
                   alt="Brand"
                 />
               </div>

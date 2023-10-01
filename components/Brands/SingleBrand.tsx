@@ -22,17 +22,29 @@ const SingleBrand = ({ brand }: { brand: any }) => {
         justifyContent: 'space-between',
       }}
     >
-      <Image
-        width={70}
-        height={70}
-        src={image_url}
-        style={{ filter: isHovered ? 'grayscale(0%)' : 'grayscale(100%)' }}
-        alt="Brand"
-      />
+      <div
+        style={{
+          width: 80,
+          height: 80,
+          backgroundColor: '#292e45',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 8,
+        }}
+      >
+        <Image
+          width={50}
+          height={50}
+          src={image_url}
+          style={{ filter: isHovered ? 'grayscale(0%)' : 'grayscale(90%)' }}
+          alt="Brand"
+        />
+      </div>
       <div
         style={{
           color: isHovered ? '#fff' : '#424242',
-          width: 150,
+          width: 120,
           height: 50,
           display: 'flex',
           justifyContent: 'center',
