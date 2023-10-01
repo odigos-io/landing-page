@@ -15,7 +15,6 @@ export default function AutoScrollHorizontalList() {
   const renderCards = brandData.map((brand, index) => {
     return <SingleBrand brand={brand} key={index} />;
   });
-
   return (
     <div
       style={{ overflow: 'hidden', marginTop: 100 }}
