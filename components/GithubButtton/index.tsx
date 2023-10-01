@@ -11,7 +11,7 @@ const ButtonContainer = styled.div`
 `;
 const GithubButton = () => {
   return (
-    <ButtonContainer>
+    <ButtonContainer style={{ marginTop: 10 }}>
       <GitHubButton
         href="https://github.com/keyval-dev/odigos"
         data-color-scheme="no-preference: light; light: light; dark: dark;"
