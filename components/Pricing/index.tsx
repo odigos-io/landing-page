@@ -1,9 +1,10 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import SectionHeader from "../Common/SectionHeader";
-import axios from "axios";
-import { PricingItem } from "./PricingItem";
+'use client';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import SectionHeader from '../Common/SectionHeader';
+import axios from 'axios';
+import { PricingItem } from './PricingItem';
+import { PRICING } from './data';
 
 const Pricing = () => {
   const [prices, setPrices] = useState([]);
@@ -13,14 +14,14 @@ const Pricing = () => {
   }, []);
 
   const fetchPrices = async () => {
-    const { data } = await axios.get("/api/getproducts");
+    const { data } = await axios.get('/api/getproducts');
     setPrices(data);
   };
 
   return (
     <>
       {/* <!-- ===== Pricing Table Start ===== --> */}
-      <section className="pt-15 pb-20 lg:pb-25 xl:pb-30">
+      <section className="pt-45 pb-20 lg:pb-25 xl:pb-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           {/* <!-- Section Title Start --> */}
           <div className="animate_top text-center mx-auto">
@@ -46,10 +47,10 @@ const Pricing = () => {
           </div>
           <div className="flex flex-wrap lg:flex-nowrap justify-center gap-7.5 xl:gap-12.5">
             {/* <!-- Pricing Item --> */}
-            {prices &&
-              prices.map((price, key) => (
-                <PricingItem price={price} key={key} />
-              ))}
+
+            {PRICING.map((price, key) => (
+              <PricingItem price={price} key={key} />
+            ))}
           </div>
         </div>
       </section>
