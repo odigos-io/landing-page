@@ -62,9 +62,7 @@ const CTA = () => {
                   className="hidden xl:block"
                 />
                 <a
-                  onClick={() =>
-                    window.open('https://app.keyval.dev/waitlist', '_blank')
-                  }
+                  href="/waitlist"
                   className="inline-flex items-center gap-2.5 font-medium text-white dark:text-black bg-black dark:bg-white rounded-full py-3 px-6 hover:opacity-90"
                 >
                   Join Odigos Waitlist
@@ -88,7 +86,6 @@ const CTA = () => {
           </div>
         </div>
       </section>
-      {/* <!-- ===== CTA End ===== --> */}
     </>
   );
 };

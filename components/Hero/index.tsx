@@ -1,16 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
-import { motion } from 'framer-motion';
-
 const Hero = () => {
-  const [email, setEmail] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   return (
     <>
       <section className="pt-35 md:pt-40 xl:pt-46 pb-20 xl:pb-25 overflow-hidden">
@@ -30,18 +22,13 @@ const Hero = () => {
               </p>
 
               <div className="mt-10">
-                <form onSubmit={handleSubmit}>
-                  <div className="flex flex-wrap gap-5">
-                    <button
-                      onClick={() =>
-                        window.open('https://app.keyval.dev/waitlist', '_blank')
-                      }
-                      className="flex bg-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
-                    >
+                <div className="flex flex-wrap gap-5">
+                  <a href="/waitlist">
+                    <button className="flex bg-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
                       Join Odigos Waitlist
                     </button>
-                  </div>
-                </form>
+                  </a>
+                </div>
               </div>
             </div>
 

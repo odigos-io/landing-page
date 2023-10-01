@@ -28,7 +28,6 @@ export default function RootLayout({
             defaultTheme="dark"
           >
             <AuthProvider>
-              {/* <Lines /> */}
               <Header />
               <ToasterContext />
               {children}

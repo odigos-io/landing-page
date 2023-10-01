@@ -5,11 +5,23 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+const WaitListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  position: sticky;
+  padding: 15% 0;
+`;
+
 const FormWrapper = styled.div`
   -webkit-box-shadow: 0px 22px 122px -39px rgb(14 230 243 / 40%);
   -moz-box-shadow: 0px 22px 122px -39px rgb(14 230 243 / 40%);
   box-shadow: 0px 22px 122px -39px rgb(14 230 243 / 40%);
   border-radius: 24px;
+  margin-top: 5%;
 `;
 
 function WaitList() {
@@ -19,18 +31,20 @@ function WaitList() {
   useEffect(() => {
     setIsHydrated(true);
   }, []);
+
   return isHydrated ? (
     <>
-      <Image src="/images/logo/logo.png" width={100} height={100} alt={''} />
-      <TextHeader
-        title={'Odigos Cloud'}
-        subtitle={submitted ? '' : 'Join the Waitlist'}
-      />
+      <WaitListContainer>
+        <Image src="/images/logo/logo.png" width={100} height={100} alt={''} />
+        <TextHeader
+          title={'Odigos Cloud'}
+          subtitle={submitted ? '' : 'Join the Waitlist'}
+        />
 
-      <br />
-      <FormWrapper>
-        <WaitListForm submitted={submitted} setSubmitted={setSubmitted} />
-      </FormWrapper>
+        <FormWrapper>
+          <WaitListForm submitted={submitted} setSubmitted={setSubmitted} />
+        </FormWrapper>
+      </WaitListContainer>
     </>
   ) : null;
 }

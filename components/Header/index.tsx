@@ -143,14 +143,11 @@ const Header = () => {
             </ul>
           </nav>
           <div className="flex items-center gap-6 mt-7 lg:mt-0">
-            <button
-              onClick={() =>
-                window.open('https://app.keyval.dev/waitlist', '_blank')
-              }
-              className="flex items-center justify-center bg-primary hover:bg-secondary hover:text-dark_button ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5"
-            >
-              Join Waitlist
-            </button>
+            <a href="/waitlist">
+              <button className="flex items-center justify-center bg-primary hover:bg-secondary hover:text-dark_button ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5">
+                Join Waitlist
+              </button>
+            </a>
             <GithubButton />
           </div>
         </div>
