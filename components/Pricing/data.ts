@@ -10,7 +10,7 @@ export const PRICING = [
     livemode: false,
     lookup_key: null,
     metadata: {},
-    nickname: 'Small',
+    nickname: 'Open Source',
     product: 'prod_ODAQ8gmahOB4D3',
     recurring: {
       aggregate_usage: null,
@@ -23,7 +23,7 @@ export const PRICING = [
     tiers_mode: null,
     transform_quantity: null,
     type: 'recurring',
-    unit_amount: 10000,
+    unit_amount: 0,
     unit_amount_decimal: '10000',
   },
   {
@@ -37,7 +37,7 @@ export const PRICING = [
     livemode: false,
     lookup_key: null,
     metadata: {},
-    nickname: 'Medium',
+    nickname: 'Cloud',
     product: 'prod_ODAPbMOvPnQg23',
     recurring: {
       aggregate_usage: null,
@@ -50,7 +50,7 @@ export const PRICING = [
     tiers_mode: null,
     transform_quantity: null,
     type: 'recurring',
-    unit_amount: 20000,
+    unit_amount: 10000,
     unit_amount_decimal: '20000',
   },
   {
@@ -64,7 +64,7 @@ export const PRICING = [
     livemode: false,
     lookup_key: null,
     metadata: {},
-    nickname: 'Large',
+    nickname: 'Enterprise',
     product: 'prod_ODAPwZwKJTEeDm',
     recurring: {
       aggregate_usage: null,
@@ -77,7 +77,7 @@ export const PRICING = [
     tiers_mode: null,
     transform_quantity: null,
     type: 'recurring',
-    unit_amount: 50000,
+    unit_amount: 0,
     unit_amount_decimal: '50000',
   },
 ];

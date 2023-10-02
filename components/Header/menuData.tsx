@@ -21,6 +21,12 @@ const menuData: Menu[] = [
     newTab: false,
     path: '/pricing',
   },
+  {
+    id: 5,
+    title: 'Documentation',
+    newTab: true,
+    path: 'https://docs.odigos.io',
+  }
 ];
 
 export default menuData;

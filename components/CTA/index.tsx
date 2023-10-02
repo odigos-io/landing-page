@@ -29,10 +29,10 @@ const CTA = () => {
               className="animate_left md:w-[70%] lg:w-1/2"
             >
               <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle4 font-bold mb-4 w-11/12">
-                Join With Us Today
+                Join The Waitlist
               </h2>
               <p>
-                join our waitlist and get early access to the Odigos platform
+                Save your spot and get notified when we launch our Odigos Cloud platform
               </p>
             </motion.div>
             <motion.div

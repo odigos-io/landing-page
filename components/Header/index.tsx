@@ -129,6 +129,7 @@ const Header = () => {
                   ) : (
                     <Link
                       href={`${menuItem.path}`}
+                      target={menuItem.newTab ? '_blank' : '_self'}
                       className={
                         pathUrl === menuItem.path
                           ? 'hover:text-secondary text-secondary'
