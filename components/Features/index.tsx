@@ -13,9 +13,9 @@ const Feature = () => {
           {/* <!-- Section Title Start --> */}
           <SectionHeader
             headerInfo={{
-              title: 'ODIGOS FEATURES',
-              subtitle: 'Core Features of Odigos',
-              description: `Odigos automatically instruments any application and manages OpenTelemetry collectors`,
+              title: 'FEATURES',
+              subtitle: 'Odigos Open Source',
+              description: `Odigos uses OpenTelemetry and eBPF to build agnostic observability pipelines for all applications.`,
             }}
           />
           {/* <!-- Section Title End --> */}

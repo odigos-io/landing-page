@@ -12,8 +12,8 @@ const Integration = () => {
           <SectionHeader
             headerInfo={{
               title: `INTEGRATIONS`,
-              subtitle: `Seamless Integration`,
-              description: `Say goodbye to manual data transfers. Odigos platform offers effortless integration options`,
+              subtitle: `Seamless Integration with any APM`,
+              description: `Odigos is vendor agnostic and can send the telemetry data it generates to any destination supporting OpenTelemetry`,
             }}
           />
         </div>

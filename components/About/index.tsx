@@ -61,7 +61,7 @@ const About = () => {
               className="animate_right md:w-1/2"
             >
               <h2 className="relative font-bold text-black dark:text-white text-3xl xl:text-hero mb-6">
-                Get Started In 3 Steps
+                asdsa
               </h2>
 
               <div className="mt-7.5 flex items-center gap-5">
