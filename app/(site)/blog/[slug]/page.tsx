@@ -12,6 +12,7 @@ const gradientBackground = {
   WebkitBackgroundClip: 'text',
   color: 'transparent', // Make the text transparent
   display: 'inline-block',
+  userSelect: 'none',
 };
 
 const borderGradient = {

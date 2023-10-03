@@ -29,7 +29,7 @@ const BlogPage = async () => {
             headerInfo={{
               title: `NEWS & BLOGS`,
               subtitle: `Latest News & Blogs`,
-              description: `Explore the Freshest Updates and Rich Content in Our Latest News and Blogs Section`,
+              description: `Welcome to Odigos blog where we write about distributed tracing, OpenTelemetry, eBPF, performance and company culture.`,
             }}
           />
         </div>

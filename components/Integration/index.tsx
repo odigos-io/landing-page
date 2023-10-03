@@ -272,7 +272,7 @@ const Integration = () => {
                 <Image
                   width={50}
                   height={50}
-                  src="/dest/lightstep.svg"
+                  src="/dest/newrelic.svg"
                   alt="Brand"
                 />
               </div>

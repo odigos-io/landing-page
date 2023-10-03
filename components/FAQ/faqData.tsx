@@ -19,7 +19,7 @@ const faqData: FAQ[] = [
   {
     id: 4,
     quest: 'Does Odigos adds performance overhead?',
-    ans: 'No. Odigos extends your code in runtime resulting in no performance overhead. Using Odigos is as permanent as adding the instrumentation code manually.',
+    ans: 'Odigos instrument applications using eBPF. eBPF is a kernel technology that adds almost zero overhead to the application.',
   },
 ];
 
