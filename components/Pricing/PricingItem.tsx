@@ -40,72 +40,77 @@ export const PricingItem = ({ price }) => {
       viewport={{ once: true }}
       className="animate_top md:w-[45%] lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5"
     >
-      {price.nickname === "Medium" && (
-        <div className="absolute top-7.5 -right-3.5 -rotate-90 rounded-tl-full rounded-bl-full bg-primary font-medium text-white text-metatitle uppercase py-1.5 px-4.5">
-          popular
-        </div>
-      )}
+      {price.nickname == "Cloud" && <div className="absolute top-7.5 -right-3.5 -rotate-90 rounded-tl-full rounded-bl-full bg-secondary font-medium text-black text-metatitle uppercase py-1.5 px-4.5">
+        Open Beta
+      </div>}
 
-      <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-7.5">
-        ${" "}
-        {(price.unit_amount / 100).toLocaleString("en-US", {
-          currency: "USD",
-        })}
-        <span className="text-regular text-waterloo dark:text-manatee">
-          /month
-        </span>
-      </h3>
+      {price.custom_price ? <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-7.5">{price.custom_price}</h3> : <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-6">
+        <div className="flex flex-col -mt-5">
+          <span className="text-regular text-waterloo dark:text-manatee">
+            starting at
+          </span>
+          <div>
+            ${" "}
+            {(price.unit_amount / 100).toLocaleString("en-US", {
+              currency: "USD",
+            })}
+            <span className="text-regular text-waterloo dark:text-manatee">
+              /month
+            </span>
+          </div>
+        </div>
+      </h3>}
       <h4 className="text-black dark:text-white font-medium text-para2 mb-2.5">
-        {price.nickname} Pack
+        {price.nickname}
       </h4>
-      <p>Lorem ipsum dolor sit amet, consec adipisicing elit.</p>
+      <p>{price.description}</p>
 
       <div className="border-t border-stroke dark:border-strokedark mt-9 pt-9 pb-12.5">
-        {price.nickname === "Small" && (
+        {price.nickname === "Open Source" && (
           <ul>
             <li className="text-black dark:text-manatee mb-4 last:mb-0">
-              300 GB Storage
+              Support for Java, Python, Go, .NET and JavaScript applications
             </li>
             <li className="text-black dark:text-manatee mb-4 last:mb-0">
-              Unlimited Photos and Videos
+              Kubernetes environment
             </li>
-            <li className="text-black dark:text-manatee mb-4 last:mb-0 opacity-40">
-              Exclusive Support
+            <li className="text-black dark:text-manatee mb-4 last:mb-0">
+              Local UI for a single cluster
             </li>
-            <li className="text-black dark:text-manatee mb-4 last:mb-0 opacity-40">
-              Custom Branding Strategy
+            <li className="text-black dark:text-manatee mb-4 last:mb-0">
+              Community Support
             </li>
           </ul>
         )}
-        {price.nickname === "Medium" && (
+        {price.nickname === "Cloud" && (
           <ul>
-            <li className="text-black dark:text-manatee mb-4 last:mb-0">
-              300 GB Storage
-            </li>
-            <li className="text-black dark:text-manatee mb-4 last:mb-0">
-              Unlimited Photos and Videos
-            </li>
-            <li className="text-black dark:text-manatee mb-4 last:mb-0">
-              Exclusive Support
-            </li>
-            <li className="text-black dark:text-manatee mb-4 last:mb-0 opacity-40">
-              Custom Branding Strategy
-            </li>
-          </ul>
+          <li className="text-black dark:text-manatee mb-4 last:mb-0">
+            Managed Control Plane
+          </li>
+          <li className="text-black dark:text-manatee mb-4 last:mb-0">
+            Install on Virtual Machines, Bare Metal, and Serverless
+          </li>
+          <li className="text-black dark:text-manatee mb-4 last:mb-0">
+            Multi Cluster management
+          </li>
+          <li className="text-black dark:text-manatee mb-4 last:mb-0">
+            Business Hours Support
+          </li>
+        </ul>
         )}
-        {price.nickname === "Large" && (
+        {price.nickname === "Enterprise" && (
           <ul>
             <li className="text-black dark:text-manatee mb-4 last:mb-0">
-              300 GB Storage
+              eBPF-based instrumentation for any application
+            </li>
+            <li className="text-black dark:text-manatee mb-4 last:mb-0 ">
+              Enterprise-grade performance
             </li>
             <li className="text-black dark:text-manatee mb-4 last:mb-0">
-              Unlimited Photos and Videos
+              Support for legacy applications
             </li>
             <li className="text-black dark:text-manatee mb-4 last:mb-0 ">
-              Exclusive Support
-            </li>
-            <li className="text-black dark:text-manatee mb-4 last:mb-0 ">
-              Custom Branding Strategy
+              24/7 Premium Support
             </li>
           </ul>
         )}

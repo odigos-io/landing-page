@@ -15,7 +15,7 @@ const Feature = () => {
             headerInfo={{
               title: 'FEATURES',
               subtitle: 'Odigos Open Source',
-              description: `Odigos uses OpenTelemetry and eBPF to build agnostic observability pipelines for all applications.`,
+              description: `Odigos uses OpenTelemetry and eBPF to build agnostic observability pipelines for all applications`,
             }}
           />
           {/* <!-- Section Title End --> */}

@@ -28,6 +28,11 @@ const Hero = () => {
                       Join Odigos Waitlist
                     </button>
                   </a>
+                  <a href="https://calendly.com/edenfed" target='_blank'>
+                    <button className="flex bg-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
+                      Book a Demo
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>

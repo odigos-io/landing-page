@@ -15,7 +15,7 @@ const Pricing = () => {
               headerInfo={{
                 title: `PRICING`,
                 subtitle: `Simple Pricing`,
-                description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam ante in maximus.`,
+                description: `A simple pricing model for every step of your observability journey`,
               }}
             />
           </div>

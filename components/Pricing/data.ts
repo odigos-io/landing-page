@@ -25,6 +25,8 @@ export const PRICING = [
     type: 'recurring',
     unit_amount: 0,
     unit_amount_decimal: '10000',
+    custom_price: 'Free',
+    description: 'Adopt distributed tracing in minutes',
   },
   {
     id: 'price_1NQk55LtGdPVhGLefU8AHqHr',
@@ -52,6 +54,7 @@ export const PRICING = [
     type: 'recurring',
     unit_amount: 10000,
     unit_amount_decimal: '20000',
+    description: 'Manage and control your distributed tracing data',
   },
   {
     id: 'price_1NQk4eLtGdPVhGLeZsZDsCNz',
@@ -79,5 +82,7 @@ export const PRICING = [
     type: 'recurring',
     unit_amount: 0,
     unit_amount_decimal: '50000',
+    custom_price: 'Contact Us',
+    description: 'Mission critical distributed tracing for your organization',
   },
 ];
