@@ -26,9 +26,7 @@ export const metadata: Metadata = {
   icons: '/images/logo/logo.png',
 };
 const SingleBlogPage = async ({ params }: Props) => {
-  // const isMobile = useIsMobile();
   const { slug } = params;
-  // const post = await getPost(slug);
   const posts = getAllBlogs([
     'title',
     'date',
@@ -39,7 +37,7 @@ const SingleBlogPage = async ({ params }: Props) => {
   ]);
 
   const post = posts.find((post) => post.slug === slug);
-  const content = await markdownToHtml(post.content || '');
+  const content = await markdownToHtml(post?.content || '');
 
   function renderTags() {
     return post.tags.map((item) => (
@@ -49,7 +47,7 @@ const SingleBlogPage = async ({ params }: Props) => {
     ));
   }
 
-  return (
+  return content ? (
     <>
       <title>{`${post?.title}`}</title>
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">
@@ -172,7 +170,7 @@ const SingleBlogPage = async ({ params }: Props) => {
         </div>
       </section>
     </>
-  );
+  ) : null;
 };
 
 export default SingleBlogPage;
