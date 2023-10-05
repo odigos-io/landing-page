@@ -1,8 +1,7 @@
 'use client';
+import React, { useEffect, useState } from 'react';
 import { TextHeader } from '@/components/TextHeader';
 import { WaitListForm } from '@/components/WaitlistForm/waitlist';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const WaitListContainer = styled.div`
@@ -13,7 +12,7 @@ const WaitListContainer = styled.div`
   height: 100vh;
   width: 100vw;
   position: sticky;
-  padding: 15% 0;
+  margin-top: 50px;
 `;
 
 const FormWrapper = styled.div`
@@ -35,7 +34,6 @@ function WaitList() {
   return isHydrated ? (
     <>
       <WaitListContainer>
-        <Image src="/images/logo/logo.png" width={100} height={100} alt={''} />
         <TextHeader
           title={'Odigos Cloud'}
           subtitle={submitted ? '' : 'Join the Waitlist'}
