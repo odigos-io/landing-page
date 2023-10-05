@@ -63,13 +63,12 @@
 }
 
 .blog-details pre {
-  width: 60vw;
   overflow: auto;
 }
 @media (max-width: 768px) {
   /* You can adjust the max-width to your preferred breakpoint */
   .blog-details pre {
-    width: 90vw;
+    width: 95vw;
   }
 }
 .blog-details p strong {
