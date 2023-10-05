@@ -1,12 +1,11 @@
 import BlogItem from '@/components/Blog/BlogItem';
-import { Metadata } from 'next';
 import { getAllBlogs } from '@/app/libs/markdown';
 import SectionHeader from '@/components/Common/SectionHeader';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blog Page - Solid SaaS Boilerplate',
-  description: 'This is Blog page for Solid Pro',
-  // other metadata
+  title: 'Odigos',
+  icons: '/images/logo/logo.png',
 };
 
 const BlogPage = async () => {

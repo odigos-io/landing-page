@@ -2,6 +2,7 @@ import Image from 'next/image';
 import RelatedPost from '@/components/Blog/RelatedPost';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
+import { Metadata } from 'next';
 
 type Props = {
   params: { slug: string };
@@ -21,7 +22,10 @@ const borderGradient = {
   borderImageSlice: '1',
   borderBottom: '2px solid transparent', // Set the border width and make it transparent
 };
-
+export const metadata: Metadata = {
+  title: 'Odigos',
+  icons: '/images/logo/logo.png',
+};
 const SingleBlogPage = async ({ params }: Props) => {
   // const isMobile = useIsMobile();
   const { slug } = params;
@@ -48,7 +52,7 @@ const SingleBlogPage = async ({ params }: Props) => {
 
   return (
     <>
-      {/* <title>{`${post?.title}`}</title> */}
+      <title>{`${post?.title}`}</title>
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">
         <div
           className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0"
