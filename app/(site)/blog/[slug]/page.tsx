@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 };
 const SingleBlogPage = async ({ params }: Props) => {
   const { slug } = params;
+  console.log({ slug });
   const posts = getAllBlogs([
     'title',
     'date',
@@ -40,7 +41,7 @@ const SingleBlogPage = async ({ params }: Props) => {
   const content = await markdownToHtml(post?.content || '');
 
   function renderTags() {
-    return post.tags.map((item) => (
+    return post?.tags.map((item) => (
       <h1 style={{ fontSize: 20, fontWeight: 600, ...gradientBackground }}>
         {item}
       </h1>
