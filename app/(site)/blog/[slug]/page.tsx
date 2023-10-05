@@ -26,8 +26,6 @@ export const metadata: Metadata = {
   icons: '/images/logo/logo.png',
 };
 const SingleBlogPage = async ({ params }: Props) => {
-  return <div>dasdsa</div>;
-
   const { slug } = params;
   const posts = getAllBlogs([
     'title',
