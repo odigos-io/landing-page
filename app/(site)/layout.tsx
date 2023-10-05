@@ -3,7 +3,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import { ThemeProvider } from 'next-themes';
-import AuthProvider from '../context/AuthContext';
 import ToasterContext from '../context/ToastContext';
 import { ThemeProviderWrapper } from '@keyval-dev/design-system';
 import '../globals.css';
@@ -22,13 +21,11 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="dark"
           >
-            <AuthProvider>
-              <Header />
-              <ToasterContext />
-              {children}
-              <Footer />
-              <ScrollToTop />
-            </AuthProvider>
+            <Header />
+            <ToasterContext />
+            {children}
+            <Footer />
+            <ScrollToTop />
           </ThemeProvider>
         </ThemeProviderWrapper>
       </body>

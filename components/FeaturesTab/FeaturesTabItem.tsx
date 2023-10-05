@@ -21,7 +21,6 @@ const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
             {title}
           </h2>
           <p className="mb-5">{desc1}</p>
-          {/* <p className="w-11/12">{desc2}</p> */}
         </div>
         <BgImage
           image={image}
