@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import menuData from './menuData';
 import GithubButton from '../GithubButtton';
@@ -10,30 +9,12 @@ import GithubButton from '../GithubButtton';
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [dropdownToggler, setDropdownToggler] = useState(false);
-  const [stickyMenu, setStickyMenu] = useState(false);
 
   const pathUrl = usePathname();
 
-  // Sticky menu
-  const handleStickyMenu = () => {
-    if (window.scrollY >= 80) {
-      setStickyMenu(true);
-    } else {
-      setStickyMenu(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleStickyMenu);
-  });
-
   return (
     <header
-      className={`fixed left-0 top-0 w-full z-99999 py-7 ${
-        stickyMenu
-          ? 'bg-white dark:bg-black shadow !py-4 transition duration-100'
-          : ''
-      }`}
+      className={`fixed left-0 top-0 w-full z-99999 py-7 ${'bg-white dark:bg-black shadow !py-4 transition duration-100'}`}
     >
       <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0 lg:flex items-center justify-between relative">
         <div className="w-full lg:w-1/4 flex items-center justify-between">

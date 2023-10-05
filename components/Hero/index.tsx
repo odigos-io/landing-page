@@ -9,7 +9,9 @@ const Hero = () => {
         <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
           <div className="flex lg:items-center lg:gap-8 xl:gap-32.5">
             <div className=" md:w-1/3">
-              <h4 className="text-black dark:text-white text-lg font-medium mb-4.5">🚀 Enterprise-grade performance</h4>
+              <h4 className="text-black dark:text-white text-lg font-medium mb-4.5">
+                🚀 Enterprise-grade performance
+              </h4>
               <h1 className="text-black dark:text-white text-3xl xl:text-hero font-bold mb-5 ">
                 Get Started With Distributed Tracing in Minutes
               </h1>
@@ -28,7 +30,7 @@ const Hero = () => {
                       Join Odigos Waitlist
                     </button>
                   </a>
-                  <a href="https://calendly.com/edenfed" target='_blank'>
+                  <a href="https://calendly.com/edenfed" target="_blank">
                     <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
                       Book a Demo
                     </button>
@@ -45,6 +47,7 @@ const Hero = () => {
                   src="/images/hero/overview.gif"
                   alt="Hero"
                   fill
+                  sizes="100%"
                   style={{
                     borderRadius: 10,
                     objectFit: 'cover',
