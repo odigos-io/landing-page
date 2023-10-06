@@ -82,7 +82,9 @@ const Header = () => {
                   {menuItem.submenu ? (
                     <>
                       <a
-                        onClick={() => setDropdownToggler(!dropdownToggler)}
+                        onClick={() => {
+                          setDropdownToggler(!dropdownToggler);
+                        }}
                         className="hover:text-secondary flex items-center justify-between gap-3 cursor-pointer"
                       >
                         {menuItem.title}
@@ -109,6 +111,7 @@ const Header = () => {
                     </>
                   ) : (
                     <Link
+                      legacyBehavior
                       href={`${menuItem.path}`}
                       target={menuItem.newTab ? '_blank' : '_self'}
                       className={
@@ -117,7 +120,9 @@ const Header = () => {
                           : 'hover:text-secondary'
                       }
                     >
-                      {menuItem.title}
+                      <a onClick={() => setNavigationOpen(false)}>
+                        {menuItem.title}
+                      </a>
                     </Link>
                   )}
                 </li>

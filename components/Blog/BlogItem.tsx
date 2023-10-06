@@ -61,7 +61,7 @@ const BlogItem = ({ blog }: { blog: any }) => {
           >
             <Link href={`/blog/${slug}`}>{title}</Link>
           </h3>
-          <p style={{ fontSize: 16, lineHeight: 1.4, marginTop: 8 }}>
+          <p style={{ fontSize: 11, lineHeight: 1.4, marginTop: 8 }}>
             {metadata}
           </p>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 8 }}>

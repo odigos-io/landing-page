@@ -27,7 +27,7 @@ const Hero = () => {
                 <div className="flex flex-wrap gap-5">
                   <a href="/waitlist">
                     <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
-                      Join Odigos Waitlist
+                      Join Odigos Cloud Waitlist
                     </button>
                   </a>
                   <a href="https://calendly.com/edenfed" target="_blank">

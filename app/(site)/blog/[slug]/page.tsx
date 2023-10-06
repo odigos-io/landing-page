@@ -142,6 +142,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                         style={{
                           display: 'flex',
                           alignItems: 'center',
+                          marginTop: 12,
                           borderLeft: 'solid 2px #474747',
                           height: 40,
                           paddingLeft: 16,
