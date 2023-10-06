@@ -2,6 +2,7 @@ import React from 'react';
 import { FeatureTab } from '@/types/featureTab';
 
 import styled from 'styled-components';
+import Image from 'next/image';
 
 const BgImage = styled.div<{ image: string }>`
   background-image: ${({ image }) =>
@@ -22,11 +23,12 @@ const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
           </h2>
           <p className="mb-5">{desc1}</p>
         </div>
-        <BgImage
-          image={image}
+        <Image
+          src={image}
+          alt="About"
           className="hidden md:block md:w-1/2 relative mx-auto aspect-[562/366] max-w-[550px]"
-          style={{ borderRadius: 8 }}
-        ></BgImage>
+          width={500}
+          height={500} />
       </div>
     </>
   );
