@@ -8,6 +8,7 @@ import CTA from '@/components/CTA';
 import FAQ from '@/components/FAQ';
 import Blog from '@/components/Blog';
 import Testimonial from '@/components/Testimonial';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Odigos',
@@ -17,6 +18,11 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
+      <Script
+        defer
+        data-domain="odigos.io"
+        src="https://plausible.io/js/script.js"
+      />
       <Hero />
       <Feature />
       <FeaturesTab />
