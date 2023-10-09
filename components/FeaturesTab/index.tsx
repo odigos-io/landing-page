@@ -39,8 +39,8 @@ const FeaturesTab = () => {
     <>
       {/* <!-- ===== Features Tab Start ===== --> */}
       <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <h2 className="relative font-bold text-black dark:text-white text-3xl xl:text-hero mb-6">
-        Implementation in 3 easy steps
+        <h2 className="relative font-bold text-black text-center dark:text-white text-3xl xl:text-hero mb-6">
+          Implementation in 3 easy steps
         </h2>
       </div>
       <section className="pt-18.5 pb-20 lg:pb-22.5 relative">

@@ -32,7 +32,8 @@ const CTA = () => {
                 Join The Waitlist
               </h2>
               <p>
-                Save your spot and get notified when we launch our Odigos Cloud platform
+                Save your spot and get notified when we launch our Odigos Cloud
+                platform
               </p>
             </motion.div>
             <motion.div
@@ -63,6 +64,7 @@ const CTA = () => {
                 />
                 <a
                   href="/waitlist"
+                  target="_blank"
                   className="inline-flex items-center gap-2.5 font-medium text-white dark:text-black bg-black dark:bg-white rounded-full py-3 px-6 hover:opacity-90"
                 >
                   Join Odigos Cloud Waitlist

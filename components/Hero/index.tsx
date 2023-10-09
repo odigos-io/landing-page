@@ -1,6 +1,20 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import styled from 'styled-components';
+
+const WebActionsButtonsWrapper = styled.div`
+  @media (max-width: 400px) {
+    display: none;
+  }
+`;
+
+const MobileActionsButtonsWrapper = styled.div`
+  display: none;
+  @media (max-width: 400px) {
+    display: flex;
+  }
+`;
 
 const Hero = () => {
   return (
@@ -22,21 +36,38 @@ const Hero = () => {
                   <u style={{ marginLeft: 3 }}>without code changes</u>
                 </strong>
               </p>
-
-              <div className="mt-10">
-                <div className="flex flex-wrap gap-5">
-                  <a href="/waitlist">
-                    <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
-                      Join Odigos Cloud Waitlist
-                    </button>
-                  </a>
-                  <a href="https://calendly.com/edenfed" target="_blank">
-                    <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
-                      Book a Demo
-                    </button>
-                  </a>
+              <WebActionsButtonsWrapper>
+                <div className="mt-10">
+                  <div className="flex flex-wrap gap-5">
+                    <a href="/waitlist" target="_blank">
+                      <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
+                        Join Odigos Cloud Waitlist
+                      </button>
+                    </a>
+                    <a href="https://calendly.com/edenfed" target="_blank">
+                      <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
+                        Book a Demo
+                      </button>
+                    </a>
+                  </div>
                 </div>
-              </div>
+              </WebActionsButtonsWrapper>
+              <MobileActionsButtonsWrapper>
+                <div className="mt-10">
+                  <div className="flex flex-wrap gap-2">
+                    <a href="/waitlist" target="_blank">
+                      <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho text-sm dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-2.5 py-2.5">
+                        Join Odigos Cloud Waitlist
+                      </button>
+                    </a>
+                    <a href="https://calendly.com/edenfed" target="_blank">
+                      <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-sm text-white rounded-full ease-in-out duration-300 px-2.5 py-2.5">
+                        Book a Demo
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              </MobileActionsButtonsWrapper>
             </div>
 
             <div className="animate_right md:w-1/2 hidden lg:block">
