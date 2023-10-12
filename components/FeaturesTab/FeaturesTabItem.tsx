@@ -28,7 +28,8 @@ const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
           alt="About"
           className="hidden md:block md:w-1/2 relative mx-auto aspect-[562/366] max-w-[550px]"
           width={500}
-          height={500} />
+          height={500}
+        />
       </div>
     </>
   );
