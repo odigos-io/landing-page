@@ -4,9 +4,14 @@ import SectionHeader from '@/components/Common/SectionHeader';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Odigos',
+  title: 'Odigos - Instant Distributed Tracing',
   icons: '/images/logo/logo.png',
+  openGraph: {
+    title: 'Odigos - Instant Distributed Tracing',
+    images: "/images/hero/overview.gif",
+  },
 };
+
 
 const BlogPage = async () => {
   const posts = getAllBlogs([

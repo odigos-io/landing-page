@@ -8,6 +8,35 @@ type Props = {
   params: { slug: string };
 };
 
+export function generateMetadata({ params }: Props): Metadata {
+  const { slug } = params;
+  const posts = getAllBlogs([
+    'title',
+    'date',
+    'coverImage',
+    'slug'
+  ]);
+
+  const post = posts.find((post) => post.slug === slug);
+
+  return {
+    title: post?.title,
+    keywords: post?.tags,
+    openGraph: {
+      title: post?.title,
+      images: [
+        {
+          url: post?.image,
+          width: 1000,
+          height: 470,
+          alt: post?.title,
+        },
+      ],
+      type: 'article',
+    },
+  };
+}
+
 const gradientBackground = {
   background: 'linear-gradient(to right, #ff9900, #ff6600)', // Define your gradient here
   WebkitBackgroundClip: 'text',
@@ -21,10 +50,7 @@ const borderGradient = {
   borderImageSlice: '1',
   borderBottom: '2px solid transparent', // Set the border width and make it transparent
 };
-export const metadata: Metadata = {
-  title: 'Odigos',
-  icons: '/images/logo/logo.png',
-};
+
 const SingleBlogPage = async ({ params }: Props) => {
   const { slug } = params;
   const posts = getAllBlogs([
