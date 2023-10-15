@@ -74,6 +74,9 @@
 .blog-details p strong {
   @apply dark:text-socialicon font-semibold;
 }
+.blog-details a {
+  @apply dark:text-socialicon font-semibold underline;
+}
 .blog-details h3 strong,
 .blog-details h3 {
   @apply text-xl mt-10 mb-4 !font-semibold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight;

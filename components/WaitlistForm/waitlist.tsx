@@ -5,7 +5,7 @@ import {
   IconActionWrapper,
   IconsWrapper,
 } from './waitlist.styled';
-import { Button, Card, Input } from '@keyval-dev/design-system';
+import { Button, Card, Input, Loader } from '@keyval-dev/design-system';
 import { GithubIcon, LinkedinIcon, SlackIcon } from '@/public/social';
 import { setWaitListItem } from './utils';
 import styled from 'styled-components';
@@ -14,6 +14,13 @@ import Image from 'next/image';
 
 export const FieldWrapper = styled.div`
   text-align: left;
+`;
+
+const LoaderWrapper = styled.div`
+  div {
+    width: 22px !important;
+    height: 22px !important;
+  }
 `;
 
 const REGISTER = {
@@ -42,25 +49,20 @@ export function WaitListForm({
   submitted: boolean;
   setSubmitted: (val: boolean) => void;
 }) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
 
   async function handleJoinWaitList() {
+    setIsLoaded(true);
     const res = await setWaitListItem({ name, email });
+
     if (res) {
-      const webhookUrl = SOCIAL_LINKS.SLACK_WAIT_LIST;
-      const payload = {
-        text: `New Waitlist Submission - email: ${email}, ${
-          name ? 'name:' + name : ''
-        } `,
-      };
-      fetch(webhookUrl, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
       setSubmitted(true);
-      return;
+    } else {
+      alert('Error joining waitlist');
     }
+    setSubmitted(false);
   }
 
   return (
@@ -90,9 +92,15 @@ export function WaitListForm({
             </FieldWrapper>
             <FieldWrapper>
               <Button disabled={!email} onClick={handleJoinWaitList}>
-                <KeyvalText color={'#0A1824'}>
-                  {REGISTER.JOIN_WAITLIST}
-                </KeyvalText>
+                {isLoaded ? (
+                  <LoaderWrapper>
+                    <Loader />
+                  </LoaderWrapper>
+                ) : (
+                  <KeyvalText color={'#0A1824'}>
+                    {REGISTER.JOIN_WAITLIST}
+                  </KeyvalText>
+                )}
               </Button>
             </FieldWrapper>
           </>
