@@ -128,7 +128,7 @@ Since most loggers are very good at writing to `stdout`/`stderr` or files, let's
 
 This is a very common pattern these days, and looks like this:
 
-![Alt text](image-1.png)
+![Logs Pipeline with Agent](/logs_pipeline_with_agent.png)
 
 Nice, we can now configure the agent once, and all the applications will benefit from it. We can also use the same agent for multiple languages and frameworks. The CPU and io is done away from the business logic and has low resource-print on the application. This is a good solution, but it still has some drawbacks:
 
@@ -142,7 +142,7 @@ It is common to use configuration files to tell the agent what to do.
 
 In the previous patten, we've now delegated all the logs processing tasks to the agent, which runs on each pod / node. Why not take it one step further and delegate all the work to a dedicated service? This is the idea behind the logs gateway pattern:
 
-![Alt text](image-2.png)
+![Logs Pipeline with Gateway](/logs_pipeline_with_gateway.png)
 
 Nice, now we have a dedicated service that takes care of all the logs processing tasks. We can configure it once, monitor it once, configure it once, and all the applications will benefit from it. The CPU and io required for exporting is away on dedicated resources. 
 
@@ -154,7 +154,7 @@ Other than that, we still face the challenge of sending the logs from the applic
 
 To get the best of both worlds, we can combine the previous two patterns and have a dedicated gateway service plus agent on the node/pod, this way we can do anything common to all applications in the gateway once, and have the agent taking care of exporting from the application to the gateway:
 
-![Alt text](image-3.png)
+![Logs Pipeline Agent with Gateway](/logs_pipeline_agent_with_gateway.png)
 
 The main drawback here is the complexity, but it offers a very robost solution that targets all the requirements we mentioned above in an elegant way.
 
