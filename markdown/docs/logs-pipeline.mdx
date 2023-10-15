@@ -3,10 +3,11 @@ pubDate: 'Oct 15 2023'
 title: 'Introduction to Log Pipelines'
 image: '/log_pipelines.png'
 category: 'Odigos'
-description: 'What are log pipelines, we we need them, what purpose do they server and how to design them?'
+description: 'Introduction to log pipelines'
 tags: [logs, odigos, opentelemetry]
-authorImage: '/amir.jpeg'
+authorImage: '/amir.png'
 author: Amir Blum
+metadata: 'What are log pipelines, we we need them, what purpose do they server and how to design them?'
 ---
 
 # Log Pipelines
@@ -112,7 +113,7 @@ So, many tasks to take care of. Of course, we do not need to implement anything 
 
 As stated above, the simplest log pipeline will require no additional components. We will simply use a logger in our code to produce log records, and hook up an exporter to send them to the final destination:
 
-![Simplest Log Pipeline](/simplest_log_pipeline.png.png)
+![Simplest Log Pipeline](/simplest_log_pipeline.png)
 
 This is a working setup, but it has many drawbacks - we will need to be aware of all the point above and implement them ourselves in each and every application we write. While this can be done, it scales poorly, error prone, and hard to maintain.
 
