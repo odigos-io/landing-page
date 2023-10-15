@@ -19,7 +19,6 @@ async function sendToService(
       },
       body: JSON.stringify(body),
     });
-    console.log({ response });
   } catch (error) {
     console.log({ error });
   }
