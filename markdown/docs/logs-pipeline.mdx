@@ -112,7 +112,7 @@ So, many tasks to take care of. Of course, we do not need to implement anything 
 
 As stated above, the simplest log pipeline will require no additional components. We will simply use a logger in our code to produce log records, and hook up an exporter to send them to the final destination:
 
-![Export from application](image.png)
+![Simplest Log Pipeline](/simplest_log_pipeline.png.png)
 
 This is a working setup, but it has many drawbacks - we will need to be aware of all the point above and implement them ourselves in each and every application we write. While this can be done, it scales poorly, error prone, and hard to maintain.
 
