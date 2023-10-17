@@ -1,13 +1,13 @@
 ---
 pubDate: 'Oct 16 2023'
-title: 'Unlocking Speed: eBPF-Based Auto-Instrumentation Outperforms Manual Instrumentation'
+title: 'Unlocking Speed: eBPF-Based Auto-Instrumentation Over 20x Faster Than Traditional Instrumentation'
 image: '/ebpf_vs_manual.png'
 category: 'Performance'
-description: 'This blog shares the results of our performance tests, showing that eBPF-based automatic instrumentation is up to 3.5X faster than manually instrumenting code.'
+description: 'This blog shares the results of our performance tests creating OpenTelemetry traces with eBPF-based automatic instrumentation vs traditional instrumentation'
 tags: [ebpf, performance, opentelemetry, instrumentation]
 authorImage: '/eden.jpg'
 author: Eden Federman
-metadata: This blog shares the results of our performance tests, showing that eBPF-based automatic instrumentation is up to 3.5X faster than manually instrumenting code.
+metadata: This blog shares the results of our performance tests creating OpenTelemetry traces with eBPF-based automatic instrumentation vs traditional instrumentation
 ---
 
 # Introduction
@@ -17,7 +17,7 @@ To address this issue, we created an [eBPF-based auto-instrumentation for Go app
 
 The second most popular issue we hear engineers complain about is the negative performance impact adding distributed tracing has on their applications. It turns out that instrumenting your code manually by installing SDKs and calling APIs to generate distributed tracing, still has a (significant) negative performance impact.
 
-We have been working hard on solving this problem. Today, we're excited to share the results of our performance tests, which show that **eBPF-based automatic instrumentation is up to 3.5X faster than manually instrumenting code.**
+We have been working hard on solving this problem. Today, we're excited to share the results of our performance tests, which show that **eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code.**
 
 ## How we tested
 
@@ -37,11 +37,13 @@ First, we ran the test without any instrumentation. Then we ran the test with ma
 
 At the lower percentiles (up to the 99.9th percentile), the overhead of not having instrumentation, manual instrumentation, and eBPF-based automatic instrumentation is similar
 
-However, at the higher percentiles (99.9th percentile and above), manual instrumentation has a significantly higher overhead than eBPF-based automatic instrumentation, which is up to 3.5x faster.
+However, at the higher percentiles (99.9th percentile and above), manual instrumentation has a significantly higher overhead than eBPF-based automatic instrumentation, which is over 20x faster.
 
 If you're wondering whether the top of the spectrum matters, the answer is yes, especially in distributed environments. The following table shows how many clients will experience the 99th percentile latency according to the number of different services involved in the request (taken from Gil's talk)
 
 ![p99 is a lie](/images/blog/ebpf-vs-manual/p99_is_a_lie.png)
+
+For maxium precision and isolation we are generating traces containing a single span. In a production environment we anticipate the performance difference to be even greater.
 
 ## **The performance impact of generating distributed traces**
 
