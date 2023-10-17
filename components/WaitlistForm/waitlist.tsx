@@ -56,7 +56,7 @@ export function WaitListForm({
   async function handleJoinWaitList() {
     setIsLoaded(true);
     const res = await setWaitListItem({ name, email });
-    console.log({ res });
+
     if (res) {
       setSubmitted(true);
     } else {
