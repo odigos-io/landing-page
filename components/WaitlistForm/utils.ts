@@ -4,10 +4,10 @@ const WAIT_LIST_API_URL =
 const SLACK_API_URL =
   'https://edszwqsqg2.execute-api.us-east-2.amazonaws.com/default/waitlist-post-slack-channel-message';
 
-const MAILCHIMP_API_URL =
+export const MAILCHIMP_API_URL =
   'https://jww8cul3t6.execute-api.us-east-2.amazonaws.com/default/mailchimp-add-member-to-audience';
 
-async function sendToService(
+export async function sendToService(
   body: { name: string; email: string },
   url: string
 ) {
