@@ -20,6 +20,7 @@ export function generateMetadata({ params }: Props): Metadata {
   const post = posts.find((post) => post.slug === slug);
 
   return {
+    metadataBase: new URL('https://odigos.io'),
     title: post?.title,
     keywords: post?.tags,
     openGraph: {

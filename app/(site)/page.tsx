@@ -11,6 +11,7 @@ import Testimonial from '@/components/Testimonial';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
   icons: '/images/logo/logo.png',
   openGraph: {
