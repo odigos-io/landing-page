@@ -192,8 +192,10 @@ const SingleBlogPage = async ({ params }: Props) => {
                     dangerouslySetInnerHTML={{ __html: content }}
                   />
                 </div>
-                <div className="lg:w-[70%] font-semibold text-white text-lg" style={{ marginTop: 35 }}>
-                If you are interested in learning more about how Odigos can help you generate distributed traces and instantly improve your observability, please check out our <a className="underline" target='_blank' href="https://github.com/keyval-dev/odigos">GitHub repository</a>. We'd really appreciate it if you could throw us a ⭐!
+                <div className="lg:w-[65%] font-semibold text-white text-lg" style={{ marginTop: 35 }}>
+                If you want to learn more about how you can generate distributed traces instantly
+                check out our GitHub repository. We'd really appreciate it if you could throw us a ⭐👇<br/>
+                <a target="_blank" className="underline" href="https://github.com/keyval-dev/odigos">https://github.com/keyval-dev/odigos</a>
                 </div>
                 <RelatedPost />
               </div>
