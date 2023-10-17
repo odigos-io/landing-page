@@ -3,6 +3,7 @@ import RelatedPost from '@/components/Blog/RelatedPost';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 type Props = {
   params: { slug: string };
@@ -190,6 +191,9 @@ const SingleBlogPage = async ({ params }: Props) => {
                     className="blog-details"
                     dangerouslySetInnerHTML={{ __html: content }}
                   />
+                </div>
+                <div className="lg:w-[70%] font-semibold text-white text-lg" style={{ marginTop: 35 }}>
+                If you are interested in learning more about how Odigos can help you generate distributed traces and instantly improve your observability, please check out our <a className="underline" target='_blank' href="https://github.com/keyval-dev/odigos">GitHub repository</a>. We'd really appreciate it if you could throw us a ⭐!
                 </div>
                 <RelatedPost />
               </div>
