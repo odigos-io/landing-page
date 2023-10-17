@@ -97,7 +97,7 @@
 }
 .blog-details h2 strong,
 .blog-details h2 {
-  @apply mb-4 mt-4 text-[26px] !font-bold !leading-tight text-black dark:text-white sm:text-3xl md:text-4xl;
+  @apply mb-4 mt-15 text-[26px] !font-bold !leading-tight text-black dark:text-white sm:text-3xl md:text-4xl;
 }
 
 .blog-details ul,
