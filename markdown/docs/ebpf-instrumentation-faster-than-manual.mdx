@@ -10,14 +10,18 @@ author: Eden Federman
 metadata: This blog shares the results of our performance tests creating OpenTelemetry traces with eBPF-based automatic instrumentation vs traditional instrumentation
 ---
 
-# Introduction
-The primary feedback we’ve received from engineers who are adopting distributed tracing is that adding tracing to their code requires too much effort. 
+## Introduction
 
-To address this issue, we created an [eBPF-based auto-instrumentation for Go applications](https://github.com/open-telemetry/opentelemetry-go-instrumentation), which we donated to the OpenTelemetry community. We then integrated it into our open-source observability control plane, [Odigos](https://github.com/keyval-dev/odigos), which allows you to generate distributed tracing instantly.
+We're developing [Odigos, an open-source project](https://github.com/keyval-dev/odigos) for effortless distributed tracing in all applications.
 
-The second most popular issue we hear engineers complain about is the negative performance impact adding distributed tracing has on their applications. It turns out that instrumenting your code manually by installing SDKs and calling APIs to generate distributed tracing, still has a (significant) negative performance impact.
+Distributed tracing is crucial for comprehensive monitoring, but we keep hearing about two major obstacles that prevent successful implementation: **extensive code changes and performance impact**.
 
-We have been working hard on solving this problem. Today, we're excited to share the results of our performance tests, which show that **eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code.**
+Odigos addresses the code change challenge by using eBPF for automating tracing without any manual effort or code changes. We generate traces in OpenTelemetry format, ensuring compatibility and avoiding vendor lock-in. You can read more [here](https://news.ycombinator.com/item?id=34442603).
+
+As for the performance issues, we have some good news! We're excited to share the results of our performance tests, which show that **eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code**.
+
+As a result, you can now have the best of both worlds: effortless distributed tracing with minimal performance overhead.
+
 
 ## How we tested
 
@@ -43,7 +47,7 @@ If you're wondering whether the top of the spectrum matters, the answer is yes, 
 
 ![p99 is a lie](/images/blog/ebpf-vs-manual/p99_is_a_lie.png)
 
-For maxium precision and isolation we are generating traces containing a single span. In a production environment we anticipate the performance difference to be even greater.
+For maximum precision and isolation, we are generating traces containing a single span. In a production environment, we anticipate the performance difference to be even greater.
 
 ## **The performance impact of generating distributed traces**
 
@@ -60,6 +64,15 @@ Unlike metrics and logs, distributed tracing is a stateful signal. Logs are typi
 ## Separation between recording and processing
 
 When using eBPF to generate distributed traces, we are separating the recording of the data from the processing of the data. The recording of the data is done by the eBPF program and the processing and delivery of the data is done by a different process. This means that the application runtime does no additional work, creates no additional objects, and makes no additional network calls. The only additional overhead (compared to not having any instrumentation) is the overhead of invoking eBPF programs (context switching from user space to kernel space).
+
+## Conclusion
+
+Traditionally, there has been a tradeoff between automated distributed tracing and performance. 
+
+Odigos solves this problem by providing a way to automate distributed tracing that actually improves performance. This is because we use eBPF-based automatic instrumentation to  reduce the overhead of generating distributed tracing data.
+
+**As a result, you can now have the best of both worlds: automated distributed tracing without any performance overhead**.
+
 
 ## More updates coming soon
 
