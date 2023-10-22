@@ -11,6 +11,7 @@ import { setWaitListItem } from './utils';
 import styled from 'styled-components';
 import { KeyvalText } from '../Text/text';
 import Image from 'next/image';
+import useLocalStorage from '@/hooks/useLocalStorage';
 
 export const FieldWrapper = styled.div`
   text-align: left;
@@ -50,17 +51,44 @@ export function WaitListForm({
   const [isLoaded, setIsLoaded] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-
+  const [error, setError] = useState('');
+  const [value, setValue] = useLocalStorage('subscribed', '');
   async function handleJoinWaitList() {
     setIsLoaded(true);
-    const res = await setWaitListItem({ name, email });
+    if (!isValidEmail(email)) {
+      setError('Invalid email address');
+      setIsLoaded(false);
+      return;
+    }
+    console.log(value === email, { value });
+    if (value === email) {
+      setSubmitted(true);
+      setIsLoaded(false);
+      return;
+    }
+    console.log({ value });
 
+    const res = await setWaitListItem({ name, email });
     if (res) {
+      setValue(email);
       setSubmitted(true);
     } else {
       alert('Error joining waitlist');
     }
     setIsLoaded(false);
+  }
+
+  function isValidEmail(email: string): boolean {
+    // Regular expression for a simple email validation
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+
+    // Use the test method of the regular expression to check if the email is valid
+    return emailRegex.test(email);
+  }
+
+  function handleEmailChange(value: any) {
+    setEmail(value);
+    setError('');
   }
 
   return (
@@ -75,9 +103,10 @@ export function WaitListForm({
             <FieldWrapper>
               <Input
                 placeholder={REGISTER.WORK_EMAIL}
-                onChange={(e) => setEmail(e)}
+                onChange={(e) => handleEmailChange(e)}
                 value={email}
                 label={REGISTER.WORK_EMAIL}
+                error={error}
               />
             </FieldWrapper>
             <FieldWrapper>
