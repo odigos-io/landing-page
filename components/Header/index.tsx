@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import menuData from './menuData';
 import GithubButton from '../GithubButtton';
+import { usePlausible } from 'next-plausible'
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [dropdownToggler, setDropdownToggler] = useState(false);
-
+  const plausible = usePlausible()
   const pathUrl = usePathname();
 
   return (
@@ -36,31 +37,26 @@ const Header = () => {
             <span className="block relative cursor-pointer w-5.5 h-5.5">
               <span className="block absolute w-full h-full">
                 <span
-                  className={`block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-[0] ${
-                    !navigationOpen ? '!w-full delay-300' : ''
-                  }`}
+                  className={`block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-[0] ${!navigationOpen ? '!w-full delay-300' : ''
+                    }`}
                 ></span>
                 <span
-                  className={`block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-150 ${
-                    !navigationOpen ? '!w-full delay-400' : ''
-                  }`}
+                  className={`block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-150 ${!navigationOpen ? '!w-full delay-400' : ''
+                    }`}
                 ></span>
                 <span
-                  className={`block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-200 ${
-                    !navigationOpen ? '!w-full delay-500' : ''
-                  }`}
+                  className={`block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-200 ${!navigationOpen ? '!w-full delay-500' : ''
+                    }`}
                 ></span>
               </span>
               <span className="block absolute w-full h-full rotate-45">
                 <span
-                  className={`block bg-black dark:bg-white rounded-sm ease-in-out duration-200 delay-300 absolute left-2.5 top-0 w-0.5 h-0 ${
-                    navigationOpen ? 'h-full delay-[0]' : ''
-                  }`}
+                  className={`block bg-black dark:bg-white rounded-sm ease-in-out duration-200 delay-300 absolute left-2.5 top-0 w-0.5 h-0 ${navigationOpen ? 'h-full delay-[0]' : ''
+                    }`}
                 ></span>
                 <span
-                  className={`block bg-black dark:bg-white rounded-sm ease-in-out duration-200 delay-400 absolute left-0 top-[.03rem] w-full h-0 ${
-                    navigationOpen ? 'h-0.5 dealy-200' : ''
-                  }`}
+                  className={`block bg-black dark:bg-white rounded-sm ease-in-out duration-200 delay-400 absolute left-0 top-[.03rem] w-full h-0 ${navigationOpen ? 'h-0.5 dealy-200' : ''
+                    }`}
                 ></span>
               </span>
             </span>
@@ -70,10 +66,9 @@ const Header = () => {
 
         {/* Nav Menu Start   */}
         <div
-          className={`w-full lg:w-full h-0 lg:h-auto invisible lg:visible lg:flex items-center justify-between ${
-            navigationOpen &&
+          className={`w-full lg:w-full h-0 lg:h-auto invisible lg:visible lg:flex items-center justify-between ${navigationOpen &&
             '!visible bg-white dark:bg-blacksection shadow-solid-5 h-auto max-h-[400px] overflow-y-scroll rounded-md mt-4 p-7.5'
-          }`}
+            }`}
         >
           <nav>
             <ul className="flex lg:items-center flex-col lg:flex-row gap-5 lg:gap-10">
@@ -131,7 +126,14 @@ const Header = () => {
           </nav>
           <div className="flex items-center gap-6 mt-7 lg:mt-0">
             <a href="/waitlist" target="_blank">
-              <button className="flex items-center justify-center bg-primary hover:bg-secondary hover:text-dark_button ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5">
+              <button className="flex items-center justify-center bg-primary hover:bg-secondary hover:text-dark_button ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5" onClick={() => {
+                const url = localStorage.getItem('conversion');
+                plausible('Join Waitlist', {
+                  props: {
+                    landing: url,
+                  },
+                })
+              }}>
                 Join Waitlist
               </button>
             </a>

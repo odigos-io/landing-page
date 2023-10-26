@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { usePlausible } from 'next-plausible'
 
 const WebActionsButtonsWrapper = styled.div`
   @media (max-width: 450px) {
@@ -17,6 +18,7 @@ const MobileActionsButtonsWrapper = styled.div`
 `;
 
 const Hero = () => {
+  const plausible = usePlausible();
   const [isLoad, setIsLoad] = useState<Boolean>(false);
 
   useEffect(() => {
@@ -47,12 +49,28 @@ const Hero = () => {
                   <div className="mt-10">
                     <div className="flex flex-wrap gap-5">
                       <a href="/waitlist" target="_blank">
-                        <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
+                        <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
+                          onClick={() => {
+                            const url = localStorage.getItem('conversion');
+                            plausible('Join Waitlist', {
+                              props: {
+                                landing: url,
+                              },
+                            })
+                          }}>
                           Join Odigos Cloud Waitlist
                         </button>
                       </a>
                       <a href="https://calendly.com/edenfed" target="_blank">
-                        <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5">
+                        <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
+                          onClick={() => {
+                            const url = localStorage.getItem('conversion');
+                            plausible('Book a demo', {
+                              props: {
+                                landing: url,
+                              },
+                            })
+                          }}>
                           Book a Demo
                         </button>
                       </a>
