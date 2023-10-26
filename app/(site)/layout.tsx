@@ -6,6 +6,8 @@ import { ThemeProvider } from 'next-themes';
 import ToasterContext from '../context/ToastContext';
 import { ThemeProviderWrapper } from '@keyval-dev/design-system';
 import '../globals.css';
+import PlausibleProvider from 'next-plausible'
+import ConversionInitiator from '@/components/Conversions/landing.simple.tracking';
 
 export default function RootLayout({
   children,
@@ -14,6 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="eng">
+      <head>
+        <PlausibleProvider domain="odigos.io" />
+      </head>
       <body className={`dark:bg-black`}>
         <ThemeProviderWrapper>
           <ThemeProvider
@@ -21,6 +26,7 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="dark"
           >
+            <ConversionInitiator />
             <Header />
             <ToasterContext />
             {children}
