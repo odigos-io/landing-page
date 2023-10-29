@@ -1,6 +1,6 @@
 ---
-pubDate: 'Oct 16 2023'
-title: 'Unlocking Speed: eBPF-Based Auto-Instrumentation Over 20x Faster Than Traditional Instrumentation'
+pubDate: 'Oct 21 2023'
+title: 'eBPF-Based Auto-Instrumentation Outperforms Manual Instrumentation'
 image: '/ebpf_vs_manual.png'
 category: 'Performance'
 description: 'This blog shares the results of our performance tests creating OpenTelemetry traces with eBPF-based automatic instrumentation vs traditional instrumentation'
@@ -10,18 +10,17 @@ author: Eden Federman
 metadata: This blog shares the results of our performance tests creating OpenTelemetry traces with eBPF-based automatic instrumentation vs traditional instrumentation
 ---
 
-## Introduction
+We're developing Odigos, an open-source project for effortless distributed tracing. See more at [https://github.com/keyval-dev/odigos](https://github.com/keyval-dev/odigos).
 
-We're developing [Odigos, an open-source project](https://github.com/keyval-dev/odigos) for effortless distributed tracing in all applications.
+Distributed tracing tracks the journey of requests as they move through a distributed system, offering insights for debugging, performance optimization, and end-to-end visibility. It is crucial for gaining in-depth insights into request flows within complex distributed systems.
 
-Distributed tracing is crucial for comprehensive monitoring, but we keep hearing about two major obstacles that prevent successful implementation: **extensive code changes and performance impact**.
+However, there are two ways in which it can suck: extensive code changes (requires manual instrumentation), and a significant performance impact.
 
-Odigos addresses the code change challenge by using eBPF for automating tracing without any manual effort or code changes. We generate traces in OpenTelemetry format, ensuring compatibility and avoiding vendor lock-in. You can read more [here](https://news.ycombinator.com/item?id=34442603).
+Odigos addresses the code change challenge by using eBPF for automating tracing without any manual effort or code changes. We generate traces in OpenTelemetry format, ensuring compatibility and avoiding vendor lock-in. You can read more [here](https://news.ycombinator.com/item?id=34442603)
 
-As for the performance issues, we have some good news! We're excited to share the results of our performance tests, which show that **eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code**.
+That leaves the performance issues, which we’ve been working on. Our performance tests, which we’ll go into below, show that eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code. This is achieved by separating data recording and data processing, eliminating extra workload, object allocation, and network calls during application runtime.
 
-As a result, you can now have the best of both worlds: effortless distributed tracing with minimal performance overhead.
-
+As a result, you can have the best of both worlds: automated distributed tracing with minimal performance overhead.
 
 ## How we tested
 
