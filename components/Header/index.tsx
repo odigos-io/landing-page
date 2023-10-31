@@ -66,9 +66,11 @@ const Header = () => {
 
         {/* Nav Menu Start   */}
         <div
-          className={`w-full lg:w-full h-0 lg:h-auto invisible lg:visible lg:flex items-center justify-between ${navigationOpen &&
+          className={`w-full lg:w-full h-0 lg:h-auto invisible lg:visible lg:flex items-center justify-between lg:dark:bg-transparent lg:mt-0 lg:p-0 lg:shadow-none lg:overflow-auto
+          ${
+            navigationOpen &&
             '!visible bg-white dark:bg-blacksection shadow-solid-5 h-auto max-h-[400px] overflow-y-scroll rounded-md mt-4 p-7.5'
-            }`}
+          }`}
         >
           <nav>
             <ul className="flex lg:items-center flex-col lg:flex-row gap-5 lg:gap-10">
