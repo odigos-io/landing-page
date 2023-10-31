@@ -4,6 +4,7 @@ import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import styled from 'styled-components';
 
 type Props = {
   params: { slug: string };
@@ -11,12 +12,7 @@ type Props = {
 
 export function generateMetadata({ params }: Props): Metadata {
   const { slug } = params;
-  const posts = getAllBlogs([
-    'title',
-    'date',
-    'coverImage',
-    'slug'
-  ]);
+  const posts = getAllBlogs(['title', 'date', 'coverImage', 'slug']);
 
   const post = posts.find((post) => post.slug === slug);
 
@@ -89,26 +85,28 @@ const SingleBlogPage = async ({ params }: Props) => {
               width: '100%',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              // alignItems: 'center',
             }}
           >
-            <div className="lg:w-[80%]">
-              <div className="animate_top rounded-md shadow-solid-13 p-7.5 md:p-10">
+            <div className="lg:w-[100%]">
+              <div className="animate_top rounded-md shadow-solid-13 p-2.5 md:p-10">
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
                   {renderTags()}
                 </div>
-                <h1
-                  style={{
-                    marginTop: 20,
-                    fontSize: 48,
-                    width: '100%',
-                    lineHeight: 1.2,
-                    color: '#fff',
-                    fontWeight: 700,
-                  }}
-                >
-                  {post.title}
-                </h1>
+                <>
+                  <h1
+                    style={{
+                      marginTop: 20,
+                      fontSize: '5vh',
+                      width: '100%',
+                      lineHeight: 1.2,
+                      color: '#fff',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {post.title}
+                  </h1>
+                </>
                 <h3
                   style={{
                     fontSize: 18,
@@ -192,10 +190,21 @@ const SingleBlogPage = async ({ params }: Props) => {
                     dangerouslySetInnerHTML={{ __html: content }}
                   />
                 </div>
-                <div className="lg:w-[65%] font-semibold text-white text-lg" style={{ marginTop: 35 }}>
-                If you want to learn more about how you can generate distributed traces instantly
-                check out our GitHub repository. We'd really appreciate it if you could throw us a ⭐👇<br/>
-                <a target="_blank" className="underline" href="https://github.com/keyval-dev/odigos">https://github.com/keyval-dev/odigos</a>
+                <div
+                  className="lg:w-[65%] font-semibold text-white text-lg"
+                  style={{ marginTop: 35 }}
+                >
+                  If you want to learn more about how you can generate
+                  distributed traces instantly check out our GitHub repository.
+                  We'd really appreciate it if you could throw us a ⭐👇
+                  <br />
+                  <a
+                    target="_blank"
+                    className="underline"
+                    href="https://github.com/keyval-dev/odigos"
+                  >
+                    https://github.com/keyval-dev/odigos
+                  </a>
                 </div>
                 <RelatedPost />
               </div>
