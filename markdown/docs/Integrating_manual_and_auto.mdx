@@ -1,0 +1,142 @@
+---
+# pubDate: 'TODO'
+title: "Integrating manual with automatic instrumentation"
+# image: '/ebpf_vs_manual.png'
+category: "Odigos"
+description: "This blog shares the results of our performance tests creating OpenTelemetry traces with eBPF-based automatic instrumentation vs traditional instrumentation"
+tags: [ebpf, opentelemetry, instrumentation]
+authorImage: "/Ron.png"
+author: Ron Federman
+metadata: This blog shares the results of combining manual with automatically generated spans to get the best of both worlds.
+---
+
+In the landscape of application monitoring, the choice between automatic and manual instrumentation shapes the efficiency and depth of our insights. Manual instrumentation, involving developers explicitly embedding code into an application, grants unparalleled control over data collection and exportion but often comes with the trade-off of increased development time and potential human error. On the flip side, automatic instrumentation dynamically injects code during runtime, streamlining the process and eliminating the need for manual intervention. In this post we'll explore how to easily combine both approaches to produce meaningful data with minimal code changes.
+
+## Simple example application
+
+To demonstrae this feature we will use the following simple HTTP server application. The server has a single endpoint for which it will generate a single random integer between 1 and 6 (roll a dice) and will save the result in a database. This can be seen in the following snippets:
+
+```Go
+const (
+	dbName   = "roll_dice.db"
+
+	createTableStmt = `
+	CREATE TABLE IF NOT EXISTS results (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		roll_value INTEGER
+	);
+`
+)
+
+type Server struct {
+	rand *rand.Rand
+	db *sql.DB
+}
+
+// NewServer creates a server struct after creating the DB and initializing it
+func NewServer() *Server {
+	database, err := sql.Open("sqlite3", dbName)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = database.Exec(createTableStmt)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Initialize the random number generator
+	rd := rand.New(rand.NewSource(time.Now().Unix()))
+
+	return &Server{
+		rand: rd,
+		db: database,
+	}
+}
+
+var logger *zap.Logger
+
+func setupHandler(s *Server) *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/roll_dice", s.rollDice)
+	return mux
+}
+
+func main() {
+	var err error
+	logger, err = zap.NewDevelopment()
+	if err != nil {
+		fmt.Printf("error creating zap logger, error:%v", err)
+		return
+	}
+	port := fmt.Sprintf(":%d", 8080)
+	logger.Info("starting http server", zap.String("port", port))
+
+	s := NewServer()
+	mux := setupHandler(s)
+	if err := http.ListenAndServe(port, mux); err != nil {
+		logger.Error("error running server", zap.Error(err))
+	}
+}
+```
+
+
+```Go
+func (s *Server) rollDice(w http.ResponseWriter, req *http.Request) {
+	// Roll a dice
+	n := s.rand.Intn(6) + 1
+
+	_, err := s.db.ExecContext(req.Context(), "INSERT INTO results (roll_value) VALUES (?)", n)
+	if err != nil {
+		panic(err)
+	}
+
+	// Write the result to the response
+	fmt.Fprintf(w, "%v", n)
+}
+```
+
+### Automatically generated trace
+
+For the above code we can use the Go-auto-instrumentation agent ([https://github.com/open-telemetry/opentelemetry-go-instrumentation](https://github.com/open-telemetry/opentelemetry-go-instrumentation)) to generate a trace for each roll dice operation. Since HTTP handling and database queries are common operations, these libraries from the Go standard library are automatically instrumented by the agent. We can gain quite a lot of information from the genrated trace such as the SQL query, the HTTP endpoint and the timing of the operations.
+
+
+![Automatic instrumentation](/images/blog/manual-auto-integration/auto_only.png)
+
+### Combining with manual spans
+
+In many cases the usere would like to add some costum information related to their business logic and internal functions. This level of flexability is not currently possible with automatic instrumentation. However we can achieve a solution using integration of manually created spans with those created automatically.
+
+In the following code snippet we used the OpenTelemetry API for Go in order to create a span within the HTTP handler. In our example we added the value of the dice as an attribute for the span.
+
+```Go
+var tracer = otel.Tracer("rolldice")
+
+...
+
+func (s *Server) rollDice(w http.ResponseWriter, req *http.Request) {
+	ctx, span := tracer.Start(req.Context(), "roll")
+	defer span.End()
+
+	// Roll a dice
+	n := s.rand.Intn(6) + 1
+
+	_, err := s.db.ExecContext(ctx, "INSERT INTO results (roll_value) VALUES (?)", n)
+	if err != nil {
+		panic(err)
+	}
+
+	span.SetAttributes(attribute.Int("roll.value", n))
+
+	// Write the result to the response
+	fmt.Fprintf(w, "%v", n)
+}
+```
+
+
+![Automatic with manual](/images/blog/manual-auto-integration/auto_plus_roll_span.png)
+
+As a result the generated trace combines the manually created span with the automatically creatred ones. We can see that the manual span was inserted in between the HTTP and database spans. This is due to the way we are passing Go's context. We are using the context from the HTTP request to generate the internal span, and the context returned by `tracer.Start` as the context for the database query.
+
+
