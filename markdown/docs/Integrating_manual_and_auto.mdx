@@ -46,6 +46,14 @@ In many cases the usere would like to add some costum information related to the
 In the following code snippet we used the OpenTelemetry API for Go in order to create a span within the HTTP handler. In our example we added the value of the dice as an attribute for the span.
 
 ```Go
+import (
+    ...
+    "go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+    ...
+)
+...
+
 var tracer = otel.Tracer("rolldice")
 
 ...
@@ -72,6 +80,11 @@ func (s *Server) rollDice(w http.ResponseWriter, req *http.Request) {
 
 ![Automatic with manual](/images/blog/manual-auto-integration/auto_plus_roll_span.png)
 
+An important thing to note is that only the ([OpenTelemetry API](https://opentelemetry.io/docs/specs/otel/overview/#api)) is being imported which means the code changes are minimal.
 As a result the generated trace combines the manually created span with the automatically creatred ones. We can see that the manual span was inserted in between the HTTP and database spans. This is due to the way we are passing Go's context. We are using the context from the HTTP request to generate the internal span, and the context returned by `tracer.Start` as the context for the database query.
+This approach has few major advantages:
+* It allows adding costum data that gets integrated into the trace seemlesly.
+* It requires little code chages. As opposed to a fully manual setup in which the developer would have to define how exportion is done and configure different settings.
+* From the Go application point of view, the API call such as `span.SetAttributes` and `span.End` are no-ops, since no SDK is not configured the defualt implemntation is a no-op. The actual collection is done using eBPF which leads to performance gains relative to manual instrumentation as described in ([this blog post](https://odigos.io/blog/ebpf-instrumentation-faster-than-manual)).
 
 
