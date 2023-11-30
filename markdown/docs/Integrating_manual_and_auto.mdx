@@ -1,5 +1,5 @@
 ---
-# pubDate: 'TODO'
+pubDate: 'Nov 30 2023'
 title: "Integrating manual with automatic instrumentation"
 # image: '/ebpf_vs_manual.png'
 category: "Odigos"
@@ -10,11 +10,15 @@ author: Ron Federman
 metadata: This blog shares the results of combining manual with automatically generated spans to get the best of both worlds.
 ---
 
-In the landscape of application monitoring, the choice between automatic and manual instrumentation shapes the efficiency and depth of our insights. Manual instrumentation, involving developers explicitly embedding code into an application, grants unparalleled control over data collection and exportion but often comes with the trade-off of increased development time and potential human error. On the flip side, automatic instrumentation dynamically injects code during runtime, streamlining the process and eliminating the need for manual intervention. In this post we'll explore how to easily combine both approaches to produce meaningful data with minimal code changes.
+We're developing Odigos, an open-source project for effortless distributed tracing. See more at https://github.com/keyval-dev/odigos.
+
+In the landscape of application monitoring, the choice between automatic and manual instrumentation shapes the efficiency and depth of our insights. Manual instrumentation, involving developers explicitly embedding code into an application, grants unparalleled control over data collection and exportation but often comes with the trade-off of increased development time and potential human error. On the flip side, automatic instrumentation dynamically injects code during runtime, streamlining the process and eliminating the need for manual intervention.
+
+In this post, we introduce a hybrid approach that seamlessly combines the precision of manual instrumentation with the comfort, efficiency, and performance of automatic instrumentation.  We'll explore how to easily combine both approaches to produce meaningful data with minimal code changes.
 
 ## Simple example application
 
-To demonstrae this feature we will use the following simple HTTP server application. The server has a single endpoint for which it will generate a single random integer between 1 and 6 (roll a dice) and will save the result in a database. This can be seen in the following snippet:
+To demonstrate this feature we will use the following simple HTTP server application. The server has a single endpoint for which it will generate a single random integer between 1 and 6 (roll a die) and will save the result in a database. This can be seen in the following snippet:
 
 
 ```Go
@@ -34,16 +38,16 @@ func (s *Server) rollDice(w http.ResponseWriter, req *http.Request) {
 
 ### Automatically generated trace
 
-For the above code we can use the Go-auto-instrumentation agent ([https://github.com/open-telemetry/opentelemetry-go-instrumentation](https://github.com/open-telemetry/opentelemetry-go-instrumentation)) to generate a trace for each roll dice operation. Since HTTP handling and database queries are common operations, these libraries from the Go standard library are automatically instrumented by the agent. We can gain quite a lot of information from the genrated trace such as the SQL query, the HTTP endpoint and the timing of the operations.
+For the above code, we can use the Go-auto-instrumentation agent ([https://github.com/open-telemetry/opentelemetry-go-instrumentation](https://github.com/open-telemetry/opentelemetry-go-instrumentation)) to generate a trace for each roll dice operation. Since HTTP handling and database queries are common operations, these libraries from the Go standard library are automatically instrumented by the agent. We can gain quite a lot of information from the generated trace such as the SQL query, the HTTP endpoint, and the timing of the operations.
 
 
 ![Automatic instrumentation](/images/blog/manual-auto-integration/auto_only.png)
 
 ### Combining with manual spans
 
-In many cases the usere would like to add some costum information related to their business logic and internal functions. This level of flexability is not currently possible with automatic instrumentation. However we can achieve a solution using integration of manually created spans with those created automatically.
+In many cases, the users would like to add some custom information related to their business logic and internal functions. This level of flexibility is not currently possible with automatic instrumentation. However, we can achieve a solution using an integration of manually created spans with those created automatically.
 
-In the following code snippet we used the OpenTelemetry API for Go in order to create a span within the HTTP handler. In our example we added the value of the dice as an attribute for the span.
+In the following code snippet, we used the OpenTelemetry API for Go in order to create a span within the HTTP handler. In our example, we added the value of the dice as an attribute for the span.
 
 ```Go
 import (
@@ -80,11 +84,11 @@ func (s *Server) rollDice(w http.ResponseWriter, req *http.Request) {
 
 ![Automatic with manual](/images/blog/manual-auto-integration/auto_plus_roll_span.png)
 
-An important thing to note is that only the ([OpenTelemetry API](https://opentelemetry.io/docs/specs/otel/overview/#api)) is being imported which means the code changes are minimal.
-As a result the generated trace combines the manually created span with the automatically creatred ones. We can see that the manual span was inserted in between the HTTP and database spans. This is due to the way we are passing Go's context. We are using the context from the HTTP request to generate the internal span, and the context returned by `tracer.Start` as the context for the database query.
-This approach has few major advantages:
-* It allows adding costum data that gets integrated into the trace seemlesly.
-* It requires little code chages. As opposed to a fully manual setup in which the developer would have to define how exportion is done and configure different settings.
-* From the Go application point of view, the API call such as `span.SetAttributes` and `span.End` are no-ops, since no SDK is not configured the defualt implemntation is a no-op. The actual collection is done using eBPF which leads to performance gains relative to manual instrumentation as described in ([this blog post](https://odigos.io/blog/ebpf-instrumentation-faster-than-manual)).
+An important thing to note is that only the  ([OpenTelemetry API](https://opentelemetry.io/docs/specs/otel/overview/#api)) is being imported which means the code changes are minimal.
+As a result, the generated trace combines the manually created span with the automatically created ones. We can see that the manual span was inserted in between the HTTP and database spans. This is due to the way we are passing Go's context. We are using the context from the HTTP request to generate the internal span, and the context returned by `tracer.Start` as the context for the database query.
+This approach has a few major advantages:
+* It allows adding custom data that gets integrated into the trace seamlessly.
+* It requires little code changes. As opposed to a fully manual setup in which the developer would have to define how exportation is done and configure different settings.
+* From the Go application point of view, the API calls such as `span.SetAttributes` and `span.End` are no-ops, since no SDK is not configured the default implementation is a no-op. The actual collection is done using eBPF which leads to performance gains relative to manual instrumentation as described in ([this blog post](https://odigos.io/blog/ebpf-instrumentation-faster-than-manual)).
 
 
