@@ -25,8 +25,8 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Performance />
       <Feature />
+      <Performance />
       <FeaturesTab />
       <Integration />
       <Brands />

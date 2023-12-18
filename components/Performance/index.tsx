@@ -26,7 +26,7 @@ const Performance = () => {
             headerInfo={{
               title: '',
               subtitle: 'Extreme Performance',
-              description: `Odigos delivers 10x the performance of traditional instrumentation solutions`,
+              description: `Odigos provides unprecedented 50x faster performance - virtually eliminating latency`,
             }}
           />
           <motion.div
@@ -45,23 +45,21 @@ const Performance = () => {
             whileInView="visible"
             transition={{ duration: 1, delay: 0.1 }}
             viewport={{ once: true }}
-            className="animate_left "
+            className="animate_top "
           >
             <ProgressBarsWrapper>
               <ProgressBar
                 status={'No Instrumentation'}
-                value={'183.096'}
-                percent="30%"
+                value={'183.09ms'}
+                percent="40%"
+                type="basic"
               />
+              <ProgressBar status={'Odigos'} value={'190.62ms'} percent="41%" />
               <ProgressBar
-                status={'Odigos Instrumentation'}
-                value={'190.624'}
-                percent="31%"
-              />
-              <ProgressBar
-                status={'Traditional Instrumentation'}
-                value={'8798.208'}
+                status={"Traditional APM's"}
+                value={'8,798.20ms'}
                 percent="100%"
+                type="traditional"
               />
             </ProgressBarsWrapper>
             <p className="pl-12 pt-4 text-sm text-gray-400 opacity-60">

@@ -11,9 +11,9 @@ const featuresData: Feature[] = [
   {
     id: 2,
     icon: '/images/icon/icon-02.svg',
-    title: 'Works On Any Application',
+    title: 'Extreme Performance',
     description:
-      'Odigos is the only solution that automatically instruments compiled languages (like Go)',
+      'Odigos achieves unmatched performance, virtually erasing latency.',
   },
   {
     id: 4,
