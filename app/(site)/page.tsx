@@ -9,13 +9,15 @@ import FAQ from '@/components/FAQ';
 import Blog from '@/components/Blog';
 import Testimonial from '@/components/Testimonial';
 
+import Performance from '@/components/Performance';
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
   icons: '/images/logo/logo.png',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: "/images/hero/overview.gif",
+    images: '/images/hero/overview.gif',
   },
 };
 
@@ -24,6 +26,7 @@ export default function Home() {
     <main>
       <Hero />
       <Feature />
+      <Performance />
       <FeaturesTab />
       <Integration />
       <Brands />
