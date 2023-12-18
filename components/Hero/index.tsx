@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { usePlausible } from 'next-plausible'
+import { usePlausible } from 'next-plausible';
+import { Modal } from '@keyval-dev/design-system';
 
 const WebActionsButtonsWrapper = styled.div`
   @media (max-width: 450px) {
@@ -17,10 +18,41 @@ const MobileActionsButtonsWrapper = styled.div`
   }
 `;
 
+const DemoWrapper = styled(MobileActionsButtonsWrapper)`
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: #292e45;
+  padding: 1rem 0;
+  margin-top: 40px;
+  width: 100vw;
+`;
+
+export enum ModalPositionX {
+  center = 'center',
+  right = 'right',
+  left = 'left',
+}
+
+export enum ModalPositionY {
+  center = 'center',
+  start = 'start',
+  end = 'end',
+}
+
 const Hero = () => {
   const plausible = usePlausible();
   const [isLoad, setIsLoad] = useState<Boolean>(false);
-
+  const [showModal, setShowModal] = useState(false);
+  const [showDemo, setShowDemo] = useState(false);
+  const modalConfig = {
+    title: '',
+    showHeader: true,
+    showOverlay: true,
+    positionX: ModalPositionX.center,
+    positionY: ModalPositionY.center,
+    padding: '45px',
+  };
   useEffect(() => {
     setIsLoad(true);
   }, []);
@@ -49,31 +81,34 @@ const Hero = () => {
                   <div className="mt-10">
                     <div className="flex flex-wrap gap-5">
                       <a href="/waitlist" target="_blank">
-                        <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
+                        <button
+                          className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
                           onClick={() => {
                             const url = localStorage.getItem('conversion');
                             plausible('Join Waitlist', {
                               props: {
                                 landing: url,
                               },
-                            })
-                          }}>
+                            });
+                          }}
+                        >
                           Join Odigos Cloud Waitlist
                         </button>
                       </a>
-                      <a href="https://calendly.com/edenfed" target="_blank">
-                        <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
-                          onClick={() => {
-                            const url = localStorage.getItem('conversion');
-                            plausible('Book a demo', {
-                              props: {
-                                landing: url,
-                              },
-                            })
-                          }}>
-                          Book a Demo
-                        </button>
-                      </a>
+                      <button
+                        className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-7.5 py-2.5"
+                        onClick={() => {
+                          setShowModal(true);
+                          const url = localStorage.getItem('conversion');
+                          plausible('Watch a demo', {
+                            props: {
+                              landing: url,
+                            },
+                          });
+                        }}
+                      >
+                        Watch a Demo
+                      </button>
                     </div>
                   </div>
                 </WebActionsButtonsWrapper>
@@ -83,11 +118,6 @@ const Hero = () => {
                       <a href="/waitlist" target="_blank">
                         <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho text-sm dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-2.5 py-2.5">
                           Join Odigos Cloud Waitlist
-                        </button>
-                      </a>
-                      <a href="https://calendly.com/edenfed" target="_blank">
-                        <button className="flex bg-black dark:hover:bg-secondary dark:hover:text-black dark:bg-btndark text-sm text-white rounded-full ease-in-out duration-300 px-2.5 py-2.5">
-                          Book a Demo
                         </button>
                       </a>
                     </div>
@@ -113,6 +143,40 @@ const Hero = () => {
               </div>
             </div>
           </div>
+          <DemoWrapper>
+            <p style={{ color: '#fff', fontWeight: 600 }}> Watch a Demo</p>
+            <iframe
+              style={{
+                marginTop: 10,
+                width: '100%',
+                height: 300,
+              }}
+              src={`https://www.youtube.com/embed/nynyV7FC4VI`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded youtube"
+            />
+          </DemoWrapper>
+
+          {showModal && (
+            <Modal
+              show={showModal}
+              closeModal={() => setShowModal(false)}
+              config={modalConfig}
+            >
+              <div className="video-responsive">
+                <iframe
+                  style={{ borderRadius: 24, width: '60vw', height: '60vh' }}
+                  src={`https://www.youtube.com/embed/nynyV7FC4VI`}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="Embedded youtube"
+                />
+              </div>
+            </Modal>
+          )}
         </section>
       </>
     )
