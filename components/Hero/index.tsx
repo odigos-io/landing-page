@@ -22,10 +22,9 @@ const DemoWrapper = styled(MobileActionsButtonsWrapper)`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  background-color: #000000;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-top: 20px;
+  background-color: #292e45;
+  padding: 1rem 0;
+  margin-top: 40px;
   width: 100vw;
 `;
 
@@ -121,21 +120,6 @@ const Hero = () => {
                           Join Odigos Cloud Waitlist
                         </button>
                       </a>
-
-                      {/* <button
-                        className="flex bg-black dark:hover:bg-secondary dark:hover:text-black hover:bg-blackho text-sm dark:bg-btndark text-white rounded-full ease-in-out duration-300 px-2.5 py-2.5"
-                        onClick={() => {
-                          setShowDemo(true);
-                          const url = localStorage.getItem('conversion');
-                          plausible('Watch a demo', {
-                            props: {
-                              landing: url,
-                            },
-                          });
-                        }}
-                      >
-                        Watch a Demo
-                      </button> */}
                     </div>
                   </div>
                 </MobileActionsButtonsWrapper>
@@ -160,9 +144,13 @@ const Hero = () => {
             </div>
           </div>
           <DemoWrapper>
-            <p style={{ color: '#fff' }}> Watch a Demo</p>
+            <p style={{ color: '#fff', fontWeight: 600 }}> Watch a Demo</p>
             <iframe
-              style={{ borderRadius: 12, marginTop: 10, width: '100%' }}
+              style={{
+                marginTop: 10,
+                width: '100%',
+                height: 300,
+              }}
               src={`https://www.youtube.com/embed/nynyV7FC4VI`}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

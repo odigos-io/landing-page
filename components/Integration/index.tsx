@@ -19,16 +19,7 @@ const Integration = () => {
         </div>
 
         <div className="mx-auto max-w-c-1154 px-4 md:px-8 xl:px-0 relative z-50 mt-15 xl:mt-20 pattern-dots pattern-blue-500 pattern-bg-white pattern-size-4 pattern-opacity-10">
-          <div className="absolute -top-3/4 -z-1 w-full h-full">
-            <Image
-              width={1200}
-              height={400}
-              sizes="(max-width: 768px) 100vw"
-              src="/images/shape/shape-dotted-light.svg"
-              alt="Dotted"
-              className="dark:hidden"
-              style={{ position: 'static' }}
-            />
+          <div>
             <Image
               fill
               src="/images/shape/shape-dotted-dark.svg"
