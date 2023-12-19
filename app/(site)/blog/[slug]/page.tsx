@@ -3,8 +3,7 @@ import RelatedPost from '@/components/Blog/RelatedPost';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
 import { Metadata } from 'next';
-import Link from 'next/link';
-import styled from 'styled-components';
+import BlogNotFound from '@/components/Blog/BlogNotFound';
 
 type Props = {
   params: { slug: string };
@@ -213,7 +212,9 @@ const SingleBlogPage = async ({ params }: Props) => {
         </div>
       </section>
     </>
-  ) : null;
+  ) : (
+    <BlogNotFound />
+  );
 };
 
 export default SingleBlogPage;
