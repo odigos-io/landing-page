@@ -44,7 +44,7 @@ const Hero = () => {
   const plausible = usePlausible();
   const [isLoad, setIsLoad] = useState<Boolean>(false);
   const [showModal, setShowModal] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
+
   const modalConfig = {
     title: '',
     showHeader: true,
@@ -129,6 +129,7 @@ const Hero = () => {
                 <div className="relative 2xl:-mr-7.5">
                   <div className=" relative aspect-[1800/854] w-full"></div>
                   <Image
+                    loading="lazy"
                     className="dark:block"
                     src="/images/hero/overview.gif"
                     alt="Hero"
