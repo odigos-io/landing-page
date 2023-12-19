@@ -24,16 +24,16 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      <Hero />
+      {/* <Hero />
       <Feature />
       <Performance />
       <FeaturesTab />
       <Integration />
       <Brands />
       <CTA />
-      <FAQ />
+      <FAQ /> */}
       {/* <Testimonial /> */}
-      <Blog />
+      {/* <Blog /> */}
     </main>
   );
 }

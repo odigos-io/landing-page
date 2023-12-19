@@ -22,26 +22,10 @@ const Footer = () => {
           {/* <!-- Footer Top --> */}
           <div className="py-20 lg:py-25">
             <div className="flex flex-wrap lg:justify-between gap-8 lg:gap-0">
-              <motion.div
-                variants={{
-                  hidden: {
-                    opacity: 0,
-                    y: -20,
-                  },
-
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                  },
-                }}
-                initial="hidden"
-                whileInView="visible"
-                transition={{ duration: 1, delay: 0.5 }}
-                viewport={{ once: true }}
-                className="animate_top w-1/1 lg:w-1/4"
-              >
+              <div className="animate_top w-1/1 lg:w-1/4">
                 <a href="index.html" className="relative">
                   <Image
+                    loading="lazy"
                     width={80}
                     height={80}
                     src="/images/logo/logo.png"
@@ -65,27 +49,10 @@ const Footer = () => {
                 >
                   support@keyval.dev
                 </a>
-              </motion.div>
+              </div>
 
               <div className="w-full lg:w-2/3 xl:w-7/12 flex flex-col md:flex-row md:justify-between gap-8 md:gap-0">
-                <motion.div
-                  variants={{
-                    hidden: {
-                      opacity: 0,
-                      y: -20,
-                    },
-
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                    },
-                  }}
-                  initial="hidden"
-                  whileInView="visible"
-                  transition={{ duration: 1, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="animate_top"
-                >
+                <div>
                   <h4 className="font-medium text-black dark:text-white text-itemtitle2 mb-9">
                     Quick Links
                   </h4>
@@ -117,25 +84,8 @@ const Footer = () => {
                       </a>
                     </li>
                   </ul>
-                </motion.div>
-                <motion.div
-                  variants={{
-                    hidden: {
-                      opacity: 0,
-                      y: -20,
-                    },
-
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                    },
-                  }}
-                  initial="hidden"
-                  whileInView="visible"
-                  transition={{ duration: 1, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="animate_top"
-                >
+                </div>
+                <div>
                   <h4 className="font-medium text-black dark:text-white text-itemtitle2 mb-4">
                     Stay up to date
                   </h4>
@@ -161,7 +111,7 @@ const Footer = () => {
                       </li>
                     )}
                   </ul>
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>
