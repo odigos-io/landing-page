@@ -16,7 +16,6 @@ const SingleBrand = ({ brand }: { brand: any }) => {
         textAlign: 'center',
         alignItems: 'center',
         position: 'relative',
-
         justifyContent: 'space-between',
       }}
     >

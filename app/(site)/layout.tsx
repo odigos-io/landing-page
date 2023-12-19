@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="eng">
-      <head>{/* <PlausibleProvider domain="odigos.io" /> */}</head>
+      <head>
+        <PlausibleProvider domain="odigos.io" />
+      </head>
       <body className={`dark:bg-black`}>
         <ThemeProviderWrapper>
           <ThemeProvider
