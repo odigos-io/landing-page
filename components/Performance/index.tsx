@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 const ProgressBarsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   justify-content: space-between;
   height: 100%;
   width: 100%;
@@ -18,6 +17,11 @@ const ProgressBarsWrapper = styled.div`
 `;
 
 const Performance = () => {
+  const [isLoad, setIsLoad] = React.useState<Boolean>(false);
+
+  React.useEffect(() => {
+    setIsLoad(true);
+  }, []);
   return (
     <>
       <section id="features" className="py-20 lg:py-25 xl:py-30">
@@ -47,7 +51,7 @@ const Performance = () => {
             viewport={{ once: true }}
             className="animate_top "
           >
-            <ProgressBarsWrapper>
+            <ProgressBarsWrapper style={{ gap: isLoad ? 16 : 16 }}>
               <ProgressBar
                 status={'No Instrumentation'}
                 value={'183.09ms'}
