@@ -3,7 +3,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import { ThemeProvider } from 'next-themes';
-import ToasterContext from '../context/ToastContext';
 import { ThemeProviderWrapper } from '@keyval-dev/design-system';
 import '../globals.css';
 import PlausibleProvider from 'next-plausible';
@@ -27,8 +26,7 @@ export default function RootLayout({
             defaultTheme="dark"
           >
             <ConversionInitiator />
-            <Header />
-            <ToasterContext />
+            {/* <Header /> */}
             {children}
             <Footer />
             <ScrollToTop />

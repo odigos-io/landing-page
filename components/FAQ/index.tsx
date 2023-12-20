@@ -19,12 +19,14 @@ const FAQ = () => {
         <div className="mx-auto max-w-c-1235 px-4 md:px-8 xl:px-0 relative">
           <div className="absolute -bottom-16 -z-1 w-full h-full">
             <Image
+              loading="lazy"
               fill
               src="/images/shape/shape-dotted-light.svg"
               alt="Dotted"
               className="dark:hidden"
             />
             <Image
+              loading="lazy"
               fill
               src="/images/shape/shape-dotted-light.svg"
               alt="Dotted"

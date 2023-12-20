@@ -1,6 +1,4 @@
 'use client';
-
-import { ThemeProviderWrapper } from '@keyval-dev/design-system';
 import PlausibleProvider from 'next-plausible';
 
 export default function RootLayout({
@@ -13,9 +11,7 @@ export default function RootLayout({
       <head>
         <PlausibleProvider domain="odigos.io" />
       </head>
-      <body className={`dark:bg-black`}>
-        <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
-      </body>
+      <body className={`dark:bg-black`}>{children}</body>
     </html>
   );
 }

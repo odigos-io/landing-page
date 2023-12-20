@@ -1,33 +1,12 @@
 'use client';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 
 const BlogItem = ({ blog }: { blog: any }) => {
   const { image, title, metadata, slug, authorImage, author, pubDate } = blog;
 
-  function getImage() {
-    const url = image.replace('~/assets/images', '');
-    return url;
-  }
-
   return (
     <>
-      <motion.div
-        variants={{
-          hidden: {
-            opacity: 0,
-            y: -20,
-          },
-
-          visible: {
-            opacity: 1,
-            y: 0,
-          },
-        }}
-        initial="hidden"
-        whileInView="visible"
-        transition={{ duration: 1, delay: 0.5 }}
-        viewport={{ once: true }}
+      <div
         style={{
           borderTop: 'solid 1px #d0d7de',
           paddingTop: 24,
@@ -83,7 +62,7 @@ const BlogItem = ({ blog }: { blog: any }) => {
             <h4 style={{ marginLeft: 12 }}>{pubDate}</h4>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };
