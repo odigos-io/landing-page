@@ -1,3 +1,3 @@
 import Send from './send.png';
-
-export { Send };
+import Close from './close.png';
+export { Send, Close };
