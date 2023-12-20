@@ -14,8 +14,7 @@ export const StyledLoader = styled.div<{
   width: ${({ width }) => width || 48}px;
   height: ${({ height }) => height || 48}px;
   border: 4px solid;
-  border-color: ${({ theme }) =>
-    `${theme.colors.secondary} ${theme.colors.secondary} ${theme.colors.secondary}  transparent`};
+  border-color: #0ee6f3 #0ee6f3 #0ee6f3 transparent;
   border-radius: 50%;
   animation: spin-anim 1.2s linear infinite;
 
