@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Send } from '@/public/icons';
 import { MAILCHIMP_API_URL, sendToService } from '../WaitlistForm/utils';
@@ -7,9 +7,13 @@ import { Input } from '@/design-system/input/input';
 import { Button } from '@/design-system/button/button';
 
 const Footer = () => {
-  const [email, setEmail] = React.useState('');
-  const [isSubscribed, setIsSubscribed] = React.useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
   function handleSubscribe() {
     const body = { email, name: '' };
     sendToService(body, MAILCHIMP_API_URL);
@@ -97,16 +101,30 @@ const Footer = () => {
                         </p>
                       </li>
                     ) : (
-                      <li style={{ display: 'flex', gap: 10 }}>
-                        <Input
-                          placeholder="Enter your email"
-                          value={email}
-                          onChange={(val) => setEmail(val)}
-                          style={{ width: 300 }}
-                        />
-                        <Button onClick={handleSubscribe} disabled={!email}>
-                          <Image width={22} height={22} src={Send} alt="Send" />
-                        </Button>
+                      <li
+                        style={{
+                          display: 'flex',
+                          gap: 10,
+                        }}
+                      >
+                        {isHydrated && (
+                          <>
+                            <Input
+                              placeholder="Enter your email"
+                              value={email}
+                              onChange={(val) => setEmail(val)}
+                              style={{ width: 300 }}
+                            />
+                            <Button onClick={handleSubscribe} disabled={!email}>
+                              <Image
+                                width={22}
+                                height={22}
+                                src={Send}
+                                alt="Send"
+                              />
+                            </Button>
+                          </>
+                        )}
                       </li>
                     )}
                   </ul>

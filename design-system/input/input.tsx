@@ -4,11 +4,8 @@ import {
   StyledInput,
   ErrorWrapper,
   LabelWrapper,
-  DisplayIconsWrapper,
 } from './input.styled';
 import { Text } from '../text/text';
-import EyeOpenIcon from '@/public/icons/eye-open.svg';
-import EyeCloseIcon from '@/public/icons/eye-close.svg';
 interface InputProps {
   label?: string;
   value: string;
@@ -23,13 +20,10 @@ export function Input({
   label,
   value,
   onChange,
-  type = 'text',
   error = '',
   style = {},
   placeholder,
 }: InputProps): JSX.Element {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
   function handleChange(event: ChangeEvent<HTMLInputElement>): void {
     onChange(event.target.value);
   }
@@ -48,21 +42,12 @@ export function Input({
         error={error ? true : undefined}
       >
         <StyledInput
-          type={showPassword ? 'text' : type}
+          type={'text'}
           value={value}
           onChange={handleChange}
           autoComplete="off"
           placeholder={placeholder}
         />
-        {type === 'password' && (
-          <DisplayIconsWrapper onClick={() => setShowPassword(!showPassword)}>
-            {!showPassword ? (
-              <EyeOpenIcon width={16} height={16} />
-            ) : (
-              <EyeCloseIcon width={16} height={16} />
-            )}
-          </DisplayIconsWrapper>
-        )}
       </StyledInputContainer>
       {error && (
         <ErrorWrapper>
