@@ -1,7 +1,8 @@
 'use client';
 import styled from 'styled-components';
-import { Button, Text } from '@keyval-dev/design-system';
 import React from 'react';
+import { Button } from '@/design-system/button/button';
+import { Text } from '@/design-system/text/text';
 
 const Container = styled.div`
   height: 100%;

@@ -1,15 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { styled } from 'styled-components';
-import { Loader } from '@keyval-dev/design-system';
-
-const LoaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
+import { Loader } from '@/design-system/loader/loader';
 
 export default function Custom404() {
   const router = useRouter();
@@ -19,8 +11,8 @@ export default function Custom404() {
   }, []);
 
   return (
-    <LoaderWrapper>
+    <div className="flex justify-center items-center h-screen">
       <Loader />
-    </LoaderWrapper>
+    </div>
   );
 }

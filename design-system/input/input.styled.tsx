@@ -18,18 +18,12 @@ export const StyledInputContainer = styled.div<ActiveProps>`
   align-items: flex-start;
   gap: 10px;
   border-radius: 8px;
-  border: ${({ theme, error, active }) =>
-    `1px solid ${
-      error
-        ? theme.colors.error
-        : active
-        ? theme.text.grey
-        : theme.colors.blue_grey
-    }`};
-  background: ${({ theme }) => theme.colors.light_dark};
+  border: ${({ error, active }) =>
+    `1px solid ${error ? '#FD3F3F' : active ? '#8b92a5' : '#374A5B'}`};
+  background: '#CCD0D2';
 
   &:hover {
-    border: ${({ theme }) => `solid 1px ${theme.text.grey}`};
+    border: solid 1px #8b92a5;
   }
 `;
 
@@ -51,7 +45,7 @@ export const StyledInput = styled.input`
   border: none;
   outline: none;
   width: 100%;
-  color: ${({ theme }) => theme.text.white};
+  color: '#fff';
 `;
 
 export const StyledActionInput = styled(StyledInput)`

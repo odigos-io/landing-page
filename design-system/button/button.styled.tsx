@@ -7,12 +7,8 @@ interface ButtonProps {
 
 export const ButtonContainer = styled.div<ButtonProps>`
   :hover {
-    background: ${({ theme, disabled, variant }) =>
-      disabled
-        ? theme.colors.blue_grey
-        : variant === 'primary'
-        ? theme.colors.torquiz_light
-        : 'transparent'};
+    background: ${({ disabled, variant }) =>
+      disabled ? '#374A5B' : variant === 'primary' ? '#96F2FF' : 'transparent'};
   }
   p {
     cursor: ${({ disabled }) =>
@@ -29,17 +25,16 @@ export const StyledButton = styled.button<ButtonProps>`
   width: 100%;
   height: 100%;
   border: 1px solid
-    ${({ theme, variant }) =>
-      variant === 'primary' ? 'transparent' : theme.colors.secondary};
+    ${({ variant }) => (variant === 'primary' ? 'transparent' : '#0EE6F3')};
   cursor: ${({ disabled }) =>
     disabled ? 'not-allowed !important' : 'pointer !important'};
-  background: ${({ theme, disabled, variant }) =>
+  background: ${({ disabled, variant }) =>
     disabled
       ? variant === 'primary'
-        ? theme.colors.blue_grey
+        ? '#374A5B'
         : 'transparent'
       : variant === 'primary'
-      ? theme.colors.secondary
+      ? '#0EE6F3'
       : 'transparent'};
   justify-content: center;
   align-items: center;
