@@ -1,7 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { Brand } from '@/types/brand';
-import { motion } from 'framer-motion';
 
 const SingleBrand = ({ brand }: { brand: any }) => {
   const [isHovered, setIsHovered] = React.useState(false);
@@ -18,7 +16,6 @@ const SingleBrand = ({ brand }: { brand: any }) => {
         textAlign: 'center',
         alignItems: 'center',
         position: 'relative',
-
         justifyContent: 'space-between',
       }}
     >
@@ -34,6 +31,7 @@ const SingleBrand = ({ brand }: { brand: any }) => {
         }}
       >
         <Image
+          loading="lazy"
           width={50}
           height={50}
           src={image_url}

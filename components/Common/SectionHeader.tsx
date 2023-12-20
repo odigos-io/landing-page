@@ -13,7 +13,6 @@ const SectionHeader = ({ headerInfo }: { headerInfo: HeaderInfo }) => {
 
   return (
     <>
-      {/* <!-- Section Title Start --> */}
       <motion.div
         variants={{
           hidden: {
