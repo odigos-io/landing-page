@@ -5,13 +5,16 @@ import {
   IconActionWrapper,
   IconsWrapper,
 } from './waitlist.styled';
-import { Button, Card, Input, Loader } from '@keyval-dev/design-system';
 import { GithubIcon, LinkedinIcon, SlackIcon } from '@/public/social';
 import { setWaitListItem } from './utils';
 import styled from 'styled-components';
-import { KeyvalText } from '../Text/text';
 import Image from 'next/image';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { Text } from '@/design-system/text/text';
+import { Input } from '@/design-system/input/input';
+import { Button } from '@/design-system/button/button';
+import { Loader } from '@/design-system/loader/loader';
+import { Card } from '@/design-system/card/card';
 
 export const FieldWrapper = styled.div`
   text-align: left;
@@ -95,9 +98,9 @@ export function WaitListForm({
     <Card>
       <CardContentWrapper>
         {submitted ? (
-          <KeyvalText size={26} weight={500}>
+          <Text size={26} weight={500}>
             {REGISTER.THANKS_FOR_REGISTERING}
-          </KeyvalText>
+          </Text>
         ) : (
           <>
             <FieldWrapper>
@@ -124,16 +127,14 @@ export function WaitListForm({
                     <Loader />
                   </LoaderWrapper>
                 ) : (
-                  <KeyvalText color={'#0A1824'}>
-                    {REGISTER.JOIN_WAITLIST}
-                  </KeyvalText>
+                  <Text color={'#0A1824'}>{REGISTER.JOIN_WAITLIST}</Text>
                 )}
               </Button>
             </FieldWrapper>
           </>
         )}
 
-        <KeyvalText size={14}>{REGISTER.EMAIL_READY}</KeyvalText>
+        <Text size={14}>{REGISTER.EMAIL_READY}</Text>
         <IconsWrapper>
           <IconActionWrapper
             onClick={() => window.open(SOCIAL_LINKS.SLACK, '_blank')}

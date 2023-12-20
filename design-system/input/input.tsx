@@ -7,8 +7,8 @@ import {
   DisplayIconsWrapper,
 } from './input.styled';
 import { Text } from '../text/text';
-import EyeOpenIcon from '@/assets/icons/eye-open.svg';
-import EyeCloseIcon from '@/assets/icons/eye-close.svg';
+import EyeOpenIcon from '@/public/icons/eye-open.svg';
+import EyeCloseIcon from '@/public/icons/eye-close.svg';
 interface InputProps {
   label?: string;
   value: string;

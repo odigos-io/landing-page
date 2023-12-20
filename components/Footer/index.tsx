@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { Button, Input } from '@keyval-dev/design-system';
 import { Send } from '@/public/icons';
 import { MAILCHIMP_API_URL, sendToService } from '../WaitlistForm/utils';
+import { Input } from '@/design-system/input/input';
+import { Button } from '@/design-system/button/button';
 
 const Footer = () => {
   const [email, setEmail] = React.useState('');
