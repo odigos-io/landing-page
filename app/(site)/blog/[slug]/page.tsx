@@ -4,6 +4,8 @@ import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
 import { Metadata } from 'next';
 import BlogNotFound from '@/components/Blog/BlogNotFound';
+import Markdown from 'react-markdown';
+import MarkdownRenderer from '@/components/Markdown';
 
 type Props = {
   params: { slug: string };
@@ -69,6 +71,27 @@ const SingleBlogPage = async ({ params }: Props) => {
       </h1>
     ));
   }
+
+  const markdownContent = `
+  # Your Markdown Content
+  
+  \`\`\`jsx
+  import React from 'react';
+
+  const MyComponent = () => {
+    const greeting = 'Hello, World!';
+
+    return (
+      <div>
+        <h1>{greeting}</h1>
+        <p>This is a React component.</p>
+      </div>
+    );
+  };
+
+  export default MyComponent;
+  \`\`\`
+`;
 
   return content ? (
     <>
@@ -184,6 +207,7 @@ const SingleBlogPage = async ({ params }: Props) => {
                 </div>
 
                 <div className="lg:w-[70%]" style={{ marginTop: 48 }}>
+                  <MarkdownRenderer markdownContent={markdownContent} />
                   <div
                     className="blog-details"
                     dangerouslySetInnerHTML={{ __html: content }}
