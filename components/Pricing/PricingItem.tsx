@@ -1,26 +1,8 @@
-"use client";
-import React from "react";
-import axios from "axios";
-import { motion } from "framer-motion";
+'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 export const PricingItem = ({ price }) => {
-  // POST request
-  const handleSubscription = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.post(
-      "/api/payment",
-      {
-        priceId: price.id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    window.location.assign(data);
-  };
-
   return (
     <motion.div
       variants={{
@@ -40,33 +22,41 @@ export const PricingItem = ({ price }) => {
       viewport={{ once: true }}
       className="animate_top md:w-[45%] lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5"
     >
-      {price.nickname == "Cloud" && <div className="absolute top-7.5 -right-3.5 -rotate-90 rounded-tl-full rounded-bl-full bg-secondary font-medium text-black text-metatitle uppercase py-1.5 px-4.5">
-        Open Beta
-      </div>}
-
-      {price.custom_price ? <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-7.5">{price.custom_price}</h3> : <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-6">
-        <div className="flex flex-col -mt-5">
-          <span className="text-regular text-waterloo dark:text-manatee">
-            starting at
-          </span>
-          <div>
-            ${" "}
-            {(price.unit_amount / 100).toLocaleString("en-US", {
-              currency: "USD",
-            })}
-            <span className="text-regular text-waterloo dark:text-manatee">
-              /month
-            </span>
-          </div>
+      {price.nickname == 'Cloud' && (
+        <div className="absolute top-7.5 -right-3.5 -rotate-90 rounded-tl-full rounded-bl-full bg-secondary font-medium text-black text-metatitle uppercase py-1.5 px-4.5">
+          Open Beta
         </div>
-      </h3>}
+      )}
+
+      {price.custom_price ? (
+        <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-7.5">
+          {price.custom_price}
+        </h3>
+      ) : (
+        <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-6">
+          <div className="flex flex-col -mt-5">
+            <span className="text-regular text-waterloo dark:text-manatee">
+              starting at
+            </span>
+            <div>
+              ${' '}
+              {(price.unit_amount / 100).toLocaleString('en-US', {
+                currency: 'USD',
+              })}
+              <span className="text-regular text-waterloo dark:text-manatee">
+                /month
+              </span>
+            </div>
+          </div>
+        </h3>
+      )}
       <h4 className="text-black dark:text-white font-medium text-para2 mb-2.5">
         {price.nickname}
       </h4>
       <p>{price.description}</p>
 
       <div className="border-t border-stroke dark:border-strokedark mt-9 pt-9 pb-12.5">
-        {price.nickname === "Open Source" && (
+        {price.nickname === 'Open Source' && (
           <ul>
             <li className="text-black dark:text-manatee mb-4 last:mb-0">
               Support for Java, Python, Go, .NET and JavaScript applications
@@ -82,7 +72,7 @@ export const PricingItem = ({ price }) => {
             </li>
           </ul>
         )}
-        {price.nickname === "Cloud" && (
+        {price.nickname === 'Cloud' && (
           <ul>
             <li className="text-black dark:text-manatee mb-4 last:mb-0">
               Control instrumentation in runtime
@@ -98,7 +88,7 @@ export const PricingItem = ({ price }) => {
             </li>
           </ul>
         )}
-        {price.nickname === "Enterprise" && (
+        {price.nickname === 'Enterprise' && (
           <ul>
             <li className="text-black dark:text-manatee mb-4 last:mb-0">
               eBPF-based instrumentation for additional programming languages
