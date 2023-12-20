@@ -18,7 +18,7 @@ export default function RootLayout({
       <head>
         <PlausibleProvider domain="odigos.io" />
       </head>
-      <body className={`dark:bg-black`}>
+      <body className={`dark:bg-black `}>
         <ThemeProviderWrapper>
           <ThemeProvider
             enableSystem={false}
@@ -26,7 +26,7 @@ export default function RootLayout({
             defaultTheme="dark"
           >
             <ConversionInitiator />
-            {/* <Header /> */}
+            <Header />
             {children}
             <Footer />
             <ScrollToTop />
