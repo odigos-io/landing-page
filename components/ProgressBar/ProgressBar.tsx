@@ -85,9 +85,9 @@ export var ProgressBar = ({
             width={percent}
             style={{ width: percent, background: getBackground() }}
           />
-          <span className="percent-number" style={{ color: getColor() }}>
+          {/* <span className="percent-number" style={{ color: getColor() }}>
             {value}
-          </span>
+          </span> */}
         </div>
       </div>
     </div>
