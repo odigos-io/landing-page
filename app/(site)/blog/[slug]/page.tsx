@@ -20,6 +20,7 @@ export function generateMetadata({ params }: Props): Metadata {
     metadataBase: new URL('https://odigos.io'),
     title: post?.title,
     keywords: post?.tags,
+    icons: '/images/logo/logo.png',
     openGraph: {
       title: post?.title,
       images: [
