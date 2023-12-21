@@ -52,7 +52,7 @@ export const Timeline = ({
 
   return (
     <div className={'progressComp'} ref={ref}>
-      <span className="label">{status}</span>
+      <span className="base-time">{status}</span>
       <div className="progress-div" style={{ width }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Border />
@@ -72,9 +72,9 @@ export const Timeline = ({
             marginLeft: -3,
           }}
         >
-          <span className="label">{'0'}</span>
+          <span className="base-time">{'0'}</span>
 
-          <span className="label">{'Request time'}</span>
+          <span className="base-time">{'Request time'}</span>
         </div>
       </div>
     </div>
