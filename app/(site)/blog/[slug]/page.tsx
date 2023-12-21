@@ -4,6 +4,7 @@ import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
 import { Metadata } from 'next';
 import BlogNotFound from '@/components/Blog/BlogNotFound';
+import Markdown from '@/components/Markdown';
 
 type Props = {
   params: { slug: string };
@@ -184,10 +185,11 @@ const SingleBlogPage = async ({ params }: Props) => {
                 </div>
 
                 <div className="lg:w-[70%]" style={{ marginTop: 48 }}>
-                  <div
+                  <Markdown source={post.content} />
+                  {/* <div
                     className="blog-details"
                     dangerouslySetInnerHTML={{ __html: content }}
-                  />
+                  /> */}
                 </div>
                 <div
                   className="lg:w-[65%] font-semibold text-white text-lg"
