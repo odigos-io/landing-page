@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import RelatedPost from '@/components/Blog/RelatedPost';
 import { getAllBlogs } from '@/app/libs/markdown';
+import markdownToHtml from '@/app/libs/markdownToHtml';
 import { Metadata } from 'next';
 import BlogNotFound from '@/components/Blog/BlogNotFound';
-import Markdown from '@/components/Markdown';
+
 type Props = {
   params: { slug: string };
 };
@@ -59,6 +60,7 @@ const SingleBlogPage = async ({ params }: Props) => {
   ]);
 
   const post = posts.find((post) => post.slug === slug);
+  const content = await markdownToHtml(post?.content || '');
 
   function renderTags() {
     return post?.tags.map((item) => (
@@ -68,7 +70,7 @@ const SingleBlogPage = async ({ params }: Props) => {
     ));
   }
 
-  return post.content ? (
+  return content ? (
     <>
       <title>{`${post?.title}`}</title>
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">
@@ -180,8 +182,12 @@ const SingleBlogPage = async ({ params }: Props) => {
                     </div>
                   </div>
                 </div>
+
                 <div className="lg:w-[70%]" style={{ marginTop: 48 }}>
-                  <Markdown source={post.content} />
+                  <div
+                    className="blog-details"
+                    dangerouslySetInnerHTML={{ __html: content }}
+                  />
                 </div>
                 <div
                   className="lg:w-[65%] font-semibold text-white text-lg"
