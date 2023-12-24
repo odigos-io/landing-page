@@ -21,7 +21,7 @@ const Testimonial = () => {
             <SectionHeader
               headerInfo={{
                 title: ``,
-                subtitle: `Client’s Testimonials`,
+                subtitle: `Client's Testimonials`,
                 description: `Discover what our valued clients have to say about their experiences.`,
               }}
             />
@@ -72,8 +72,12 @@ const Testimonial = () => {
                 },
               }}
             >
-              <SwiperSlide>
-                <div className="bg-white rounded-lg shadow-solid-9 dark:shadow-none dark:bg-blacksection dark:border dark:border-strokedark p-9 pt-7.5">
+              {/* <SwiperSlide> */}
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div
+                  style={{ maxWidth: 800 }}
+                  className="bg-white rounded-lg shadow-solid-9 dark:shadow-none dark:bg-blacksection dark:border dark:border-strokedark p-9 pt-7.5"
+                >
                   <div className="flex justify-between border-b border-stroke dark:border-strokedark pb-6 mb-7.5">
                     <div>
                       <h4 className="text-black dark:text-white text-metatitle3 mb-1.5">
@@ -91,16 +95,19 @@ const Testimonial = () => {
                     />
                   </div>
 
-                  <p>
-                    Odigos has proven to be a game-changer for us. With its
-                    ability to generate distributed traces instantly, Odigos has
-                    streamlined our process of identifying and resolving
-                    performance issues, pinpointing bottlenecks within
-                    microservices communication, and enhancing the overall
-                    reliability of our applications.
-                  </p>
+                  <blockquote className="italic border-l-2 border-gray-700 pl-4 py-2 my-4">
+                    <p>
+                      Odigos has proven to be a game-changer for us. With its
+                      ability to generate distributed traces instantly, Odigos
+                      has streamlined our process of identifying and resolving
+                      performance issues, pinpointing bottlenecks within
+                      microservices communication, and enhancing the overall
+                      reliability of our applications.
+                    </p>
+                  </blockquote>
                 </div>
-              </SwiperSlide>
+              </div>
+              {/* </SwiperSlide> */}
             </Swiper>
           </div>
         </motion.div>
