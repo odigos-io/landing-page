@@ -32,7 +32,7 @@ export default function Home() {
       <Brands />
       <CTA />
       <FAQ />
-      {/* <Testimonial /> */}
+      <Testimonial />
       <Blog />
     </main>
   );
