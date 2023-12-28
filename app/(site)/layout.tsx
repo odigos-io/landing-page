@@ -17,7 +17,7 @@ export default function RootLayout({
       <head>
         <PlausibleProvider domain="odigos.io" />
       </head>
-      <body>
+      <body className={`dark:bg-black no-scrollbar`}>
         <ThemeProvider
           enableSystem={false}
           attribute="class"
