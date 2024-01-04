@@ -10,6 +10,7 @@ import Blog from '@/components/Blog';
 import Testimonial from '@/components/Testimonial';
 
 import Performance from '@/components/Performance';
+import Overview from '@/components/Overview';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      <Hero />
+      {/* <Hero /> */}
+      <Overview />
       <Feature />
       <Performance />
       <FeaturesTab />
