@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer';
 const progressBarAnimation = keyframes`
   from {
     width: 0;
+
   }
 `;
 
@@ -31,7 +32,7 @@ export var ProgressBar = ({
 }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
-    rootMargin: '-600px 0px 0px 0px',
+    rootMargin: '-200px 0px 0px 0px',
   });
 
   function getBackground() {
@@ -46,9 +47,9 @@ export var ProgressBar = ({
       case 'basic':
         return `linear-gradient(
             90deg,
-            rgba(200, 200, 200, 1) 0%,     /* Gray */
-            rgba(200, 200, 200, 0.6264880952380952) 87%,  /* Lighter Gray */
-            rgba(200, 200, 200, 0.4332107843137255) 100%  /* Even Lighter Gray */
+            #c8c8c8 0%,     /* Gray */
+            #c8c8c89f 87%,  /* Lighter Gray */
+            #c8c8c86e 100%  /* Even Lighter Gray */
           )`;
       case 'traditional':
         return `linear-gradient(
@@ -57,19 +58,6 @@ export var ProgressBar = ({
             rgba(255, 77, 77, 0.6264880952380952) 87%,  /* Lighter Red */
             rgba(255, 77, 77, 0.4332107843137255) 100%  /* Even Lighter Red */
           )`;
-      default:
-        break;
-    }
-  }
-
-  function getColor() {
-    switch (type) {
-      case 'default':
-        return `#6aff79`;
-      case 'basic':
-        return `#c8c8c8`;
-      case 'traditional':
-        return `#ff4d4d`;
       default:
         break;
     }
@@ -85,9 +73,6 @@ export var ProgressBar = ({
             width={percent}
             style={{ width: percent, background: getBackground() }}
           />
-          {/* <span className="percent-number" style={{ color: getColor() }}>
-            {value}
-          </span> */}
         </div>
       </div>
     </div>

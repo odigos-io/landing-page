@@ -26,7 +26,7 @@ const Overview = () => {
 
   return (
     <>
-      {!showSecondSection && (
+      {/* {!showSecondSection && (
         <div
           style={{
             marginTop: 200,
@@ -34,20 +34,18 @@ const Overview = () => {
         >
           <CommandLineInterface />
         </div>
-      )}
-      {showSecondSection && (
+      )} */}
+      {true && (
         <>
           <div
             style={{
-              marginTop: 200,
-              marginBottom: 140,
+              height: '100vh',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'column',
             }}
           >
-            <SoundComponent />
             <BackgroundLine />
             <MirrorText />
             <div
@@ -74,143 +72,149 @@ const Overview = () => {
             >
               <ShineText />
             </div>
-          </div>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
             <div
               style={{
-                width: '80%',
+                width: '100%',
                 display: 'flex',
-                justifyContent: 'space-between',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: 40,
               }}
             >
-              <section
+              <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '20%',
-                  gap: 12,
-                }}
-              >
-                <div style={{ marginLeft: '2%' }}>
-                  <SmallSpan
-                    status={''}
-                    path={'user/id'}
-                    value={'TRACE'}
-                    percent="10%"
-                    type="basic"
-                  />
-                </div>
-                <div style={{ marginLeft: '12%' }}>
-                  <SmallSpan
-                    path={'Lambda'}
-                    status={''}
-                    value={'Invoke'}
-                    percent="10%"
-                    type="basic"
-                  />
-                </div>
-                <div style={{ marginLeft: '22%' }}>
-                  <SmallSpan
-                    status={''}
-                    value={'GET'}
-                    percent="10%"
-                    type="basic"
-                    path={'http/network'}
-                  />
-                </div>
-                <div style={{ marginLeft: '32%' }}>
-                  <SmallSpan
-                    status={''}
-                    value={'POST'}
-                    percent="10%"
-                    type="basic"
-                    path={'/user'}
-                  />
-                </div>
-                <div style={{ marginLeft: '42%' }}>
-                  <SmallSpan
-                    status={''}
-                    value={'PUT'}
-                    percent="10%"
-                    type="basic"
-                    path={'HTTP/1.1'}
-                  />
-                </div>
-                <div style={{ marginLeft: '52%' }}>
-                  <SmallSpan
-                    status={''}
-                    value={'OPTIONS'}
-                    percent="20%"
-                    type="basic"
-                    // path={'/index.html'}
-                  />
-                </div>
-              </section>
-              <section
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
                   width: '80%',
-                  gap: 12,
+                  display: 'flex',
+                  justifyContent: 'space-between',
                 }}
               >
-                <div style={{ marginLeft: '2%' }}>
-                  <ProgressBar
-                    status={''}
-                    value={''}
-                    percent="98%"
-                    type="basic"
-                  />
-                </div>
-                <div style={{ marginLeft: '10%' }}>
-                  <ProgressBar
-                    status={''}
-                    value={''}
-                    percent="20%"
-                    type="basic"
-                  />
-                </div>
-                <div style={{ marginLeft: '20%' }}>
-                  <ProgressBar
-                    status={''}
-                    value={''}
-                    percent="35%"
-                    type="basic"
-                  />
-                </div>
-                <div style={{ marginLeft: '20%' }}>
-                  <ProgressBar
-                    status={''}
-                    value={''}
-                    percent="20%"
-                    type="basic"
-                  />
-                </div>
-                <div style={{ marginLeft: '40%' }}>
-                  <ProgressBar
-                    status={''}
-                    value={''}
-                    percent="30%"
-                    type="basic"
-                  />
-                </div>
-                <div style={{ marginLeft: '10%' }}>
-                  <ProgressBar
-                    status={''}
-                    value={''}
-                    percent="80%"
-                    type="basic"
-                  />
-                </div>
-              </section>
+                <section
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '20%',
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ marginLeft: '2%' }}>
+                    <SmallSpan
+                      status={''}
+                      path={'user/id'}
+                      value={'TRACE'}
+                      percent="10%"
+                      type="basic"
+                      icon="/icons/overview/db.svg"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '12%' }}>
+                    <SmallSpan
+                      path={'Lambda'}
+                      status={''}
+                      value={'Invoke'}
+                      percent="10%"
+                      type="basic"
+                      icon="/icons/overview/code.svg"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '22%' }}>
+                    <SmallSpan
+                      status={''}
+                      value={'GET'}
+                      percent="10%"
+                      type="basic"
+                      path={'http/network'}
+                      icon="/icons/overview/db.svg"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '32%' }}>
+                    <SmallSpan
+                      status={''}
+                      value={'POST'}
+                      percent="10%"
+                      type="basic"
+                      path={'/user'}
+                      icon="/icons/overview/db.svg"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '42%' }}>
+                    <SmallSpan
+                      status={''}
+                      value={'PUT'}
+                      percent="10%"
+                      type="basic"
+                      path={'HTTP/1.1'}
+                      icon="/icons/overview/db.svg"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '52%' }}>
+                    <SmallSpan
+                      status={''}
+                      value={'OPTIONS'}
+                      percent="20%"
+                      type="basic"
+                      // path={'/index.html'}
+                      icon="/icons/overview/fast.svg"
+                    />
+                  </div>
+                </section>
+                <section
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '80%',
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ marginLeft: '2%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="98%"
+                      type="basic"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '10%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="20%"
+                      type="basic"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '20%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="35%"
+                      type="basic"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '20%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="20%"
+                      type="basic"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '40%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="30%"
+                      type="basic"
+                    />
+                  </div>
+                  <div style={{ marginLeft: '10%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="80%"
+                      type="basic"
+                    />
+                  </div>
+                </section>
+              </div>
             </div>
           </div>
         </>

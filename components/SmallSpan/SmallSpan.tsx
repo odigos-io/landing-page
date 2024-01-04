@@ -22,6 +22,9 @@ const Progress = styled.div<{ width?: any; inView?: any }>`
   opacity: ${(props) => (props.inView ? 1 : 0)};
   animation: ${(props) => (props.inView ? progressBarAnimation : 'none')} 2s
     ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export var SmallSpan = ({
@@ -31,10 +34,11 @@ export var SmallSpan = ({
   value = '12',
   type = 'default',
   path = '',
+  icon = '',
 }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
-    rootMargin: '-600px 0px 0px 0px',
+    rootMargin: '-200px 0px 0px 0px',
   });
 
   function getBackground() {
@@ -60,6 +64,10 @@ export var SmallSpan = ({
             rgba(255, 77, 77, 0.6264880952380952) 87%,  /* Lighter Red */
             rgba(255, 77, 77, 0.4332107843137255) 100%  /* Even Lighter Red */
           )`;
+      case 'https':
+        return `linear-gradient(90deg, #4CAF50 0%, #2E7D32 50%, #388E3C 100%)`;
+      case 'db':
+        return `linear-gradient(90deg, #2196F3 0%, #1565C0 50%, #1976D2 100%)`;
       default:
         break;
     }
@@ -89,7 +97,9 @@ export var SmallSpan = ({
             inView={inView}
             width={percent}
             style={{ width: 26, background: getBackground() }}
-          />
+          >
+            {icon && <Image src={icon} width={20} height={20} alt="" />}
+          </Progress>
           <div style={{ color: getColor() }}>{value}</div>
           <div
             style={{
