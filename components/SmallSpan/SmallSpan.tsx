@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './SmallSpan.css';
 import styled, { keyframes } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
@@ -40,6 +40,17 @@ export var SmallSpan = ({
     triggerOnce: true,
     rootMargin: '-200px 0px 0px 0px',
   });
+
+  const [showIcon, setShowIcon] = useState(false);
+
+  useEffect(() => {
+    // Set a timeout to show the second section after 5 seconds
+    const timeoutId = setTimeout(() => {
+      icon && setShowIcon(true);
+    }, 1000);
+    // Clear the timeout when the component is unmounted
+    return () => clearTimeout(timeoutId);
+  }, [icon]);
 
   function getBackground() {
     switch (type) {
@@ -91,14 +102,12 @@ export var SmallSpan = ({
       <span className="label">{status}</span>
       <div className="progress-div" style={{ width }}>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          {/* <img src={'../../public/icons/expand.png'} /> */}
           <Image src={Expand} width={10} height={10} alt="" />
           <Progress
             inView={inView}
-            width={percent}
             style={{ width: 26, background: getBackground() }}
           >
-            {icon && <Image src={icon} width={20} height={20} alt="" />}
+            {showIcon && <Image src={icon} width={20} height={20} alt="" />}
           </Progress>
           <div style={{ color: getColor() }}>{value}</div>
           <div

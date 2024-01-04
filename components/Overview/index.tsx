@@ -12,6 +12,8 @@ import ShineText from '../ShineText';
 import BackgroundLine from '../BackgroundLine';
 import SoundComponent from '../SoundComponent';
 
+const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
+
 const Overview = () => {
   const [showSecondSection, setShowSecondSection] = useState(false);
 
@@ -72,6 +74,7 @@ const Overview = () => {
             >
               <ShineText />
             </div>
+
             <div
               style={{
                 width: '100%',
@@ -81,6 +84,38 @@ const Overview = () => {
                 marginTop: 40,
               }}
             >
+              <div
+                style={{
+                  width: '80%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <section
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '20%',
+                  }}
+                ></section>
+
+                <section
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '79%',
+                  }}
+                >
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    {TIMES.map((time) => (
+                      <span style={{ fontSize: 12 }}>{time}</span>
+                    ))}
+                  </div>
+                </section>
+              </div>
+
               <div
                 style={{
                   width: '80%',
@@ -152,11 +187,11 @@ const Overview = () => {
                       value={'OPTIONS'}
                       percent="20%"
                       type="basic"
-                      // path={'/index.html'}
                       icon="/icons/overview/fast.svg"
                     />
                   </div>
                 </section>
+
                 <section
                   style={{
                     display: 'flex',
