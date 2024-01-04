@@ -24,7 +24,7 @@ export default function RootLayout({
           defaultTheme="dark"
         >
           <ConversionInitiator />
-          <Header />
+          {/* <Header /> */}
           {children}
           <Footer />
           <ScrollToTop />

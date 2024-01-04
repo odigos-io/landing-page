@@ -11,6 +11,7 @@ import Testimonial from '@/components/Testimonial';
 
 import Performance from '@/components/Performance';
 import Overview from '@/components/Overview';
+import FloatingHeader from '@/components/FloatingHeader';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),

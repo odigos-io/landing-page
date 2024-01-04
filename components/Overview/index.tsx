@@ -11,6 +11,7 @@ import MirrorText from '../MirrorText';
 import ShineText from '../ShineText';
 import BackgroundLine from '../BackgroundLine';
 import SoundComponent from '../SoundComponent';
+import FloatingHeader from '../FloatingHeader';
 
 const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
 
@@ -249,6 +250,16 @@ const Overview = () => {
                     />
                   </div>
                 </section>
+              </div>
+              <div
+                style={{
+                  marginTop: 100,
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <FloatingHeader />
               </div>
             </div>
           </div>
