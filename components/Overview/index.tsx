@@ -62,6 +62,7 @@ const Overview = () => {
                 fontWeight: 400,
                 letterSpacing: 1.9,
                 marginTop: 20,
+                fontFamily: 'Google Sans Display,Arial,Helvetica,sans-serif',
               }}
             >
               Simplify OpenTelemetry complexity with the only platform that can

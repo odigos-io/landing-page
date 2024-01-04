@@ -1,0 +1,26 @@
+.floating-paragraph-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
+.floating-paragraph {
+  font-size: 54px; /* Adjust the font size as needed */
+  text-align: center;
+  color: #fff;
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.2;
+  width: 80%;
+  font-family: 'Google Sans Display', Arial, Helvetica, sans-serif;
+}
+
+.mark-span {
+  /* color: #f9a825; */
+  font-weight: 600;
+  background: -webkit-linear-gradient(270deg, #0ee6f3, #c6c6c6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

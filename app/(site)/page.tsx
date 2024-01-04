@@ -12,6 +12,7 @@ import Testimonial from '@/components/Testimonial';
 import Performance from '@/components/Performance';
 import Overview from '@/components/Overview';
 import FloatingHeader from '@/components/FloatingHeader';
+import FloatingParagraph from '@/components/FloatingParagraph';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
@@ -28,6 +29,7 @@ export default function Home() {
     <main>
       {/* <Hero /> */}
       <Overview />
+      <FloatingParagraph />
       <Feature />
       <Performance />
       <FeaturesTab />
