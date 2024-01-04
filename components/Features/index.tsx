@@ -11,7 +11,7 @@ const Feature = () => {
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <SectionHeader
             headerInfo={{
-              title: 'FEATURES',
+              title: '',
               subtitle: 'Odigos Open Source',
               description: `Odigos uses OpenTelemetry and eBPF to build agnostic observability pipelines for all applications`,
             }}

@@ -11,8 +11,13 @@ import Testimonial from '@/components/Testimonial';
 
 import Performance from '@/components/Performance';
 import Overview from '@/components/Overview';
-import FloatingHeader from '@/components/FloatingHeader';
 import FloatingParagraph from '@/components/FloatingParagraph';
+import { Rubik } from 'next/font/google';
+
+const openSans = Rubik({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
@@ -26,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main>
+    <main className={openSans.className}>
       {/* <Hero /> */}
       <Overview />
       <FloatingParagraph />

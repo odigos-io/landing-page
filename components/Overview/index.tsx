@@ -12,8 +12,13 @@ import ShineText from '../ShineText';
 import BackgroundLine from '../BackgroundLine';
 import SoundComponent from '../SoundComponent';
 import FloatingHeader from '../FloatingHeader';
+import { Open_Sans } from 'next/font/google';
 
 const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 const Overview = () => {
   const [showSecondSection, setShowSecondSection] = useState(false);
@@ -62,7 +67,6 @@ const Overview = () => {
                 fontWeight: 400,
                 letterSpacing: 1.9,
                 marginTop: 20,
-                fontFamily: 'Google Sans Display,Arial,Helvetica,sans-serif',
               }}
             >
               Simplify OpenTelemetry complexity with the only platform that can

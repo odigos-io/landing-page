@@ -56,7 +56,7 @@ const Performance = () => {
                   style={{ textDecoration: 'underline', fontSize: 18 }}
                   href="/blog/ebpf-instrumentation-faster-than-manual"
                 >
-                  <b> 50x faster performance </b>
+                  <b className="mark-span"> 50x faster performance </b>
                 </a>
                 - virtually eliminating latency
               </p>

@@ -42,6 +42,12 @@
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 } */
 
+.container {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .light {
   position: absolute;
   width: 0px;
