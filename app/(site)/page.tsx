@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className={openSans.className}>
+    <main className={openSans.className} style={{ background: '#060606' }}>
       {/* <Hero /> */}
       <Overview />
       <FloatingParagraph />

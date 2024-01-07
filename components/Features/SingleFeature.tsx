@@ -33,7 +33,7 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
       >
         <div
           style={{
-            backgroundColor: '#07141d',
+            backgroundColor: '#060606',
             height: '100%',
             borderRadius: 22,
             padding: '30px 60px',

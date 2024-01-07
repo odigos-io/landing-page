@@ -27,10 +27,9 @@ const FloatingHeader = () => {
 
   return (
     <div className={`floating-header ${isSticky ? 'sticky' : ''}`}>
-      {/* Your header content goes here */}
       <nav>
         <ul>
-          <li style={{ color: '#000', borderBottomWidth: 1 }}>Home</li>
+          <li>Home</li>
           <li>Blog</li>
           <li>Pricing</li>
           <li>Documentation</li>

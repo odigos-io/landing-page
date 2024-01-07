@@ -16,7 +16,7 @@
   border-radius: 30px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
   transition: 0.3s ease-in-out; /* Add a smooth transition effect */
-  z-index: 1000; /* Ensure the header appears above other elements */
+  z-index: 998; /* Ensure the header appears above other elements */
 }
 
 .floating-header.sticky {
@@ -27,6 +27,8 @@
 
 /* Add any additional styling for your navigation links or other elements */
 .floating-header nav {
+  color: #000;
+  text-align: center;
 }
 
 .floating-header ul {
@@ -39,13 +41,11 @@
 
 .floating-header li {
   margin-right: 20px;
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(270deg, #0ee6f3, #ffffff, #0ee6f3);
+  border-image-slice: 1;
+  width: 100%;
   /* Add your list item styling here */
-}
-
-/* Add any additional styling for your links, for example */
-.floating-header a {
-  text-decoration: none;
-  color: #333333; /* Adjust the text color as needed */
 }
 
 /* You can add more styles based on your specific design requirements */

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import Image from 'next/image';
-import { Expand } from '@/public/icons';
+import { Close, Expand } from '@/public/icons';
 import { SmallSpan } from '../SmallSpan/SmallSpan';
 import { Timeline } from '../SmallSpan/Timeline';
 import ScrambleText from '../ScrambleText';
@@ -13,6 +13,7 @@ import BackgroundLine from '../BackgroundLine';
 import SoundComponent from '../SoundComponent';
 import FloatingHeader from '../FloatingHeader';
 import { Open_Sans } from 'next/font/google';
+import GithubButton from '../GithubButtton';
 
 const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
 const openSans = Open_Sans({
@@ -22,7 +23,7 @@ const openSans = Open_Sans({
 
 const Overview = () => {
   const [showSecondSection, setShowSecondSection] = useState(false);
-
+  const [showDemo, setShowDemo] = React.useState(false);
   useEffect(() => {
     // Set a timeout to show the second section after 5 seconds
     const timeoutId = setTimeout(() => {
@@ -43,6 +44,48 @@ const Overview = () => {
           <CommandLineInterface />
         </div>
       )} */}
+      <div
+        style={{
+          display: 'flex',
+          gap: 8,
+          alignItems: 'center',
+          position: 'absolute',
+          top: 20,
+          left: 20,
+          cursor: 'pointer',
+        }}
+        onClick={() => setShowDemo(true)}
+      >
+        <div style={{ color: '#fff' }}>Watch a Demo</div>
+        <div
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: 36,
+            display: 'flex',
+            backgroundColor: '#fff',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            loading="lazy"
+            src={'/icons/overview/play.svg'}
+            alt="Expand"
+            width={24}
+            height={24}
+          />
+        </div>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 20,
+        }}
+      >
+        <GithubButton />
+      </div>
       {true && (
         <>
           <div
@@ -268,6 +311,37 @@ const Overview = () => {
               </div>
             </div>
           </div>
+          {showDemo && (
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black overflow-hidden z-999">
+              <div className="relative">
+                <div
+                  className="absolute top-[-40px] right-[-40px] cursor-pointer"
+                  onClick={() => setShowDemo(false)}
+                >
+                  <div className=" rounded-full flex items-center justify-center hover:bg-#ffffff78">
+                    <Image
+                      loading="lazy"
+                      src={Close}
+                      alt="Close"
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                  </div>
+                </div>
+
+                <iframe
+                  className="rounded-lg"
+                  style={{ width: '60vw', height: '60vh' }}
+                  src={`https://www.youtube.com/embed/nynyV7FC4VI`}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="Embedded youtube"
+                />
+              </div>
+            </div>
+          )}
         </>
       )}
     </>

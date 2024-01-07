@@ -22,7 +22,10 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="bg-white dark:bg-blacksection border-t border-stroke dark:border-strokedark">
+      <footer
+        style={{ backgroundColor: '#060606' }}
+        className="bg-white dark:bg-blacksection border-t border-stroke dark:border-strokedark"
+      >
         <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
           {/* <!-- Footer Top --> */}
           <div className="py-20 lg:py-25">
