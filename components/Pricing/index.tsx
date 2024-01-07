@@ -4,16 +4,29 @@ import Image from 'next/image';
 import SectionHeader from '../Common/SectionHeader';
 import { PricingItem } from './PricingItem';
 import { PRICING } from './data';
+import FloatingHeader from '../FloatingHeader';
 
 const Pricing = () => {
   return (
     <>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+        }}
+      >
+        <FloatingHeader />
+      </div>
       <section className="pt-45 pb-20 lg:pb-25 xl:pb-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="animate_top text-center mx-auto">
             <SectionHeader
               headerInfo={{
-                title: `PRICING`,
+                title: ``,
                 subtitle: `Simple Pricing`,
                 description: `A simple pricing model for every step of your observability journey`,
               }}
