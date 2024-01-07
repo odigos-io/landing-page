@@ -35,7 +35,16 @@ export var SmallSpan = ({
   type = 'default',
   path = '',
   icon = '',
+  delay = 0,
 }) => {
+  const [showAnimation, setShowAnimation] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setShowAnimation(true);
+    }, delay);
+  }, []);
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     rootMargin: '-200px 0px 0px 0px',
@@ -107,7 +116,7 @@ export var SmallSpan = ({
     }
   }
 
-  return (
+  return showAnimation ? (
     <div className={'progressComp'} ref={ref}>
       <span className="label">{status}</span>
       <div className="progress-div" style={{ width }}>
@@ -142,5 +151,7 @@ export var SmallSpan = ({
         </div>
       </div>
     </div>
+  ) : (
+    <div className={'progressComp'} ref={ref} />
   );
 };

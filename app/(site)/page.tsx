@@ -12,10 +12,10 @@ import Testimonial from '@/components/Testimonial';
 import Performance from '@/components/Performance';
 import Overview from '@/components/Overview';
 import FloatingParagraph from '@/components/FloatingParagraph';
-import { Rubik } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import HowItWork from '@/components/HowItWork';
 
-const openSans = Rubik({
+const fontFamily = Montserrat({
   subsets: ['latin'],
   display: 'swap',
 });
@@ -32,14 +32,12 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className={openSans.className} style={{ background: '#060606' }}>
-      {/* <Hero /> */}
+    <main className={fontFamily.className} style={{ background: '#060606' }}>
       <Overview />
       <FloatingParagraph />
       <Feature />
       <Performance />
       <HowItWork />
-      {/* <FeaturesTab /> */}
       <Integration />
       <CTA />
       <FAQ />

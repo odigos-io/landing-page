@@ -7,19 +7,20 @@ import { useInView } from 'react-intersection-observer';
 const progressBarAnimation = keyframes`
   from {
     width: 0;
-
+    opacity: 0;
+    border-radius: 0.4rem;
+  }
+  to {
+    opacity: 1;
   }
 `;
 
 const Progress = styled.div<{ width?: any; inView?: any }>`
   height: 25px;
-  transition: 1s ease;
-  transition-delay: 0.5s;
   border-radius: 0.4rem;
   margin: 0;
-  width: ${(props) => props.width || '0%'};
-  opacity: ${(props) => (props.inView ? 1 : 0)};
-  animation: ${(props) => (props.inView ? progressBarAnimation : 'none')} 2s
+
+  animation: ${(props) => (props.inView ? progressBarAnimation : 'none')} 3s
     ease;
 `;
 
@@ -29,10 +30,20 @@ export var ProgressBar = ({
   status,
   value = '12',
   type = 'default',
+  delay = 0,
 }) => {
+  const [showAnimation, setShowAnimation] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setShowAnimation(true);
+    }, delay);
+  }, []);
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     rootMargin: '-200px 0px 0px 0px',
+    delay,
   });
 
   function getBackground() {
@@ -73,28 +84,22 @@ export var ProgressBar = ({
     }
   }
 
-  return (
+  return showAnimation ? (
     <div className={'progressComp'} ref={ref}>
       <span className="label">{status}</span>
       <div className="progress-div" style={{ width }}>
-        <div
-          style={{
-            display: 'flex',
-            // justifyContent: 'center',
-            // alignItems: 'center',
-            // width: percent,
-            // borderRadius: '0.4rem',
-            // background:
-            //   'linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(7,110,255,0.7553615196078431) 90%)',
-          }}
-        >
+        <div>
           <Progress
             inView={inView}
-            width={percent}
-            style={{ width: percent, background: getBackground() }}
+            style={{
+              width: percent,
+              background: getBackground(),
+            }}
           />
         </div>
       </div>
     </div>
+  ) : (
+    <div className={'progressComp'} ref={ref} />
   );
 };

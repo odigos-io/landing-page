@@ -9,17 +9,10 @@ import ScrambleText from '../ScrambleText';
 import CommandLineInterface from '../Terminal';
 import MirrorText from '../MirrorText';
 import ShineText from '../ShineText';
-import BackgroundLine from '../BackgroundLine';
-import SoundComponent from '../SoundComponent';
 import FloatingHeader from '../FloatingHeader';
-import { Open_Sans } from 'next/font/google';
 import GithubButton from '../GithubButtton';
 
 const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
-const openSans = Open_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 const Overview = () => {
   const [showSecondSection, setShowSecondSection] = useState(false);
@@ -97,7 +90,7 @@ const Overview = () => {
               flexDirection: 'column',
             }}
           >
-            <BackgroundLine />
+            {/* <BackgroundLine /> */}
             <MirrorText />
             <div
               style={{
@@ -173,6 +166,7 @@ const Overview = () => {
                     flexDirection: 'column',
                     width: '20%',
                     gap: 12,
+                    height: 200,
                   }}
                 >
                   <div style={{ marginLeft: '2%' }}>
@@ -183,6 +177,7 @@ const Overview = () => {
                       percent="10%"
                       type="blue"
                       icon="/icons/overview/db.svg"
+                      delay={10}
                     />
                   </div>
                   <div style={{ marginLeft: '12%' }}>
@@ -193,6 +188,7 @@ const Overview = () => {
                       percent="10%"
                       type="white-blue"
                       icon="/icons/overview/code.svg"
+                      delay={1000}
                     />
                   </div>
                   <div style={{ marginLeft: '22%' }}>
@@ -203,6 +199,7 @@ const Overview = () => {
                       type="light-blue"
                       path={'http/network'}
                       icon="/icons/overview/db.svg"
+                      delay={1500}
                     />
                   </div>
                   <div style={{ marginLeft: '32%' }}>
@@ -213,18 +210,9 @@ const Overview = () => {
                       type="orange"
                       path={'/user'}
                       icon="/icons/overview/db.svg"
+                      delay={2000}
                     />
                   </div>
-                  {/* <div style={{ marginLeft: '42%' }}>
-                    <SmallSpan
-                      status={''}
-                      value={'PUT'}
-                      percent="10%"
-                      type="basic"
-                      path={'HTTP/1.1'}
-                      icon="/icons/overview/db.svg"
-                    />
-                  </div> */}
                   <div style={{ marginLeft: '42%' }}>
                     <SmallSpan
                       status={''}
@@ -232,6 +220,7 @@ const Overview = () => {
                       percent="20%"
                       type="peach"
                       icon="/icons/overview/fast.svg"
+                      delay={1800}
                       // path={'HTTP/1.1'}
                     />
                   </div>
@@ -251,6 +240,7 @@ const Overview = () => {
                       value={''}
                       percent="98%"
                       type="blue"
+                      delay={10}
                     />
                   </div>
                   <div style={{ marginLeft: '10%' }}>
@@ -259,6 +249,7 @@ const Overview = () => {
                       value={''}
                       percent="20%"
                       type="white-blue"
+                      delay={1000}
                     />
                   </div>
                   <div style={{ marginLeft: '20%' }}>
@@ -267,6 +258,7 @@ const Overview = () => {
                       value={''}
                       percent="35%"
                       type="light-blue"
+                      delay={1500}
                     />
                   </div>
                   <div style={{ marginLeft: '40%' }}>
@@ -275,22 +267,16 @@ const Overview = () => {
                       value={''}
                       percent="50%"
                       type="orange"
+                      delay={2000}
                     />
                   </div>
-                  {/* <div style={{ marginLeft: '40%' }}>
-                    <ProgressBar
-                      status={''}
-                      value={''}
-                      percent="30%"
-                      type="peach"
-                    />
-                  </div> */}
                   <div style={{ marginLeft: '30%' }}>
                     <ProgressBar
                       status={''}
                       value={''}
                       percent="70%"
                       type="peach"
+                      delay={1800}
                     />
                   </div>
                 </section>
