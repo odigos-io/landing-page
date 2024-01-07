@@ -8,11 +8,12 @@ const FloatingParagraph = () => {
   return (
     <div className="floating-paragraph-container">
       <div className="floating-paragraph">
-        {'Odigos is built from the ground up for  '}
-        <span className="mark-span">{'multimodality'}</span>
+        {'Simplify '}
+        <span className="mark-span">{'OpenTelemetry'}</span>
         {
-          '- make it easy to trace requests across multiple services, multiple protocols, and multiple datacenters.'
+          ' complexity and eliminate performance overhead with the only platform that can generate distributed tracing across all your applications '
         }
+        <span className="mark-span">{'without code changes.'}</span>
       </div>
     </div>
   );

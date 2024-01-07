@@ -21,16 +21,6 @@ const brandData: any[] = [
     display_name: 'Google Cloud Monitoring',
     image_url: '/dest/gcp.svg',
   },
-  // {
-  //   type: 'managed',
-  //   display_name: 'Grafana Cloud Loki',
-  //   image_url: '/dest/grafana.svg',
-  // },
-  // {
-  //   type: 'managed',
-  //   display_name: 'Grafana Cloud Prometheus',
-  //   image_url: '/dest/grafana.svg',
-  // },
   {
     type: 'managed',
     display_name: 'Grafana Cloud Tempo',

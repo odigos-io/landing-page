@@ -104,17 +104,16 @@ const Overview = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 color: '#d7d7d7',
-                fontSize: 24,
+                fontSize: 36,
                 textAlign: 'center',
-                width: '70%',
+                width: '60%',
                 fontWeight: 400,
-                letterSpacing: 1.9,
+                letterSpacing: 2.4,
                 marginTop: 20,
               }}
             >
-              Simplify OpenTelemetry complexity with the only platform that can
-              generate distributed tracing across all your applications without
-              code changes
+              Enterprise-Grade Opentelemetry for Superior Application
+              Performance Monitoring
             </div>
             <div
               style={{

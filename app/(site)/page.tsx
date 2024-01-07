@@ -13,6 +13,7 @@ import Performance from '@/components/Performance';
 import Overview from '@/components/Overview';
 import FloatingParagraph from '@/components/FloatingParagraph';
 import { Rubik } from 'next/font/google';
+import HowItWork from '@/components/HowItWork';
 
 const openSans = Rubik({
   subsets: ['latin'],
@@ -37,7 +38,8 @@ export default function Home() {
       <FloatingParagraph />
       <Feature />
       <Performance />
-      <FeaturesTab />
+      <HowItWork />
+      {/* <FeaturesTab /> */}
       <Integration />
       <Brands />
       <CTA />
