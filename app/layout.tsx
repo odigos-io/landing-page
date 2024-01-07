@@ -7,7 +7,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="eng">
-      <body className={`dark:bg-black no-scrollbar`}>{children}</body>
+      <body style={{ background: '#060606' }} className={`no-scrollbar`}>
+        {children}
+      </body>
     </html>
   );
 }

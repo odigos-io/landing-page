@@ -7,7 +7,7 @@ const CTA = () => {
   return (
     <>
       {/* <!-- ===== CTA Start ===== --> */}
-      <section className="py-20 lg:py-25 xl:py-30 px-4 md:px-8 2xl:px-0 overflow-hidden ">
+      <section className="py-20 lg:py-25 xl:py-30 px-4 md:px-8 2xl:px-0 overflow-hidden  ">
         <div
           style={{ borderRadius: 300 }}
           className="mx-auto max-w-c-1390 px-7.5 md:px-12.5 xl:px-17.5 py-12.5 xl:py-0 gradient-background"
@@ -21,7 +21,7 @@ const CTA = () => {
               height: 350,
               gap: 40,
             }}
-            className="flex  gap-8 md:gap-0 "
+            className="flex  gap-8 md:gap-0  "
           >
             <motion.div
               variants={{
@@ -39,7 +39,7 @@ const CTA = () => {
               whileInView="visible"
               transition={{ duration: 1, delay: 0.1 }}
               viewport={{ once: true }}
-              className="animate_left md:w-[70%]"
+              className="animate_left md:w-[70%] "
             >
               <h2 style={{ fontSize: 80 }} className="dark:text-black ">
                 Join The Waitlist

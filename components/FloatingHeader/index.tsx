@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import './style.css';
+import menuData from '../Header/menuData';
+import Link from 'next/link';
 const FloatingHeader = () => {
   const [isSticky, setSticky] = useState(false);
 
@@ -29,10 +31,11 @@ const FloatingHeader = () => {
     <div className={`floating-header ${isSticky ? 'sticky' : ''}`}>
       <nav>
         <ul>
-          <li>Home</li>
-          <li>Blog</li>
-          <li>Pricing</li>
-          <li>Documentation</li>
+          {menuData.map((item) => (
+            <Link href={`${item.path}`}>
+              <li key={item.id}>{item.title}</li>
+            </Link>
+          ))}
         </ul>
       </nav>
     </div>

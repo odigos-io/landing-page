@@ -2,6 +2,7 @@ import BlogItem from '@/components/Blog/BlogItem';
 import { getAllBlogs } from '@/app/libs/markdown';
 import SectionHeader from '@/components/Common/SectionHeader';
 import { Metadata } from 'next';
+import FloatingHeader from '@/components/FloatingHeader';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
@@ -26,6 +27,17 @@ const BlogPage = async () => {
   return (
     <>
       {/* <!-- ===== Blog Grid Start ===== --> */}
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          top: 50,
+        }}
+      >
+        <FloatingHeader />
+      </div>
       <div style={{ marginTop: 200 }}>
         {/* <!-- Section Title Start --> */}
         <div className="animate_top text-center mx-auto">

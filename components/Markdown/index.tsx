@@ -6,5 +6,5 @@ export default function Markdown({ source }: { source?: any }) {
   useEffect(() => {
     document.documentElement.setAttribute('data-color-mode', 'dark');
   }, []);
-  return <MarkdownPreview source={source} />;
+  return <MarkdownPreview style={{ background: '#060606' }} source={source} />;
 }
