@@ -107,19 +107,15 @@ const Overview = () => {
                 fontSize: 36,
                 textAlign: 'center',
                 width: '60%',
-                fontWeight: 400,
-                letterSpacing: 2.4,
+                fontWeight: 200,
+                lineHeight: 1.1,
                 marginTop: 20,
               }}
             >
               Enterprise-Grade Opentelemetry for Superior Application
               Performance Monitoring
             </div>
-            <div
-              style={{
-                marginTop: 40,
-              }}
-            >
+            <div style={{ marginTop: 40 }}>
               <ShineText />
             </div>
 

@@ -41,7 +41,6 @@ export default function Home() {
       <HowItWork />
       {/* <FeaturesTab /> */}
       <Integration />
-      <Brands />
       <CTA />
       <FAQ />
       <Testimonial />
