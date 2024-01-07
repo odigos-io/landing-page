@@ -49,7 +49,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -79,12 +79,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',
@@ -159,7 +159,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -189,12 +189,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',
@@ -269,7 +269,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -299,12 +299,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',
@@ -379,7 +379,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -409,12 +409,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',

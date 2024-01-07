@@ -9,7 +9,7 @@ const CTA = () => {
       {/* <!-- ===== CTA Start ===== --> */}
       <section className="py-20 lg:py-25 xl:py-30 px-4 md:px-8 2xl:px-0 overflow-hidden ">
         <div
-          style={{ borderRadius: 200 }}
+          style={{ borderRadius: 300 }}
           className="mx-auto max-w-c-1390 px-7.5 md:px-12.5 xl:px-17.5 py-12.5 xl:py-0 gradient-background"
         >
           <div
@@ -18,7 +18,7 @@ const CTA = () => {
               justifyContent: 'center',
               alignItems: 'center',
               textAlign: 'center',
-              height: 450,
+              height: 350,
               gap: 40,
             }}
             className="flex  gap-8 md:gap-0 "

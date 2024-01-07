@@ -2,13 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 
 const SingleBrand = ({ brand }: { brand: any }) => {
-  const [isHovered, setIsHovered] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(true);
   const { image_url, type, display_name, imageLight, id } = brand;
 
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      // onMouseEnter={() => setIsHovered(true)}
+      // onMouseLeave={() => setIsHovered(false)}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -23,7 +23,7 @@ const SingleBrand = ({ brand }: { brand: any }) => {
         style={{
           width: 80,
           height: 80,
-          backgroundColor: '#292e45',
+          // backgroundColor: '#292e45',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -35,13 +35,13 @@ const SingleBrand = ({ brand }: { brand: any }) => {
           width={50}
           height={50}
           src={image_url}
-          style={{ filter: isHovered ? 'grayscale(0%)' : 'grayscale(90%)' }}
+          // style={{ filter: isHovered ? 'grayscale(0%)' : 'grayscale(90%)' }}
           alt="Brand"
         />
       </div>
       <div
         style={{
-          color: isHovered ? '#fff' : '#424242',
+          color: '#909dac',
           width: 120,
           height: 50,
           display: 'flex',

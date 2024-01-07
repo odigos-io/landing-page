@@ -8,10 +8,10 @@ const Integration = () => {
   return (
     <>
       <section>
-        <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
+        <div className="mx-auto px-4 md:px-8 2xl:px-0">
           <SectionHeader
             headerInfo={{
-              title: `INTEGRATIONS`,
+              title: ``,
               subtitle: `Seamless Integration with any APM`,
               description: `Odigos is vendor agnostic and can send the telemetry data it generates to any destination supporting OpenTelemetry`,
             }}
@@ -46,7 +46,7 @@ const Integration = () => {
               viewport={{ once: true }}
               className="animate_top w-1/6"
             >
-              <div className="inline-block rounded-[10px] shadow-solid-7 bg-white dark:bg-btndark p-4.5">
+              <div className="inline-block rounded-[10px] shadow-solid-7  p-4.5">
                 <Image
                   width={50}
                   height={50}
@@ -93,7 +93,7 @@ const Integration = () => {
               viewport={{ once: true }}
               className="animate_top w-1/6"
             >
-              <div className="inline-block rounded-[10px] shadow-solid-7 bg-white dark:bg-btndark p-4.5">
+              <div className="inline-block rounded-[10px] shadow-solid-7  p-4.5">
                 <Image
                   width={50}
                   height={50}
@@ -142,7 +142,7 @@ const Integration = () => {
               viewport={{ once: true }}
               className="animate_top w-1/6"
             >
-              <div className="inline-block rounded-[10px] shadow-solid-7 bg-white dark:bg-btndark p-4.5">
+              <div className="inline-block rounded-[10px] shadow-solid-7  p-4.5">
                 <Image
                   width={50}
                   height={50}
@@ -210,11 +210,11 @@ const Integration = () => {
               viewport={{ once: true }}
               className="animate_top w-1/6"
             >
-              <div className="inline-block rounded-[10px] shadow-solid-7 bg-white dark:bg-btndark p-4.5">
+              <div className="inline-block rounded-[10px] shadow-solid-7  p-4.5">
                 <Image
                   width={50}
                   height={50}
-                  src="/dest/jaeger.svg"
+                  src="/dest/jaegertracingio.svg"
                   alt="Brand"
                 />
               </div>
@@ -259,7 +259,7 @@ const Integration = () => {
               viewport={{ once: true }}
               className="animate_top w-1/6"
             >
-              <div className="inline-block rounded-[10px] shadow-solid-7 bg-white dark:bg-btndark p-4.5">
+              <div className="inline-block rounded-[10px] shadow-solid-7  p-4.5">
                 <Image
                   width={50}
                   height={50}
@@ -308,7 +308,7 @@ const Integration = () => {
               viewport={{ once: true }}
               className="animate_top w-1/6"
             >
-              <div className="inline-block rounded-[10px] shadow-solid-7 bg-white dark:bg-btndark p-4.5">
+              <div className="inline-block rounded-[10px] shadow-solid-7  p-4.5">
                 <Image
                   width={50}
                   height={50}
