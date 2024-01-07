@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <main className={fontFamily.className} style={{ background: '#060606' }}>
       <Overview />
-      <FloatingParagraph />
+      {/* <FloatingParagraph />
       <Feature />
       <Performance />
       <HowItWork />
@@ -42,7 +42,7 @@ export default function Home() {
       <CTA />
       <FAQ />
       <Testimonial />
-      <Blog />
+      <Blog /> */}
     </main>
   );
 }

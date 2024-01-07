@@ -22,6 +22,13 @@
     glow 2500ms linear infinite 2000ms;
 }
 
+@media (max-width: 768px) {
+  .luminance-container {
+    font-size: 20vw;
+    margin-top: 150px;
+  }
+}
+
 @keyframes reveal {
   80% {
     letter-spacing: 8px;

@@ -4,39 +4,19 @@ import { ProgressBar } from '../ProgressBar/ProgressBar';
 import Image from 'next/image';
 import { Close, Expand } from '@/public/icons';
 import { SmallSpan } from '../SmallSpan/SmallSpan';
-import { Timeline } from '../SmallSpan/Timeline';
-import ScrambleText from '../ScrambleText';
-import CommandLineInterface from '../Terminal';
 import MirrorText from '../MirrorText';
 import ShineText from '../ShineText';
 import FloatingHeader from '../FloatingHeader';
 import GithubButton from '../GithubButtton';
+import './style.css';
 
 const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
 
 const Overview = () => {
-  const [showSecondSection, setShowSecondSection] = useState(false);
   const [showDemo, setShowDemo] = React.useState(false);
-  useEffect(() => {
-    // Set a timeout to show the second section after 5 seconds
-    const timeoutId = setTimeout(() => {
-      setShowSecondSection(true);
-    }, 3000);
-    // Clear the timeout when the component is unmounted
-    return () => clearTimeout(timeoutId);
-  }, []);
 
   return (
     <>
-      {/* {!showSecondSection && (
-        <div
-          style={{
-            marginTop: 200,
-          }}
-        >
-          <CommandLineInterface />
-        </div>
-      )} */}
       <div
         style={{
           display: 'flex',
@@ -90,16 +70,14 @@ const Overview = () => {
               flexDirection: 'column',
             }}
           >
-            {/* <BackgroundLine /> */}
             <MirrorText />
             <div
+              className="sub-title-container"
               style={{
                 display: 'flex',
                 justifyContent: 'center',
                 color: '#d7d7d7',
-                fontSize: 36,
                 textAlign: 'center',
-                width: '60%',
                 fontWeight: 200,
                 lineHeight: 1.1,
                 marginTop: 20,
@@ -129,6 +107,7 @@ const Overview = () => {
                 }}
               >
                 <section
+                  className="mobile-view"
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -282,8 +261,9 @@ const Overview = () => {
                 </section>
               </div>
               <div
+                className="mobile-view"
                 style={{
-                  marginTop: 100,
+                  marginTop: 50,
                   width: '100%',
                   display: 'flex',
                   justifyContent: 'center',

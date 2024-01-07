@@ -135,8 +135,11 @@ export var SmallSpan = ({
           >
             {showIcon && <Image src={icon} width={20} height={20} alt="" />}
           </Progress>
-          <div style={{ color: getColor() }}>{value}</div>
+          <div className="mobile-view" style={{ color: getColor() }}>
+            {value}
+          </div>
           <div
+            className="mobile-view"
             style={{
               color: getColor(),
               fontSize: 12,
