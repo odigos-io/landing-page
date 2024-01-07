@@ -47,12 +47,12 @@ const Performance = () => {
               viewport={{ once: true }}
               className="animate_top text-center mx-auto"
             >
-              <h2 className="font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white md:w-4/5 xl:w-1/2 mx-auto mb-4">
+              <h2 className="font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white md:w-4/5  mx-auto mb-4">
                 {'Extreme Performance'}
               </h2>
               <p
                 style={{ fontSize: '1.5rem' }}
-                className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[80%]"
+                className="mx-auto md:w-4/5 lg:w-3/5 "
               >
                 Odigos provides unprecedented up to{' '}
                 <a

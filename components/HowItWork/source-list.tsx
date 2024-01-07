@@ -9,7 +9,7 @@ const SourceCardList = ({ isHovered }) => {
         position: 'relative',
         zIndex: 999,
         width: 360,
-        height: 300,
+        height: 200,
         overflow: 'scroll',
       }}
     >
