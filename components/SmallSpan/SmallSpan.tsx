@@ -79,6 +79,16 @@ export var SmallSpan = ({
         return `linear-gradient(90deg, #4CAF50 0%, #2E7D32 50%, #388E3C 100%)`;
       case 'db':
         return `linear-gradient(90deg, #2196F3 0%, #1565C0 50%, #1976D2 100%)`;
+      case 'orange':
+        return `rgb(255, 221, 183)`;
+      case 'blue':
+        return `rgb(7, 110, 255)`;
+      case 'white-blue':
+        return 'rgb(79, 171, 255)';
+      case 'light-blue':
+        return 'rgb(177, 197, 255)';
+      case 'peach':
+        return 'rgb(255, 183, 197)';
       default:
         break;
     }
@@ -101,7 +111,14 @@ export var SmallSpan = ({
     <div className={'progressComp'} ref={ref}>
       <span className="label">{status}</span>
       <div className="progress-div" style={{ width }}>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: 8,
+            alignItems: 'center',
+            width: 180,
+          }}
+        >
           <Image src={Expand} width={10} height={10} alt="" />
           <Progress
             inView={inView}

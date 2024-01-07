@@ -186,7 +186,7 @@ const Overview = () => {
                       path={'user/id'}
                       value={'TRACE'}
                       percent="10%"
-                      type="basic"
+                      type="blue"
                       icon="/icons/overview/db.svg"
                     />
                   </div>
@@ -196,7 +196,7 @@ const Overview = () => {
                       status={''}
                       value={'Invoke'}
                       percent="10%"
-                      type="basic"
+                      type="white-blue"
                       icon="/icons/overview/code.svg"
                     />
                   </div>
@@ -205,7 +205,7 @@ const Overview = () => {
                       status={''}
                       value={'GET'}
                       percent="10%"
-                      type="basic"
+                      type="light-blue"
                       path={'http/network'}
                       icon="/icons/overview/db.svg"
                     />
@@ -215,12 +215,12 @@ const Overview = () => {
                       status={''}
                       value={'POST'}
                       percent="10%"
-                      type="basic"
+                      type="orange"
                       path={'/user'}
                       icon="/icons/overview/db.svg"
                     />
                   </div>
-                  <div style={{ marginLeft: '42%' }}>
+                  {/* <div style={{ marginLeft: '42%' }}>
                     <SmallSpan
                       status={''}
                       value={'PUT'}
@@ -229,14 +229,15 @@ const Overview = () => {
                       path={'HTTP/1.1'}
                       icon="/icons/overview/db.svg"
                     />
-                  </div>
-                  <div style={{ marginLeft: '52%' }}>
+                  </div> */}
+                  <div style={{ marginLeft: '42%' }}>
                     <SmallSpan
                       status={''}
                       value={'OPTIONS'}
                       percent="20%"
-                      type="basic"
+                      type="peach"
                       icon="/icons/overview/fast.svg"
+                      // path={'HTTP/1.1'}
                     />
                   </div>
                 </section>
@@ -254,7 +255,7 @@ const Overview = () => {
                       status={''}
                       value={''}
                       percent="98%"
-                      type="basic"
+                      type="blue"
                     />
                   </div>
                   <div style={{ marginLeft: '10%' }}>
@@ -262,7 +263,7 @@ const Overview = () => {
                       status={''}
                       value={''}
                       percent="20%"
-                      type="basic"
+                      type="white-blue"
                     />
                   </div>
                   <div style={{ marginLeft: '20%' }}>
@@ -270,7 +271,7 @@ const Overview = () => {
                       status={''}
                       value={''}
                       percent="35%"
-                      type="basic"
+                      type="light-blue"
                     />
                   </div>
                   <div style={{ marginLeft: '20%' }}>
@@ -278,23 +279,23 @@ const Overview = () => {
                       status={''}
                       value={''}
                       percent="20%"
-                      type="basic"
+                      type="orange"
                     />
                   </div>
-                  <div style={{ marginLeft: '40%' }}>
+                  {/* <div style={{ marginLeft: '40%' }}>
                     <ProgressBar
                       status={''}
                       value={''}
                       percent="30%"
-                      type="basic"
+                      type="peach"
                     />
-                  </div>
+                  </div> */}
                   <div style={{ marginLeft: '10%' }}>
                     <ProgressBar
                       status={''}
                       value={''}
                       percent="80%"
-                      type="basic"
+                      type="peach"
                     />
                   </div>
                 </section>

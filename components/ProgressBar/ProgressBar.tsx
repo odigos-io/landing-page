@@ -58,6 +58,16 @@ export var ProgressBar = ({
             rgba(255, 77, 77, 0.6264880952380952) 87%,  /* Lighter Red */
             rgba(255, 77, 77, 0.4332107843137255) 100%  /* Even Lighter Red */
           )`;
+      case 'orange':
+        return `rgb(255, 221, 183)`;
+      case 'blue':
+        return `rgb(7, 110, 255)`;
+      case 'white-blue':
+        return 'rgb(79, 171, 255)';
+      case 'light-blue':
+        return 'rgb(177, 197, 255)';
+      case 'peach':
+        return 'rgb(255, 183, 197)';
       default:
         break;
     }
@@ -67,7 +77,17 @@ export var ProgressBar = ({
     <div className={'progressComp'} ref={ref}>
       <span className="label">{status}</span>
       <div className="progress-div" style={{ width }}>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div
+          style={{
+            display: 'flex',
+            // justifyContent: 'center',
+            // alignItems: 'center',
+            // width: percent,
+            // borderRadius: '0.4rem',
+            // background:
+            //   'linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(7,110,255,0.7553615196078431) 90%)',
+          }}
+        >
           <Progress
             inView={inView}
             width={percent}
