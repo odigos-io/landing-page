@@ -76,7 +76,7 @@ const Testimonial = () => {
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <div
                   style={{ maxWidth: 800 }}
-                  className="bg-white rounded-lg shadow-solid-9 dark:shadow-none dark:bg-blacksection dark:border dark:border-strokedark p-9 pt-7.5"
+                  className=" rounded-lg shadow-solid-9 dark:shadow-none dark:border dark:border-strokedark p-9 pt-7.5"
                 >
                   <div className="flex justify-between border-b border-stroke dark:border-strokedark pb-6 mb-7.5">
                     <div>

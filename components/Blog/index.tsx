@@ -20,7 +20,7 @@ const Blog = async () => {
         <div className="animate_top text-center mx-auto">
           <SectionHeader
             headerInfo={{
-              title: `NEWS & BLOGS`,
+              title: ``,
               subtitle: `Latest News & Blogs`,
               description: `Welcome to Odigos blog where we write about distributed tracing, OpenTelemetry, eBPF, performance and company culture.`,
             }}

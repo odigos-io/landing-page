@@ -139,3 +139,7 @@ pre {
 .active-tab {
   @apply text-black dark:text-white dark:bg-blackho bg-stroke;
 }
+
+p {
+  color: #909dac;
+}

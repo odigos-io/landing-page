@@ -50,13 +50,19 @@ const Performance = () => {
               <h2 className="font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white md:w-4/5 xl:w-1/2 mx-auto mb-4">
                 {'Extreme Performance'}
               </h2>
-              <p className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[80%]">
+              <p
+                style={{ fontSize: '1.5rem' }}
+                className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[80%]"
+              >
                 Odigos provides unprecedented up to{' '}
                 <a
                   style={{ textDecoration: 'underline', fontSize: 18 }}
                   href="/blog/ebpf-instrumentation-faster-than-manual"
                 >
-                  <b className="mark-span"> 50x faster performance </b>
+                  <b style={{ fontSize: '1.5rem' }} className="mark-span">
+                    {' '}
+                    50x faster performance{' '}
+                  </b>
                 </a>
                 - virtually eliminating latency
               </p>

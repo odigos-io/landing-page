@@ -42,8 +42,8 @@ const SectionHeader = ({ headerInfo }: { headerInfo: HeaderInfo }) => {
           {subtitle}
         </h2>
         <p
-          style={{ color: '#909dac' }}
-          className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[80%]"
+          style={{ fontSize: '1.5rem' }}
+          className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[100%]"
         >
           {description}
         </p>

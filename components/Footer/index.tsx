@@ -116,7 +116,7 @@ const Footer = () => {
                               placeholder="Enter your email"
                               value={email}
                               onChange={(val) => setEmail(val)}
-                              style={{ width: 300 }}
+                              style={{ width: 300, backgroundColor: '060606' }}
                             />
                             <Button onClick={handleSubscribe} disabled={!email}>
                               <Image

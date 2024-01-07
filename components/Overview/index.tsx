@@ -274,11 +274,11 @@ const Overview = () => {
                       type="light-blue"
                     />
                   </div>
-                  <div style={{ marginLeft: '20%' }}>
+                  <div style={{ marginLeft: '40%' }}>
                     <ProgressBar
                       status={''}
                       value={''}
-                      percent="20%"
+                      percent="50%"
                       type="orange"
                     />
                   </div>
@@ -290,11 +290,11 @@ const Overview = () => {
                       type="peach"
                     />
                   </div> */}
-                  <div style={{ marginLeft: '10%' }}>
+                  <div style={{ marginLeft: '30%' }}>
                     <ProgressBar
                       status={''}
                       value={''}
-                      percent="80%"
+                      percent="70%"
                       type="peach"
                     />
                   </div>
