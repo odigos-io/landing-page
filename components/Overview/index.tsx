@@ -275,6 +275,7 @@ const Overview = () => {
                 <FloatingHeader />
               </div>
               <div
+                className="desktop-view"
                 style={{
                   marginTop: 50,
                   width: '100%',
@@ -287,10 +288,10 @@ const Overview = () => {
             </div>
           </div>
           {showDemo && (
-            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black overflow-hidden z-999">
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black overflow-hidden z-9999">
               <div className="relative">
                 <div
-                  className="absolute top-[-40px] right-[-40px] cursor-pointer"
+                  className="absolute top-[-40px] right-[0] cursor-pointer"
                   onClick={() => setShowDemo(false)}
                 >
                   <div className=" rounded-full flex items-center justify-center hover:bg-#ffffff78">
@@ -306,8 +307,7 @@ const Overview = () => {
                 </div>
 
                 <iframe
-                  className="rounded-lg"
-                  style={{ width: '60vw', height: '60vh' }}
+                  className="rounded-lg demo-view"
                   src={`https://www.youtube.com/embed/nynyV7FC4VI`}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
