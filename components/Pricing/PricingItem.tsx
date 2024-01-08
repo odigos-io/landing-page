@@ -20,7 +20,7 @@ export const PricingItem = ({ price }) => {
       whileInView="visible"
       transition={{ duration: 1, delay: 0.1 }}
       viewport={{ once: true }}
-      className="animate_top md:w-[45%] lg:w-1/3 group relative rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5"
+      className="animate_top  group relative rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5"
     >
       {price.nickname == 'Cloud' && (
         <div className="absolute top-7.5 -right-3.5 -rotate-90 rounded-tl-full rounded-bl-full bg-secondary font-medium text-black text-metatitle uppercase py-1.5 px-4.5">

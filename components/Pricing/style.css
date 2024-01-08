@@ -6,3 +6,9 @@
     visibility: hidden;
   }
 }
+
+@media (max-width: 768px) {
+  .mobile-view {
+    visibility: hidden;
+  }
+}

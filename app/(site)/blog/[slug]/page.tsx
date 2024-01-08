@@ -97,7 +97,6 @@ const SingleBlogPage = async ({ params }: Props) => {
           position: 'fixed',
           zIndex: 9999,
           top: 50,
-          background: '#060606',
         }}
         className="desktop-view"
       >

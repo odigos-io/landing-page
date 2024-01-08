@@ -49,7 +49,6 @@ const BlogPage = async () => {
           position: 'fixed',
           zIndex: 9999,
           top: 50,
-          background: '#060606',
         }}
         className="desktop-view"
       >

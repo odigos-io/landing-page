@@ -31,7 +31,6 @@ const Pricing = () => {
           position: 'fixed',
           zIndex: 9999,
           top: 50,
-          background: '#060606',
         }}
         className="desktop-view"
       >
@@ -50,13 +49,16 @@ const Pricing = () => {
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1207px] px-4 md:px-8 xl:px-0 relative mt-15 xl:mt-20">
+        <div
+          style={{ overflow: 'hidden' }}
+          className="mx-auto max-w-[1207px] px-4 md:px-8 xl:px-0 relative mt-15 xl:mt-20"
+        >
           <div className="absolute -bottom-15 -z-1 w-full h-full">
             <Image
               fill
               src="./images/shape/shape-dotted-light.svg"
               alt="Dotted"
-              className="dark:hidden"
+              // className="dark:hidden"
             />
           </div>
           <div className="flex flex-wrap lg:flex-nowrap justify-center gap-7.5 xl:gap-12.5">
