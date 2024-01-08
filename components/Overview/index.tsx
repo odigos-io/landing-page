@@ -59,10 +59,12 @@ const Overview = () => {
       >
         <GithubButton />
       </div>
-      {true && (
+      {
         <>
           <div
             style={{
+              overflow: 'hidden',
+              width: '100vw',
               height: '100vh',
               display: 'flex',
               justifyContent: 'center',
@@ -305,7 +307,7 @@ const Overview = () => {
             </div>
           )}
         </>
-      )}
+      }
     </>
   );
 };
