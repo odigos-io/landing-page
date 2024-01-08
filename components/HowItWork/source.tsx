@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
-
+import './style.css';
 const SourceCard = ({ left, isHovered }) => {
   return (
     <div
+      className="source-card-container"
       style={{
-        position: 'absolute',
         left,
-        display: 'inline-flex',
-        padding: '24px 0px',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '10px',
-        width: 200,
-        borderRadius: '24px',
-        zIndex: 9,
         border: isHovered
           ? '1px solid var(--Dark-mode-Odigos-Torquiz, #96F2FF)'
           : '1px solid #96f3ff51',

@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
 import { FeatureTab } from '@/types/featureTab';
-
-import styled from 'styled-components';
-import Image from 'next/image';
-import SourceCard from './source';
 import SourceCardList from './source-list';
 import TerminalText from '../TerminalText';
 import DestList from './dest-list';
 
-const BgImage = styled.div<{ image: string }>`
-  background-image: ${({ image }) =>
-    `linear-gradient( to bottom,rgba(245, 246, 252, 0),rgba(7,17,26,1)),url(${image})`};
-  background-repeat: no-repeat;
-  background-size: contain;
-`;
-
 const HowItWorkItem = ({ featureTab }: { featureTab: FeatureTab }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { title, desc1, desc2, image, imageDark } = featureTab;
+  const { title, desc1 } = featureTab;
 
   return (
     <>

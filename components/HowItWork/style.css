@@ -18,9 +18,38 @@
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
 }
 
+.source-card-container {
+  position: absolute;
+  display: inline-flex;
+  padding: 24px 0px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 200px;
+  border-radius: 24px;
+  z-index: 9;
+}
+
+.source-card-list-container {
+  width: 360px;
+  overflow: scroll;
+}
+
 @media (min-width: 720px) {
   .gradient {
     --size: 500px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .source-card-container {
+    gap: 0;
+    width: fit-content;
+    padding: 5px 10px;
+  }
+  .source-card-list-container {
+    width: 250px;
+    overflow: hidden;
   }
 }
 
@@ -28,3 +57,5 @@
 * {
   transition: all 0.25s ease-out;
 }
+
+/* .source-card-container{} */
