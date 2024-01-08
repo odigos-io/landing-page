@@ -1,6 +1,6 @@
 /* Add any global styles if needed */
 
-.floating-header {
+.floating-header-mobile {
   /* position: absolute;
   bottom: 0;
   left: 0; */
@@ -19,30 +19,42 @@
   z-index: 9999; /* Ensure the header appears above other elements */
 }
 
-.floating-header.sticky {
-  top: 50px;
-  bottom: auto;
+.floating-header-mobile.sticky {
+  /* top: 50px; */
+  bottom: 50px;
   position: fixed;
+  animation: slide-up 0.5s ease-in-out;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* Add any additional styling for your navigation links or other elements */
-.floating-header nav {
+.floating-header-mobile nav {
   color: #000;
   text-align: center;
   background-color: rgba(200, 200, 200, 1) !important;
+  width: 280px;
+  overflow-x: scroll;
 }
 
-.floating-header ul {
+.floating-header-mobile ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 20px;
+  gap: 10px;
   background-color: rgba(200, 200, 200, 1) !important;
 }
 
-.floating-header li {
+.floating-header-mobile li {
   margin-right: 20px;
-  width: 100%;
+  font-size: 14px;
   cursor: pointer;
 }

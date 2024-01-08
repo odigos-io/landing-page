@@ -9,6 +9,7 @@ import ShineText from '../ShineText';
 import FloatingHeader from '../FloatingHeader';
 import GithubButton from '../GithubButtton';
 import './style.css';
+import FloatingHeaderMobile from '../FloatingHeaderMobile';
 
 const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
 
@@ -272,6 +273,16 @@ const Overview = () => {
                 }}
               >
                 <FloatingHeader />
+              </div>
+              <div
+                style={{
+                  marginTop: 50,
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <FloatingHeaderMobile />
               </div>
             </div>
           </div>
