@@ -31,17 +31,7 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
           borderRadius: 24,
         }}
       >
-        <div
-          style={{
-            backgroundColor: '#060606',
-            height: '100%',
-            borderRadius: 22,
-            padding: '30px 60px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 20,
-          }}
-        >
+        <div className="single-feature-wrapper">
           <h3 className="font-semibold text-xl xl:text-itemtitle text-black dark:text-white ">
             {title}
           </h3>

@@ -21,3 +21,19 @@
     background-position: 0% 50%;
   }
 }
+
+.single-feature-wrapper {
+  background-color: #060606;
+  height: 100%;
+  border-radius: 22px;
+  padding: 30px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media screen and (max-width: 720px) {
+  .single-feature-wrapper {
+    padding: 30px 20px;
+  }
+}

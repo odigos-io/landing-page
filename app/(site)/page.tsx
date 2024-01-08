@@ -38,11 +38,11 @@ export default function Home() {
       <Feature />
       <Performance />
       <HowItWork />
-      {/* <Integration />
+      <Integration />
       <CTA />
       <FAQ />
       <Testimonial />
-      <Blog /> */}
+      <Blog />
     </main>
   );
 }

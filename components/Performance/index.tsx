@@ -15,6 +15,10 @@ const ProgressBarsWrapper = styled.div`
   padding: 3rem;
   border-radius: 0.5rem;
   border-bottom: 1px solid #e5e7eb;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const Performance = () => {
@@ -86,7 +90,7 @@ const Performance = () => {
             viewport={{ once: true }}
             className="animate_top "
           >
-            <ProgressBarsWrapper style={{ gap: isLoad ? 16 : 16 }}>
+            <ProgressBarsWrapper style={{ gap: 16 }}>
               <ProgressBar
                 status={'No Instrumentation'}
                 value={'183.09ms'}
