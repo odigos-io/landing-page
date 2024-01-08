@@ -41,6 +41,9 @@
   }
 }
 
+.dest-card-container {
+}
+
 @media screen and (max-width: 720px) {
   .source-card-container {
     gap: 0;
@@ -48,7 +51,7 @@
     padding: 5px 10px;
   }
   .source-card-list-container {
-    width: 250px;
+    width: 260px;
     overflow: hidden;
   }
 }

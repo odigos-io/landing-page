@@ -47,31 +47,34 @@ const brandData: any[] = [
 const DestList = ({ isHovered }) => {
   return (
     <div
+      className="source-card-list-container"
       style={{
         display: 'flex',
         position: 'relative',
         zIndex: 999,
-        width: 365,
+        // width: 365,
         height: 200,
-        overflowX: 'scroll',
+        // overflowX: 'scroll',
       }}
     >
       {brandData.slice(0, 3).map((brand, index) => (
         <DestCard
           top={0}
-          left={index * 100}
+          left={index * 90 - 10}
           isHovered={isHovered}
           image_url={brand.image_url}
         />
       ))}
-      {brandData.slice(3, 6).map((brand, index) => (
-        <DestCard
-          top={100}
-          left={80 + index * 100}
-          isHovered={isHovered}
-          image_url={brand.image_url}
-        />
-      ))}
+      <div className="mobile-view">
+        {brandData.slice(3, 6).map((brand, index) => (
+          <DestCard
+            top={100}
+            left={50 + index * 90}
+            isHovered={isHovered}
+            image_url={brand.image_url}
+          />
+        ))}
+      </div>
     </div>
   );
 };

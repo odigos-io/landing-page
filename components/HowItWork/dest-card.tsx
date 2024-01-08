@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import './style.css';
 const DestCard = ({ left, isHovered, image_url = '', top }) => {
+  console.log({ left });
   return (
     <div
+      className={`dest-card-container `}
       style={{
-        width: isHovered ? 90 : 80,
-        height: isHovered ? 90 : 80,
+        width: isHovered ? 80 : 70,
+        height: isHovered ? 80 : 70,
         backgroundColor: isHovered ? '#ffffffa9' : 'transparent',
         display: 'flex',
         justifyContent: 'center',
@@ -18,8 +21,8 @@ const DestCard = ({ left, isHovered, image_url = '', top }) => {
     >
       <Image
         loading="lazy"
-        width={isHovered ? 60 : 50}
-        height={isHovered ? 60 : 50}
+        width={isHovered ? 50 : 40}
+        height={isHovered ? 50 : 40}
         src={image_url}
         // style={{ filter: isHovered ? 'grayscale(0%)' : 'grayscale(90%)' }}
         alt="Brand"
