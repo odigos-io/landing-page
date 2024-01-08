@@ -6,7 +6,8 @@ import { Metadata } from 'next';
 import BlogNotFound from '@/components/Blog/BlogNotFound';
 import Markdown from '@/components/Markdown';
 import FloatingHeader from '@/components/FloatingHeader';
-
+import FloatingHeaderMobile from '@/components/FloatingHeaderMobile';
+import './style.css';
 type Props = {
   params: { slug: string };
 };
@@ -76,6 +77,7 @@ const SingleBlogPage = async ({ params }: Props) => {
   return content ? (
     <>
       <div
+        className="mobile-view"
         style={{
           width: '100%',
           display: 'flex',
@@ -86,6 +88,20 @@ const SingleBlogPage = async ({ params }: Props) => {
         }}
       >
         <FloatingHeader />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+          background: '#060606',
+        }}
+        className="desktop-view"
+      >
+        <FloatingHeaderMobile stickToTop={true} />
       </div>
       <title>{`${post?.title}`}</title>
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">

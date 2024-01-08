@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import menuData from '../Header/menuData';
 import Link from 'next/link';
-const FloatingHeaderMobile = () => {
+const FloatingHeaderMobile = ({ stickToTop }) => {
   const [showHeader, setShowHeader] = useState(false);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const FloatingHeaderMobile = () => {
       const offset = window.scrollY;
 
       // You can adjust the threshold as needed
-      if (offset > 100) {
+      if (offset > 100 && !stickToTop) {
         setShowHeader(true);
       } else {
         setShowHeader(false);
@@ -28,7 +28,11 @@ const FloatingHeaderMobile = () => {
   }, []);
 
   return (
-    <div className={`floating-header-mobile ${showHeader ? 'sticky' : ''}`}>
+    <div
+      className={`no-scrollbar floating-header-mobile ${
+        showHeader ? 'sticky' : ''
+      }`}
+    >
       <nav>
         <ul>
           {menuData.map((item) => (

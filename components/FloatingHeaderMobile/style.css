@@ -26,6 +26,10 @@
   animation: slide-up 0.5s ease-in-out;
 }
 
+.floating-header-mobile::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes slide-up {
   0% {
     transform: translateY(100%);
@@ -40,8 +44,12 @@
   color: #000;
   text-align: center;
   background-color: rgba(200, 200, 200, 1) !important;
-  width: 280px;
+  width: 250px;
   overflow-x: scroll;
+}
+
+.floating-header-mobile nav::-webkit-scrollbar {
+  display: none;
 }
 
 .floating-header-mobile ul {
@@ -52,7 +60,9 @@
   gap: 10px;
   background-color: rgba(200, 200, 200, 1) !important;
 }
-
+.floating-header-mobile ul::-webkit-scrollbar {
+  display: none;
+}
 .floating-header-mobile li {
   margin-right: 20px;
   font-size: 14px;

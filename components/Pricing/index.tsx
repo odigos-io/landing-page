@@ -5,11 +5,13 @@ import SectionHeader from '../Common/SectionHeader';
 import { PricingItem } from './PricingItem';
 import { PRICING } from './data';
 import FloatingHeader from '../FloatingHeader';
-
+import FloatingHeaderMobile from '../FloatingHeaderMobile';
+import './style.css';
 const Pricing = () => {
   return (
     <>
       <div
+        className="mobile-view"
         style={{
           width: '100%',
           display: 'flex',
@@ -20,6 +22,20 @@ const Pricing = () => {
         }}
       >
         <FloatingHeader />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+          background: '#060606',
+        }}
+        className="desktop-view"
+      >
+        <FloatingHeaderMobile stickToTop={true} />
       </div>
       <section className="pt-45 pb-20 lg:pb-25 xl:pb-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
