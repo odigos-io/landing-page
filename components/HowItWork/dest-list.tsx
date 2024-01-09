@@ -52,9 +52,7 @@ const DestList = ({ isHovered }) => {
         display: 'flex',
         position: 'relative',
         zIndex: 999,
-        // width: 365,
         height: 200,
-        // overflowX: 'scroll',
       }}
     >
       {brandData.slice(0, 3).map((brand, index) => (

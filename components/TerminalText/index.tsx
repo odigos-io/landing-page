@@ -60,7 +60,7 @@ const TerminalText = () => {
     };
 
     consoleText(
-      ['Odigos Install.', 'Odigos Cloud Login.', 'Odigos Upgrade.'],
+      ['odigos install.', 'odigos cloud login.', 'odigos upgrade.'],
       'text',
       ['rgb(79, 171, 255)', 'rgb(177, 197, 255)', 'rgb(255, 183, 197)']
     );
