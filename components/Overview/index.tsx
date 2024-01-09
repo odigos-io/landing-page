@@ -10,11 +10,27 @@ import FloatingHeader from '../FloatingHeader';
 import GithubButton from '../GithubButtton';
 import './style.css';
 import FloatingHeaderMobile from '../FloatingHeaderMobile';
+import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
 
 const Overview = () => {
   const [showDemo, setShowDemo] = React.useState(false);
+
+  const demoRef = React.useRef(null);
+  useEffect(() => {
+    const handleEscapeKeyPress = (event) => {
+      if (event.key === 'Escape') {
+        setShowDemo(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKeyPress);
+    };
+  }, []);
+  useOnClickOutside(demoRef, () => setShowDemo(false));
 
   return (
     <>
@@ -66,7 +82,7 @@ const Overview = () => {
             style={{
               overflow: 'hidden',
               width: '100vw',
-              height: '100vh',
+              // height: '100vh',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -83,10 +99,9 @@ const Overview = () => {
                 textAlign: 'center',
                 fontWeight: 200,
                 lineHeight: 1.1,
-                marginTop: 20,
               }}
             >
-              Enterprise-Grade Opentelemetry for Superior Application
+              Enterprise-Grade OpenTelemetry for Superior Application
               Performance Monitoring
             </div>
             <div style={{ marginTop: 40 }}>
@@ -294,7 +309,7 @@ const Overview = () => {
               style={{ zIndex: 9999, overflow: 'hidden' }}
               className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black overflow-hidden z-9999"
             >
-              <div className="relative">
+              <div className="relative" ref={demoRef}>
                 <div
                   className="absolute top-[-40px] right-[0] cursor-pointer"
                   onClick={() => setShowDemo(false)}

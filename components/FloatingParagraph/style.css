@@ -6,7 +6,7 @@
 }
 
 .floating-paragraph {
-  font-size: 54px; /* Adjust the font size as needed */
+  font-size: 3vw;
   text-align: center;
   color: #fff;
   text-align: center;
@@ -27,7 +27,7 @@
 
 @media (max-width: 768px) {
   .floating-paragraph {
-    font-size: 22px;
+    /* font-size: 22px; */
     width: 90%;
   }
 }
