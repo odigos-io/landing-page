@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import './style.css';
 const DestCard = ({ left, isHovered, image_url = '', top }) => {
-  console.log({ left });
   return (
     <div
       className={`dest-card-container `}

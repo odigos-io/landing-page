@@ -263,17 +263,19 @@ const Overview = () => {
                   </div>
                 </section>
               </div>
-              <div
-                className="mobile-view"
-                style={{
-                  marginTop: 50,
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <FloatingHeader />
-              </div>
+              {!showDemo && (
+                <div
+                  className="mobile-view"
+                  style={{
+                    marginTop: 50,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <FloatingHeader />
+                </div>
+              )}
               <div
                 className="desktop-view"
                 style={{
@@ -283,12 +285,15 @@ const Overview = () => {
                   justifyContent: 'center',
                 }}
               >
-                <FloatingHeaderMobile />
+                <FloatingHeaderMobile stickToTop={false} />
               </div>
             </div>
           </div>
           {showDemo && (
-            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black overflow-hidden z-9999">
+            <div
+              style={{ zIndex: 9999, overflow: 'hidden' }}
+              className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black overflow-hidden z-9999"
+            >
               <div className="relative">
                 <div
                   className="absolute top-[-40px] right-[0] cursor-pointer"

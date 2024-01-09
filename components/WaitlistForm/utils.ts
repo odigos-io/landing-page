@@ -19,9 +19,7 @@ export async function sendToService(
       },
       body: JSON.stringify(body),
     });
-  } catch (error) {
-    console.log({ error });
-  }
+  } catch (error) {}
 }
 
 export async function setWaitListItem({

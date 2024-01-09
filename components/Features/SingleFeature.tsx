@@ -24,7 +24,7 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
         whileInView="visible"
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="animate_top rounded-lg  xl:p-12.5 transition-all hover:shadow-solid-4 z-40 gradient-background"
+        className="animate_top rounded-lg  xl:p-12.5 transition-all hover:shadow-solid-4 z-0 gradient-background"
         // className="gradient-background"
         style={{
           padding: 2,

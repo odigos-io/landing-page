@@ -10,8 +10,10 @@ const TerminalText = () => {
       let x = 1;
       let waiting = false;
       const target = document.getElementById(id);
-      target.setAttribute('style', 'color:' + colors[0]);
+      target?.setAttribute('style', 'color:' + colors[0]);
       const interval1 = setInterval(() => {
+        if (target === null) return clearInterval(interval1);
+
         if (letterCount === 0 && waiting === false) {
           waiting = true;
           target.innerHTML = words[0].substring(0, letterCount);
@@ -39,10 +41,14 @@ const TerminalText = () => {
       }, 120);
       const interval2 = setInterval(() => {
         if (visible === true) {
-          con.className = 'console-underscore hidden';
+          if (con !== null) {
+            con.className = 'console-underscore hidden';
+          }
           visible = false;
         } else {
-          con.className = 'console-underscore';
+          if (con !== null) {
+            con.className = 'console-underscore';
+          }
           visible = true;
         }
       }, 400);

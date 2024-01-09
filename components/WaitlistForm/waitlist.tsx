@@ -63,13 +63,12 @@ export function WaitListForm({
       setIsLoaded(false);
       return;
     }
-    console.log(value === email, { value });
+
     if (value === email) {
       setSubmitted(true);
       setIsLoaded(false);
       return;
     }
-    console.log({ value });
 
     const res = await setWaitListItem({ name, email });
     if (res) {
