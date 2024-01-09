@@ -31,6 +31,18 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
         }}
       >
         <div className="single-feature-wrapper">
+          <div
+            // className="single-feature-icon gradient-background"
+            style={{ width: 40, height: 40, borderRadius: 12 }}
+          >
+            <Image
+              src={icon}
+              alt="icon"
+              width={40}
+              height={40}
+              className="object-cover"
+            />
+          </div>
           <h3 className="font-semibold text-xl xl:text-itemtitle text-black dark:text-white ">
             {title}
           </h3>

@@ -13,6 +13,7 @@ const ProgressBarsWrapper = styled.div`
   height: 100%;
   width: 100%;
   padding: 3rem;
+  margin-top: 1rem;
   border-radius: 0.5rem;
   border-bottom: 1px solid #e5e7eb;
 
@@ -30,7 +31,7 @@ const Performance = () => {
 
   return isLoad ? (
     <>
-      <section id="features" className="py-20 lg:py-25 xl:py-30">
+      <section id="features" className="py-20  lg:py-25 xl:py-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <>
             <motion.div
@@ -55,15 +56,15 @@ const Performance = () => {
                 {'Extreme Performance'}
               </h2>
               <p
-                style={{ fontSize: '1.5rem' }}
+                style={{ fontSize: '1.3rem' }}
                 className="mx-auto md:w-4/5 lg:w-3/5 "
               >
                 Odigos provides unprecedented up to{' '}
                 <a
-                  style={{ textDecoration: 'underline', fontSize: 18 }}
+                  style={{ textDecoration: 'underline', fontSize: '1.3rem' }}
                   href="/blog/ebpf-instrumentation-faster-than-manual"
                 >
-                  <b style={{ fontSize: '1.5rem' }} className="mark-span">
+                  <b style={{ fontSize: '1.3rem' }} className="mark-span">
                     {' '}
                     50x faster performance{' '}
                   </b>

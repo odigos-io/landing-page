@@ -27,7 +27,10 @@
 
 @media (max-width: 768px) {
   .floating-paragraph {
-    /* font-size: 22px; */
+    font-size: 22px;
     width: 90%;
+  }
+  .floating-paragraph-container {
+    height: 30vh;
   }
 }
