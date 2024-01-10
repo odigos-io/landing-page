@@ -18,7 +18,6 @@
   color: transparent;
   font-size: 10vw;
   font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
   animation: reveal 1500ms ease-in-out forwards 200ms,
     glow 2500ms linear infinite 1500ms;
 }
