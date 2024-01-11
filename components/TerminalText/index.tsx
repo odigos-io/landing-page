@@ -67,9 +67,9 @@ const TerminalText = () => {
   }, []);
 
   return (
-    <div style={{ fontSize: 32 }} className="console-container">
+    <div style={{ fontSize: 24 }} className="console-container">
       <span id="text"></span>
-      <div style={{ fontSize: 32 }} className="console-underscore" id="console">
+      <div style={{ fontSize: 24 }} className="console-underscore" id="console">
         &#95;
       </div>
     </div>

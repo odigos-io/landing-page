@@ -1,11 +1,11 @@
-<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_14_88)">
-<path d="M30 33H6C5.60218 33 5.22064 32.842 4.93934 32.5607C4.65804 32.2794 4.5 31.8978 4.5 31.5V12H31.5V31.5C31.5 31.8978 31.342 32.2794 31.0607 32.5607C30.7794 32.842 30.3978 33 30 33ZM10.5 16.5V22.5H16.5V16.5H10.5ZM10.5 25.5V28.5H25.5V25.5H10.5ZM19.5 18V21H25.5V18H19.5Z" fill="white"/>
-<path opacity="0.5" d="M31.5 9H4.5V4.5C4.5 4.10218 4.65804 3.72064 4.93934 3.43934C5.22064 3.15804 5.60218 3 6 3H30C30.3978 3 30.7794 3.15804 31.0607 3.43934C31.342 3.72064 31.5 4.10218 31.5 4.5V9Z" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_14_88">
-<rect width="36" height="36" fill="white"/>
-</clipPath>
-</defs>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" class="w-6 h-6">
+        <defs>
+    <linearGradient id="gradient" gradientTransform="rotate(228)">
+      <stop offset="0%" stop-color="#4fb0f9" />
+      <stop offset="33%" stop-color="#71d7f3" />
+      <stop offset="66%" stop-color="#cff8f1" />
+      <stop offset="100%" stop-color="#3ee7d9" />
+    </linearGradient>
+  </defs>
+  <path stroke-linecap="round" stroke-linejoin="round" stroke="url(#gradient)" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
 </svg>

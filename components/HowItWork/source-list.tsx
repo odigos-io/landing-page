@@ -9,13 +9,10 @@ const SourceCardList = ({ isHovered }) => {
         display: 'flex',
         position: 'relative',
         zIndex: 999,
-        height: 200,
       }}
     >
-      <SourceCard left={0} isHovered={isHovered} />
-      <div className="mobile-view">
-        <SourceCard left={220} isHovered={isHovered} />
-      </div>
+      <SourceCard isHovered={isHovered} />
+      <SourceCard isHovered={isHovered} name={'Products'} />
     </div>
   );
 };

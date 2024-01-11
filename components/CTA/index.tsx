@@ -37,7 +37,7 @@ const CTA = () => {
               whileInView="visible"
               transition={{ duration: 1, delay: 0.1 }}
               viewport={{ once: true }}
-              className="animate_left md:w-[80%] "
+              className="animate_left md:w-[100%] "
             >
               <h2 className="dark:text-black title-wrapper">
                 Join The Waitlist

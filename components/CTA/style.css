@@ -9,9 +9,9 @@
   border-radius: 300px;
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 850px) {
   .title-wrapper {
-    font-size: 30px;
+    font-size: 10vw;
     line-height: 1.2;
   }
   .sub-title-wrapper {

@@ -1,8 +1,15 @@
 import React from 'react';
-import './style.css'; // Import your CSS file
+import { Montserrat } from 'next/font/google';
+import './style.css';
 
+const fontFamily = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+});
 const MirrorText = () => {
-  return <div className="luminance-container">Odigos</div>;
+  return (
+    <div className={`${fontFamily.className} luminance-container`}>Odigos</div>
+  );
 };
 
 export default MirrorText;

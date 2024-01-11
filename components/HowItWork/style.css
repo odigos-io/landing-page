@@ -19,15 +19,15 @@
 }
 
 .source-card-container {
-  position: absolute;
+  position: relative;
   display: inline-flex;
-  padding: 24px 0px;
+  padding: 8px;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: 200px;
+  gap: 4px;
   border-radius: 24px;
   z-index: 9;
+  margin-right: 8px;
 }
 
 .source-card-list-container {
@@ -48,11 +48,17 @@
   .source-card-container {
     gap: 0;
     width: fit-content;
-    padding: 5px 10px;
+    /* padding: 5px 10px; */
   }
   .source-card-list-container {
     width: 260px;
     overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  .p-text {
+    line-height: 1.3;
   }
 }
 
