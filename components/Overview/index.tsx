@@ -12,7 +12,7 @@ import './style.css';
 import FloatingHeaderMobile from '../FloatingHeaderMobile';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
-const TIMES = ['0ms', '25ms', '50ms', '75ms', '100ms'];
+const TIMES = ['0ms', '200ms', '400ms', '600ms'];
 
 const Overview = () => {
   const [showDemo, setShowDemo] = React.useState(false);
@@ -169,56 +169,56 @@ const Overview = () => {
                   <div style={{ marginLeft: '2%' }}>
                     <SmallSpan
                       status={''}
-                      path={'user/id'}
-                      value={'TRACE'}
+                      path={'products/id'}
+                      value={'HTTP'}
                       percent="10%"
-                      type="blue"
-                      icon="/icons/overview/db.svg"
+                      type="white-blue"
+                      icon="/icons/overview/web.svg"
                       delay={10}
                     />
                   </div>
                   <div style={{ marginLeft: '12%' }}>
                     <SmallSpan
-                      path={'Lambda'}
+                      path={'products'}
                       status={''}
-                      value={'Invoke'}
+                      value={'mySQL'}
                       percent="10%"
                       type="white-blue"
-                      icon="/icons/overview/code.svg"
-                      delay={1000}
+                      icon="/icons/overview/db.svg"
+                      delay={200}
+                    />
+                  </div>
+                  <div style={{ marginLeft: '12%' }}>
+                    <SmallSpan
+                      status={''}
+                      value={'gRPC'}
+                      percent="10%"
+                      type="white-blue"
+                      path={'suppliers'}
+                      icon="/icons/overview/swap.svg"
+                      delay={250}
                     />
                   </div>
                   <div style={{ marginLeft: '22%' }}>
                     <SmallSpan
                       status={''}
-                      value={'GET'}
+                      value={'gRPC'}
                       percent="10%"
-                      type="light-blue"
-                      path={'http/network'}
-                      icon="/icons/overview/db.svg"
-                      delay={1500}
+                      type="orange"
+                      path={'supplier.id'}
+                      icon="/icons/overview/swap.svg"
+                      delay={1000}
                     />
                   </div>
                   <div style={{ marginLeft: '32%' }}>
                     <SmallSpan
                       status={''}
-                      value={'POST'}
-                      percent="10%"
-                      type="orange"
-                      path={'/user'}
-                      icon="/icons/overview/db.svg"
-                      delay={2000}
-                    />
-                  </div>
-                  <div style={{ marginLeft: '42%' }}>
-                    <SmallSpan
-                      status={''}
-                      value={'OPTIONS'}
+                      value={'Kafka'}
                       percent="20%"
-                      type="peach"
-                      icon="/icons/overview/fast.svg"
-                      delay={1800}
-                      // path={'HTTP/1.1'}
+                      type="orange"
+                      icon="/icons/overview/kafka.svg"
+                      delay={1300}
+                      path={'inquire'}
                     />
                   </div>
                 </section>
@@ -236,7 +236,7 @@ const Overview = () => {
                       status={''}
                       value={''}
                       percent="98%"
-                      type="blue"
+                      type="white-blue"
                       delay={10}
                     />
                   </div>
@@ -246,34 +246,34 @@ const Overview = () => {
                       value={''}
                       percent="20%"
                       type="white-blue"
+                      delay={200}
+                    />
+                  </div>
+                  <div style={{ marginLeft: '12%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="85%"
+                      type="white-blue"
+                      delay={250}
+                    />
+                  </div>
+                  <div style={{ marginLeft: '18%' }}>
+                    <ProgressBar
+                      status={''}
+                      value={''}
+                      percent="74%"
+                      type="orange"
                       delay={1000}
                     />
                   </div>
-                  <div style={{ marginLeft: '20%' }}>
+                  <div style={{ marginLeft: '22%' }}>
                     <ProgressBar
                       status={''}
                       value={''}
-                      percent="35%"
-                      type="light-blue"
-                      delay={1500}
-                    />
-                  </div>
-                  <div style={{ marginLeft: '40%' }}>
-                    <ProgressBar
-                      status={''}
-                      value={''}
-                      percent="50%"
+                      percent="30%"
                       type="orange"
-                      delay={2000}
-                    />
-                  </div>
-                  <div style={{ marginLeft: '30%' }}>
-                    <ProgressBar
-                      status={''}
-                      value={''}
-                      percent="70%"
-                      type="peach"
-                      delay={1800}
+                      delay={1300}
                     />
                   </div>
                 </section>

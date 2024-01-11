@@ -50,29 +50,22 @@ const DestList = ({ isHovered }) => {
       className="source-card-list-container"
       style={{
         display: 'flex',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         position: 'relative',
         zIndex: 999,
-        height: 200,
+        height: 100,
+        width: '100%',
       }}
     >
-      {brandData.slice(0, 3).map((brand, index) => (
+      {brandData.slice(0, 4).map((brand, index) => (
         <DestCard
           top={0}
-          left={index * 90 - 10}
-          isHovered={isHovered}
+          left={index * 50}
+          isHovered={false}
           image_url={brand.image_url}
         />
       ))}
-      <div className="mobile-view">
-        {brandData.slice(3, 6).map((brand, index) => (
-          <DestCard
-            top={100}
-            left={50 + index * 90}
-            isHovered={isHovered}
-            image_url={brand.image_url}
-          />
-        ))}
-      </div>
     </div>
   );
 };

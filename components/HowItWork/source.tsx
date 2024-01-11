@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import './style.css';
-const SourceCard = ({ left, isHovered }) => {
+const SourceCard = ({ isHovered, name = 'User service' }) => {
   return (
     <div
       className="source-card-container"
       style={{
-        left,
         border: isHovered
           ? '1px solid var(--Dark-mode-Odigos-Torquiz, #96F2FF)'
           : '1px solid #96f3ff51',
@@ -16,8 +15,8 @@ const SourceCard = ({ left, isHovered }) => {
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="56"
-        height="56"
+        width="24"
+        height="24"
         viewBox="0 0 56 56"
         fill="none"
       >
@@ -29,8 +28,8 @@ const SourceCard = ({ left, isHovered }) => {
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="16"
+        height="16"
         viewBox="0 0 24 24"
         fill="none"
         style={{
@@ -69,28 +68,27 @@ const SourceCard = ({ left, isHovered }) => {
           />
         )}
       </svg>
+
       <div
         style={{
           color: 'var(--Dark-mode-White, #FFF)',
           textAlign: 'center',
           fontFeatureSettings: "'clig' off, 'liga' off",
           fontFamily: 'Inter',
-          fontSize: '20px',
+          fontSize: 14,
           fontStyle: 'normal',
           fontWeight: 700,
           lineHeight: '110%',
+          marginTop: 4,
         }}
       >
-        Application
+        {name}
       </div>
       <div
         style={{
           display: 'flex',
-          padding: '4px 8px',
           alignItems: 'flex-start',
-          gap: '10px',
           borderRadius: 18,
-          background: isHovered ? '#033869' : 'transparent',
           fontSize: 12,
         }}
       >

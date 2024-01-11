@@ -3,6 +3,7 @@ import { FeatureTab } from '@/types/featureTab';
 import SourceCardList from './source-list';
 import TerminalText from '../TerminalText';
 import DestList from './dest-list';
+import './style.css';
 
 const HowItWorkItem = ({ featureTab }: { featureTab: FeatureTab }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -12,30 +13,34 @@ const HowItWorkItem = ({ featureTab }: { featureTab: FeatureTab }) => {
     <>
       <div
         style={{
+          width: '20vw',
+          minWidth: 250,
           maxWidth: 400,
-          height: 400,
+          height: 350,
           background: '#1d1c20',
           borderRadius: 24,
           border: '1px solid rgba(255,255,255,.08)',
-          padding: 32,
+          padding: '1.5rem',
+          flexDirection: 'column',
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="flex  gap-8 lg:gap-19"
+        className="flex"
       >
-        <div className="">
-          <h2 className="text-black dark:text-white text-3xl font-bold mb-7">
-            {title}
-          </h2>
-          <p className="mb-5">{desc1}</p>
-          {title === 'Install Odigos' && <TerminalText />}
-          {title === 'Select Applications' && (
-            <SourceCardList isHovered={isHovered} />
-          )}
-          {title === 'Choose Destinations' && (
-            <DestList isHovered={isHovered} />
-          )}
-        </div>
+        <h2
+          // style={{ width: 230 }}
+          className="dark:text-white text-3xl font-bold mb-3"
+        >
+          {title}
+        </h2>
+        <p style={{ fontSize: 15 }} className="mb-5 p-text">
+          {desc1}
+        </p>
+        {title === 'Install Odigos' && <TerminalText />}
+        {title === 'Select Applications' && (
+          <SourceCardList isHovered={isHovered} />
+        )}
+        {title === 'Choose Destinations' && <DestList isHovered={isHovered} />}
       </div>
     </>
   );
