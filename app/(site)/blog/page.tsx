@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   icons: '/images/logo/logo.png',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: '/images/hero/overview.gif',
+    images: '/images/hero/meta-image.png',
   },
 };
 
