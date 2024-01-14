@@ -14,7 +14,6 @@ import Overview from '@/components/Overview';
 import FloatingParagraph from '@/components/FloatingParagraph';
 import { Montserrat } from 'next/font/google';
 import HowItWork from '@/components/HowItWork';
-import Head from 'next/head';
 
 const fontFamily = Montserrat({
   subsets: ['latin'],
@@ -27,38 +26,23 @@ export const metadata: Metadata = {
   icons: '/images/logo/logo.png',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: '/images/hero/meta-image.png',
+    images: '/images/hero/overview.gif',
   },
 };
 
-const Meta = ({ metadata }) => (
-  <Head>
-    <title>{metadata.title}</title>
-    <meta property="og:title" content={metadata.openGraph.title} />
-    <meta
-      property="og:image"
-      content={metadata.metadataBase + metadata.openGraph.images}
-    />
-  </Head>
-);
-
 export default function Home() {
   return (
-    <>
-      <Meta metadata={metadata} />
-
-      <main className={fontFamily.className} style={{ background: '#060606' }}>
-        <Overview />
-        <FloatingParagraph />
-        <Feature />
-        <Performance />
-        <HowItWork />
-        <Integration />
-        <CTA />
-        <FAQ />
-        <Testimonial />
-        <Blog />
-      </main>
-    </>
+    <main className={fontFamily.className} style={{ background: '#060606' }}>
+      <Overview />
+      <FloatingParagraph />
+      <Feature />
+      <Performance />
+      <HowItWork />
+      <Integration />
+      <CTA />
+      <FAQ />
+      <Testimonial />
+      <Blog />
+    </main>
   );
 }
