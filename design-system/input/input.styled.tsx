@@ -27,7 +27,7 @@ export const StyledInputContainer = styled.div<ActiveProps>`
 `;
 
 export const StyledInput = styled.input`
-  background: #1b2136;
+  background: #060606;
   border: none;
   outline: none;
   width: 100%;

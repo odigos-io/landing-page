@@ -1,0 +1,32 @@
+.sub-title-container {
+  width: 50vw;
+  font-size: 2vw;
+}
+
+.demo-view {
+  width: 60vw;
+  height: 60vh;
+}
+
+.desktop-view {
+}
+
+@media screen and (min-width: 768px) {
+  .desktop-view {
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .sub-title-container {
+    font-size: 24px;
+    width: 95vw;
+  }
+  .mobile-view {
+    visibility: hidden;
+  }
+  .demo-view {
+    width: 100vw;
+    height: 340px;
+  }
+}

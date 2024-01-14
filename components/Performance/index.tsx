@@ -13,8 +13,13 @@ const ProgressBarsWrapper = styled.div`
   height: 100%;
   width: 100%;
   padding: 3rem;
+  margin-top: 1rem;
   border-radius: 0.5rem;
   border-bottom: 1px solid #e5e7eb;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const Performance = () => {
@@ -26,7 +31,7 @@ const Performance = () => {
 
   return isLoad ? (
     <>
-      <section id="features" className="py-20 lg:py-25 xl:py-30">
+      <section id="features" className="py-20  lg:py-25 xl:py-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <>
             <motion.div
@@ -47,16 +52,22 @@ const Performance = () => {
               viewport={{ once: true }}
               className="animate_top text-center mx-auto"
             >
-              <h2 className="font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white md:w-4/5 xl:w-1/2 mx-auto mb-4">
+              <h2 className="font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white md:w-4/5  mx-auto mb-4">
                 {'Extreme Performance'}
               </h2>
-              <p className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[80%]">
+              <p
+                style={{ fontSize: '1.3rem' }}
+                className="mx-auto md:w-4/5 lg:w-3/5 "
+              >
                 Odigos provides unprecedented up to{' '}
                 <a
-                  style={{ textDecoration: 'underline', fontSize: 18 }}
+                  style={{ textDecoration: 'underline', fontSize: '1.3rem' }}
                   href="/blog/ebpf-instrumentation-faster-than-manual"
                 >
-                  <b> 50x faster performance </b>
+                  <b style={{ fontSize: '1.3rem' }} className="mark-span">
+                    {' '}
+                    50x faster performance{' '}
+                  </b>
                 </a>
                 - virtually eliminating latency
               </p>
@@ -80,7 +91,7 @@ const Performance = () => {
             viewport={{ once: true }}
             className="animate_top "
           >
-            <ProgressBarsWrapper style={{ gap: isLoad ? 16 : 16 }}>
+            <ProgressBarsWrapper style={{ gap: 16 }}>
               <ProgressBar
                 status={'No Instrumentation'}
                 value={'183.09ms'}

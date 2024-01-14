@@ -2,17 +2,18 @@ import BlogItem from '@/components/Blog/BlogItem';
 import { getAllBlogs } from '@/app/libs/markdown';
 import SectionHeader from '@/components/Common/SectionHeader';
 import { Metadata } from 'next';
-
+import FloatingHeader from '@/components/FloatingHeader';
+import FloatingHeaderMobile from '@/components/FloatingHeaderMobile';
+import './style.css';
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
   icons: '/images/logo/logo.png',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: "/images/hero/overview.gif",
+    images: '/images/hero/overview.gif',
   },
 };
-
 
 const BlogPage = async () => {
   const posts = getAllBlogs([
@@ -27,6 +28,32 @@ const BlogPage = async () => {
   return (
     <>
       {/* <!-- ===== Blog Grid Start ===== --> */}
+      <div
+        className="mobile-view"
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+        }}
+      >
+        <FloatingHeader />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+        }}
+        className="desktop-view"
+      >
+        <FloatingHeaderMobile stickToTop={true} />
+      </div>
       <div style={{ marginTop: 200 }}>
         {/* <!-- Section Title Start --> */}
         <div className="animate_top text-center mx-auto">

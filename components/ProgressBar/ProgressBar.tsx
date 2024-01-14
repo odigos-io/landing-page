@@ -7,18 +7,20 @@ import { useInView } from 'react-intersection-observer';
 const progressBarAnimation = keyframes`
   from {
     width: 0;
+    opacity: 0;
+    border-radius: 0.4rem;
+  }
+  to {
+    opacity: 1;
   }
 `;
 
 const Progress = styled.div<{ width?: any; inView?: any }>`
   height: 25px;
-  transition: 1s ease;
-  transition-delay: 0.5s;
   border-radius: 0.4rem;
   margin: 0;
-  width: ${(props) => props.width || '0%'};
-  opacity: ${(props) => (props.inView ? 1 : 0)};
-  animation: ${(props) => (props.inView ? progressBarAnimation : 'none')} 2s
+
+  animation: ${(props) => (props.inView ? progressBarAnimation : 'none')} 3s
     ease;
 `;
 
@@ -28,10 +30,20 @@ export var ProgressBar = ({
   status,
   value = '12',
   type = 'default',
+  delay = 0,
 }) => {
+  const [showAnimation, setShowAnimation] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setShowAnimation(true);
+    }, delay);
+  }, []);
+
   const [ref, inView] = useInView({
     triggerOnce: true,
-    rootMargin: '-600px 0px 0px 0px',
+    rootMargin: '-200px 0px 0px 0px',
+    delay,
   });
 
   function getBackground() {
@@ -46,9 +58,9 @@ export var ProgressBar = ({
       case 'basic':
         return `linear-gradient(
             90deg,
-            rgba(200, 200, 200, 1) 0%,     /* Gray */
-            rgba(200, 200, 200, 0.6264880952380952) 87%,  /* Lighter Gray */
-            rgba(200, 200, 200, 0.4332107843137255) 100%  /* Even Lighter Gray */
+            #c8c8c8 0%,     /* Gray */
+            #c8c8c89f 87%,  /* Lighter Gray */
+            #c8c8c86e 100%  /* Even Lighter Gray */
           )`;
       case 'traditional':
         return `linear-gradient(
@@ -57,39 +69,37 @@ export var ProgressBar = ({
             rgba(255, 77, 77, 0.6264880952380952) 87%,  /* Lighter Red */
             rgba(255, 77, 77, 0.4332107843137255) 100%  /* Even Lighter Red */
           )`;
+      case 'orange':
+        return `rgb(255, 221, 183)`;
+      case 'blue':
+        return `rgb(7, 110, 255)`;
+      case 'white-blue':
+        return 'rgb(79, 171, 255)';
+      case 'light-blue':
+        return 'rgb(177, 197, 255)';
+      case 'peach':
+        return 'rgb(255, 183, 197)';
       default:
         break;
     }
   }
 
-  function getColor() {
-    switch (type) {
-      case 'default':
-        return `#6aff79`;
-      case 'basic':
-        return `#c8c8c8`;
-      case 'traditional':
-        return `#ff4d4d`;
-      default:
-        break;
-    }
-  }
-
-  return (
+  return showAnimation ? (
     <div className={'progressComp'} ref={ref}>
       <span className="label">{status}</span>
       <div className="progress-div" style={{ width }}>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div>
           <Progress
             inView={inView}
-            width={percent}
-            style={{ width: percent, background: getBackground() }}
+            style={{
+              width: percent,
+              background: getBackground(),
+            }}
           />
-          {/* <span className="percent-number" style={{ color: getColor() }}>
-            {value}
-          </span> */}
         </div>
       </div>
     </div>
+  ) : (
+    <div className={'progressComp'} ref={ref} />
   );
 };

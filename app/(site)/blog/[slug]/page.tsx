@@ -5,7 +5,9 @@ import markdownToHtml from '@/app/libs/markdownToHtml';
 import { Metadata } from 'next';
 import BlogNotFound from '@/components/Blog/BlogNotFound';
 import Markdown from '@/components/Markdown';
-
+import FloatingHeader from '@/components/FloatingHeader';
+import FloatingHeaderMobile from '@/components/FloatingHeaderMobile';
+import './style.css';
 type Props = {
   params: { slug: string };
 };
@@ -74,6 +76,32 @@ const SingleBlogPage = async ({ params }: Props) => {
 
   return content ? (
     <>
+      <div
+        className="mobile-view"
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+        }}
+      >
+        <FloatingHeader />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+        }}
+        className="desktop-view"
+      >
+        <FloatingHeaderMobile stickToTop={true} />
+      </div>
       <title>{`${post?.title}`}</title>
       <section className="pt-35 lg:pt-45 xl:pt-50 pb-20 lg:pb-25 xl:pb-30">
         <div
@@ -185,7 +213,10 @@ const SingleBlogPage = async ({ params }: Props) => {
                   </div>
                 </div>
 
-                <div className="lg:w-[70%]" style={{ marginTop: 48 }}>
+                <div
+                  className="lg:w-[70%] "
+                  style={{ marginTop: 48, background: '#060606' }}
+                >
                   <Markdown source={post.content} />
                   {/* <div
                     className="blog-details"

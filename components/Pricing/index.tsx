@@ -4,16 +4,44 @@ import Image from 'next/image';
 import SectionHeader from '../Common/SectionHeader';
 import { PricingItem } from './PricingItem';
 import { PRICING } from './data';
-
+import FloatingHeader from '../FloatingHeader';
+import FloatingHeaderMobile from '../FloatingHeaderMobile';
+import './style.css';
 const Pricing = () => {
   return (
     <>
+      <div
+        className="mobile-view"
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+        }}
+      >
+        <FloatingHeader />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'fixed',
+          zIndex: 9999,
+          top: 50,
+        }}
+        className="desktop-view"
+      >
+        <FloatingHeaderMobile stickToTop={true} />
+      </div>
       <section className="pt-45 pb-20 lg:pb-25 xl:pb-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="animate_top text-center mx-auto">
             <SectionHeader
               headerInfo={{
-                title: `PRICING`,
+                title: ``,
                 subtitle: `Simple Pricing`,
                 description: `A simple pricing model for every step of your observability journey`,
               }}
@@ -21,13 +49,16 @@ const Pricing = () => {
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1207px] px-4 md:px-8 xl:px-0 relative mt-15 xl:mt-20">
+        <div
+          style={{ overflow: 'hidden' }}
+          className="mx-auto max-w-[1207px] px-4 md:px-8 xl:px-0 relative mt-15 xl:mt-20"
+        >
           <div className="absolute -bottom-15 -z-1 w-full h-full">
             <Image
               fill
               src="./images/shape/shape-dotted-light.svg"
               alt="Dotted"
-              className="dark:hidden"
+              // className="dark:hidden"
             />
           </div>
           <div className="flex flex-wrap lg:flex-nowrap justify-center gap-7.5 xl:gap-12.5">

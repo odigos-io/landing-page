@@ -21,16 +21,6 @@ const brandData: any[] = [
     display_name: 'Google Cloud Monitoring',
     image_url: '/dest/gcp.svg',
   },
-  // {
-  //   type: 'managed',
-  //   display_name: 'Grafana Cloud Loki',
-  //   image_url: '/dest/grafana.svg',
-  // },
-  // {
-  //   type: 'managed',
-  //   display_name: 'Grafana Cloud Prometheus',
-  //   image_url: '/dest/grafana.svg',
-  // },
   {
     type: 'managed',
     display_name: 'Grafana Cloud Tempo',
@@ -49,7 +39,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -79,12 +69,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',
@@ -159,7 +149,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -189,12 +179,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',
@@ -269,7 +259,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -299,12 +289,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',
@@ -379,7 +369,7 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Logz.io',
-    image_url: '/dest/logzio.svg',
+    image_url: '/dest/logz.png',
   },
   {
     type: 'managed',
@@ -409,12 +399,12 @@ const brandData: any[] = [
   {
     type: 'managed',
     display_name: 'Splunk',
-    image_url: '/dest/splunk.svg',
+    image_url: '/dest/splunk.png',
   },
   {
     type: 'self hosted',
     display_name: 'Jaeger',
-    image_url: '/dest/jaeger.svg',
+    image_url: '/dest/jaegertracingio.svg',
   },
   {
     type: 'self hosted',

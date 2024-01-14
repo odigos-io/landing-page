@@ -10,6 +10,15 @@ import Blog from '@/components/Blog';
 import Testimonial from '@/components/Testimonial';
 
 import Performance from '@/components/Performance';
+import Overview from '@/components/Overview';
+import FloatingParagraph from '@/components/FloatingParagraph';
+import { Montserrat } from 'next/font/google';
+import HowItWork from '@/components/HowItWork';
+
+const fontFamily = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
@@ -23,13 +32,13 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main>
-      <Hero />
+    <main className={fontFamily.className} style={{ background: '#060606' }}>
+      <Overview />
+      <FloatingParagraph />
       <Feature />
       <Performance />
-      <FeaturesTab />
+      <HowItWork />
       <Integration />
-      <Brands />
       <CTA />
       <FAQ />
       <Testimonial />
