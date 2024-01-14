@@ -3,6 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { TextHeader } from '@/components/TextHeader';
 import { WaitListForm } from '@/components/WaitlistForm/waitlist';
 import styled from 'styled-components';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://odigos.io'),
+  title: 'Odigos - Instant Distributed Tracing',
+  icons: '/images/logo/logo.png',
+  openGraph: {
+    title: 'Odigos - Instant Distributed Tracing',
+    images: '/images/hero/overview.gif',
+  },
+};
 
 const WaitListContainer = styled.div`
   display: flex;
