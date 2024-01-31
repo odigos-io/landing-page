@@ -33,7 +33,12 @@ const FloatingHeader = () => {
         <ul>
           {menuData.map((item) => (
             <Link href={`${item.path}`}>
-              <li key={item.id}>{item.title}</li>
+              <li
+                className="transition duration-300 ease-in-out hover:underline"
+                key={item.id}
+              >
+                {item.title}
+              </li>
             </Link>
           ))}
         </ul>

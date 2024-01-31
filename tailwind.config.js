@@ -39,6 +39,7 @@ module.exports = {
       zumthor: '#EDF5FF',
       socialicon: '#D1D8E0',
       dark_button: '#0A1824',
+      hover_text: '#46495A;',
     },
     extend: {
       fontSize: {
