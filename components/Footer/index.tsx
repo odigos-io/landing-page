@@ -89,6 +89,15 @@ const Footer = () => {
                         Pricing
                       </a>
                     </li>
+                    <li>
+                      <a
+                        href="https://app.odigos.io/about/terms-of-use"
+                        className="inline-block hover:text-secondary mb-3"
+                        target="_blank"
+                      >
+                        Privacy Policy
+                      </a>
+                    </li>
                   </ul>
                 </div>
                 <div>
