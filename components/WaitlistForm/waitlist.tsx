@@ -82,7 +82,7 @@ export function WaitListForm({
 
   function isValidEmail(email: string): boolean {
     // Regular expression for a simple email validation
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     // Use the test method of the regular expression to check if the email is valid
     return emailRegex.test(email);
