@@ -72,6 +72,11 @@ const brandData: any[] = [
     image_url: '/dest/splunk.png',
   },
   {
+    type: 'managed',
+    display_name: 'Causely',
+    image_url: '/dest/causely.svg',
+  },
+  {
     type: 'self hosted',
     display_name: 'Jaeger',
     image_url: '/dest/jaegertracingio.svg',
@@ -182,6 +187,11 @@ const brandData: any[] = [
     image_url: '/dest/splunk.png',
   },
   {
+    type: 'managed',
+    display_name: 'Causely',
+    image_url: '/dest/causely.svg',
+  },
+  {
     type: 'self hosted',
     display_name: 'Jaeger',
     image_url: '/dest/jaegertracingio.svg',
@@ -292,6 +302,11 @@ const brandData: any[] = [
     image_url: '/dest/splunk.png',
   },
   {
+    type: 'managed',
+    display_name: 'Causely',
+    image_url: '/dest/causely.svg',
+  },
+  {
     type: 'self hosted',
     display_name: 'Jaeger',
     image_url: '/dest/jaegertracingio.svg',
@@ -400,6 +415,11 @@ const brandData: any[] = [
     type: 'managed',
     display_name: 'Splunk',
     image_url: '/dest/splunk.png',
+  },
+  {
+    type: 'managed',
+    display_name: 'Causely',
+    image_url: '/dest/causely.svg',
   },
   {
     type: 'self hosted',
