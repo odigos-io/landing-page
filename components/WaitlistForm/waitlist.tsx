@@ -58,6 +58,13 @@ export function WaitListForm({
   const [value, setValue] = useLocalStorage('subscribed', '');
   async function handleJoinWaitList() {
     setIsLoaded(true);
+
+    if (isFreeEmail(email)) {
+      setError('please use a work email');
+      setIsLoaded(false);
+      return;
+    }
+
     if (!isValidEmail(email)) {
       setError('Invalid email address');
       setIsLoaded(false);
@@ -78,6 +85,26 @@ export function WaitListForm({
       alert('Error joining waitlist');
     }
     setIsLoaded(false);
+  }
+
+  function isFreeEmail(email: string): boolean {
+    const freeEmailDomains = [
+      'gmail.com',
+      'yahoo.com',
+      'hotmail.com',
+      'outlook.com',
+      'aol.com',
+      'icloud.com',
+      'live.com',
+      'zoho.com',
+      'protonmail.com',
+      'yandex.com',
+      'mail.com',
+      'gmx.com',
+      'inbox.com',
+    ];
+    const domain = email.split('@')[1];
+    return freeEmailDomains.includes(domain);
   }
 
   function isValidEmail(email: string): boolean {
