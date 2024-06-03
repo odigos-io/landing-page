@@ -6,6 +6,7 @@ import { ThemeProvider } from 'next-themes';
 import '../globals.css';
 import PlausibleProvider from 'next-plausible';
 import ConversionInitiator from '@/components/Conversions/landing.simple.tracking';
+import { ThemeProviderWrapper } from '@/reuseable-components/theme.provider/theme.provider';
 
 export default function RootLayout({
   children,
@@ -17,18 +18,13 @@ export default function RootLayout({
       <head>
         <PlausibleProvider domain="odigos.io" />
       </head>
-      <body className={`dark:bg-black no-scrollbar`}>
-        <ThemeProvider
-          enableSystem={false}
-          attribute="class"
-          defaultTheme="dark"
-        >
+      <body>
+        <ThemeProviderWrapper>
           <ConversionInitiator />
           {/* <Header /> */}
           {children}
-          <Footer />
-          <ScrollToTop />
-        </ThemeProvider>
+          {/* <Footer /> */}
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

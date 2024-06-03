@@ -7,8 +7,9 @@ import {
   FlexContainer,
   SectionContainer,
 } from '@/style';
-import { Button, UnderlineText } from '@/reuseable-components';
 import Image from 'next/image';
+import { TrustedList } from '@/components';
+import { Button, UnderlineText } from '@/reuseable-components';
 
 const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.text.primary};
@@ -47,6 +48,7 @@ const Hero = () => {
           Resolve incidents faster with deeper distributed tracing for all your
           backend architecture without any code changes.
         </HeroSubTitle>
+        <TrustedList />
       </ColumnContainer>
       <Center>
         <Image

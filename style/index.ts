@@ -46,3 +46,16 @@ export const Center = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const GridContainer = styled.div<{
+  gap?: number;
+  columns?: number;
+}>`
+  display: grid;
+  gap: ${({ gap }) => gap || 64}px;
+  grid-template-columns: repeat(${({ columns }) => columns || 3}, 1fr);
+
+  @media (max-width: 600px) {
+    gap: ${({ gap }) => gap || 24}px;
+  }
+`;

@@ -1,19 +1,22 @@
 import { Metadata } from 'next';
-import Hero from '@/components/Hero';
-import Brands from '@/components/Brands';
-import Feature from '@/components/Features';
-import FeaturesTab from '@/components/FeaturesTab';
-import Integration from '@/components/Integration';
-import CTA from '@/components/CTA';
-import FAQ from '@/components/FAQ';
-import Blog from '@/components/Blog';
-import Testimonial from '@/components/Testimonial';
-
-import Performance from '@/components/Performance';
-import Overview from '@/components/Overview';
-import FloatingParagraph from '@/components/FloatingParagraph';
+import dynamic from 'next/dynamic';
 import { Montserrat } from 'next/font/google';
-import HowItWork from '@/components/HowItWork';
+
+const Hero = dynamic(() => import('@/containers/hero'));
+const Brands = dynamic(() => import('@/components/Brands'));
+const Feature = dynamic(() => import('@/components/Features'));
+const FeaturesTab = dynamic(() => import('@/components/FeaturesTab'));
+const Integration = dynamic(() => import('@/components/Integration'));
+const CTA = dynamic(() => import('@/components/CTA'));
+const FAQ = dynamic(() => import('@/components/FAQ'));
+const Blog = dynamic(() => import('@/components/Blog'));
+const Testimonial = dynamic(() => import('@/components/Testimonial'));
+const Performance = dynamic(() => import('@/components/Performance'));
+const Overview = dynamic(() => import('@/components/Overview'));
+const FloatingParagraph = dynamic(
+  () => import('@/components/FloatingParagraph')
+);
+const HowItWork = dynamic(() => import('@/components/HowItWork'));
 
 const fontFamily = Montserrat({
   subsets: ['latin'],
@@ -32,17 +35,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className={fontFamily.className} style={{ background: '#060606' }}>
-      <Overview />
-      <FloatingParagraph />
-      <Feature />
-      <Performance />
-      <HowItWork />
-      <Integration />
-      <CTA />
-      <FAQ />
-      <Testimonial />
-      <Blog />
+    <main className={fontFamily.className} style={{ background: '#151515' }}>
+      <Hero />
     </main>
   );
 }
