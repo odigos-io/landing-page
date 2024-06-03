@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Button } from '../button';
 import styled, { keyframes } from 'styled-components';
 import { Center, ColumnContainer } from '@/style';
+import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 type ModalProps = {
   children: React.ReactNode;
@@ -126,6 +127,10 @@ const IconWrapper = styled(Button)`
 const Modal = ({ title, description, onClose, children }: ModalProps) => {
   const [isVisible, setIsVisible] = React.useState(true);
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  useOnClickOutside(containerRef, () => handleClose());
+
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(onClose, 300); // Match the duration of the fade-out animation
@@ -133,7 +138,7 @@ const Modal = ({ title, description, onClose, children }: ModalProps) => {
 
   return (
     <ModalContainer isVisible={isVisible}>
-      <DashedLayer>
+      <DashedLayer ref={containerRef}>
         <InnerDashedLayer>
           <ModalBody>
             <ModalHeader>
