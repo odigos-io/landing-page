@@ -63,14 +63,14 @@ const Hero = () => {
           </HeroSubTitle>
           <TrustedList />
         </ColumnContainer>
-        <Center>
+        <div>
           <Image
             width={600}
             height={600}
             src="/images/hero/hero.svg"
             alt="overview"
           />
-        </Center>
+        </div>
       </SectionContainer>
       {open && (
         <Modal

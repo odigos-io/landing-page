@@ -1,12 +1,10 @@
 'use client';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ScrollToTop from '@/components/ScrollToTop';
-import { ThemeProvider } from 'next-themes';
 import '../globals.css';
 import PlausibleProvider from 'next-plausible';
 import ConversionInitiator from '@/components/Conversions/landing.simple.tracking';
 import { ThemeProviderWrapper } from '@/reuseable-components/theme.provider/theme.provider';
+import { Header } from '@/containers';
 
 export default function RootLayout({
   children,
@@ -21,7 +19,7 @@ export default function RootLayout({
       <body>
         <ThemeProviderWrapper>
           <ConversionInitiator />
-          {/* <Header /> */}
+          <Header />
           {children}
           {/* <Footer /> */}
         </ThemeProviderWrapper>

@@ -1,3 +1,4 @@
+import theme from '@/style/theme';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { Montserrat } from 'next/font/google';
@@ -21,7 +22,10 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className={fontFamily.className} style={{ background: '#151515' }}>
+    <main
+      className={fontFamily.className}
+      style={{ background: theme.colors.primary, paddingTop: 100 }}
+    >
       <Hero />
     </main>
   );

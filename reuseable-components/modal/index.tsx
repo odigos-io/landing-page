@@ -40,6 +40,7 @@ const ModalContainer = styled(Center)<{ isVisible: boolean }>`
   height: 100vh;
   background: rgba(21, 21, 21, 0.8);
   position: fixed;
+  z-index: 9999;
   top: 0;
   animation: ${({ isVisible }) => (isVisible ? fadeIn : fadeOut)} 0.3s ease-out;
   display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};

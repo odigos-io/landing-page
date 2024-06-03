@@ -2,9 +2,8 @@ import { DefaultTheme } from 'styled-components';
 
 // Define your color palette
 const colors = {
-  primary: '#07111A',
-  secondary: '#0EE6F3',
-  background: '#F9F9F9',
+  primary: '#151515',
+  secondary: '#F9F9F9',
 };
 
 const text = {
