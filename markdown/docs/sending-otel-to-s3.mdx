@@ -48,7 +48,7 @@ eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=otel-clust
 For this demo, we will use the [emojivoto](https://github.com/BuoyantIO/emojivoto) application. You can install it by running the following command:
 
 ```console
-kubectl apply -k github.com/keyval-dev/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
+kubectl apply -k github.com/odigos-io/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
 ```
 
 ## Installing Odigos
@@ -57,7 +57,7 @@ After installing the demo application, you need to install Odigos to send data t
 The simplest way to install Odigos is via the helm chart by executing the following commands:
 
 ```console
-helm repo add odigos https://keyval-dev.github.io/odigos-charts/
+helm repo add odigos https://odigos-io.github.io/odigos-charts/
 helm install my-odigos odigos/odigos --namespace odigos-system --create-namespace
 ```
 

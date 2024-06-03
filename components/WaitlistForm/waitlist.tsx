@@ -39,9 +39,9 @@ const REGISTER = {
 const SOCIAL_LINKS = {
   SLACK:
     'https://odigos.slack.com/join/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A#/shared-invite/email',
-  GITHUB: 'https://github.com/keyval-dev/odigos',
+  GITHUB: 'https://github.com/odigos-io/odigos',
   LINKEDIN: 'https://www.linkedin.com/company/keyval/',
-  GITHUB_RELEASES: 'https://github.com/keyval-dev/odigos/releases',
+  GITHUB_RELEASES: 'https://github.com/odigos-io/odigos/releases',
 };
 
 export function WaitListForm({
