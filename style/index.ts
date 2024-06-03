@@ -29,6 +29,7 @@ export const SectionContainer = styled.div<{
   padding?: string;
   justify?: string;
 }>`
+  height: 100vh;
   padding: ${({ padding }) => padding || '80px 64px'};
   display: flex;
   justify-content: ${({ justify }) => justify || 'space-evenly'};
