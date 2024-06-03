@@ -21,6 +21,10 @@ const UnderlineTextStyled = styled.span<{ size?: number; color?: string }>`
   display: flex;
   align-items: center;
   gap: 8px;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
 `;
 
 export const UnderlineText: React.FC<UnderlineTextProps> = ({

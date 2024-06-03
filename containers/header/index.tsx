@@ -25,45 +25,25 @@ const HeaderInner = styled.div`
   align-items: center;
   justify-content: space-between;
   position: relative;
+
+  @media (max-width: 1024px) {
+    padding: 20px;
+  }
 `;
 
 const LogoContainer = styled.div``;
+
+const SignInButton = styled(Button)`
+  @media (max-width: 1024px) {
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+`;
 
 const HamburgerButton = styled.button`
   display: block;
   @media (min-width: 1024px) {
     display: none;
-  }
-`;
-
-const HamburgerIcon = styled.span<{ isOpen: boolean }>`
-  position: relative;
-  width: 22px;
-  height: 22px;
-  display: block;
-  cursor: pointer;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    width: ${({ isOpen }) => (isOpen ? '22px' : '0')};
-    height: 2px;
-    background: ${({ theme }) => theme.text.primary};
-    border-radius: 1px;
-    transition: width 0.2s ease-in-out;
-  }
-
-  &::before {
-    top: 4px;
-    transition-delay: 0.3s;
-    width: ${({ isOpen }) => (isOpen ? '22px' : '0')};
-  }
-
-  &::after {
-    bottom: 4px;
-    transition-delay: 0.4s;
-    width: ${({ isOpen }) => (isOpen ? '22px' : '0')};
   }
 `;
 
@@ -143,6 +123,15 @@ const GithubNumberWrapper = styled.div`
   margin-left: -4px;
 `;
 
+const ActionBarWrapper = styled.div`
+  display: flex;
+
+  @media (max-width: 1024px) {
+    gap: 1rem;
+    width: 172px;
+  }
+`;
+
 export const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [dropdownToggler, setDropdownToggler] = useState(false);
@@ -161,13 +150,6 @@ export const Header = () => {
               height={32}
             />
           </a>
-
-          {/* <HamburgerButton
-            aria-label="hamburger Toggler"
-            onClick={() => setNavigationOpen(!navigationOpen)}
-          >
-            <HamburgerIcon isOpen={navigationOpen} />
-          </HamburgerButton> */}
         </LogoContainer>
 
         {/* <NavMenu isOpen={navigationOpen}>
@@ -254,9 +236,22 @@ export const Header = () => {
             </NavItem>
           </NavList>
         </NavMenu>
-        <Button variant="secondary">
-          <UnderlineText color={theme.text.secondary}>Sign in</UnderlineText>
-        </Button>
+        <ActionBarWrapper>
+          <SignInButton variant="secondary">
+            <UnderlineText color={theme.text.secondary}>Sign in</UnderlineText>
+          </SignInButton>
+          <HamburgerButton
+            aria-label="hamburger Toggler"
+            onClick={() => setNavigationOpen(!navigationOpen)}
+          >
+            <Image
+              src="/icons/common/hamburger.svg"
+              alt="hamburger"
+              width={24}
+              height={24}
+            />
+          </HamburgerButton>
+        </ActionBarWrapper>
       </HeaderInner>
     </HeaderContainer>
   );
