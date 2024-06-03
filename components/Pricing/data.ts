@@ -28,7 +28,7 @@ export const PRICING = [
     custom_price: 'Free',
     description: 'Zero-code distributed tracing',
     action_text: 'Go to GitHub Repository',
-    link: 'https://github.com/keyval-dev/odigos'
+    link: 'https://github.com/odigos-io/odigos'
   },
   {
     id: 'price_1NQk55LtGdPVhGLefU8AHqHr',

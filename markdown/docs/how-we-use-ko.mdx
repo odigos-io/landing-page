@@ -263,11 +263,11 @@ spec:
     spec:
       containers:
         - name: my-service
-          image: ko://github.com/keyval-dev/my-app/cmd/app
+          image: ko://github.com/odigos-io/my-app/cmd/app
 ```
 
 - The `ko://` scheme is a special url that `ko` will recognize and replace with the resolved image name and tag.
-- The `github.com/keyval-dev/my-app` part is identical to the `module` field in our `go.mod` file.
+- The `github.com/odigos-io/my-app` part is identical to the `module` field in our `go.mod` file.
 - The `cmd/app` part is the import path to the package with `func main()`.
 
 You can have multiple `ko://` urls in the same file, and `ko apply` will build push and replace all of them.

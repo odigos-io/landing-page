@@ -46,12 +46,12 @@ kind create cluster
 
 ## Installing Target Applications
 
-We will install a fork of [bank-of-athnos](https://github.com/keyval-dev/bank-of-athnos), an example of a bank application created by Google. We use a modified version without any instrumentation code to demonstrate how Odigos automatically collects observability data from the application.
+We will install a fork of [bank-of-athnos](https://github.com/odigos-io/bank-of-athnos), an example of a bank application created by Google. We use a modified version without any instrumentation code to demonstrate how Odigos automatically collects observability data from the application.
 
 Deploy the application using the following command:
 
 ```console
-kubectl apply -f https://raw.githubusercontent.com/keyval-dev/bank-of-athnos/main/release/kubernetes-manifests.yaml
+kubectl apply -f https://raw.githubusercontent.com/odigos-io/bank-of-athnos/main/release/kubernetes-manifests.yaml
 ```
 
 ## Installing Observability Backend
@@ -61,7 +61,7 @@ As there is currently no one database that can store traces, logs, and metrics, 
 The following helm chart deploy Tempo (traces database), Prometheus (metrics database), and Loki (logs database) as well as a preconfigured Grafana instance with those databases as data sources. Install the helm chart by executing:
 
 ```console
-helm install --repo https://keyval-dev.github.io/charts observability oss-observability --namespace observability --create-namespace
+helm install --repo https://odigos-io.github.io/charts observability oss-observability --namespace observability --create-namespace
 ```
 
 ## Connecting Everything Together Using Odigos
@@ -69,7 +69,7 @@ helm install --repo https://keyval-dev.github.io/charts observability oss-observ
 Now that our test application is running, our observability databases are deployed and ready to receive data, the last piece of the puzzle is to extract and ship logs, metrics, and traces from our applications to the observability databases. The simplest and easiest way to do it is by using Odigos - a control plane for observability data. Install Odigos via the helm chart by executing the following commands:
 
 ```console
-helm repo add odigos https://keyval-dev.github.io/odigos-charts/
+helm repo add odigos https://odigos-io.github.io/odigos-charts/
 helm install my-odigos odigos/odigos --namespace odigos-system --create-namespace
 ```
 

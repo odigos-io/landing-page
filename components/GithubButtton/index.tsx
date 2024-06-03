@@ -23,11 +23,11 @@ const GithubButton = () => {
     }}>
       <ButtonContainer style={{ marginTop: 10 }}>
         <GitHubButton
-          href="https://github.com/keyval-dev/odigos"
+          href="https://github.com/odigos-io/odigos"
           data-color-scheme="no-preference: light; light: light; dark: dark;"
           data-size="large"
           data-show-count="true"
-          aria-label="Star keyval-dev/odigos on GitHub"
+          aria-label="Star odigos-io/odigos on GitHub"
         >
           Star
         </GitHubButton>

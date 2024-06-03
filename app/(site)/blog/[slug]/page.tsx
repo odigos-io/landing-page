@@ -234,9 +234,9 @@ const SingleBlogPage = async ({ params }: Props) => {
                   <a
                     target="_blank"
                     className="underline"
-                    href="https://github.com/keyval-dev/odigos"
+                    href="https://github.com/odigos-io/odigos"
                   >
-                    https://github.com/keyval-dev/odigos
+                    https://github.com/odigos-io/odigos
                   </a>
                 </div>
                 <RelatedPost />
