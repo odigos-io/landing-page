@@ -1,14 +1,17 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import styled from 'styled-components';
+import { TrustedList, WatchDemoBtn } from '@/components';
 import {
   Center,
-  ColumnContainer,
   FlexContainer,
+  ColumnContainer,
   SectionContainer,
 } from '@/style';
-import Image from 'next/image';
-import { TrustedList, WatchDemoBtn } from '@/components';
+
+const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
 const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.text.primary};
@@ -36,30 +39,55 @@ const HeroSubTitle = styled.h2`
   }
 `;
 
+const DemoIframe = styled.iframe`
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+`;
+
 const Hero = () => {
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <SectionContainer>
-      <ColumnContainer>
-        <FlexContainer gap={40}>
-          <HeroTitle>Deeper</HeroTitle>
-          <WatchDemoBtn />
-        </FlexContainer>
-        <HeroTitle>Observability </HeroTitle>
-        <HeroSubTitle>
-          Resolve incidents faster with deeper distributed tracing for all your
-          backend architecture without any code changes.
-        </HeroSubTitle>
-        <TrustedList />
-      </ColumnContainer>
-      <Center>
-        <Image
-          width={600}
-          height={600}
-          src="/images/hero/hero.svg"
-          alt="overview"
-        />
-      </Center>
-    </SectionContainer>
+    <>
+      <SectionContainer>
+        <ColumnContainer>
+          <FlexContainer gap={40}>
+            <HeroTitle>Deeper</HeroTitle>
+            <WatchDemoBtn onClick={() => setOpen(true)} />
+          </FlexContainer>
+          <HeroTitle>Observability </HeroTitle>
+          <HeroSubTitle>
+            Resolve incidents faster with deeper distributed tracing for all
+            your backend architecture without any code changes.
+          </HeroSubTitle>
+          <TrustedList />
+        </ColumnContainer>
+        <Center>
+          <Image
+            width={600}
+            height={600}
+            src="/images/hero/hero.svg"
+            alt="overview"
+          />
+        </Center>
+      </SectionContainer>
+      {open && (
+        <Modal
+          title="We are Odigos!"
+          description=""
+          onClose={() => setOpen(false)}
+        >
+          <DemoIframe
+            className="rounded-lg demo-view"
+            src={`https://www.youtube.com/embed/nynyV7FC4VI`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Embedded youtube"
+          />
+        </Modal>
+      )}
+    </>
   );
 };
 

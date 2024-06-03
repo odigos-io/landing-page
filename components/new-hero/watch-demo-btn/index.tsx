@@ -21,12 +21,13 @@ const MobileButtonContent = styled.div`
     }
   }
 `;
-export const WatchDemoBtn = () => {
+
+type WatchDemoBtnProps = {
+  onClick: () => void;
+};
+export const WatchDemoBtn = ({ onClick }: WatchDemoBtnProps) => {
   return (
-    <WatchDemoButton
-      containerStyle={{ marginTop: 12 }}
-      onClick={() => console.log('Hello World')}
-    >
+    <WatchDemoButton containerStyle={{ marginTop: 12 }} onClick={onClick}>
       <UnderlineText className="desktop" size={20}>
         WATCH DEMO
       </UnderlineText>
