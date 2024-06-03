@@ -5,6 +5,7 @@ import styled from 'styled-components';
 interface UnderlineTextProps {
   children: ReactNode;
   size?: number;
+  className?: string;
 }
 
 const UnderlineTextStyled = styled.span<{ size?: number }>`
@@ -20,6 +21,11 @@ const UnderlineTextStyled = styled.span<{ size?: number }>`
 export const UnderlineText: React.FC<UnderlineTextProps> = ({
   children,
   size,
+  className,
 }) => {
-  return <UnderlineTextStyled size={size}>{children}</UnderlineTextStyled>;
+  return (
+    <UnderlineTextStyled className={className} size={size}>
+      {children}
+    </UnderlineTextStyled>
+  );
 };

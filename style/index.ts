@@ -7,6 +7,10 @@ export const FlexContainer = styled.div<{
   display: flex;
   gap: ${({ gap }) => gap || 24}px;
   align-items: ${({ alignments }) => alignments || 'center'};
+
+  @media (max-width: 600px) {
+    gap: 16px;
+  }
 `;
 
 export const ColumnContainer = styled.div<{
@@ -34,6 +38,7 @@ export const SectionContainer = styled.div<{
 
   @media (max-width: 900px) {
     padding: ${({ padding }) => padding || '40px 32px'};
+    flex-direction: column-reverse;
   }
 
   @media (max-width: 600px) {

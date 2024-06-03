@@ -1,1 +1,1 @@
-export * from './trusted-list';
+export * from './new-hero';

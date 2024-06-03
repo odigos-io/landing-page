@@ -8,26 +8,32 @@ import {
   SectionContainer,
 } from '@/style';
 import Image from 'next/image';
-import { TrustedList } from '@/components';
-import { Button, UnderlineText } from '@/reuseable-components';
+import { TrustedList, WatchDemoBtn } from '@/components';
 
 const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-size: clamp(3.5rem, 6vw, 6rem);
   font-weight: 400;
   line-height: 110%;
   letter-spacing: -1.92px;
+  @media (max-width: 600px) {
+    letter-spacing: -1.12px;
+  }
 `;
 
 const HeroSubTitle = styled.h2`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(1rem, 3vw, 1.875rem);
+  font-size: clamp(1.1rem, 3vw, 1.875rem);
   font-weight: 200;
-  line-height: 40px;
+  line-height: 133%;
   opacity: 0.8;
   margin-top: 40px;
+
+  @media (max-width: 600px) {
+    line-height: 155%;
+  }
 `;
 
 const Hero = () => {
@@ -36,12 +42,7 @@ const Hero = () => {
       <ColumnContainer>
         <FlexContainer gap={40}>
           <HeroTitle>Deeper</HeroTitle>
-          <Button
-            containerStyle={{ marginTop: 12 }}
-            onClick={() => console.log('Hello World')}
-          >
-            <UnderlineText size={20}>WATCH DEMO</UnderlineText>
-          </Button>
+          <WatchDemoBtn />
         </FlexContainer>
         <HeroTitle>Observability </HeroTitle>
         <HeroSubTitle>
