@@ -74,6 +74,7 @@ const TextBody = styled.span`
 const Container = styled(SectionContainer)`
   @media (max-width: 1000px) {
     height: auto;
+    margin-top: 80px;
   }
 `;
 const HowWeDo = () => {
