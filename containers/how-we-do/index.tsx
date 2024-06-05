@@ -63,7 +63,7 @@ const TextBody = styled.span`
   @media (max-width: 1200px) {
     font-size: 44px;
   }
-  @media (max-width: 1200px) {
+  @media (max-width: 1000px) {
     font-size: 30px;
   }
   @media (max-width: 800px) {
