@@ -10,6 +10,7 @@ const colors = {
 const text = {
   primary: '#F9F9F9',
   secondary: '#151515',
+  off_white: '#CBCACB',
 };
 
 const font_family = {

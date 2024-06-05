@@ -85,7 +85,7 @@ const HowWeDo = () => {
           <Body>
             <SectionTitle
               headerInfo={{
-                title: 'How We Do',
+                title: 'HOW WE DO',
                 subtitle: 'Subtitle',
                 description: 'Description',
               }}

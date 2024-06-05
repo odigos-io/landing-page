@@ -5,8 +5,6 @@ import Image from 'next/image';
 import menuData from './menuData';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { usePathname } from 'next/navigation';
-import { usePlausible } from 'next-plausible';
 import { Button, UnderlineText, Text } from '@/reuseable-components';
 import dynamic from 'next/dynamic';
 
