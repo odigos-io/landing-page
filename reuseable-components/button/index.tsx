@@ -38,7 +38,7 @@ const Wrapper = styled.div<{ variant: 'primary' | 'secondary' }>`
 const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
   border-radius: 48px;
   background: ${({ variant, theme }) =>
-    variant === 'primary' ? theme.colors.primary : theme.colors.secondary};
+    variant === 'primary' ? theme.colors.primary : theme.colors.white};
   box-shadow: ${({ variant }) =>
     variant === 'primary' ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : 'none'};
   display: flex;

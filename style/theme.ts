@@ -3,7 +3,8 @@ import { DefaultTheme } from 'styled-components';
 // Define your color palette
 const colors = {
   primary: '#151515',
-  secondary: '#F9F9F9',
+  white: '#F9F9F9',
+  secondary: '#231f24',
 };
 
 const text = {
