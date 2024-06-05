@@ -5,13 +5,15 @@ import styled from 'styled-components';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   containerStyle?: React.CSSProperties;
+  variant?: 'primary' | 'secondary';
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ variant: 'primary' | 'secondary' }>`
   border-radius: 48px;
-  padding: 0.1rem;
+  padding: ${({ variant }) => (variant === 'primary' ? '0.1rem;' : '0')};
   height: fit-content;
   width: fit-content;
+
   background: linear-gradient(
     317deg,
     rgb(249, 249, 249) 4%,
@@ -33,31 +35,30 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
   border-radius: 48px;
-  background: #151515;
-  box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.25) inset;
-  color: white;
+  background: ${({ variant, theme }) =>
+    variant === 'primary' ? theme.colors.primary : theme.colors.white};
+  box-shadow: ${({ variant }) =>
+    variant === 'primary' ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : 'none'};
   display: flex;
   padding: 12px 32px;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  &:hover {
-    background: #1f1f1f;
-  }
 `;
 
 export const Button: React.FC<ButtonProps> = ({
   children,
   onClick,
   type = 'button',
+  variant = 'primary',
   containerStyle = {},
   ...props
 }) => {
   return (
-    <Wrapper style={containerStyle}>
-      <StyledButton onClick={onClick} type={type} {...props}>
+    <Wrapper variant={variant} style={containerStyle}>
+      <StyledButton variant={variant} onClick={onClick} type={type} {...props}>
         {children}
       </StyledButton>
     </Wrapper>

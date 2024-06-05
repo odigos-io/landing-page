@@ -4,14 +4,16 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { TrustedList, WatchDemoBtn } from '@/components';
-import {
-  Center,
-  FlexContainer,
-  ColumnContainer,
-  SectionContainer,
-} from '@/style';
+import { FlexContainer, ColumnContainer, SectionContainer } from '@/style';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
+
+const PageContainer = styled.div`
+  padding-top: 100px;
+  @media (max-width: 600px) {
+    padding-top: 60px;
+  }
+`;
 
 const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.text.primary};
@@ -49,7 +51,7 @@ const Hero = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <>
+    <PageContainer>
       <SectionContainer>
         <ColumnContainer>
           <FlexContainer gap={40}>
@@ -63,14 +65,14 @@ const Hero = () => {
           </HeroSubTitle>
           <TrustedList />
         </ColumnContainer>
-        <Center>
+        <div>
           <Image
             width={600}
             height={600}
             src="/images/hero/hero.svg"
             alt="overview"
           />
-        </Center>
+        </div>
       </SectionContainer>
       {open && (
         <Modal
@@ -87,7 +89,7 @@ const Hero = () => {
           />
         </Modal>
       )}
-    </>
+    </PageContainer>
   );
 };
 

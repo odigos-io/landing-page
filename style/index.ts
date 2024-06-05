@@ -65,3 +65,12 @@ export const GridContainer = styled.div<{
     gap: ${({ gap }) => gap || 24}px;
   }
 `;
+
+export const MainContainer = styled.main`
+  background: ${({ theme }) => theme.colors.primary};
+  padding-top: 100px;
+
+  @media (max-width: 600px) {
+    padding-top: 50px;
+  }
+`;
