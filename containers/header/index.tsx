@@ -1,24 +1,28 @@
 'use client';
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
+import menuData from './menuData';
+import theme from '@/style/theme';
+import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 import { usePlausible } from 'next-plausible';
-import menuData from './menuData';
-import styled from 'styled-components';
 import { Button, UnderlineText, Text } from '@/reuseable-components';
-import theme from '@/style/theme';
+import dynamic from 'next/dynamic';
 
-const HeaderContainer = styled.header`
+const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
+
+const HeaderContainer = styled.header<{ isOpen: boolean }>`
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 9999;
+  background: ${({ theme, isOpen }) =>
+    isOpen ? theme.colors.primary : theme.colors.primary};
 `;
 
 const HeaderInner = styled.div`
-  max-width: 1312px;
   margin: 0 auto;
   padding: 24px 64px;
   display: flex;
@@ -28,6 +32,7 @@ const HeaderInner = styled.div`
 
   @media (max-width: 1024px) {
     padding: 20px;
+    height: 84px;
   }
 `;
 
@@ -47,34 +52,6 @@ const HamburgerButton = styled.button`
   }
 `;
 
-const NavMenu = styled.div<{ isOpen: boolean }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
-  background: ${({ theme, isOpen }) =>
-    isOpen ? theme.bg.secondary : 'transparent'};
-  box-shadow: ${({ isOpen }) =>
-    isOpen ? '0 5px 20px rgba(0, 0, 0, 0.1)' : 'none'};
-  height: ${({ isOpen }) => (isOpen ? 'auto' : '0')};
-  overflow-y: ${({ isOpen }) => (isOpen ? 'scroll' : 'hidden')};
-  border-radius: ${({ isOpen }) => (isOpen ? '8px' : '0')};
-  padding: ${({ isOpen }) => (isOpen ? '2rem' : '0')};
-  transition: all 0.3s ease-in-out;
-
-  @media (min-width: 1024px) {
-    flex-direction: row;
-    align-items: center;
-    visibility: visible;
-    background: transparent;
-    height: auto;
-    overflow: visible;
-    border-radius: 0;
-    padding: 0;
-    box-shadow: none;
-  }
-`;
-
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -84,6 +61,10 @@ const NavList = styled.ul`
   @media (min-width: 1024px) {
     flex-direction: row;
     gap: 3rem;
+  }
+
+  @media (max-width: 1024px) {
+    display: none;
   }
 `;
 
@@ -97,26 +78,6 @@ const NavItem = styled.li`
   }
 `;
 
-const Submenu = styled.ul<{ isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: ${({ theme }) => theme.bg.primary};
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  border-radius: 8px;
-
-  @media (min-width: 1024px) {
-    display: none;
-  }
-`;
-
-const SubmenuItem = styled.li`
-  margin: 0.5rem 0;
-`;
-
 const GithubNumberWrapper = styled.div`
   display: flex;
   align-items: flex-end;
@@ -126,6 +87,7 @@ const GithubNumberWrapper = styled.div`
 const ActionBarWrapper = styled.div`
   display: flex;
 
+  justify-content: flex-end;
   @media (max-width: 1024px) {
     gap: 1rem;
     width: 172px;
@@ -133,87 +95,33 @@ const ActionBarWrapper = styled.div`
 `;
 
 export const Header = () => {
-  const [navigationOpen, setNavigationOpen] = useState(false);
   const [dropdownToggler, setDropdownToggler] = useState(false);
-  const plausible = usePlausible();
-  const pathUrl = usePathname();
 
   return (
-    <HeaderContainer>
-      <HeaderInner>
-        <LogoContainer>
-          <a href="/">
-            <Image
-              src="/images/logo/text-logo.svg"
-              alt="logo"
-              width={133}
-              height={32}
-            />
-          </a>
-        </LogoContainer>
+    <>
+      <HeaderContainer isOpen={dropdownToggler}>
+        <HeaderInner>
+          <LogoContainer>
+            <a href="/">
+              <Image
+                src="/images/logo/text-logo.svg"
+                alt="logo"
+                width={133}
+                height={32}
+              />
+            </a>
+          </LogoContainer>
 
-        {/* <NavMenu isOpen={navigationOpen}>
-          <nav>
-            <NavList>
-              {menuData.map((menuItem, key) => (
-                <NavItem key={key} className={menuItem.submenu && 'group'}>
-                  {menuItem.submenu ? (
-                    <>
-                      <a
-                        onClick={() => setDropdownToggler(!dropdownToggler)}
-                        className="hover:text-secondary flex items-center justify-between gap-3 cursor-pointer"
-                      >
-                        {menuItem.title}
-                        <span>
-                          <svg
-                            className="fill-waterloo group-hover:fill-secondary w-3 h-3 cursor-pointer"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                          >
-                            <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                          </svg>
-                        </span>
-                      </a>
-
-                      <Submenu isOpen={dropdownToggler}>
-                        {menuItem.submenu.map((item, key) => (
-                          <SubmenuItem key={key}>
-                            <Link href={item.path || '#'}>{item.title}</Link>
-                          </SubmenuItem>
-                        ))}
-                      </Submenu>
-                    </>
-                  ) : (
-                    <UnderlineText>
-                      <Link
-                        legacyBehavior
-                        href={`${menuItem.path}`}
-                        target={menuItem.newTab ? '_blank' : '_self'}
-                      >
-                        <a onClick={() => setNavigationOpen(false)}>
-                          {menuItem.title}
-                        </a>
-                      </Link>
-                    </UnderlineText>
-                  )}
-                </NavItem>
-              ))}
-            </NavList>
-          </nav>
-        </NavMenu> */}
-        <NavMenu isOpen={navigationOpen}>
           <NavList>
             {menuData.map((menuItem, key) => (
-              <NavItem key={key} className={menuItem.submenu && 'group'}>
+              <NavItem key={key}>
                 <UnderlineText>
                   <Link
                     legacyBehavior
                     href={`${menuItem.path}`}
                     target={menuItem.newTab ? '_blank' : '_self'}
                   >
-                    <a onClick={() => setNavigationOpen(false)}>
-                      {menuItem.title}
-                    </a>
+                    {menuItem.title}
                   </Link>
                 </UnderlineText>
               </NavItem>
@@ -226,7 +134,10 @@ export const Header = () => {
                 height={18}
               />
               <UnderlineText>
-                <Link href={'/'} onClick={() => setNavigationOpen(false)}>
+                <Link
+                  target={'_blank'}
+                  href={'https://github.com/keyval-dev/odigos'}
+                >
                   {'GITHUB'}
                 </Link>
               </UnderlineText>
@@ -235,24 +146,33 @@ export const Header = () => {
               </GithubNumberWrapper>
             </NavItem>
           </NavList>
-        </NavMenu>
-        <ActionBarWrapper>
-          <SignInButton variant="secondary">
-            <UnderlineText color={theme.text.secondary}>Sign in</UnderlineText>
-          </SignInButton>
-          <HamburgerButton
-            aria-label="hamburger Toggler"
-            onClick={() => setNavigationOpen(!navigationOpen)}
-          >
-            <Image
-              src="/icons/common/hamburger.svg"
-              alt="hamburger"
-              width={24}
-              height={24}
-            />
-          </HamburgerButton>
-        </ActionBarWrapper>
-      </HeaderInner>
-    </HeaderContainer>
+          <ActionBarWrapper>
+            <SignInButton variant="secondary">
+              <UnderlineText color={theme.text.secondary}>
+                Sign in
+              </UnderlineText>
+            </SignInButton>
+            <HamburgerButton
+              aria-label="hamburger Toggler"
+              onClick={() => setDropdownToggler(!dropdownToggler)}
+            >
+              <Image
+                src={
+                  dropdownToggler
+                    ? '/icons/common/close.svg'
+                    : '/icons/common/hamburger.svg'
+                }
+                alt="hamburger"
+                width={24}
+                height={24}
+              />
+            </HamburgerButton>
+          </ActionBarWrapper>
+        </HeaderInner>
+      </HeaderContainer>
+      {dropdownToggler && (
+        <MobileHeaderMenu onClick={() => setDropdownToggler(false)} />
+      )}
+    </>
   );
 };

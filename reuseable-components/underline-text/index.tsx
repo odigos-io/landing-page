@@ -23,7 +23,7 @@ const UnderlineTextStyled = styled.span<{ size?: number; color?: string }>`
   gap: 8px;
 
   @media (max-width: 600px) {
-    font-size: 14px;
+    font-size: ${({ size }) => size || 14}px;
   }
 `;
 
