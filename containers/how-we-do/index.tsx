@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { SectionContainer } from '@/style';
-import { SectionTitle, Text } from '@/reuseable-components';
+import { SectionTitle } from '@/reuseable-components';
 
 const PageBorder = styled.div`
   margin: 0 4px;
@@ -11,16 +11,24 @@ const PageBorder = styled.div`
   border-radius: 120px 120px 0px 0px;
   border: 1px dashed #f9f9f949;
   border-bottom: 0;
+
+  @media (max-width: 800px) {
+    padding: 0px;
+    border-radius: 48px 48px 0px 0px;
+  }
 `;
 
 const InnerBorder = styled.div`
   padding: 0px 80px;
-
   width: 100%;
   height: 100%;
   border-radius: 120px 120px 0px 0px;
   border: 1px dashed #f9f9f98f;
   border-bottom: 0;
+  @media (max-width: 800px) {
+    padding: 0px 20px;
+    border-radius: 48px 48px 0px 0px;
+  }
 `;
 
 const Body = styled.div`
@@ -33,24 +41,44 @@ const Body = styled.div`
   gap: 40px;
   align-self: stretch;
   border-radius: 120px 120px 0px 0px;
-
   height: 100%;
   border: 1px solid #f9f9f9;
   border-bottom: 0;
+  @media (max-width: 1200px) {
+    padding: 64px 40px;
+  }
+  @media (max-width: 800px) {
+    border-radius: 48px 48px 0px 0px;
+  }
 `;
 
 const TextBody = styled.span`
-  color: #f9f9f9;
+  color: ${({ theme }) => theme.text.primary};
   text-align: center;
   font-family: 'Inter Tight';
   font-size: 64px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 89.6px */
+  @media (max-width: 1200px) {
+    font-size: 44px;
+  }
+  @media (max-width: 1200px) {
+    font-size: 30px;
+  }
+  @media (max-width: 800px) {
+    font-size: 24px;
+  }
+`;
+
+const Container = styled(SectionContainer)`
+  @media (max-width: 1000px) {
+    height: auto;
+  }
 `;
 const HowWeDo = () => {
   return (
-    <SectionContainer padding="0">
+    <Container padding="0">
       <PageBorder>
         <InnerBorder>
           <Body>
@@ -67,7 +95,7 @@ const HowWeDo = () => {
           </Body>
         </InnerBorder>
       </PageBorder>
-    </SectionContainer>
+    </Container>
   );
 };
 
