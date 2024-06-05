@@ -47,12 +47,18 @@ const DemoIframe = styled.iframe`
   min-height: 300px;
 `;
 
+const Container = styled(SectionContainer)`
+  @media (max-width: 1300px) {
+    height: auto;
+  }
+`;
+
 const Hero = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
     <PageContainer>
-      <SectionContainer>
+      <Container>
         <ColumnContainer>
           <FlexContainer gap={40}>
             <HeroTitle>Deeper</HeroTitle>
@@ -73,7 +79,7 @@ const Hero = () => {
             alt="overview"
           />
         </div>
-      </SectionContainer>
+      </Container>
       {open && (
         <Modal
           title="We are Odigos!"

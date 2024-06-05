@@ -1,7 +1,9 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-
+import Image from 'next/image';
+import { Text } from '../text';
+import theme from '@/style/theme';
 type HeaderInfo = {
   title: string;
   subtitle: string;
@@ -30,24 +32,12 @@ export const SectionTitle = ({ headerInfo }: { headerInfo: HeaderInfo }) => {
         whileInView="visible"
         transition={{ duration: 1, delay: 0.1 }}
         viewport={{ once: true }}
-        className="animate_top text-center mx-auto"
+        style={{ display: 'flex', gap: 16, alignItems: 'center' }}
       >
-        {title && (
-          <div className="bg-zumthor dark:bg-blacksection dark:border dark:border-strokedark inline-block rounded-full py-1.5 px-4.5 mb-4">
-            <h4 className="font-medium text-sectiontitle text-black dark:text-white">
-              {title}
-            </h4>
-          </div>
-        )}
-        <h2 className="font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white md:w-4/5 xl:w-1/2 mx-auto mb-4">
-          {subtitle}
-        </h2>
-        <p
-          style={{ fontSize: '1.3rem' }}
-          className="mx-auto md:w-4/5 lg:w-3/5 xl:w-[100%]"
-        >
-          {description}
-        </p>
+        <Image src="/icons/brand/icon.svg" alt="logo" width={15} height={12} />
+        <Text fontFam={theme.font_family.secondary} size={18}>
+          {title}
+        </Text>
       </motion.div>
     </>
   );
