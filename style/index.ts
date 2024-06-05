@@ -29,11 +29,15 @@ export const SectionContainer = styled.div<{
   padding?: string;
   justify?: string;
   height?: string;
+  alignments?: string;
+  background?: string;
 }>`
   height: ${({ height }) => height || '100vh'};
   padding: ${({ padding }) => padding || '80px 64px'};
   display: flex;
   justify-content: ${({ justify }) => justify || 'space-evenly'};
+  align-items: ${({ alignments }) => alignments || 'center'};
+  background: ${({ background }) => background || 'transparent'};
   @media (max-width: 1200px) {
     padding: ${({ padding }) => padding || '60px 48px'};
   }

@@ -19,7 +19,7 @@ const HeaderContainer = styled.header<{ isOpen: boolean }>`
   width: 100%;
   z-index: 9999;
   background: ${({ theme, isOpen }) =>
-    isOpen ? theme.colors.primary : theme.colors.primary};
+    isOpen ? theme.colors.primary : theme.colors.secondary};
 `;
 
 const HeaderInner = styled.div`
