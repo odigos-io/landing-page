@@ -30,7 +30,7 @@ const Paragraph = styled.p`
   font-family: ${theme.font_family.primary};
   @media (max-width: 800px) {
     font-size: 16px;
-    line-height: 24px; /* 150% */
+    line-height: 24px;
     letter-spacing: 0.32px;
   }
 `;
