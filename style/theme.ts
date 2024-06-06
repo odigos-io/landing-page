@@ -3,13 +3,14 @@ import { DefaultTheme } from 'styled-components';
 // Define your color palette
 const colors = {
   primary: '#151515',
+  secondary: '#242023',
   white: '#F9F9F9',
-  secondary: '#231f24',
 };
 
 const text = {
   primary: '#F9F9F9',
   secondary: '#151515',
+  off_white: '#CBCACB',
 };
 
 const font_family = {
