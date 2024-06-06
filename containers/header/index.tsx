@@ -134,7 +134,7 @@ export const Header = () => {
               <UnderlineText>
                 <Link
                   target={'_blank'}
-                  href={'https://github.com/keyval-dev/odigos'}
+                  href={'https://github.com/odigos-io/odigos'}
                 >
                   {'GITHUB'}
                 </Link>

@@ -7,6 +7,7 @@ const HowWeDo = dynamic(() => import('@/containers/how-we-do'));
 const HowItWorks = dynamic(() => import('@/containers/how-it-works'));
 const HowToStart = dynamic(() => import('@/containers/how-to-start'));
 const Testimonials = dynamic(() => import('@/containers/testimonials'));
+const CTA = dynamic(() => import('@/containers/cta'));
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
@@ -26,6 +27,7 @@ export default function Home() {
       <HowItWorks />
       <HowToStart />
       <Testimonials />
+      <CTA />
     </main>
   );
 }
