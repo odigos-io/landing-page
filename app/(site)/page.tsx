@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 const Hero = dynamic(() => import('@/containers/hero'));
 const HowWeDo = dynamic(() => import('@/containers/how-we-do'));
 const HowItWorks = dynamic(() => import('@/containers/how-it-works'));
+const HowToStart = dynamic(() => import('@/containers/how-to-start'));
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
@@ -22,6 +23,7 @@ export default function Home() {
       <Hero />
       <HowWeDo />
       <HowItWorks />
+      <HowToStart />
     </main>
   );
 }

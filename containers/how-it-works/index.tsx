@@ -24,7 +24,7 @@ const TitleWrapper = styled.div`
 
 const PageTitle = styled.span`
   color: ${theme.text.primary};
-  font-family: ${({ theme }) => theme.text.secondary};
+  font-family: ${({ theme }) => theme.font_family.primary};
   font-size: 56px;
   font-style: normal;
   font-weight: 400;

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const FlexContainer = styled.div<{
   gap?: number;
   alignments?: string;
+  justify?: string;
 }>`
   display: flex;
   gap: ${({ gap }) => gap || 24}px;
