@@ -33,7 +33,7 @@ const InnerBorder = styled.div`
 
 const Body = styled.div`
   display: flex;
-  padding: 0px 80px;
+  padding: 160px 80px;
   flex-direction: column;
   justify-content: center;
   align-items: center;

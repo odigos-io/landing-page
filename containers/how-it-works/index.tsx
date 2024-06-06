@@ -8,6 +8,11 @@ import { ParagraphComponent, SectionTitle, Text } from '@/reuseable-components';
 
 const Container = styled(SectionContainer)`
   height: auto;
+  padding: 160px 64px;
+
+  @media (max-width: 800px) {
+    padding: 80px 20px;
+  }
 `;
 
 const PageBody = styled(ColumnContainer)``;
@@ -15,6 +20,18 @@ const PageBody = styled(ColumnContainer)``;
 const TitleWrapper = styled.div`
   margin-top: 40px;
   margin-bottom: 300px;
+`;
+
+const PageTitle = styled.span`
+  color: ${theme.text.primary};
+  font-family: ${({ theme }) => theme.text.secondary};
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+  @media (max-width: 800px) {
+    font-size: 28px;
+  }
 `;
 
 const HowItWorks = () => {
@@ -33,9 +50,7 @@ const HowItWorks = () => {
           }}
         />
         <TitleWrapper>
-          <Text weight={400} size={54}>
-            Observability made easy
-          </Text>
+          <PageTitle>Observability made easy</PageTitle>
         </TitleWrapper>
         <ColumnContainer gap={260}>
           {DATA.map((data, index) => (
