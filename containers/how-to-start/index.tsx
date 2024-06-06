@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
+import { DATA } from './data';
+import Image from 'next/image';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import { SectionTitle } from '@/reuseable-components';
-import { ColumnContainer, SectionContainer } from '@/style';
-import { DATA } from './data';
-import Image from 'next/image';
+import { ColumnContainer, FlexContainer, SectionContainer } from '@/style';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -18,6 +18,7 @@ const Container = styled(SectionContainer)`
 
 const PageBody = styled(ColumnContainer)`
   max-width: 100%;
+  width: 100%;
 `;
 
 const TitleWrapper = styled.div`
@@ -58,8 +59,9 @@ const ListContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  /* gap: 80px; */
+
   @media (max-width: 1100px) {
+    gap: 40px;
     flex-direction: column;
   }
 `;
@@ -70,7 +72,7 @@ const ItemTitle = styled.span`
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
-  line-height: 125%; /* 125% */
+  line-height: 125%;
   text-transform: uppercase;
   @media (max-width: 1100px) {
     font-size: 20px;
@@ -83,24 +85,19 @@ const ItemSubtitle = styled.span`
   font-size: 16px;
   font-style: normal;
   font-weight: 300;
-  line-height: 150%; /* 150% */
+  line-height: 150%;
+  letter-spacing: 0.32px;
   opacity: 0.8;
 `;
 
 const ArrowIconWrapper = styled.div`
   display: flex;
-  padding: 128px 8px;
-  align-items: flex-end;
-  gap: 8px;
-  align-self: stretch;
+  width: 10vw;
+  justify-content: center;
+  align-items: center;
+
   @media (max-width: 1100px) {
     display: none;
-  }
-`;
-
-const ItemWrapper = styled.div`
-  @media (max-width: 1100px) {
-    margin-top: 64px;
   }
 `;
 
@@ -129,25 +126,27 @@ const HowToStart: React.FC = () => {
         </TitleWrapper>
         <ListContainer>
           {DATA.map((item, index) => (
-            <ItemWrapper>
+            <>
               <ColumnContainer key={index} gap={32}>
                 <img src={item.image} alt={item.title} />
-                <ColumnContainer gap={16} maxWidth={320}>
-                  <ItemTitle>{item.title}</ItemTitle>
-                  <ItemSubtitle>{item.subtitle}</ItemSubtitle>
-                </ColumnContainer>
+                <FlexContainer alignments="flex-start">
+                  <ColumnContainer gap={16} maxWidth={320}>
+                    <ItemTitle>{item.title}</ItemTitle>
+                    <ItemSubtitle>{item.subtitle}</ItemSubtitle>
+                  </ColumnContainer>
+                  {index !== 2 && (
+                    <ArrowIconWrapper>
+                      <Image
+                        src="/icons/common/arrow.svg"
+                        width={27}
+                        height={40}
+                        alt="arrow"
+                      />
+                    </ArrowIconWrapper>
+                  )}
+                </FlexContainer>
               </ColumnContainer>
-              <ArrowIconWrapper>
-                {index !== 2 && (
-                  <Image
-                    src="/icons/common/arrow.svg"
-                    width={27}
-                    height={40}
-                    alt="arrow"
-                  />
-                )}
-              </ArrowIconWrapper>
-            </ItemWrapper>
+            </>
           ))}
         </ListContainer>
       </PageBody>
