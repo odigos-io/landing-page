@@ -1,3 +1,4 @@
+import { Button } from '@/reuseable-components';
 import styled from 'styled-components';
 
 export const FlexContainer = styled.div<{
@@ -78,5 +79,18 @@ export const MainContainer = styled.main`
 
   @media (max-width: 600px) {
     padding-top: 50px;
+  }
+`;
+
+export const IconWrapper = styled(Button)`
+  width: 64px;
+  height: 64px;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+
+  @media (max-width: 1200px) {
+    width: 48px;
+    height: 48px;
   }
 `;

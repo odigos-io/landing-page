@@ -1,8 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button } from '../button';
 import styled, { keyframes } from 'styled-components';
-import { Center, ColumnContainer } from '@/style';
+import { Center, ColumnContainer, IconWrapper } from '@/style';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 type ModalProps = {
@@ -35,9 +34,13 @@ const fadeOut = keyframes`
   }
 `;
 
-const ModalContainer = styled(Center)<{ isVisible: boolean }>`
+const ModalContainer = styled.div<{ isVisible: boolean }>`
   width: 100vw;
   height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(21, 21, 21, 0.8);
   position: fixed;
   z-index: 9999;
@@ -110,19 +113,6 @@ const Description = styled.p`
   font-weight: 400;
   line-height: 30px;
   opacity: 0.8;
-`;
-
-const IconWrapper = styled(Button)`
-  width: 64px;
-  height: 64px;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-
-  @media (max-width: 1200px) {
-    width: 48px;
-    height: 48px;
-  }
 `;
 
 const Modal = ({ title, description, onClose, children }: ModalProps) => {
