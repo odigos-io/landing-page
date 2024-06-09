@@ -14,7 +14,7 @@ import { DATA } from './data';
 
 const PageContainer = styled(SectionContainer)`
   flex-direction: column;
-  @media (max-width: 600px) {
+  @media (max-width: 1100px) {
     gap: 40px;
     height: auto;
     padding: 120px 20px;
@@ -81,6 +81,16 @@ const TextWrapper = styled(ColumnContainer)`
   }
 `;
 
+const ArrowIconWrapper = styled(IconWrapper)`
+  width: 64px;
+  height: 64px;
+  padding: 0px;
+  div {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const Testimonials = () => {
   const [currentItem, setCurrentItem] = React.useState(DATA[0]);
   const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -123,7 +133,7 @@ const Testimonials = () => {
       >{`“${currentItem.testimonial}”`}</Quote>
       <Footer>
         <FlexContainer>
-          <IconWrapper>
+          <ArrowIconWrapper>
             <Image
               style={{ transform: 'rotate(180deg)' }}
               src="/icons/common/next.svg"
@@ -132,15 +142,15 @@ const Testimonials = () => {
               height={24}
               onClick={handlePrevious}
             />
-          </IconWrapper>
-          <IconWrapper onClick={handleNext}>
+          </ArrowIconWrapper>
+          <ArrowIconWrapper onClick={handleNext}>
             <Image
               src="/icons/common/next.svg"
               alt="next"
               width={15}
               height={24}
             />
-          </IconWrapper>
+          </ArrowIconWrapper>
         </FlexContainer>
         <TextWrapper>
           <GiverName>{currentItem.name}</GiverName>

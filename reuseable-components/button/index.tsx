@@ -12,7 +12,7 @@ const Wrapper = styled.div<{ variant: 'primary' | 'secondary' }>`
   border-radius: 48px;
   padding: ${({ variant }) => (variant === 'primary' ? '0.1rem;' : '0')};
   height: fit-content;
-  width: fit-content;
+  width: 100%;
 
   background: linear-gradient(
     317deg,
@@ -35,13 +35,23 @@ const Wrapper = styled.div<{ variant: 'primary' | 'secondary' }>`
   }
 `;
 
-const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
+const StyledButton = styled.button<{
+  variant: 'primary' | 'secondary';
+  color?: string;
+}>`
   border-radius: 48px;
-  background: ${({ variant, theme }) =>
-    variant === 'primary' ? theme.colors.primary : theme.colors.white};
+  background: ${({ variant, theme, color }) =>
+    variant === 'primary'
+      ? color
+        ? color
+        : theme.colors.primary
+      : color
+      ? color
+      : theme.colors.white};
   box-shadow: ${({ variant }) =>
     variant === 'primary' ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : 'none'};
   display: flex;
+  width: 100%;
   padding: 12px 32px;
   justify-content: center;
   align-items: center;
@@ -54,6 +64,7 @@ export const Button: React.FC<ButtonProps> = ({
   type = 'button',
   variant = 'primary',
   containerStyle = {},
+
   ...props
 }) => {
   return (
