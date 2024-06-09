@@ -63,6 +63,7 @@ const ListContainer = styled.div`
   @media (max-width: 1100px) {
     gap: 40px;
     flex-direction: column;
+    justify-content: center;
   }
 `;
 
@@ -74,7 +75,7 @@ const ItemTitle = styled.span`
   font-weight: 500;
   line-height: 125%;
   text-transform: uppercase;
-  @media (max-width: 1100px) {
+  @media (max-width: 600px) {
     font-size: 20px;
   }
 `;
@@ -98,6 +99,12 @@ const ArrowIconWrapper = styled.div`
 
   @media (max-width: 1100px) {
     display: none;
+  }
+`;
+
+const StepIllustration = styled.img`
+  @media (max-width: 1100px) {
+    width: 100%;
   }
 `;
 
@@ -128,8 +135,8 @@ const HowToStart: React.FC = () => {
           {DATA.map((item, index) => (
             <>
               <ColumnContainer key={index} gap={32}>
-                <img src={item.image} alt={item.title} />
-                <FlexContainer alignments="flex-start">
+                <StepIllustration src={item.image} alt={item.title} />
+                <FlexContainer alignments={'flex-start'}>
                   <ColumnContainer gap={16} maxWidth={320}>
                     <ItemTitle>{item.title}</ItemTitle>
                     <ItemSubtitle>{item.subtitle}</ItemSubtitle>
