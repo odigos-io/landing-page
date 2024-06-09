@@ -75,6 +75,9 @@ const Title = styled.h1`
   font-weight: 400;
   line-height: 110%; /* 105.6px */
   text-align: center;
+  @media (max-width: 1440px) {
+    font-size: 4vw;
+  }
   @media (max-width: 1024px) {
     font-size: 32px;
     letter-spacing: 1px;
@@ -91,10 +94,22 @@ const Subtitle = styled.h2`
   line-height: 133%;
   letter-spacing: -0.96px;
   opacity: 0.8;
+  @media (max-width: 1440px) {
+    font-size: 24px;
+  }
   @media (max-width: 1024px) {
     font-size: 18px;
     letter-spacing: 1px;
     line-height: 155%;
+  }
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  @media (max-width: 1024px) {
+    gap: 16px;
   }
 `;
 
@@ -121,11 +136,13 @@ const CTA: React.FC = () => {
         <InnerBorder>
           <SecondInnerBorder>
             <Body>
-              <Title>Two-line headline to fill up the space</Title>
-              <Subtitle>
-                Enterprise-Grade OpenTelemetry for Superior Application
-                Performance Monitoring
-              </Subtitle>
+              <TextWrapper>
+                <Title>Two-line headline to fill up the space</Title>
+                <Subtitle>
+                  Enterprise-Grade OpenTelemetry for Superior Application
+                  Performance Monitoring
+                </Subtitle>
+              </TextWrapper>
               <ButtonWrapper>
                 <Button variant="secondary">
                   <UnderlineText color={theme.text.secondary}>

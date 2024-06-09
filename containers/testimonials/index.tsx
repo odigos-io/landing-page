@@ -14,7 +14,7 @@ import { DATA } from './data';
 
 const PageContainer = styled(SectionContainer)`
   flex-direction: column;
-  @media (max-width: 600px) {
+  @media (max-width: 1100px) {
     gap: 40px;
     height: auto;
     padding: 120px 20px;
