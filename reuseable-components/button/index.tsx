@@ -12,7 +12,7 @@ const Wrapper = styled.div<{ variant: 'primary' | 'secondary' }>`
   border-radius: 48px;
   padding: ${({ variant }) => (variant === 'primary' ? '0.1rem;' : '0')};
   height: fit-content;
-  width: fit-content;
+  width: 100%;
 
   background: linear-gradient(
     317deg,
@@ -51,6 +51,7 @@ const StyledButton = styled.button<{
   box-shadow: ${({ variant }) =>
     variant === 'primary' ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : 'none'};
   display: flex;
+  width: 100%;
   padding: 12px 32px;
   justify-content: center;
   align-items: center;

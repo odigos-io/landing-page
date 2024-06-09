@@ -120,6 +120,11 @@ const ButtonWrapper = styled.div`
   gap: 24px;
   @media (max-width: 1024px) {
     flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
   }
 `;
 
