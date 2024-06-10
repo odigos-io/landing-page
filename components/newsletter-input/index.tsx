@@ -34,6 +34,9 @@ const Input = styled.input`
   background: ${({ theme }) => theme.colors.primary};
   border: none;
   outline: none;
+  font-size: 18px;
+  font-weight: 300;
+
   &::placeholder {
     opacity: 0.4;
   }
