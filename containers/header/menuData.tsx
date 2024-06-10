@@ -3,9 +3,9 @@ import { Menu } from '@/types/menu';
 const menuData: Menu[] = [
   {
     id: 1,
-    title: 'Home',
+    title: 'About',
     newTab: false,
-    path: '/',
+    path: '/about',
   },
 
   {
@@ -26,7 +26,7 @@ const menuData: Menu[] = [
     title: 'Documentation',
     newTab: true,
     path: 'https://docs.odigos.io',
-  }
+  },
 ];
 
 export default menuData;
