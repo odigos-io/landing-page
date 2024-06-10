@@ -8,6 +8,9 @@ import Image from 'next/image';
 const PageContainer = styled.div`
   width: 100%;
   padding: 160px 0;
+  @media (max-width: 1024px) {
+    padding: 120px 0;
+  }
 `;
 
 const PageBorder = styled.div`
