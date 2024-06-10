@@ -66,10 +66,6 @@ const MobileShowAllButton = styled(Button)`
 `;
 
 const Blog = async () => {
-  function onShowAllClick() {
-    console.log('Show all clicked');
-  }
-
   return (
     <>
       <HeaderWrapper>

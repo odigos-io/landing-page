@@ -19,8 +19,6 @@ function getPostBySlug(slug: string, fields: string[] = []) {
   const { data, content } = matter(fileContents);
 
   const items: Record<string, string> = {};
-  console.log({ fields });
-  console.log({ data });
   fields.forEach((field) => {
     if (field === 'slug') {
       items[field] = realSlug;
