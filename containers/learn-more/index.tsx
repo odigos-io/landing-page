@@ -4,6 +4,7 @@ import { SectionContainer } from '@/style';
 import { Button, UnderlineText } from '@/reuseable-components';
 import styled from 'styled-components';
 import LearnMoreList from '@/components/learn-more-list';
+import Link from 'next/link';
 const Container = styled(SectionContainer)`
   height: auto;
   display: block;
@@ -48,21 +49,50 @@ const ShowAllButton = styled(Button)`
   }
 `;
 
+const MobileButtonWrapper = styled.div`
+  display: none;
+  @media (max-width: 1000px) {
+    display: flex;
+    margin-top: 40px;
+  }
+`;
+
+const MobileShowAllButton = styled(Button)`
+  display: none;
+  background: ${({ theme }) => theme.colors.secondary};
+  @media (max-width: 1000px) {
+    display: flex;
+  }
+`;
+
 const Blog = async () => {
+  function onShowAllClick() {
+    console.log('Show all clicked');
+  }
+
   return (
     <>
       <HeaderWrapper>
         <TitleWrapper>
           <Title>Need text here</Title>
           <div>
-            <ShowAllButton>
-              <UnderlineText>SHOW ALL</UnderlineText>
-            </ShowAllButton>
+            <Link legacyBehavior href={'/blog'}>
+              <ShowAllButton>
+                <UnderlineText size={20}>SHOW ALL</UnderlineText>
+              </ShowAllButton>
+            </Link>
           </div>
         </TitleWrapper>
       </HeaderWrapper>
       <Container>
         <LearnMoreList />
+        <MobileButtonWrapper>
+          <Link legacyBehavior href={'/blog'}>
+            <MobileShowAllButton>
+              <UnderlineText size={16}>SHOW ALL</UnderlineText>
+            </MobileShowAllButton>
+          </Link>
+        </MobileButtonWrapper>
       </Container>
     </>
   );
