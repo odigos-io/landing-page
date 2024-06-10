@@ -3,13 +3,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { ColumnContainer } from '@/style';
 import { SectionTitle } from '@/reuseable-components';
+import theme from '@/style/theme';
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 80px;
+  background: ${theme.colors.secondary};
+  padding: 160px 64px;
+  @media (max-width: 800px) {
+    padding: 24px 20px;
+  }
   @media (max-width: 600px) {
-    padding-top: 60px;
+    padding-top: 84px;
     gap: 32px;
   }
 `;
