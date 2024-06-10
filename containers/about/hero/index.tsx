@@ -15,7 +15,7 @@ const PageContainer = styled.div`
     padding: 24px 20px;
   }
   @media (max-width: 600px) {
-    padding-top: 60px;
+    padding-top: 84px;
     gap: 32px;
   }
 `;
