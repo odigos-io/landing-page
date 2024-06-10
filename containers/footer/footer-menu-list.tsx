@@ -7,7 +7,8 @@ import menuData from '../header/menuData';
 
 const NavList = styled.ul`
   display: flex;
-
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 32px;
 `;
 

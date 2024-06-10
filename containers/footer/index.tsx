@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import FooterItemList from './footer-menu-list';
-import { Text, UnderlineText } from '@/reuseable-components';
+import { UnderlineText } from '@/reuseable-components';
 import { NewsletterInput } from '@/components';
 import Link from 'next/link';
 import theme from '@/style/theme';
@@ -14,11 +14,19 @@ const FooterContainer = styled.footer`
   padding: 80px 64px 32px 64px;
   flex-direction: column;
   gap: 64px;
+  @media (max-width: 1100px) {
+    gap: 48px;
+  }
 `;
 
 const Header = styled.section`
   display: flex;
   gap: 80px;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+    gap: 50px;
+  }
 `;
 
 const MenuItemWrapper = styled.div`
