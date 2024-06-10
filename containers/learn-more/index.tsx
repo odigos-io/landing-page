@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { SectionContainer } from '@/style';
-import { Button, UnderlineText } from '@/reuseable-components';
+import { Button, SectionTitle, UnderlineText } from '@/reuseable-components';
 import styled from 'styled-components';
 import LearnMoreList from '@/components/learn-more-list';
 import Link from 'next/link';
@@ -65,19 +65,38 @@ const MobileShowAllButton = styled(Button)`
   }
 `;
 
-const Blog = async () => {
+const SectionTitleWrapper = styled.div`
+  padding: 0px 64px 40px 64px;
+  @media (max-width: 1000px) {
+    padding: 24px 20px;
+  }
+`;
+
+const DesktopDiv = styled.div`
+  display: flex;
+  @media (max-width: 1000px) {
+    display: none;
+  }
+`;
+
+const Blog = () => {
   return (
     <>
+      <SectionTitleWrapper>
+        <SectionTitle
+          headerInfo={{ title: 'LEARN MORE', subtitle: '', description: '' }}
+        />
+      </SectionTitleWrapper>
       <HeaderWrapper>
         <TitleWrapper>
           <Title>Need text here</Title>
-          <div>
+          <DesktopDiv>
             <Link legacyBehavior href={'/blog'}>
               <ShowAllButton>
                 <UnderlineText size={20}>SHOW ALL</UnderlineText>
               </ShowAllButton>
             </Link>
-          </div>
+          </DesktopDiv>
         </TitleWrapper>
       </HeaderWrapper>
       <Container>
