@@ -14,10 +14,10 @@ const Footer = dynamic(() => import('@/containers/footer'));
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
-  icons: '/images/logo/logo-dark.svg',
+  icons: '/icons/brand/black-icon.svg',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: '/images/logo/logo-dark.svg',
+    images: '/icons/brand/black-icon.svg',
   },
 };
 
