@@ -15,12 +15,18 @@ const InputGradient = styled.div`
   border-radius: 40px;
   padding: 1px;
   background: linear-gradient(90deg, #f9f9f9 0%, #f9f9f9 0%, #f9f9f900 100%);
+  @media (max-width: 1100px) {
+    background: #f9f9f9;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+  @media (max-width: 1100px) {
+    display: none;
+  }
 `;
 
 const Input = styled.input`
@@ -36,7 +42,10 @@ const Input = styled.input`
   outline: none;
   font-size: 18px;
   font-weight: 300;
-
+  @media (max-width: 1100px) {
+    width: 100%;
+    height: 48px;
+  }
   &::placeholder {
     opacity: 0.4;
   }
@@ -47,6 +56,24 @@ const SubscribedTextWrapper = styled.div`
   align-items: flex-end;
   justify-content: flex-end;
   height: 100%;
+`;
+
+const Title = styled.h1`
+  font-family: ${({ theme }) => theme.font_family.primary};
+  color: ${({ theme }) => theme.text.primary};
+  font-size: 20px;
+  line-height: 150%; /* 30px */
+  @media (max-width: 1100px) {
+    font-size: 14px;
+  }
+`;
+
+const MobileButton = styled.div`
+  display: none;
+  margin-top: 8px;
+  @media (max-width: 1100px) {
+    display: block;
+  }
 `;
 
 function isFreeEmail(email: string): boolean {
@@ -108,9 +135,7 @@ export const NewsletterInput = () => {
         </SubscribedTextWrapper>
       ) : (
         <>
-          <Text weight={300} size={20}>
-            Subscribe to the Odigos newsletter to stay up-to-date.
-          </Text>
+          <Title>Subscribe to the Odigos newsletter to stay up-to-date.</Title>
           <InputGradient>
             <Input
               value={email}
@@ -128,18 +153,24 @@ export const NewsletterInput = () => {
               </Button>
             </ButtonWrapper>
           </InputGradient>
-          {error && (
-            <div
-              style={{
-                marginTop: 4,
-                marginLeft: 24,
-              }}
-            >
+          <div
+            style={{
+              marginTop: 4,
+              height: 20,
+              marginLeft: 24,
+            }}
+          >
+            {error && (
               <Text color="red" size={14}>
                 {error}
               </Text>
-            </div>
-          )}
+            )}
+          </div>
+          <MobileButton>
+            <Button onClick={handleSubscribe} disabled={!email}>
+              <UnderlineText size={16}>Subscribe</UnderlineText>
+            </Button>
+          </MobileButton>
         </>
       )}
     </InputContainer>

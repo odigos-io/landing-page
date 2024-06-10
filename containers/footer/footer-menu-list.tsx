@@ -10,6 +10,9 @@ const NavList = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px;
+  @media (max-width: 1100px) {
+    gap: 56px;
+  }
 `;
 
 const NavItem = styled.li`

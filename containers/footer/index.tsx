@@ -16,6 +16,7 @@ const FooterContainer = styled.footer`
   gap: 64px;
   @media (max-width: 1100px) {
     gap: 48px;
+    padding: 48px 20px 24px 20px;
   }
 `;
 
@@ -59,6 +60,9 @@ const FooterText = styled.span`
   line-height: 150%;
   font-weight: 300;
   opacity: 0.8;
+  @media (max-width: 1100px) {
+    font-size: 14px;
+  }
 `;
 
 const RightsText = styled.span`
