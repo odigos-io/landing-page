@@ -10,6 +10,7 @@ const Testimonials = dynamic(() => import('@/containers/testimonials'));
 const CTA = dynamic(() => import('@/containers/cta'));
 const LearnMore = dynamic(() => import('@/containers/learn-more'));
 const Footer = dynamic(() => import('@/containers/footer'));
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',

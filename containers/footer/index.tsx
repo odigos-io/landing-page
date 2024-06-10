@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import FooterItemList from './footer-menu-list';
+import { NewsletterInput } from '@/components';
 
 const FooterContainer = styled.footer`
   background: ${({ theme }) => theme.colors.primary};
@@ -14,7 +15,6 @@ const FooterContainer = styled.footer`
 
 const Header = styled.section`
   display: flex;
-  align-items: flex-start;
   gap: 80px;
 `;
 
@@ -23,6 +23,8 @@ const MenuItemWrapper = styled.div`
   flex-direction: column;
   gap: 42px;
 `;
+
+const InputWrapper = styled.div``;
 
 const Body = styled.section``;
 
@@ -41,6 +43,9 @@ const Footer = () => {
           />
           <FooterItemList />
         </MenuItemWrapper>
+        <InputWrapper>
+          <NewsletterInput />
+        </InputWrapper>
       </Header>
     </FooterContainer>
   );

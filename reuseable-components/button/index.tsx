@@ -8,7 +8,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
 }
 
-const Wrapper = styled.div<{ variant: 'primary' | 'secondary' }>`
+const Wrapper = styled.div<{
+  variant: 'primary' | 'secondary';
+  disabled?: boolean;
+}>`
   border-radius: 48px;
   padding: ${({ variant }) => (variant === 'primary' ? '0.1rem;' : '0')};
   height: fit-content;
@@ -22,22 +25,33 @@ const Wrapper = styled.div<{ variant: 'primary' | 'secondary' }>`
     rgb(249, 249, 249) 100%,
     rgb(66, 69, 159)
   );
-
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   &:hover {
-    background: linear-gradient(
+    background: ${({ disabled }) =>
+      disabled
+        ? `linear-gradient(
+    317deg,
+    rgb(249, 249, 249) 4%,
+    rgb(66, 69, 159) 80%,
+    rgb(66, 69, 159) 100%,
+    rgb(249, 249, 249) 100%,
+    rgb(66, 69, 159)
+  )`
+        : `linear-gradient(
       317deg,
       rgb(249, 249, 249) 4%,
       #ffb160 80%,
       #ffb160 100%,
       rgb(249, 249, 249) 100%,
       #ffb160
-    );
+    );`};
   }
 `;
 
 const StyledButton = styled.button<{
   variant: 'primary' | 'secondary';
   color?: string;
+  disabled?: boolean;
 }>`
   border-radius: 48px;
   background: ${({ variant, theme, color }) =>
@@ -56,6 +70,10 @@ const StyledButton = styled.button<{
   justify-content: center;
   align-items: center;
   gap: 8px;
+  /* opacity: ${({ disabled }) => (disabled ? 0.5 : 1)}; */
+  /* border: ${({ disabled }) =>
+    disabled ? '2px solid #f9f9f958' : 'none'}; */
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
 
 export const Button: React.FC<ButtonProps> = ({
@@ -63,13 +81,20 @@ export const Button: React.FC<ButtonProps> = ({
   onClick,
   type = 'button',
   variant = 'primary',
+  disabled = false,
   containerStyle = {},
 
   ...props
 }) => {
   return (
-    <Wrapper variant={variant} style={containerStyle}>
-      <StyledButton variant={variant} onClick={onClick} type={type} {...props}>
+    <Wrapper disabled={disabled} variant={variant} style={containerStyle}>
+      <StyledButton
+        disabled={disabled}
+        variant={variant}
+        onClick={onClick}
+        type={type}
+        {...props}
+      >
         {children}
       </StyledButton>
     </Wrapper>
