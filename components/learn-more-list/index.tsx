@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BlogItem } from '@/reuseable-components';
 import styled from 'styled-components';
+import { GridContainer } from '@/style';
 
 type Post = {
   slug: string;
@@ -8,19 +9,13 @@ type Post = {
   [key: string]: string;
 };
 
-const BlogGrid = styled.div`
-  display: flex;
-  gap: 24px;
-  justify-content: center;
+const BlogGrid = styled(GridContainer)`
   @media (max-width: 1000px) {
-    flex-wrap: wrap;
-    width: 100%;
+    grid-template-columns: 1fr;
   }
 `;
 
 const BlogGridItem = styled.div`
-  flex: 1 1 442px;
-  max-width: 442px;
   @media (max-width: 1000px) {
     flex: 1 1 100%;
     max-width: 100%;
@@ -41,7 +36,7 @@ const LearnMoreList = async () => {
   }, []);
 
   return (
-    <BlogGrid>
+    <BlogGrid gap={24}>
       {posts.slice(0, 3).map((blog, key) => (
         <BlogGridItem key={key}>
           <BlogItem blog={blog} />
