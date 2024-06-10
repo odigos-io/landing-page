@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import styled, { keyframes } from 'styled-components';
-import { Center, ColumnContainer, IconWrapper } from '@/style';
+import { ColumnContainer, IconWrapper } from '@/style';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 type ModalProps = {
@@ -59,7 +59,7 @@ const DashedLayer = styled.div<{
   height: 90%;
   width: 70%;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1100px) {
     border: 1px dashed rgba(249, 249, 249, 0);
     padding: 0;
     height: 100%;
@@ -70,7 +70,7 @@ const DashedLayer = styled.div<{
 const InnerDashedLayer = styled(DashedLayer)`
   height: 100%;
   width: 100%;
-  @media (max-width: 900px) {
+  @media (max-width: 1100px) {
     border: 1px dashed rgba(249, 249, 249, 0.4);
   }
 `;
@@ -84,7 +84,7 @@ const ModalBody = styled.div`
   border: 1px solid ${({ theme }) => theme.text.primary};
   background: ${({ theme }) => theme.text.secondary};
   height: 100%;
-  @media (max-width: 900px) {
+  @media (max-width: 1100px) {
     padding: 24px 48px;
     justify-content: center;
   }
@@ -93,7 +93,6 @@ const ModalBody = styled.div`
 const ModalHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
   margin-bottom: 20px;
 `;
@@ -139,14 +138,16 @@ const Modal = ({ title, description, onClose, children }: ModalProps) => {
                   {description && <Description>{description}</Description>}
                 </ColumnContainer>
               )}
-              <IconWrapper onClick={handleClose}>
-                <Image
-                  width={24}
-                  height={24}
-                  src="icons/common/close.svg"
-                  alt="close"
-                />
-              </IconWrapper>
+              <div>
+                <IconWrapper onClick={handleClose}>
+                  <Image
+                    width={24}
+                    height={24}
+                    src="icons/common/close.svg"
+                    alt="close"
+                  />
+                </IconWrapper>
+              </div>
             </ModalHeader>
             {children}
           </ModalBody>

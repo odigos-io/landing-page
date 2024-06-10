@@ -45,6 +45,9 @@ const DemoIframe = styled.iframe`
   width: 100%;
   height: 100%;
   min-height: 300px;
+  @media (max-width: 1200px) {
+    height: 300px;
+  }
 `;
 
 const Container = styled(SectionContainer)`
