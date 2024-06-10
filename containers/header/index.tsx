@@ -1,12 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import menuData from './menuData';
 import theme from '@/style/theme';
-import styled from 'styled-components';
-import { Button, UnderlineText, Text } from '@/reuseable-components';
 import dynamic from 'next/dynamic';
+import styled from 'styled-components';
+import MenuItemList from './menu-item-list';
+import { Button, UnderlineText } from '@/reuseable-components';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
@@ -50,38 +49,6 @@ const HamburgerButton = styled.button`
   }
 `;
 
-const NavList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-
-  @media (min-width: 1024px) {
-    flex-direction: row;
-    gap: 3rem;
-  }
-
-  @media (max-width: 1024px) {
-    display: none;
-  }
-`;
-
-const NavItem = styled.li`
-  position: relative;
-  display: flex;
-  gap: 8px;
-
-  &.group {
-    cursor: pointer;
-  }
-`;
-
-const GithubNumberWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-left: -4px;
-`;
-
 const ActionBarWrapper = styled.div`
   display: flex;
 
@@ -110,40 +77,7 @@ export const Header = () => {
             </a>
           </LogoContainer>
 
-          <NavList>
-            {menuData.map((menuItem, key) => (
-              <NavItem key={key}>
-                <UnderlineText>
-                  <Link
-                    legacyBehavior
-                    href={`${menuItem.path}`}
-                    target={menuItem.newTab ? '_blank' : '_self'}
-                  >
-                    {menuItem.title}
-                  </Link>
-                </UnderlineText>
-              </NavItem>
-            ))}
-            <NavItem>
-              <Image
-                src="/icons/common/github.svg"
-                alt="github"
-                width={18}
-                height={18}
-              />
-              <UnderlineText>
-                <Link
-                  target={'_blank'}
-                  href={'https://github.com/odigos-io/odigos'}
-                >
-                  {'GITHUB'}
-                </Link>
-              </UnderlineText>
-              <GithubNumberWrapper>
-                <Text size={10}>24K</Text>
-              </GithubNumberWrapper>
-            </NavItem>
-          </NavList>
+          <MenuItemList />
           <ActionBarWrapper>
             <SignInButton variant="secondary">
               <UnderlineText color={theme.text.secondary}>
