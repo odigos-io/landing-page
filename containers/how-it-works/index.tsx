@@ -62,7 +62,7 @@ const HowItWorks = () => {
   function renderMobile() {
     return (
       <MobileBody>
-        {/* <HowItWorksTextsMobile /> */}
+        <HowItWorksTextsMobile />
         <HowItWorksIllustrationsMobile />
       </MobileBody>
     );

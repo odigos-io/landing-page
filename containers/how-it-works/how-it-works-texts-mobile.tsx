@@ -19,15 +19,15 @@ export const HowItWorksTextsMobile = () => {
   function getTop(index: number) {
     switch (index) {
       case 0:
-        return -140;
+        return -130;
       case 1:
-        return 600;
+        return 500;
       case 2:
-        return 1850;
+        return 1260;
       case 3:
-        return 2800;
+        return 2070;
       case 4:
-        return 3600;
+        return 2560;
       default:
         return 260;
     }
@@ -40,7 +40,7 @@ export const HowItWorksTextsMobile = () => {
           <ParagraphComponent
             title={data.title}
             paragraphs={data.paragraphs}
-            style={{ padding: '20px 0' }}
+            style={{ padding: '64px 0' }}
           />
         </AnimatedText>
       ))}

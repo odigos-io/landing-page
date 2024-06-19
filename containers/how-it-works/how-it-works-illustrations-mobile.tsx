@@ -10,8 +10,9 @@ import animationData2 from '../../public/lotties/Odigos-2nd-animation.json';
 import animationData3 from '../../public/lotties/Odigos-3rd-animation.json';
 import animationData4 from '../../public/lotties/Odigos-4th-animation.json';
 import animationData5 from '../../public/lotties/Odigos-5th-animation.json';
-// import lines from '../../public/lotties/Odigos-bg-lines.json';
-import lines from '../../public/lotties/Odigos-bg-lines-markers.json';
+import lines from '../../public/lotties/Odigos-bg-lines.json';
+import linesMobile from '../../public/lotties/Odigos-bg-lines-mobile.json';
+// import lines from '../../public/lotties/Odigos-bg-lines-markers.json';
 
 const LottieMap = {
   1: {
@@ -138,7 +139,7 @@ const HowItWorksIllustrationsMobile = () => {
     if (isLinesVisible && backgroundRef.current) {
       lottieInstance.current = lottie.loadAnimation({
         container: backgroundRef.current,
-        animationData: lines,
+        animationData: linesMobile,
         renderer: 'svg',
         loop: false,
         autoplay: false,
@@ -171,13 +172,13 @@ const HowItWorksIllustrationsMobile = () => {
       case 0:
         return -370;
       case 1:
-        return 80;
+        return 200;
       case 2:
-        return 580;
+        return 980;
       case 3:
-        return 1050;
+        return 1780;
       case 4:
-        return 1570;
+        return 2418;
       default:
         return 0;
     }
