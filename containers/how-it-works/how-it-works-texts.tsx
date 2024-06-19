@@ -1,7 +1,7 @@
 import React from 'react';
 import { DATA } from './data';
-import { ParagraphComponent } from '@/reuseable-components';
 import styled from 'styled-components';
+import { ParagraphComponent } from '@/reuseable-components';
 
 const TextContainer = styled.div`
   position: relative;
@@ -12,8 +12,6 @@ const TextContainer = styled.div`
 const AnimatedText = styled.div<{ top: number }>`
   position: absolute;
   top: ${({ top }) => top}px;
-  /* left: 50%; */
-  /* transform: translateX(-50%); */
 `;
 
 export const HowItWorksTexts = () => {
