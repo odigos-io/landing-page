@@ -7,6 +7,7 @@ import { ColumnContainer } from '@/style';
 type ParagraphComponentProps = {
   title: string;
   paragraphs: string[];
+  style?: React.CSSProperties;
 };
 
 const Title = styled.span`
@@ -37,10 +38,14 @@ const Paragraph = styled.p`
 
 export const ParagraphComponent: React.FC<ParagraphComponentProps> = ({
   title,
+  style = {},
   paragraphs,
 }) => {
   return (
-    <ColumnContainer gap={24}>
+    <ColumnContainer
+      gap={24}
+      style={{ background: theme.colors.primary, ...style }}
+    >
       <Title>{title}</Title>
       <ColumnContainer gap={15}>
         {paragraphs.map((text, index) => (

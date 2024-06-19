@@ -5,10 +5,16 @@ import styled from 'styled-components';
 import { SectionTitle } from '@/reuseable-components';
 import { HowItWorksTexts } from './how-it-works-texts';
 import HowItWorksIllustrations from './how-it-works-illustrations';
+import useIsMobile from '@/hooks/useIsMobile';
+import HowItWorksIllustrationsMobile from './how-it-works-illustrations-mobile';
+import { HowItWorksTextsMobile } from './how-it-works-texts-mobile';
 
 const TitleWrapper = styled.div`
   margin-top: 40px;
-  margin-bottom: 300px;
+  margin-bottom: 120px;
+  @media (max-width: 600px) {
+    margin-bottom: 380px;
+  }
 `;
 
 const PageTitle = styled.span`
@@ -36,7 +42,32 @@ const Body = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-const HowItWorks2 = () => {
+
+const MobileBody = styled.div`
+  position: relative;
+  height: 3932px;
+`;
+
+const HowItWorks = () => {
+  const isMobile = useIsMobile();
+  function renderDesktop() {
+    return (
+      <Body>
+        <HowItWorksTexts />
+        <HowItWorksIllustrations />
+      </Body>
+    );
+  }
+
+  function renderMobile() {
+    return (
+      <MobileBody>
+        {/* <HowItWorksTextsMobile /> */}
+        <HowItWorksIllustrationsMobile />
+      </MobileBody>
+    );
+  }
+
   return (
     <Container style={{ background: theme.colors.primary }}>
       <SectionTitle
@@ -49,12 +80,9 @@ const HowItWorks2 = () => {
       <TitleWrapper>
         <PageTitle>Observability made easy</PageTitle>
       </TitleWrapper>
-      <Body>
-        <HowItWorksTexts />
-        <HowItWorksIllustrations />
-      </Body>
+      {isMobile ? renderMobile() : renderDesktop()}
     </Container>
   );
 };
 
-export default HowItWorks2;
+export default HowItWorks;
