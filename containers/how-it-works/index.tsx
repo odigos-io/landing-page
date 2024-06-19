@@ -54,11 +54,6 @@ const LottieMap = {
 
 const Container = styled(SectionContainer)`
   height: auto;
-  padding: 160px 64px;
-
-  @media (max-width: 800px) {
-    padding: 80px 20px;
-  }
 `;
 
 const PageBody = styled(ColumnContainer)``;
@@ -201,35 +196,19 @@ const HowItWorks = () => {
   }, [isScrolling, isLinesVisible, animationDelay]);
 
   return (
-    <Container
-      justify={'flex-start'}
-      alignments={'flex-start'}
-      background={theme.colors.primary}
-    >
-      <PageBody>
-        <SectionTitle
-          headerInfo={{
-            title: 'HOW IT WORKS',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TitleWrapper>
-          <PageTitle>Observability made easy</PageTitle>
-        </TitleWrapper>
-        <AnimationContainer>
-          <div style={{ position: 'absolute', top: -16 }} ref={backgroundRef} />
-          {DATA.map((data, index) => (
-            <AnimatedIllustration key={index} top={index * 900}>
-              <LottieAnimation
-                ref={(el) => (animationRefs.current[index] = el)}
-                {...LottieMap[index + 1]}
-              />
-            </AnimatedIllustration>
-          ))}
-        </AnimationContainer>
-      </PageBody>
-    </Container>
+    <div>
+      <AnimationContainer>
+        <div style={{ position: 'absolute', top: -16 }} ref={backgroundRef} />
+        {DATA.map((data, index) => (
+          <AnimatedIllustration key={index} top={index * 900}>
+            <LottieAnimation
+              ref={(el) => (animationRefs.current[index] = el)}
+              {...LottieMap[index + 1]}
+            />
+          </AnimatedIllustration>
+        ))}
+      </AnimationContainer>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 const Hero = dynamic(() => import('@/containers/hero'));
 const HowWeDo = dynamic(() => import('@/containers/how-we-do'));
-const HowItWorks = dynamic(() => import('@/containers/how-it-works'));
+const HowItWorks = dynamic(() => import('@/containers/how-it-works/index2'));
 const HowToStart = dynamic(() => import('@/containers/how-to-start'));
 const Testimonials = dynamic(() => import('@/containers/testimonials'));
 const CTA = dynamic(() => import('@/containers/cta'));
