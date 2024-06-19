@@ -93,7 +93,7 @@ const Divider = styled.div`
 
 const TeamImage = styled.img`
   width: 100%;
-  max-width: 40vw;
+  max-width: 50vw;
   object-fit: cover;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
