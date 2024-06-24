@@ -1,12 +1,13 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { TrustedList, WatchDemoBtn } from '@/components';
 import { FlexContainer, ColumnContainer, SectionContainer } from '@/style';
+import { LottieAnimation } from '@/reuseable-components';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
+import animationData from '../../public/lotties/hero.json';
 
 const PageContainer = styled.div`
   padding-top: 100px;
@@ -75,11 +76,10 @@ const Hero = () => {
           <TrustedList />
         </ColumnContainer>
         <div>
-          <Image
-            width={600}
-            height={600}
-            src="/images/hero/hero.svg"
-            alt="overview"
+          <LottieAnimation
+            animationData={animationData}
+            loop={true}
+            autoplay={true}
           />
         </div>
       </Container>

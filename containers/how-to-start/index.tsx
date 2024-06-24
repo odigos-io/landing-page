@@ -4,7 +4,7 @@ import { DATA } from './data';
 import Image from 'next/image';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { SectionTitle } from '@/reuseable-components';
+import { LottieAnimation, SectionTitle } from '@/reuseable-components';
 import { ColumnContainer, FlexContainer, SectionContainer } from '@/style';
 
 const Container = styled(SectionContainer)`
@@ -107,12 +107,6 @@ const ArrowIconWrapper = styled.div`
   }
 `;
 
-const StepIllustration = styled.img`
-  @media (max-width: 1100px) {
-    width: 100%;
-  }
-`;
-
 const HowToStart: React.FC = () => {
   return (
     <Container
@@ -140,9 +134,16 @@ const HowToStart: React.FC = () => {
           {DATA.map((item, index) => (
             <>
               <ColumnContainer key={index} gap={32}>
-                <StepIllustration src={item.image} alt={item.title} />
+                <div>
+                  <LottieAnimation
+                    animationData={item.lottie}
+                    loop={true}
+                    autoplay={true}
+                    width={320}
+                  />
+                </div>
                 <FlexContainer alignments={'flex-start'}>
-                  <ColumnContainer gap={16} maxWidth={320}>
+                  <ColumnContainer gap={16}>
                     <ItemTitle>{item.title}</ItemTitle>
                     <ItemSubtitle>{item.subtitle}</ItemSubtitle>
                   </ColumnContainer>
