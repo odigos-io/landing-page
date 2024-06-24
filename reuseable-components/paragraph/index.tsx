@@ -1,7 +1,6 @@
 import theme from '@/style/theme';
 import React from 'react';
 import styled from 'styled-components';
-import { Text } from '@/reuseable-components';
 import { ColumnContainer } from '@/style';
 
 type ParagraphComponentProps = {
@@ -15,7 +14,7 @@ const Title = styled.span`
   font-family: ${theme.font_family.primary};
   font-size: 40px;
   font-weight: 400;
-
+  line-height: 120%;
   @media (max-width: 800px) {
     font-size: 24px;
   }

@@ -12,7 +12,7 @@ import { HowItWorksTextsMobile } from './how-it-works-texts-mobile';
 const TitleWrapper = styled.div`
   margin-top: 40px;
   margin-bottom: 120px;
-  @media (max-width: 600px) {
+  @media (max-width: 850px) {
     margin-bottom: 380px;
   }
 `;
@@ -45,11 +45,12 @@ const Body = styled.div`
 
 const MobileBody = styled.div`
   position: relative;
-  height: 3932px;
+  height: 2864px;
+  width: 350px;
 `;
 
 const HowItWorks = () => {
-  const isMobile = useIsMobile();
+  const isMobile = useIsMobile(1250);
   function renderDesktop() {
     return (
       <Body>
@@ -61,10 +62,20 @@ const HowItWorks = () => {
 
   function renderMobile() {
     return (
-      <MobileBody>
-        <HowItWorksTextsMobile />
-        <HowItWorksIllustrationsMobile />
-      </MobileBody>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <MobileBody>
+          <HowItWorksTextsMobile />
+          <HowItWorksIllustrationsMobile />
+        </MobileBody>
+      </div>
     );
   }
 

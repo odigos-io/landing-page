@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useIsMobile = (): boolean => {
+const useIsMobile = (limit: number = 756): boolean => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const useIsMobile = (): boolean => {
     const isMobileUserAgent = mobileRegex.test(userAgent);
 
     const handleResize = () => {
-      const isMobileScreen = window.innerWidth <= 768; // You can adjust the width threshold as needed
+      const isMobileScreen = window.innerWidth <= limit; // You can adjust the width threshold as needed
 
       setIsMobile(isMobileUserAgent || isMobileScreen);
     };
