@@ -27,6 +27,10 @@ const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  @media (max-width: 1100px) {
+    margin-bottom: 64px;
+  }
 `;
 
 const PageTitle = styled.span`
@@ -52,6 +56,7 @@ const Subtitle = styled.h2`
   opacity: 0.8;
   @media (max-width: 1100px) {
     font-size: 16px;
+    margin-bottom: 0px;
   }
 `;
 
