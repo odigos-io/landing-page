@@ -15,7 +15,7 @@ const Title = styled.span`
   font-size: 40px;
   font-weight: 400;
   line-height: 120%;
-  @media (max-width: 800px) {
+  @media (max-width: 850px) {
     font-size: 24px;
   }
 `;
@@ -28,7 +28,7 @@ const Paragraph = styled.p`
   color: ${theme.text.off_white};
   letter-spacing: 0.4px;
   font-family: ${theme.font_family.primary};
-  @media (max-width: 800px) {
+  @media (max-width: 850px) {
     font-size: 16px;
     line-height: 24px;
     letter-spacing: 0.32px;

@@ -10,7 +10,7 @@ import animationData2 from '../../public/lotties/Odigos-2nd-animation.json';
 import animationData3 from '../../public/lotties/Odigos-3rd-animation.json';
 import animationData4 from '../../public/lotties/Odigos-4th-animation.json';
 import animationData5 from '../../public/lotties/Odigos-5th-animation.json';
-import lines from '../../public/lotties/Odigos-bg-lines.json';
+import linesMobile from '../../public/lotties/Odigos-bg-lines-mobile.json';
 
 const LottieMap = {
   1: {
@@ -45,12 +45,6 @@ const LottieMap = {
   },
 };
 
-const AnimationContainer = styled.div`
-  position: relative;
-  width: 660px;
-  height: 3932px;
-`;
-
 const AnimatedIllustration = styled.div<{ top: number }>`
   position: absolute;
   top: ${({ top }) => top}px;
@@ -58,14 +52,14 @@ const AnimatedIllustration = styled.div<{ top: number }>`
   transform: translateX(-50%);
 `;
 
-const HowItWorksIllustrations = () => {
+const HowItWorksIllustrationsMobileMedium = () => {
   const animationRefs = useRef<(any | null)[]>([]);
   const backgroundRef = useRef<HTMLDivElement | null>(null);
   const lottieInstance = useRef<AnimationItem | null>(null);
   const [isLinesVisible, setIsLinesVisible] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
-  const animationDelay = 500; // Delay in milliseconds
+  const animationDelay = 800; // Delay in milliseconds
 
   useEffect(() => {
     // Handle special case for 3rd animation
@@ -137,7 +131,7 @@ const HowItWorksIllustrations = () => {
     if (isLinesVisible && backgroundRef.current) {
       lottieInstance.current = lottie.loadAnimation({
         container: backgroundRef.current,
-        animationData: lines,
+        animationData: linesMobile,
         renderer: 'svg',
         loop: false,
         autoplay: false,
@@ -166,20 +160,18 @@ const HowItWorksIllustrations = () => {
   }, [isScrolling, isLinesVisible, animationDelay]);
 
   return (
-    <div>
-      <AnimationContainer>
-        <div style={{ position: 'absolute', top: -16 }} ref={backgroundRef} />
-        {DATA.map((data, index) => (
-          <AnimatedIllustration key={index} top={index * 900}>
-            <LottieAnimation
-              ref={(el) => (animationRefs.current[index] = el)}
-              {...LottieMap[index + 1]}
-            />
-          </AnimatedIllustration>
-        ))}
-      </AnimationContainer>
-    </div>
+    <>
+      <div style={{ position: 'absolute', top: -16 }} ref={backgroundRef} />
+      {DATA.map((data, index) => (
+        <AnimatedIllustration key={index} top={index * 1300}>
+          <LottieAnimation
+            ref={(el) => (animationRefs.current[index] = el)}
+            {...LottieMap[index + 1]}
+          />
+        </AnimatedIllustration>
+      ))}
+    </>
   );
 };
 
-export default HowItWorksIllustrations;
+export default HowItWorksIllustrationsMobileMedium;

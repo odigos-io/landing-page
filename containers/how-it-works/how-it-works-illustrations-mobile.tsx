@@ -10,9 +10,7 @@ import animationData2 from '../../public/lotties/Odigos-2nd-animation.json';
 import animationData3 from '../../public/lotties/Odigos-3rd-animation.json';
 import animationData4 from '../../public/lotties/Odigos-4th-animation.json';
 import animationData5 from '../../public/lotties/Odigos-5th-animation.json';
-import lines from '../../public/lotties/Odigos-bg-lines.json';
 import linesMobile from '../../public/lotties/Odigos-bg-lines-mobile.json';
-// import lines from '../../public/lotties/Odigos-bg-lines-markers.json';
 
 const LottieMap = {
   1: {
@@ -46,12 +44,6 @@ const LottieMap = {
     width: 335,
   },
 };
-
-const AnimationContainer = styled.div`
-  position: relative;
-  width: 660px;
-  height: 3932px;
-`;
 
 const AnimatedIllustration = styled.div<{ top: number }>`
   position: absolute;
