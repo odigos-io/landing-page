@@ -2,24 +2,22 @@
 import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { DATA } from './data';
-import { ColumnContainer, SectionContainer } from '@/style';
-import { ParagraphComponent, SectionTitle, Text } from '@/reuseable-components';
-
-const Container = styled(SectionContainer)`
-  height: auto;
-  padding: 160px 64px;
-
-  @media (max-width: 800px) {
-    padding: 80px 20px;
-  }
-`;
-
-const PageBody = styled(ColumnContainer)``;
+import { SectionTitle } from '@/reuseable-components';
+import { HowItWorksTexts } from './how-it-works-texts';
+import HowItWorksIllustrations from './how-it-works-illustrations';
+import useIsMobile from '@/hooks/useIsMobile';
+import HowItWorksIllustrationsMobile from './how-it-works-illustrations-mobile';
+import { HowItWorksTextsMobile } from './how-it-works-texts-mobile';
+import { HowItWorksTextsMedium } from './how-it-works-texts-medium';
+import HowItWorksIllustrationsMedium from './how-it-works-illustrations-medium';
 
 const TitleWrapper = styled.div`
   margin-top: 40px;
-  margin-bottom: 300px;
+  margin-bottom: 120px;
+
+  @media (max-width: 800px) {
+    margin-bottom: 380px;
+  }
 `;
 
 const PageTitle = styled.span`
@@ -29,39 +27,114 @@ const PageTitle = styled.span`
   font-style: normal;
   font-weight: 400;
   line-height: 130%;
-  @media (max-width: 800px) {
+
+  @media (max-width: 1250px) {
     font-size: 28px;
   }
 `;
 
+const Container = styled.div`
+  padding: 160px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 650px) {
+    align-items: flex-start;
+    padding: 80px 20px;
+  }
+`;
+
+const Body = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const MobileBody = styled.div`
+  position: relative;
+  height: 2864px;
+  width: 350px;
+`;
+
+const MediumBody = styled.div`
+  position: relative;
+  width: 660px;
+  height: 5832px;
+`;
+
 const HowItWorks = () => {
+  const isMobile = useIsMobile(800);
+  const isMedium = useIsMobile(1250);
+  function renderDesktop() {
+    return (
+      <Body>
+        <HowItWorksTexts />
+        <HowItWorksIllustrations />
+      </Body>
+    );
+  }
+
+  function renderMediumScreen() {
+    return (
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <MediumBody>
+          <HowItWorksTextsMedium />
+          <HowItWorksIllustrationsMedium />
+        </MediumBody>
+      </div>
+    );
+  }
+
+  function renderMobile() {
+    return (
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <MobileBody>
+          <HowItWorksTextsMobile />
+          <HowItWorksIllustrationsMobile />
+        </MobileBody>
+      </div>
+    );
+  }
+
+  function renderBody() {
+    if (isMobile) {
+      return renderMobile();
+    } else if (isMedium) {
+      return renderMediumScreen();
+    } else {
+      return renderDesktop();
+    }
+  }
+
   return (
-    <Container
-      justify={'flex-start'}
-      alignments={'flex-start'}
-      background={theme.colors.primary}
-    >
-      <PageBody>
-        <SectionTitle
-          headerInfo={{
-            title: 'HOW IT WORKS',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TitleWrapper>
-          <PageTitle>Observability made easy</PageTitle>
-        </TitleWrapper>
-        <ColumnContainer gap={260}>
-          {DATA.map((data, index) => (
-            <ParagraphComponent
-              key={index}
-              title={data.title}
-              paragraphs={data.paragraphs}
-            />
-          ))}
-        </ColumnContainer>
-      </PageBody>
+    <Container style={{ background: theme.colors.primary }}>
+      <SectionTitle
+        headerInfo={{
+          title: 'HOW IT WORKS',
+          subtitle: '',
+          description: '',
+        }}
+      />
+      <TitleWrapper>
+        <PageTitle>Observability made easy</PageTitle>
+      </TitleWrapper>
+      {renderBody()}
     </Container>
   );
 };
