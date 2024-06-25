@@ -30,6 +30,9 @@ const PricingContainer = styled.div`
   display: flex;
   gap: 24px;
   padding: 0px 64px;
+  @media (width <= 800px) {
+    padding: 0px 20px;
+  }
 `;
 
 const PricingCard = styled.div`
@@ -41,6 +44,10 @@ const PricingCard = styled.div`
   align-items: flex-start;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
+
+  @media (width <= 800px) {
+    height: 692px;
+  }
 `;
 
 const PlanTitle = styled.h2`
@@ -51,6 +58,9 @@ const PlanTitle = styled.h2`
   line-height: 120%;
   letter-spacing: -1.6px;
   text-transform: uppercase;
+  @media (width <= 800px) {
+    font-size: 24px;
+  }
 `;
 
 const Divider = styled.div`
@@ -83,6 +93,9 @@ const Description = styled.p`
   font-weight: 300;
   line-height: 150%; /*  */
   opacity: 0.8;
+  @media (width <= 800px) {
+    font-size: 16px;
+  }
 `;
 
 const Price = styled.div`
@@ -93,6 +106,9 @@ const Price = styled.div`
   line-height: 100%; /*  */
   letter-spacing: -2.24px;
   text-transform: uppercase;
+  @media (width <= 800px) {
+    font-size: 34px;
+  }
 `;
 
 const FeatureList = styled.ul`
@@ -107,6 +123,9 @@ const FeatureItem = styled.li`
   font-size: 20px;
   font-weight: 300;
   line-height: 140%;
+  @media (width <= 800px) {
+    font-size: 16px;
+  }
 `;
 
 const ButtonWrapper = styled.div`
