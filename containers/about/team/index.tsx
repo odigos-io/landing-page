@@ -1,15 +1,15 @@
 'use client';
 import React from 'react';
 import theme from '@/style/theme';
-import styled from 'styled-components';
-import { DATA } from './data';
-import { ColumnContainer, GridContainer, SectionContainer } from '@/style';
-import { SectionTitle, Text, UnderlineText } from '@/reuseable-components';
 import Image from 'next/image';
+import { DATA } from './data';
+import styled from 'styled-components';
+import { ColumnContainer, SectionContainer } from '@/style';
+import { SectionTitle, Text, UnderlineText } from '@/reuseable-components';
 
 const Container = styled(SectionContainer)`
   height: auto;
-  padding: 160px 64px;
+  padding: 120px 64px;
   @media (max-width: 800px) {
     padding: 80px 20px;
   }
@@ -30,14 +30,14 @@ const TitleWrapper = styled.div`
   }
 `;
 
-const PageTitle = styled.span`
+const PageTitle = styled.div`
   color: ${theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
   font-size: 3vw;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
-  max-width: 40vw;
+  max-width: 50vw;
   @media (max-width: 800px) {
     font-size: 24px;
     max-width: 100%;
@@ -80,6 +80,11 @@ const Title = styled.div`
   line-height: 24px; /* 150% */
   letter-spacing: 0.32px;
   opacity: 0.8;
+
+  b {
+    font-weight: bold;
+    opacity: 1;
+  }
 `;
 
 const Divider = styled.div`
@@ -93,7 +98,7 @@ const Divider = styled.div`
 
 const TeamImage = styled.img`
   width: 100%;
-  max-width: 50vw;
+  max-width: 45vw;
   object-fit: cover;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
@@ -126,9 +131,9 @@ const Teams = () => {
         />
         <TitleWrapper>
           <PageTitle>
-            The Odigos team is comprised of OpenTelemetry maintainers and
-            developers who utilize EBPFto make implementing observability simple
-            and instant.
+            The Odigos team is comprised of <b>OpenTelemetry</b> maintainers and
+            developers who utilize <b>eBPF</b> to make implementing
+            observability simple and instant.
           </PageTitle>
           <TeamImage alt="icon" src={'/images/team/team.jpg'} />
         </TitleWrapper>
@@ -141,7 +146,7 @@ const Teams = () => {
                 </Text>
                 <Title>{data.title}</Title>
                 <Divider />
-                <Title style={{ opacity: 0.8 }}>{data.description}</Title>
+                <Title dangerouslySetInnerHTML={{ __html: data.description }} />
                 <LinkWrapper
                   href={data.linkedin_url}
                   target="_blank"

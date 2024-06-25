@@ -1,18 +1,29 @@
 'use client';
 import React from 'react';
+import { DATA } from './data';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { DATA } from './data';
-import { ColumnContainer, GridContainer, SectionContainer } from '@/style';
-import { SectionTitle, Text, UnderlineText } from '@/reuseable-components';
-import Image from 'next/image';
+import { SectionTitle } from '@/reuseable-components';
+import { ColumnContainer, SectionContainer } from '@/style';
 
 const Container = styled(SectionContainer)`
   height: auto;
-  padding: 160px 64px;
+  flex-direction: column;
+  max-width: 100%;
+  width: 100%;
+
+  padding: 0px 64px 120px 64px;
   @media (max-width: 800px) {
     padding: 80px 20px;
   }
+`;
+
+const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  opacity: 0.4;
+  background: #f5f5f5;
+  margin-bottom: 120px;
 `;
 
 const PageBody = styled(ColumnContainer)`
@@ -50,7 +61,7 @@ const PageDescription = styled.span`
   font-size: 20px;
   line-height: 150%;
   font-weight: 300;
-  max-width: 50vw;
+  max-width: 60vw;
   opacity: 0.8;
   @media (max-width: 800px) {
     font-size: 14px;
@@ -62,20 +73,31 @@ const InvestorsContainer = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: repeat(auto-fill, minmax(564px, 1fr));
-  gap: 32px;
-  justify-content: center;
+  gap: 120px;
+
+  @media (max-width: 1385px) {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+
+  @media (max-width: 650px) {
+    grid-template-columns: repeat(auto-fill, minmax(355px, 1fr));
+  }
 `;
 
-const TeamItem = styled.div`
+const InvestorItem = styled.div`
   display: flex;
   gap: 32px;
-  min-width: 564px;
 `;
 
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 8px;
+  width: fit-content;
+  @media (max-width: 650px) {
+    width: 70%;
+  }
 `;
 
 const Title = styled.div`
@@ -86,11 +108,26 @@ const Title = styled.div`
   font-weight: 500;
   line-height: 133%;
   text-transform: uppercase;
+  @media (max-width: 650px) {
+    font-size: 20px;
+  }
+`;
+
+const Description = styled.div`
+  color: ${theme.text.primary};
+  font-family: ${({ theme }) => theme.font_family.primary};
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+  @media (max-width: 650px) {
+    font-size: 14px;
+  }
 `;
 
 const ImageWrapper = styled.div`
   display: flex;
-  min-width: 200px;
+  width: 200px;
   height: 120px;
   flex-direction: column;
   justify-content: center;
@@ -99,11 +136,20 @@ const ImageWrapper = styled.div`
   border-radius: 80px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
   background: #242023;
+
+  @media (max-width: 650px) {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+  }
 `;
 
 const InvestorImage = styled.img`
   height: 56px;
   object-fit: cover;
+  @media (max-width: 650px) {
+    height: 32px;
+  }
 `;
 
 const Investors = () => {
@@ -113,6 +159,7 @@ const Investors = () => {
       alignments={'flex-start'}
       background={theme.colors.secondary}
     >
+      <Divider />
       <PageBody>
         <SectionTitle
           headerInfo={{
@@ -122,25 +169,23 @@ const Investors = () => {
           }}
         />
         <TitleWrapper>
-          <PageTitle>This is a headline</PageTitle>
+          <PageTitle>Backing Our Vision</PageTitle>
           <PageDescription>
-            This is a short description of the section which the name you can
-            see above.
+            Explore the investors who believe in our potential and are helping
+            us achieve our goals through strategic support and funding.
           </PageDescription>
         </TitleWrapper>
         <InvestorsContainer>
           {DATA.map((item, index) => (
-            <TeamItem key={index}>
+            <InvestorItem key={index}>
               <ImageWrapper>
                 <InvestorImage src={item.logo} alt={item.name} />
               </ImageWrapper>
               <TextWrapper>
                 <Title>{item.name}</Title>
-                <Text size={16} weight={300} color="rgba(249, 249, 249, 0.80)">
-                  {item.description}
-                </Text>
+                <Description>{item.description}</Description>
               </TextWrapper>
-            </TeamItem>
+            </InvestorItem>
           ))}
         </InvestorsContainer>
       </PageBody>
