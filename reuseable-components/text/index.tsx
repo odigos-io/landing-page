@@ -8,6 +8,7 @@ type TextProps = {
   weight?: number;
   children: React.ReactNode;
   color?: string;
+  style?: React.CSSProperties;
 };
 
 const TextStyled = styled.span<{
@@ -30,9 +31,16 @@ export const Text = ({
   fontFam = theme.font_family.primary,
   weight = 500,
   color,
+  style = {},
 }: TextProps) => {
   return (
-    <TextStyled weight={weight} size={size} fontFam={fontFam} color={color}>
+    <TextStyled
+      weight={weight}
+      size={size}
+      fontFam={fontFam}
+      color={color}
+      style={{ ...style }}
+    >
       {children}
     </TextStyled>
   );

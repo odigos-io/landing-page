@@ -1,51 +1,58 @@
 export const DATA = [
   {
-    name: 'Eden Smith',
-    title: 'Chief Executive Officer',
+    name: 'Ari Recht',
+    title: 'Co-Founder & CEO',
     description:
-      'Eden leads the vision and strategy at Odigos. With over 15 years of experience in tech startups.',
-    linkedin_url: 'https://www.linkedin.com/in/edensmith',
+      'Ari leads the vision and strategy at Odigos. With over 15 years of experience in tech startups, Ari is dedicated to driving innovation and growth.',
+    linkedin_url: 'https://www.linkedin.com/in/arirecht/',
   },
   {
-    name: 'Air Johnson',
-    title: 'Chief Technology Officer',
+    name: 'Alon Braymok',
+    title: 'Software Engineer',
     description:
-      'Air is responsible for the technological direction at Odigos. With a background in software engineering, Air specializes in scalable architecture and system design, With a background in software engineering, Air specializes in scalable architecture and system design.With a background in software engineering, Air specializes in scalable architecture and system design.With a background in software engineering, Air specializes in scalable architecture and system design.',
-    linkedin_url: 'https://www.linkedin.com/in/airjohnson',
+      "Alon leads the frontend development at Odigos. Alon's expertise lies in creating user-centric interfaces that enhance user experience and engagement.",
+    linkedin_url: 'https://www.linkedin.com/in/alon-braymok/',
   },
   {
-    name: 'Along Williams',
-    title: 'VP of Product',
+    name: 'Tamir David',
+    title: 'Software Engineer',
     description:
-      "Along oversees the product development and management at Odigos. Along's expertise lies in creating user-centric products that meet market needs.",
-    linkedin_url: 'https://www.linkedin.com/in/alongwilliams',
+      'Tamir focuses on backend development at Odigos. With extensive experience in software engineering, Tamir ensures the development of high-quality, scalable server-side applications.',
+    linkedin_url: 'https://www.linkedin.com/in/tamirdavid/',
   },
   {
-    name: 'Amir Brown',
-    title: 'Head of Marketing',
+    name: 'Eden Federman',
+    title: 'Co-Founder & CTO',
     description:
-      'Amir drives the marketing efforts at Odigos, bringing over a decade of experience in digital marketing and brand strategy.',
-    linkedin_url: 'https://www.linkedin.com/in/amirbrown',
+      'Eden is responsible for the technological direction at Odigos. With a background in software engineering, Eden specializes in scalable architecture and system design. Eden is also involved in maintaining <b>OpenTelemetry</b> operations, ensuring smooth functionality and data observability.',
+    linkedin_url: 'https://www.linkedin.com/in/edenfed/',
   },
   {
-    name: 'Ron Davis',
-    title: 'Chief Operating Officer',
+    name: 'Ron Federman',
+    title: 'eBPF Engineer',
     description:
-      'Ron ensures operational excellence at Odigos. With a keen eye for detail, Ron manages the day-to-day operations and long-term strategic planning.',
-    linkedin_url: 'https://www.linkedin.com/in/rondavis',
+      'Ron specializes in <b>eBPF</b> technology at Odigos. With a strong background in kernel development, Ron focuses on enhancing system observability and performance. Ron also contributes to <b>OpenTelemetry</b> maintenance, ensuring efficient and reliable operations.',
+    linkedin_url: 'https://www.linkedin.com/in/ron-federman-50463b173/',
   },
   {
-    name: 'Tamie Wilson',
-    title: 'Chief Financial Officer',
+    name: 'Amir Blum',
+    title: 'Software Engineer',
     description:
-      'Tamie oversees the financial health of Odigos. With extensive experience in financial planning and analysis, Tamie ensures sustainable growth and profitability.',
-    linkedin_url: 'https://www.linkedin.com/in/tamiewilson',
+      'Amir drives the development of innovative software solutions at Odigos. With a strong background in engineering, Amir focuses on delivering high-performance products. Amir also plays a key role in <b>OpenTelemetry</b> maintenance, ensuring high standards of data collection and analysis.',
+    linkedin_url: 'https://www.linkedin.com/in/amir-blum-49a405180/',
   },
   {
-    name: 'David Clark',
-    title: 'Head of Customer Success',
+    name: 'David Feldman',
+    title: 'eBPF Engineer',
     description:
-      'David is dedicated to ensuring customer satisfaction at Odigos. David brings a wealth of experience in customer relationship management and support.',
-    linkedin_url: 'https://www.linkedin.com/in/davidclark',
+      'David specializes in <b>eBPF</b> technology at Odigos. With expertise in kernel programming, David enhances system visibility and efficiency through advanced eBPF solutions.',
+    linkedin_url: 'https://www.linkedin.com/in/david-feldman-b4a06b94/',
+  },
+  {
+    name: 'Yoav Levy',
+    title: 'Software Engineer',
+    description:
+      'Yoav focuses on backend development at Odigos. With a background in software engineering, Yoav specializes in building robust and scalable server-side applications.',
+    linkedin_url: 'https://www.linkedin.com/in/yoav-levy-097563106/',
   },
 ];
