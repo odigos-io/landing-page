@@ -16,6 +16,29 @@ const PageContainer = styled.div`
   }
 `;
 
+const LottieWrapper = styled.div`
+  width: 36%;
+  @media (max-width: 1300px) {
+    width: 80%;
+    margin-bottom: 32px;
+    margin-top: 4px;
+  }
+  @media (max-width: 900px) {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    div {
+      width: 60% !important;
+    }
+  }
+  @media (max-width: 650px) {
+    div {
+      width: 100% !important;
+    }
+  }
+`;
+
 const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
@@ -52,6 +75,7 @@ const DemoIframe = styled.iframe`
 `;
 
 const Container = styled(SectionContainer)`
+  align-items: flex-start;
   @media (max-width: 1300px) {
     height: auto;
   }
@@ -75,13 +99,13 @@ const Hero = () => {
           </HeroSubTitle>
           <TrustedList />
         </ColumnContainer>
-        <div>
+        <LottieWrapper>
           <LottieAnimation
             animationData={animationData}
             loop={true}
             autoplay={true}
           />
-        </div>
+        </LottieWrapper>
       </Container>
       {open && (
         <Modal
