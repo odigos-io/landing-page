@@ -145,7 +145,9 @@ const CTA: React.FC = () => {
           <SecondInnerBorder>
             <Body>
               <TextWrapper>
-                <Title>Two-line headline to fill up the space</Title>
+                <Title>
+                  Unlock Full Visibility into Your Application Performance
+                </Title>
                 <Subtitle>
                   Enterprise-Grade OpenTelemetry for Superior Application
                   Performance Monitoring
