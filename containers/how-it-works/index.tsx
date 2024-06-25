@@ -37,7 +37,10 @@ const Container = styled.div`
   padding: 160px 64px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+
+  @media (max-width: 1250px) {
+    align-items: center;
+  }
   @media (max-width: 650px) {
     align-items: flex-start;
     padding: 80px 20px;
