@@ -1,17 +1,41 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { TrustedList, WatchDemoBtn } from '@/components';
 import { FlexContainer, ColumnContainer, SectionContainer } from '@/style';
+import { LottieAnimation } from '@/reuseable-components';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
+import animationData from '../../public/lotties/hero.json';
 
 const PageContainer = styled.div`
   padding-top: 100px;
   @media (max-width: 600px) {
     padding-top: 60px;
+  }
+`;
+
+const LottieWrapper = styled.div`
+  width: 36%;
+  @media (max-width: 1300px) {
+    width: 80%;
+    margin-bottom: 32px;
+    margin-top: 4px;
+  }
+  @media (max-width: 900px) {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    div {
+      width: 60% !important;
+    }
+  }
+  @media (max-width: 650px) {
+    div {
+      width: 100% !important;
+    }
   }
 `;
 
@@ -51,6 +75,7 @@ const DemoIframe = styled.iframe`
 `;
 
 const Container = styled(SectionContainer)`
+  align-items: flex-start;
   @media (max-width: 1300px) {
     height: auto;
   }
@@ -74,14 +99,13 @@ const Hero = () => {
           </HeroSubTitle>
           <TrustedList />
         </ColumnContainer>
-        <div>
-          <Image
-            width={600}
-            height={600}
-            src="/images/hero/hero.svg"
-            alt="overview"
+        <LottieWrapper>
+          <LottieAnimation
+            animationData={animationData}
+            loop={true}
+            autoplay={true}
           />
-        </div>
+        </LottieWrapper>
       </Container>
       {open && (
         <Modal

@@ -89,7 +89,7 @@ const Blog = () => {
       </SectionTitleWrapper>
       <HeaderWrapper>
         <TitleWrapper>
-          <Title>Need text here</Title>
+          <Title>Discover Insights and Best Practices</Title>
           <DesktopDiv>
             <Link legacyBehavior href={'/blog'}>
               <ShowAllButton>

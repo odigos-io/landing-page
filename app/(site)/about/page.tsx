@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic';
 const AboutHero = dynamic(() => import('@/containers/about/hero'));
 const Principles = dynamic(() => import('@/containers/about/principles'));
 const Team = dynamic(() => import('@/containers/about/team'));
+const Investors = dynamic(() => import('@/containers/about/investors'));
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
@@ -21,6 +23,7 @@ export default function Home() {
       <AboutHero />
       <Principles />
       <Team />
+      <Investors />
     </main>
   );
 }
