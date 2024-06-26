@@ -59,18 +59,19 @@ const DashedLayer = styled.div<{
   height: 90%;
   width: 70%;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     border: 1px dashed rgba(249, 249, 249, 0);
-    padding: 0;
-    height: 100%;
+    padding: 0 16px;
+    height: fit-content;
     width: 100%;
+    border-radius: 48px;
   }
 `;
 
 const InnerDashedLayer = styled(DashedLayer)`
   height: 100%;
   width: 100%;
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     border: 1px dashed rgba(249, 249, 249, 0.4);
   }
 `;
@@ -84,9 +85,9 @@ const ModalBody = styled.div`
   border: 1px solid ${({ theme }) => theme.text.primary};
   background: ${({ theme }) => theme.text.secondary};
   height: 100%;
-  @media (max-width: 1100px) {
-    padding: 24px 48px;
-    justify-content: center;
+  @media (max-width: 1300px) {
+    padding: 20px 32px;
+    border-radius: 48px;
   }
 `;
 
@@ -103,6 +104,9 @@ const Title = styled.h1`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
+  @media (max-width: 1300px) {
+    font-size: 28px;
+  }
 `;
 
 const Description = styled.p`
@@ -112,6 +116,17 @@ const Description = styled.p`
   font-weight: 400;
   line-height: 30px;
   opacity: 0.8;
+
+  @media (max-width: 1300px) {
+    font-size: 16px;
+  }
+`;
+
+const CloseIconWrapper = styled(IconWrapper)`
+  @media (max-width: 1300px) {
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 const Modal = ({ title, description, onClose, children }: ModalProps) => {
@@ -139,14 +154,14 @@ const Modal = ({ title, description, onClose, children }: ModalProps) => {
                 </ColumnContainer>
               )}
               <div>
-                <IconWrapper onClick={handleClose}>
+                <CloseIconWrapper onClick={handleClose}>
                   <Image
-                    width={24}
-                    height={24}
+                    width={16}
+                    height={16}
                     src="icons/common/close.svg"
                     alt="close"
                   />
-                </IconWrapper>
+                </CloseIconWrapper>
               </div>
             </ModalHeader>
             {children}
