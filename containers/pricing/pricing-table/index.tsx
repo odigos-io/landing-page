@@ -1,11 +1,15 @@
 'use client';
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
 import { DATA } from './data';
-import { Center, FlexContainer } from '@/style';
 import Image from 'next/image';
-import { Button, UnderlineText } from '@/reuseable-components';
 import theme from '@/style/theme';
+import dynamic from 'next/dynamic';
+import styled from 'styled-components';
+import { FlexContainer } from '@/style';
+import { Button, UnderlineText } from '@/reuseable-components';
+import ContactForm from './contact-us-form';
+
+const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
 interface PricingPlan {
   plan: string;
@@ -143,6 +147,9 @@ const PlanWrapper = styled.div`
 `;
 
 const PricingComponent: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
+
   return (
     <PricingContainer>
       {pricingData.map((plan, index) => (
@@ -177,7 +184,11 @@ const PricingComponent: React.FC = () => {
           {plan.button.text && (
             <ButtonWrapper>
               <Button
-                onClick={() => window.open(plan.button.link, '_blank')}
+                onClick={() =>
+                  index === 2
+                    ? setOpen(true)
+                    : window.open(plan.button.link, '_blank')
+                }
                 style={{ background: theme.colors.secondary }}
               >
                 <UnderlineText>{plan.button.text}</UnderlineText>
@@ -186,6 +197,21 @@ const PricingComponent: React.FC = () => {
           )}
         </PricingCard>
       ))}
+      {open && (
+        <Modal
+          title={success ? '' : 'Let’s talk!'}
+          description={
+            "Questions about our products/services, orders, or just want to say hello? We're here to help."
+          }
+          onClose={() => setOpen(false)}
+        >
+          <ContactForm
+            success={success}
+            setSuccess={setSuccess}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
+      )}
     </PricingContainer>
   );
 };
