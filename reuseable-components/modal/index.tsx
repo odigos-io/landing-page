@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import styled, { keyframes } from 'styled-components';
-import { ColumnContainer, IconWrapper } from '@/style';
+import { ColumnContainer } from '@/style';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 type ModalProps = {
@@ -37,7 +37,6 @@ const fadeOut = keyframes`
 const ModalContainer = styled.div<{ isVisible: boolean }>`
   width: 100vw;
   height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +121,7 @@ const Description = styled.p`
   }
 `;
 
-const CloseIconWrapper = styled(IconWrapper)`
+const CloseIconWrapper = styled.div`
   @media (max-width: 1300px) {
     width: 32px;
     height: 32px;

@@ -3,7 +3,7 @@ import React from 'react';
 import {
   ColumnContainer,
   FlexContainer,
-  IconWrapper,
+  IconWrapper as OriginalIconWrapper,
   SectionContainer,
 } from '@/style';
 import theme from '@/style/theme';
@@ -81,7 +81,7 @@ const TextWrapper = styled(ColumnContainer)`
   }
 `;
 
-const ArrowIconWrapper = styled(IconWrapper)`
+const ArrowIconWrapper = styled(OriginalIconWrapper)`
   width: 64px;
   height: 64px;
   padding: 0px;
