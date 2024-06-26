@@ -59,7 +59,7 @@ const DashedLayer = styled.div<{
   height: 90%;
   width: 70%;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     border: 1px dashed rgba(249, 249, 249, 0);
     padding: 0 16px;
     height: fit-content;
@@ -71,7 +71,7 @@ const DashedLayer = styled.div<{
 const InnerDashedLayer = styled(DashedLayer)`
   height: 100%;
   width: 100%;
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     border: 1px dashed rgba(249, 249, 249, 0.4);
   }
 `;
@@ -85,7 +85,7 @@ const ModalBody = styled.div`
   border: 1px solid ${({ theme }) => theme.text.primary};
   background: ${({ theme }) => theme.text.secondary};
   height: 100%;
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     padding: 20px 32px;
     border-radius: 48px;
   }
@@ -104,7 +104,7 @@ const Title = styled.h1`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     font-size: 28px;
   }
 `;
@@ -117,13 +117,13 @@ const Description = styled.p`
   line-height: 30px;
   opacity: 0.8;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     font-size: 16px;
   }
 `;
 
 const CloseIconWrapper = styled(IconWrapper)`
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     width: 32px;
     height: 32px;
   }

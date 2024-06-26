@@ -11,7 +11,7 @@ const FormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  min-height: 300px;
   height: 100%;
   gap: 20px;
   @media (max-width: 1100px) {
@@ -143,7 +143,17 @@ const ContactForm: React.FC<ContactFormProps> = ({
     });
 
     setSuccess(res);
-    res && setTimeout(onClose, 3000);
+    res &&
+      setTimeout(() => {
+        onClose();
+        setSuccess(false);
+      }, 3000);
+    setState({
+      name: '',
+      email: '',
+      organization: '',
+      message: '',
+    });
   };
 
   function isFreeEmail(email: string): boolean {
@@ -177,7 +187,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
   if (success) {
     return (
       <FormContainer>
-        <Text fontFam={theme.font_family.secondary} color={theme.text.primary}>
+        <Text
+          size={24}
+          style={{ lineHeight: '32px' }}
+          fontFam={theme.font_family.secondary}
+          color={theme.text.primary}
+        >
           Thank you for reaching out! We will get back to you soon.
         </Text>
       </FormContainer>
