@@ -26,7 +26,7 @@ export const putContactFormItem = async (body) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Error from server:', errorData);
+
       throw new Error(errorData.message || 'Something went wrong');
     }
 
@@ -40,7 +40,6 @@ export const putContactFormItem = async (body) => {
 
     sendToService(data, SLACK_CONTACT_API_URL);
 
-    console.log({ response: responseData });
     return true;
   } catch (error) {
     console.error({ error });
