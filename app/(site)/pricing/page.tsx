@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 
 const PricingHero = dynamic(() => import('@/containers/pricing/hero'));
 const CTASection = dynamic(() => import('@/containers/cta'));
+const FAQComponent = dynamic(() => import('@/containers/pricing/faq'));
 const PricingComponent = dynamic(
   () => import('@/containers/pricing/pricing-table')
 );
@@ -22,6 +23,7 @@ export default function PricingPage() {
     <main style={{ background: theme.colors.secondary }}>
       <PricingHero />
       <PricingComponent />
+      <FAQComponent />
       <CTASection />
     </main>
   );
