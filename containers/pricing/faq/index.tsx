@@ -4,7 +4,11 @@ import { DATA } from './data';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import { SectionTitle } from '@/reuseable-components';
-import { ColumnContainer, IconWrapper, SectionContainer } from '@/style';
+import {
+  ColumnContainer,
+  IconWrapper as OriginalIconWrapper,
+  SectionContainer,
+} from '@/style';
 import Image from 'next/image';
 import useIsMobile from '@/hooks/useIsMobile';
 
@@ -88,7 +92,7 @@ const Answer = styled.div`
   }
 `;
 
-const ExpandIcon = styled(IconWrapper)`
+const ExpandIcon = styled(OriginalIconWrapper)`
   display: flex;
   width: 64px;
   height: 64px;
