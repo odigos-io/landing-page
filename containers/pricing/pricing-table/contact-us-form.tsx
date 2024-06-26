@@ -14,6 +14,10 @@ const FormContainer = styled.div`
 
   height: 100%;
   gap: 20px;
+  @media (max-width: 1100px) {
+    justify-content: flex-start;
+    flex-direction: column;
+  }
 `;
 
 const InputField = styled.input`
@@ -30,7 +34,12 @@ const InputField = styled.input`
   gap: 8px;
   outline: none;
   &::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: ${({ theme }) => theme.text.primary};
+    opacity: 0.4;
+    font-size: 14px;
+  }
+  @media (max-width: 1100px) {
+    height: 48px;
   }
 `;
 
@@ -46,7 +55,10 @@ const TextArea = styled.textarea`
   resize: none;
   outline: none;
   &::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: ${({ theme }) => theme.text.primary};
+    opacity: 0.4;
+    line-height: 24px;
+    font-size: 14px;
   }
 `;
 
@@ -55,6 +67,10 @@ const InputsContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: 24px;
+
+  @media (width <= 768px) {
+    flex-direction: column;
+  }
 `;
 
 const TextsInputsWrapper = styled.div`
@@ -117,7 +133,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
   };
 
   const onSubmit = async () => {
-    console.log('Form submitted');
     const { name, email, organization, message } = state;
 
     const res = await putContactFormItem({
@@ -186,9 +201,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
               placeholder="Your business email"
               onChange={handleChange}
             />
-            <Text color={'red'} style={{ marginLeft: 24 }}>
-              {error}
-            </Text>
+            {error && (
+              <Text color={'red'} style={{ marginLeft: 24 }}>
+                {error}
+              </Text>
+            )}
           </div>
           <InputField
             name="organization"
