@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import BlogCover from '@/components/Blog/BlogCover';
 import BlogList from '@/components/Blog/BlogList';
@@ -7,15 +7,8 @@ import BlogList from '@/components/Blog/BlogList';
 const BlogFilter = dynamic(() => import('@/containers/blog/blogs-filter'));
 
 const BlogBody = ({ posts }) => {
-  const [selectedItems, setSelectedItems] = useState<any>([]);
+  const [selectedItems, setSelectedItems] = useState<any>(['EXPLORE ALL']);
   const [filteredPosts, setFilteredPosts] = useState<any>([]);
-  const [allData, setAllData] = useState<any>([]);
-  useLayoutEffect(() => {
-    if (posts && JSON.stringify(posts) !== JSON.stringify(allData)) {
-      console.log('re-rendered');
-      setAllData(posts);
-    }
-  }, [posts]);
 
   useEffect(() => {
     setFilteredPosts(
@@ -27,14 +20,26 @@ const BlogBody = ({ posts }) => {
     );
   }, [selectedItems]);
 
+  const handleSetSelectedItems = (items) => {
+    if (items.length === 0) {
+      setSelectedItems(['EXPLORE ALL']);
+      return;
+    }
+
+    if (items.includes('EXPLORE ALL') && items.length > 1) {
+      items = items.filter((item) => item !== 'EXPLORE ALL');
+    }
+    setSelectedItems(items);
+  };
+
   return (
     <>
       <BlogFilter
-        posts={allData}
+        posts={posts}
         selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
+        setSelectedItems={handleSetSelectedItems}
       />
-      <BlogCover blog={allData[0]} />
+      <BlogCover blog={posts[0]} />
       <BlogList posts={filteredPosts} />
     </>
   );
