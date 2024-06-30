@@ -1,16 +1,15 @@
 import { Metadata } from 'next';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
-import BlogItem from '@/components/Blog/BlogItem';
 import { getAllBlogs } from '@/app/libs/markdown';
-import BlogCover from '@/components/Blog/BlogCover';
-import BlogList from '@/components/Blog/BlogList';
 
+const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
 const BlogHero = dynamic(() => import('@/containers/blog/hero'), {
   ssr: false,
 });
-const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
-
+const BlogBody = dynamic(() => import('@/containers/blog/blog-body'), {
+  ssr: false,
+});
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
@@ -29,13 +28,13 @@ const BlogPage = async () => {
     'coverImage',
     'slug',
     'body',
+    'tags',
   ]);
 
   return (
     <div style={{ background: theme.colors.secondary }}>
       <BlogHero />
-      <BlogCover blog={posts[0]} />
-      <BlogList posts={posts.slice(1)} />
+      <BlogBody posts={posts} />
       <CTASection />
     </div>
   );

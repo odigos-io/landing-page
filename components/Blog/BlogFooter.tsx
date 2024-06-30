@@ -4,7 +4,6 @@ import { Text } from '@/reuseable-components';
 import { calculateReadingTime } from '@/utils';
 
 const BlogFooter = ({ blog }: { blog: any }) => {
-  console.log({ blog });
   const { tags, content } = blog;
 
   return (

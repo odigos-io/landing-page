@@ -9,10 +9,11 @@ const BlogItemsContainer = styled.div`
   gap: 24px;
   @media (width < 768px) {
     padding: 0px 20px 48px 20px;
+    grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
   }
 `;
 
-const BlogList = async ({ posts }) => {
+const BlogList = ({ posts }) => {
   return (
     <BlogItemsContainer>
       {posts.length > 0 &&

@@ -8,7 +8,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   gap: 80px;
   background: ${theme.colors.secondary};
-  padding: 160px 64px 120px 64px;
+  padding: 160px 64px 64px 64px;
   @media (max-width: 800px) {
     padding: 24px 20px;
     padding-top: 160px;
