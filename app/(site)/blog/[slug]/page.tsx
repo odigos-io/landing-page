@@ -66,14 +66,10 @@ const SingleBlogPage = async ({ params }: Props) => {
         style={{ background: theme.colors.secondary }}
         className="pt-35 lg:pt-45 xl:pt-35 pb-20 lg:pb-25 xl:pb-30"
       >
-        <div className="lg:w-[100%]">
-          <div className="animate_top rounded-md shadow-solid-13 p-2.5 md:p-10">
-            <BlogPageHeader slug={slug} posts={posts} />
-            <BlogPageContent content={post?.content} />
-            <RelatedPost />
-            <CTASection />
-          </div>
-        </div>
+        <BlogPageHeader post={post} />
+        <BlogPageContent content={post?.content} />
+        <RelatedPost />
+        <CTASection />
       </section>
     </>
   ) : (
