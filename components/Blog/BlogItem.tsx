@@ -1,14 +1,14 @@
 'use client';
 import Link from 'next/link';
-import styled from 'styled-components';
-import { Text } from '@/reuseable-components';
-import theme from '@/style/theme';
-import { useEffect, useState } from 'react';
 import BlogFooter from './BlogFooter';
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+
 const BlogItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  height: 100%;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
 `;
@@ -25,7 +25,6 @@ const BlogTitle = styled.h3`
   font-family: ${({ theme }) => theme.font_family.primary};
   font-size: 24px;
   line-height: 133.333%;
-  height: 74px;
 `;
 
 const BlogDescription = styled.p`

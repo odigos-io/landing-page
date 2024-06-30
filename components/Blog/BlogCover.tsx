@@ -1,15 +1,11 @@
 'use client';
 import Link from 'next/link';
-import styled from 'styled-components';
-import { Text } from '@/reuseable-components';
-import theme from '@/style/theme';
-import { useEffect, useState } from 'react';
-import { calculateReadingTime } from '@/utils';
 import BlogFooter from './BlogFooter';
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 
 const BlogCoverContainer = styled.div`
-  padding: 0 64px 120px;
-
+  padding: 120px 64px;
   @media (max-width: 800px) {
     padding: 80px 20px 48px 20px;
   }
@@ -96,7 +92,7 @@ const BlogCover = ({ blog }: { blog: any }) => {
     return null;
   }
 
-  const { image, title, description, slug, tags, content } = blog;
+  const { image, title, description, slug } = blog;
 
   return (
     <BlogCoverContainer>

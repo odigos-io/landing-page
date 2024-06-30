@@ -5,18 +5,15 @@ import styled, { css } from 'styled-components';
 import { FlexContainer } from '@/style';
 import { Text, UnderlineText } from '@/reuseable-components';
 import Image from 'next/image';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: ${theme.colors.primary};
-  padding: 160px 64px 120px 64px;
+  padding: 120px 64px;
   @media (max-width: 800px) {
-    padding: 24px 20px;
-    padding-top: 160px;
-  }
-  @media (max-width: 600px) {
-    gap: 32px;
+    padding: 40px 20px;
   }
 `;
 
@@ -27,6 +24,10 @@ const TagsContainer = styled.div<{ expanded: boolean }>`
   max-height: ${(props) => (props.expanded ? 'none' : 'calc(2 * 48px + 32px)')};
   overflow: hidden;
   transition: max-height 0.5s ease;
+  @media (max-width: 800px) {
+    max-height: ${(props) =>
+      props.expanded ? 'none' : 'calc(4 * 48px + 32px)'};
+  }
 `;
 
 const ExpandButton = styled.button`
@@ -85,6 +86,7 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
   };
 
   const tagCounts = groupTags(posts);
+  const isMobile = useIsMobile();
 
   return (
     <PageContainer>
@@ -102,7 +104,7 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
                 ? theme.text.off_white
                 : 'rgba(249, 249, 249, 0.32)'
             }
-            size={32}
+            size={isMobile ? 20 : 32}
           >
             EXPLORE ALL
           </UnderlineText>
@@ -134,7 +136,7 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
                   ? theme.text.off_white
                   : 'rgba(249, 249, 249, 0.32)'
               }
-              size={32}
+              size={isMobile ? 20 : 32}
             >
               {tag}
             </UnderlineText>
