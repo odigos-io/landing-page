@@ -1,10 +1,15 @@
 import BlogItem from '@/components/Blog/BlogItem';
 import { getAllBlogs } from '@/app/libs/markdown';
-import SectionHeader from '@/components/Common/SectionHeader';
 import { Metadata } from 'next';
-import FloatingHeader from '@/components/FloatingHeader';
-import FloatingHeaderMobile from '@/components/FloatingHeaderMobile';
-import './style.css';
+import dynamic from 'next/dynamic';
+import BlogCover from '@/components/Blog/BlogCover';
+import theme from '@/style/theme';
+
+const BlogHero = dynamic(() => import('@/containers/blog/hero'), {
+  ssr: false,
+});
+const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
@@ -26,57 +31,18 @@ const BlogPage = async () => {
   ]);
 
   return (
-    <>
-      {/* <!-- ===== Blog Grid Start ===== --> */}
+    <div style={{ background: theme.colors.secondary }}>
+      <BlogHero />
+      <BlogCover blog={posts[0]} />
       <div
-        className="mobile-view"
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          position: 'fixed',
-          zIndex: 9999,
-          top: 50,
-        }}
+        style={{ padding: '0px 64px' }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7.5 xl:gap-10"
       >
-        <FloatingHeader />
+        {posts.length > 0 &&
+          posts.map((post, key) => <BlogItem key={key} blog={post} />)}
       </div>
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          position: 'fixed',
-          zIndex: 9999,
-          top: 50,
-        }}
-        className="desktop-view"
-      >
-        <FloatingHeaderMobile stickToTop={true} />
-      </div>
-      <div style={{ marginTop: 200 }}>
-        {/* <!-- Section Title Start --> */}
-        <div className="animate_top text-center mx-auto">
-          <SectionHeader
-            headerInfo={{
-              title: `NEWS & BLOGS`,
-              subtitle: `Latest News & Blogs`,
-              description: `Welcome to Odigos blog where we write about distributed tracing, OpenTelemetry, eBPF, performance and company culture.`,
-            }}
-          />
-        </div>
-        {/* <!-- Section Title End --> */}
-      </div>
-      <section style={{ marginBottom: 200 }}>
-        <div className="mx-auto max-w-c-1280 px-4 md:px-8 xl:px-0 mt-15 xl:mt-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7.5 xl:gap-10">
-            {posts.length > 0 &&
-              posts.map((post, key) => <BlogItem key={key} blog={post} />)}
-          </div>
-        </div>
-      </section>
-      {/* <!-- ===== Blog Grid End ===== --> */}
-    </>
+      <CTASection />
+    </div>
   );
 };
 

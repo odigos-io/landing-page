@@ -1,4 +1,3 @@
-'use client';
 import { Text } from '@/reuseable-components/text';
 import theme from '@/style/theme';
 import Link from 'next/link';
