@@ -18,8 +18,6 @@ export function generateMetadata({ params }: Props): Metadata {
 
   const post = posts.find((post) => post.slug === slug);
 
-  console.log({ post });
-
   return {
     metadataBase: new URL('https://odigos.io'),
     title: post?.title,
@@ -220,10 +218,6 @@ const SingleBlogPage = async ({ params }: Props) => {
                   style={{ marginTop: 48, background: '#060606' }}
                 >
                   <Markdown source={post.content} />
-                  {/* <div
-                    className="blog-details"
-                    dangerouslySetInnerHTML={{ __html: content }}
-                  /> */}
                 </div>
                 <div
                   className="lg:w-[65%] font-semibold text-white text-lg"
