@@ -1,5 +1,6 @@
 'use client';
 import BlogFooter from '@/components/Blog/BlogFooter';
+import useIsMobile from '@/hooks/useIsMobile';
 import { Button, UnderlineText } from '@/reuseable-components';
 import theme from '@/style/theme';
 import Image from 'next/image';
@@ -9,13 +10,6 @@ type Props = {
   post: any;
 };
 
-const gradientBackground = {
-  background: 'linear-gradient(to right, #ff9900, #ff6600)', // Define your gradient here
-  WebkitBackgroundClip: 'text',
-  color: 'transparent', // Make the text transparent
-  display: 'inline-block',
-};
-
 const Title = styled.div`
   color: ${theme.colors.white};
   font-family: ${theme.font_family.primary};
@@ -23,6 +17,13 @@ const Title = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 110%;
+  @media (width < 1000px) {
+    font-size: 56px;
+  }
+
+  @media (width < 600px) {
+    font-size: 40px;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -35,6 +36,10 @@ const BlogPageHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 80px;
+  @media (width < 1000px) {
+    padding: 24px 20px 0px 20px;
+    gap: 40px;
+  }
 `;
 
 const CoverImage = styled.img`
@@ -51,24 +56,27 @@ const CoverImage = styled.img`
   height: 360px;
 `;
 
-const BlogPageHeader = async ({ post }: Props) => {
-  function renderTags() {
-    return post?.tags.map((item) => (
-      <h1 style={{ fontSize: 20, fontWeight: 600, ...gradientBackground }}>
-        {item}
-      </h1>
-    ));
-  }
+const TitleWrapper = styled.div`
+  display: flex;
+  gap: 64px;
 
+  @media (width< 1000px) {
+    flex-direction: column;
+    gap: 24px;
+  }
+`;
+
+const BlogPageHeader = async ({ post }: Props) => {
+  const isMobile = useIsMobile();
   return (
     <BlogPageHeaderContainer>
-      <div style={{ display: 'flex', gap: 64 }}>
+      <TitleWrapper>
         <ButtonWrapper>
           <Button
             style={{
               background: theme.colors.secondary,
               padding: '8px 32px',
-              height: 64,
+              height: isMobile ? 48 : 64,
             }}
           >
             <Image
@@ -81,11 +89,17 @@ const BlogPageHeader = async ({ post }: Props) => {
             <UnderlineText size={20}>BACK</UnderlineText>
           </Button>
         </ButtonWrapper>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: isMobile ? 15 : 32,
+          }}
+        >
           <Title>{post.title}</Title>
           <BlogFooter blog={post} />
         </div>
-      </div>
+      </TitleWrapper>
       <CoverImage src={post.image} alt={post.title} />
     </BlogPageHeaderContainer>
   );
