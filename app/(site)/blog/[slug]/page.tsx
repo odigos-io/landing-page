@@ -218,10 +218,6 @@ const SingleBlogPage = async ({ params }: Props) => {
                   style={{ marginTop: 48, background: '#060606' }}
                 >
                   <Markdown source={post.content} />
-                  {/* <div
-                    className="blog-details"
-                    dangerouslySetInnerHTML={{ __html: content }}
-                  /> */}
                 </div>
                 <div
                   className="lg:w-[65%] font-semibold text-white text-lg"
