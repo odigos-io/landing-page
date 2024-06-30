@@ -1,0 +1,77 @@
+pre {
+  border-radius: 48px !important;
+  background: #151515 !important;
+}
+.prism-copy-button {
+  @apply absolute top-2 right-2 h-[26px] rounded bg-white px-4 text-primary;
+}
+
+.active-tab {
+  @apply text-black dark:text-white dark:bg-blackho bg-stroke;
+}
+
+.wmde-markdown p {
+  color: #f9f9f9 !important;
+  font-family: 'Inter Tight';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 160%;
+  letter-spacing: 0.4px;
+  opacity: 0.8;
+}
+.wmde-markdown p strong {
+  color: #f9f9f9 !important;
+  font-family: 'Inter Tight';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 160%;
+  letter-spacing: 0.4px;
+}
+.wmde-markdown li {
+  color: #f9f9f9 !important;
+  font-family: 'Inter Tight';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 160%;
+  letter-spacing: 0.4px;
+  opacity: 0.8;
+}
+.wmde-markdown img {
+  border-radius: 48px;
+}
+
+.wmde-markdown ul li strong {
+  color: #f9f9f9 !important;
+  font-family: 'Inter Tight';
+}
+
+.wmde-markdown h2 {
+  color: #f9f9f9 !important;
+  font-family: 'Inter Tight';
+  font-size: 48px !important;
+  font-style: normal;
+  font-weight: 300 !important;
+  line-height: 125%;
+}
+
+.wmde-markdown h3 {
+  color: #f9f9f9 !important;
+  font-family: 'Inter Tight';
+  font-size: 32px !important;
+  font-style: normal;
+  font-weight: 300 !important;
+  line-height: 125%;
+}
+
+.wmde-markdown a {
+  color: #444ad9 !important;
+  font-family: 'Inter Tight';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 160%;
+  letter-spacing: 0.4px;
+}

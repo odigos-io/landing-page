@@ -13,10 +13,10 @@ const BlogBody = dynamic(() => import('@/containers/blog/blog-body'), {
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
-  icons: '/images/logo/logo.png',
+  icons: '/icons/brand/black-icon.svg',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: '/images/hero/overview.gif',
+    images: '/icons/brand/black-icon.svg',
   },
 };
 
