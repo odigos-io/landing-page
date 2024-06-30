@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Text } from '@/reuseable-components';
 import theme from '@/style/theme';
 import { useEffect, useState } from 'react';
+import { calculateReadingTime } from '@/utils';
+import BlogFooter from './BlogFooter';
 
 const BlogCoverContainer = styled.div`
   padding: 0 64px 120px;
@@ -94,7 +96,7 @@ const BlogCover = ({ blog }: { blog: any }) => {
     return null;
   }
 
-  const { image, title, description, slug, tags } = blog;
+  const { image, title, description, slug, tags, content } = blog;
 
   return (
     <BlogCoverContainer>
@@ -105,22 +107,7 @@ const BlogCover = ({ blog }: { blog: any }) => {
               <Link href={`/blog/${slug}`}>{title}</Link>
             </BlogTitle>
             <BlogDescription>{description}</BlogDescription>
-            <div
-              style={{
-                display: 'flex',
-                gap: 16,
-              }}
-            >
-              <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
-                {tags[0]?.toUpperCase() || 'OBSERVABILITY'}
-              </Text>
-              <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
-                {'|'}
-              </Text>
-              <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
-                {'5 MIN READ' || ''}
-              </Text>
-            </div>
+            <BlogFooter blog={blog} />
           </TextContainer>
           {image ? <BlogCoverImage src={image} alt={title} /> : 'No image'}
         </BlogItemContainer>

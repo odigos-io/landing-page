@@ -1,3 +1,4 @@
+import BlogFooter from '@/components/Blog/BlogFooter';
 import { Text } from '@/reuseable-components/text';
 import theme from '@/style/theme';
 import Link from 'next/link';
@@ -68,17 +69,7 @@ export const BlogItem = ({ blog }: { blog: any }) => {
               <Link href={`/blog/${slug}`}>{title}</Link>
             </BlogTitle>
             <BlogDescription>{description}</BlogDescription>
-            <div style={{ display: 'flex', gap: 16 }}>
-              <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
-                {tags[0]?.toUpperCase() || 'OBSERVABILITY'}
-              </Text>
-              <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
-                {'|'}
-              </Text>
-              <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
-                {'5 MIN READ' || ''}
-              </Text>
-            </div>
+            <BlogFooter blog={blog} />
           </TextContainer>
         </BlogItemContainer>
       </Link>

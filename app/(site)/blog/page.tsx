@@ -35,14 +35,7 @@ const BlogPage = async () => {
     <div style={{ background: theme.colors.secondary }}>
       <BlogHero />
       <BlogCover blog={posts[0]} />
-      <BlogList posts={posts} />
-      {/* <div
-        style={{ padding: '0px 64px' }} // on mobile, change to padding: 80px 20px 48px 20px;
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7.5 xl:gap-10"
-      >
-        {posts.length > 0 &&
-          posts.map((post, key) => <BlogItem key={key} blog={post} />)}
-      </div> */}
+      <BlogList posts={posts.slice(1)} />
       <CTASection />
     </div>
   );
