@@ -5,12 +5,23 @@ import { Text } from '@/reuseable-components';
 import theme from '@/style/theme';
 import { useEffect, useState } from 'react';
 
+const BlogCoverContainer = styled.div`
+  padding: 0 64px 120px;
+
+  @media (max-width: 800px) {
+    padding: 80px 20px 48px 20px;
+  }
+`;
+
 const BlogItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
+  @media (width <= 1200px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const TextContainer = styled.div`
@@ -18,6 +29,12 @@ const TextContainer = styled.div`
   flex-direction: column;
   margin-left: 64px;
   padding: 80px 0;
+  max-width: 45%;
+  @media (max-width: 1200px) {
+    max-width: 100%;
+    padding: 32px;
+    margin-left: 0;
+  }
 `;
 
 const BlogTitle = styled.h3`
@@ -25,6 +42,9 @@ const BlogTitle = styled.h3`
   font-family: ${({ theme }) => theme.font_family.primary};
   font-size: 32px;
   line-height: 150%;
+  @media (max-width: 800px) {
+    font-size: 28px;
+  }
 `;
 
 const BlogDescription = styled.p`
@@ -40,6 +60,25 @@ const BlogDescription = styled.p`
   text-overflow: ellipsis;
   margin-top: 24px;
   margin-bottom: 40px;
+
+  @media (max-width: 800px) {
+    font-size: 16px;
+    margin-top: 12px;
+    margin-bottom: 32px;
+  }
+`;
+
+const BlogCoverImage = styled.img`
+  border-top-right-radius: 48px;
+  border-bottom-right-radius: 48px;
+  object-fit: cover;
+  max-width: 45%;
+
+  @media (max-width: 1200px) {
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 48px;
+    max-width: 100%;
+  }
 `;
 
 const BlogCover = ({ blog }: { blog: any }) => {
@@ -58,7 +97,7 @@ const BlogCover = ({ blog }: { blog: any }) => {
   const { image, title, description, slug, tags } = blog;
 
   return (
-    <div style={{ padding: '0 64px 120px' }}>
+    <BlogCoverContainer>
       <Link href={`/blog/${slug}`}>
         <BlogItemContainer>
           <TextContainer>
@@ -83,23 +122,10 @@ const BlogCover = ({ blog }: { blog: any }) => {
               </Text>
             </div>
           </TextContainer>
-          {image ? (
-            <img
-              style={{
-                borderTopRightRadius: 48,
-                borderBottomRightRadius: 48,
-                objectFit: 'cover',
-                maxWidth: 616,
-              }}
-              src={image}
-              alt={title}
-            />
-          ) : (
-            'No image'
-          )}
+          {image ? <BlogCoverImage src={image} alt={title} /> : 'No image'}
         </BlogItemContainer>
       </Link>
-    </div>
+    </BlogCoverContainer>
   );
 };
 
