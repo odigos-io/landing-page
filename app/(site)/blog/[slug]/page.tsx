@@ -12,6 +12,10 @@ type Props = {
 };
 
 const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
+const BlogPageContent = dynamic(
+  () => import('@/containers/blog-page/blog-page-content'),
+  { ssr: false }
+);
 const BlogPageHeader = dynamic(
   () => import('@/containers/blog-page/blog-page-header'),
   { ssr: false }
@@ -65,14 +69,7 @@ const SingleBlogPage = async ({ params }: Props) => {
         <div className="lg:w-[100%]">
           <div className="animate_top rounded-md shadow-solid-13 p-2.5 md:p-10">
             <BlogPageHeader slug={slug} posts={posts} />
-
-            <div
-              className="lg:w-[70%] "
-              style={{ marginTop: 48, background: '#060606' }}
-            >
-              <Markdown source={post.content} />
-            </div>
-
+            <BlogPageContent content={post?.content} />
             <RelatedPost />
             <CTASection />
           </div>
