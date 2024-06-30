@@ -50,9 +50,9 @@ const ExpandButtonWrapper = styled.div`
   align-items: center;
 `;
 
-const BlogFilter = ({ posts }) => {
+const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
   const [expanded, setExpanded] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<any>([]);
+
   const handleTagClick = (tag) => {
     if (tag === 'EXPLORE ALL') {
       if (selectedItems.includes('EXPLORE ALL')) {
@@ -96,9 +96,26 @@ const BlogFilter = ({ posts }) => {
           gap={12}
           style={{ cursor: 'pointer' }}
         >
-          <UnderlineText size={32}>EXPLORE ALL</UnderlineText>
+          <UnderlineText
+            color={
+              selectedItems.includes('EXPLORE ALL')
+                ? theme.text.off_white
+                : 'rgba(249, 249, 249, 0.32)'
+            }
+            size={32}
+          >
+            EXPLORE ALL
+          </UnderlineText>
           <div style={{ paddingBottom: 4 }}>
-            <Text fontFam={theme.font_family.secondary} size={14}>
+            <Text
+              color={
+                selectedItems.includes('EXPLORE ALL')
+                  ? theme.text.off_white
+                  : 'rgba(249, 249, 249, 0.32)'
+              }
+              fontFam={theme.font_family.secondary}
+              size={14}
+            >
               {posts.length}
             </Text>
           </div>

@@ -12,7 +12,7 @@ const BlogItemsContainer = styled.div`
   }
 `;
 
-const BlogList = async ({ posts }) => {
+const BlogList = ({ posts }) => {
   return (
     <BlogItemsContainer>
       {posts.length > 0 &&
