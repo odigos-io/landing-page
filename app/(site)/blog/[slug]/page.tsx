@@ -3,7 +3,6 @@ import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
-import RelatedPost from '@/components/Blog/RelatedPost';
 import BlogNotFound from '@/components/Blog/BlogNotFound';
 
 type Props = {
@@ -11,7 +10,10 @@ type Props = {
 };
 
 const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
-
+const RelatedPosts = dynamic(
+  () => import('@/containers/blog-page/related-post'),
+  { ssr: false }
+);
 const BlogPageContent = dynamic(
   () => import('@/containers/blog-page/blog-page-content'),
   { ssr: false }
@@ -64,11 +66,11 @@ const SingleBlogPage = async ({ params }: Props) => {
     <>
       <section
         style={{ background: theme.colors.secondary }}
-        className="pt-35 lg:pt-45 xl:pt-35 pb-20 lg:pb-25 xl:pb-30"
+        className="pt-35 lg:pt-45 xl:pt-35 "
       >
         <BlogPageHeader post={post} />
         <BlogPageContent post={post} />
-        <RelatedPost />
+        <RelatedPosts posts={posts} />
         <CTASection />
       </section>
     </>
