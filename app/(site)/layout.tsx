@@ -1,18 +1,20 @@
 'use client';
 
 import '../globals.css';
-import PlausibleProvider from 'next-plausible';
-import ConversionInitiator from '@/components/Conversions/landing.simple.tracking';
-import { ThemeProviderWrapper } from '@/reuseable-components/theme.provider/theme.provider';
+import theme from '@/style/theme';
 import { Header } from '@/containers';
 import Footer from '@/containers/footer';
-import theme from '@/style/theme';
+import PlausibleProvider from 'next-plausible';
+import useConversionInitiator from '@/hooks/useConversionInitiator';
+import { ThemeProviderWrapper } from '@/reuseable-components/theme.provider/theme.provider';
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  useConversionInitiator();
+
   return (
     <html lang="eng">
       <head>
@@ -20,7 +22,6 @@ export default function RootLayout({
       </head>
       <body style={{ background: theme.colors.secondary }}>
         <ThemeProviderWrapper>
-          <ConversionInitiator />
           <Header />
           {children}
           <Footer />
