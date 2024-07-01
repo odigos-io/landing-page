@@ -2,6 +2,7 @@ pre {
   border-radius: 48px !important;
   background: #151515 !important;
 }
+
 .prism-copy-button {
   @apply absolute top-2 right-2 h-[26px] rounded bg-white px-4 text-primary;
 }
@@ -20,6 +21,7 @@ pre {
   letter-spacing: 0.4px;
   opacity: 0.8;
 }
+
 .wmde-markdown p strong {
   color: #f9f9f9 !important;
   font-family: 'Inter Tight';
@@ -29,6 +31,7 @@ pre {
   line-height: 160%;
   letter-spacing: 0.4px;
 }
+
 .wmde-markdown li {
   color: #f9f9f9 !important;
   font-family: 'Inter Tight';
@@ -39,6 +42,7 @@ pre {
   letter-spacing: 0.4px;
   opacity: 0.8;
 }
+
 .wmde-markdown img {
   border-radius: 48px;
 }
@@ -74,4 +78,34 @@ pre {
   font-weight: 300;
   line-height: 160%;
   letter-spacing: 0.4px;
+}
+
+.copied {
+  position: absolute;
+  top: 20px !important;
+  right: 20px !important;
+}
+
+@media (max-width: 768px) {
+  .wmde-markdown h2 {
+    font-size: 28px !important;
+  }
+  .wmde-markdown h3 {
+    font-size: 24px !important;
+  }
+  .wmde-markdown p {
+    font-size: 16px !important;
+    letter-spacing: 0.32px !important;
+  }
+  .wmde-markdown a {
+    font-size: 16px !important;
+    letter-spacing: 0.32px !important;
+  }
+  .wmde-markdown p strong {
+    font-size: 16px !important;
+    letter-spacing: 0.32px !important;
+  }
+  .wmde-markdown img {
+    height: 200px;
+  }
 }
