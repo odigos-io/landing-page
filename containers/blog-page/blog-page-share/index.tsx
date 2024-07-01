@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, UnderlineText } from '@/reuseable-components';
 import useIsMobile from '@/hooks/useIsMobile';
+import theme from '@/style/theme';
 
 interface ShareButtonsProps {
   isMobile?: boolean;
@@ -10,12 +11,6 @@ interface ShareButtonsProps {
 }
 
 const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
-  const theme = {
-    colors: {
-      secondary: '#151515',
-    },
-  };
-
   const isMobile = useIsMobile();
 
   const handleShareClick = (platform: string) => {
@@ -57,9 +52,13 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
                 background: theme.colors.secondary,
                 padding: '8px 32px',
                 height: isMobile ? 48 : 64,
+                width: isMobile ? 120 : 144,
+              }}
+              containerStyle={{
+                width: 123,
               }}
             >
-              <UnderlineText size={20}>LINKEDIN</UnderlineText>
+              <UnderlineText size={isMobile ? 16 : 20}>LINKEDIN</UnderlineText>
             </Button>
           </ButtonWrapper>
           <ButtonWrapper>
@@ -69,9 +68,11 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
                 background: theme.colors.secondary,
                 padding: '8px 32px',
                 height: isMobile ? 48 : 64,
+                width: isMobile ? 120 : 144,
               }}
+              containerStyle={{ width: 123 }}
             >
-              <UnderlineText size={20}>FACEBOOK</UnderlineText>
+              <UnderlineText size={isMobile ? 16 : 20}>FACEBOOK</UnderlineText>
             </Button>
           </ButtonWrapper>
           <ButtonWrapper>
@@ -81,9 +82,12 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
                 background: theme.colors.secondary,
                 padding: '8px 32px',
                 height: isMobile ? 48 : 64,
+                width: isMobile ? 'auto' : 144,
               }}
             >
-              <UnderlineText size={20}>X (TWITTER)</UnderlineText>
+              <UnderlineText size={isMobile ? 16 : 20}>
+                X (TWITTER)
+              </UnderlineText>
             </Button>
           </ButtonWrapper>
         </ButtonGroup>
@@ -104,26 +108,40 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
 `;
 
 const ShareText = styled.span`
-  color: #f9f9f9;
-  font-family: 'Inter Tight';
+  color: ${({ theme }) => theme.text.primary};
+  font-family: ${({ theme }) => theme.font_family.primary};
   font-size: 20px;
   font-weight: 300;
   line-height: 160%;
   letter-spacing: 0.4px;
   margin-right: 16px;
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   min-width: 144px;
   height: 64px;
+  @media (max-width: 768px) {
+    min-width: auto;
+    height: 48px;
+  }
 `;
 
 export default ShareButtons;
