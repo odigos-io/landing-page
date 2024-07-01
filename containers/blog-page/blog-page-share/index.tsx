@@ -52,11 +52,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
                 background: theme.colors.secondary,
                 padding: '8px 32px',
                 height: isMobile ? 48 : 64,
-                width: isMobile ? 120 : 144,
+                width: isMobile ? 120 : 141,
               }}
-              containerStyle={{
-                width: 123,
-              }}
+              containerStyle={{ width: isMobile ? 123 : 144 }}
             >
               <UnderlineText size={isMobile ? 16 : 20}>LINKEDIN</UnderlineText>
             </Button>
@@ -68,9 +66,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
                 background: theme.colors.secondary,
                 padding: '8px 32px',
                 height: isMobile ? 48 : 64,
-                width: isMobile ? 120 : 144,
+                width: isMobile ? 120 : 141,
               }}
-              containerStyle={{ width: 123 }}
+              containerStyle={{ width: isMobile ? 123 : 144 }}
             >
               <UnderlineText size={isMobile ? 16 : 20}>FACEBOOK</UnderlineText>
             </Button>
@@ -82,8 +80,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
                 background: theme.colors.secondary,
                 padding: '8px 32px',
                 height: isMobile ? 48 : 64,
-                width: isMobile ? 'auto' : 144,
+                width: isMobile ? 170 : 200,
               }}
+              containerStyle={{ width: isMobile ? 173 : 203 }}
             >
               <UnderlineText size={isMobile ? 16 : 20}>
                 X (TWITTER)
@@ -135,13 +134,6 @@ const ButtonGroup = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
-  min-width: 144px;
-  height: 64px;
-  @media (max-width: 768px) {
-    min-width: auto;
-    height: 48px;
-  }
-`;
+const ButtonWrapper = styled.div``;
 
 export default ShareButtons;
