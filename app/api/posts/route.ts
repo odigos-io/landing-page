@@ -118,6 +118,8 @@ export async function GET(req: NextRequest) {
         'description',
         'tags',
         'author',
+        'metadata',
+        'content',
       ] || []
     );
   } else if (type === 'blog') {
