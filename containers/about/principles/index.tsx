@@ -4,8 +4,7 @@ import theme from '@/style/theme';
 import styled from 'styled-components';
 import { DATA } from './data';
 import { ColumnContainer, GridContainer, SectionContainer } from '@/style';
-import { SectionTitle, Text } from '@/reuseable-components';
-import Image from 'next/image';
+import { SectionTitle, Text, LazyImage } from '@/reuseable-components';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -100,7 +99,7 @@ const Principles = () => {
         <PrinciplesContainer gap={24}>
           {DATA.map((data, index) => (
             <PrincipleItem key={index}>
-              <Image alt="icon" src={data.icon} width={64} height={64} />
+              <LazyImage alt="icon" src={data.icon} width={64} height={64} />
               <TextWrapper>
                 <Text fontFam={theme.font_family.secondary} size={24}>
                   {data.title}

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, UnderlineText } from '@/reuseable-components';
 import styled from 'styled-components';
-import Image from 'next/image';
+import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 
 const WatchDemoButton = styled(Button)`
   background: ${({ theme }) => theme.colors.secondary};
@@ -33,7 +32,12 @@ export const WatchDemoBtn = ({ onClick }: WatchDemoBtnProps) => {
         WATCH DEMO
       </UnderlineText>
       <MobileButtonContent className="mobile">
-        <Image width={20} height={20} src="/icons/hero/play.svg" alt="play" />
+        <LazyImage
+          width={20}
+          height={20}
+          src="/icons/hero/play.svg"
+          alt="play"
+        />
         <UnderlineText size={20}> DEMO</UnderlineText>
       </MobileButtonContent>
     </WatchDemoButton>

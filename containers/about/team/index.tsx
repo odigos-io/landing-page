@@ -1,11 +1,15 @@
 'use client';
 import React from 'react';
 import theme from '@/style/theme';
-import Image from 'next/image';
 import { DATA } from './data';
 import styled from 'styled-components';
 import { ColumnContainer, SectionContainer } from '@/style';
-import { SectionTitle, Text, UnderlineText } from '@/reuseable-components';
+import {
+  SectionTitle,
+  Text,
+  UnderlineText,
+  LazyImage,
+} from '@/reuseable-components';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -152,7 +156,7 @@ const Teams = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Image
+                  <LazyImage
                     src={'/icons/social/linkedin.svg'}
                     alt="linkedin"
                     width={18}

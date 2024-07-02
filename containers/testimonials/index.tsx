@@ -1,16 +1,16 @@
 'use client';
 import React from 'react';
+import { DATA } from './data';
+import theme from '@/style/theme';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { LazyImage } from '@/reuseable-components';
 import {
   ColumnContainer,
   FlexContainer,
-  IconWrapper as OriginalIconWrapper,
   SectionContainer,
+  IconWrapper as OriginalIconWrapper,
 } from '@/style';
-import theme from '@/style/theme';
-import styled from 'styled-components';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { DATA } from './data';
 
 const PageContainer = styled(SectionContainer)`
   flex-direction: column;
@@ -134,7 +134,7 @@ const Testimonials = () => {
       <Footer>
         <FlexContainer>
           <ArrowIconWrapper>
-            <Image
+            <LazyImage
               style={{ transform: 'rotate(180deg)' }}
               src="/icons/common/next.svg"
               alt="previous"
@@ -144,7 +144,7 @@ const Testimonials = () => {
             />
           </ArrowIconWrapper>
           <ArrowIconWrapper onClick={handleNext}>
-            <Image
+            <LazyImage
               src="/icons/common/next.svg"
               alt="next"
               width={15}

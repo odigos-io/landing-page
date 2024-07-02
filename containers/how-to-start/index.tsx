@@ -1,11 +1,14 @@
 'use client';
 import React from 'react';
 import { DATA } from './data';
-import Image from 'next/image';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { LottieAnimation, SectionTitle } from '@/reuseable-components';
 import { ColumnContainer, FlexContainer, SectionContainer } from '@/style';
+import {
+  LottieAnimation,
+  SectionTitle,
+  LazyImage,
+} from '@/reuseable-components';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -149,7 +152,7 @@ const HowToStart: React.FC = () => {
                   </ColumnContainer>
                   {index !== 2 && (
                     <ArrowIconWrapper>
-                      <Image
+                      <LazyImage
                         src="/icons/common/arrow.svg"
                         width={27}
                         height={40}

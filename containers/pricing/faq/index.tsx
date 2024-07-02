@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { DATA } from './data';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { SectionTitle } from '@/reuseable-components';
+import useIsMobile from '@/hooks/useIsMobile';
+import { SectionTitle, LazyImage } from '@/reuseable-components';
 import {
   ColumnContainer,
-  IconWrapper as OriginalIconWrapper,
   SectionContainer,
+  IconWrapper as OriginalIconWrapper,
 } from '@/style';
-import Image from 'next/image';
-import useIsMobile from '@/hooks/useIsMobile';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -138,7 +137,7 @@ const FAQ = () => {
 
                 <div>
                   <ExpandIcon>
-                    <Image
+                    <LazyImage
                       src={'/icons/common/expand.svg'}
                       alt={'expand'}
                       width={isMobile ? 16 : 24}

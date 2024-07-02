@@ -1,12 +1,11 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
-import styled from 'styled-components';
-import FooterItemList from './footer-menu-list';
-import { UnderlineText } from '@/reuseable-components';
-import { NewsletterInput } from '@/components';
 import Link from 'next/link';
 import theme from '@/style/theme';
+import styled from 'styled-components';
+import { NewsletterInput } from '@/components';
+import FooterItemList from './footer-menu-list';
+import { UnderlineText, LazyImage } from '@/reuseable-components';
 
 const FooterContainer = styled.footer`
   background: ${({ theme }) => theme.colors.primary};
@@ -79,7 +78,7 @@ const Footer = () => {
     <FooterContainer>
       <Header>
         <MenuItemWrapper>
-          <Image
+          <LazyImage
             src="/icons/brand/icon.svg"
             alt="logo"
             width={40}

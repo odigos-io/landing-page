@@ -7,3 +7,4 @@ export * from './text-terminal';
 export * from './paragraph';
 export * from './blog';
 export * from './lottie';
+export * from './lazy-image';

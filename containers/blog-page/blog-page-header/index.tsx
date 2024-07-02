@@ -1,10 +1,9 @@
 'use client';
-import BlogFooter from '@/components/blog/BlogFooter';
-import useIsMobile from '@/hooks/useIsMobile';
-import { Button, UnderlineText } from '@/reuseable-components';
 import theme from '@/style/theme';
-import Image from 'next/image';
 import styled from 'styled-components';
+import useIsMobile from '@/hooks/useIsMobile';
+import BlogFooter from '@/components/blog/BlogFooter';
+import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 
 type Props = {
   post: any;
@@ -79,7 +78,7 @@ const BlogPageHeader = async ({ post }: Props) => {
               height: isMobile ? 48 : 64,
             }}
           >
-            <Image
+            <LazyImage
               src="/icons/common/expand.svg"
               alt="back"
               width={16}

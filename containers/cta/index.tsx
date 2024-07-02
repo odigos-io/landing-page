@@ -1,10 +1,9 @@
 'use client';
-import { Button, UnderlineText, Text } from '@/reuseable-components';
 import theme from '@/style/theme';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
+import { Button, UnderlineText, Text, LazyImage } from '@/reuseable-components';
 const PageContainer = styled.div`
   width: 100%;
   padding: 160px 0;
@@ -160,7 +159,7 @@ const CTA: React.FC = () => {
                   </UnderlineText>
                 </Button>
                 <Button color={theme.colors.secondary}>
-                  <Image
+                  <LazyImage
                     src="/icons/common/github.svg"
                     alt="github"
                     width={18}
