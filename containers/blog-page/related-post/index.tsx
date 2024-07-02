@@ -2,9 +2,9 @@
 import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import BlogItem from '@/components/Blog/BlogItem';
+import BlogItem from '@/components/blog/BlogItem';
 import { SectionTitle } from '@/reuseable-components';
-import { ColumnContainer, SectionContainer } from '@/style';
+import { ColumnContainer, GridContainer, SectionContainer } from '@/style';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -38,6 +38,30 @@ const PageTitle = styled.span`
   }
 `;
 
+const BlogGridWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const BlogGrid = styled(GridContainer)`
+  width: 80%;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const BlogGridItem = styled.div`
+  min-width: 320px;
+  @media (max-width: 1100px) {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+`;
+
 const RelatedPosts = ({ posts }) => {
   function getRandomItemsFromArray(originalArray, numItems) {
     if (numItems >= originalArray.length) {
@@ -65,12 +89,16 @@ const RelatedPosts = ({ posts }) => {
         <TitleWrapper>
           <PageTitle>Related articles</PageTitle>
         </TitleWrapper>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7.5 xl:gap-10">
-          {posts.length > 0 &&
-            getRandomItemsFromArray(posts, 3).map((post, key) => (
-              <BlogItem key={key} blog={post} />
-            ))}
-        </div>
+        <BlogGridWrapper>
+          <BlogGrid gap={24}>
+            {posts.length > 0 &&
+              getRandomItemsFromArray(posts, 3).map((blog, key) => (
+                <BlogGridItem key={key}>
+                  <BlogItem blog={blog} />
+                </BlogGridItem>
+              ))}
+          </BlogGrid>
+        </BlogGridWrapper>
       </PageBody>
     </Container>
   );

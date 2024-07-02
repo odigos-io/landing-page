@@ -1,4 +1,4 @@
-import BlogFooter from '@/components/Blog/BlogFooter';
+import BlogFooter from '@/components/blog/BlogFooter';
 import { Text } from '@/reuseable-components/text';
 import theme from '@/style/theme';
 import Link from 'next/link';

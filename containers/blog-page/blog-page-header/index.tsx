@@ -1,5 +1,5 @@
 'use client';
-import BlogFooter from '@/components/Blog/BlogFooter';
+import BlogFooter from '@/components/blog/BlogFooter';
 import useIsMobile from '@/hooks/useIsMobile';
 import { Button, UnderlineText } from '@/reuseable-components';
 import theme from '@/style/theme';
