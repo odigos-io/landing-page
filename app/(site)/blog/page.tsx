@@ -2,11 +2,10 @@ import { Metadata } from 'next';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import { getAllBlogs } from '@/app/libs/markdown';
+import BlogHero from '@/containers/blog/hero';
 
 const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
-const BlogHero = dynamic(() => import('@/containers/blog/hero'), {
-  ssr: false,
-});
+
 const BlogBody = dynamic(() => import('@/containers/blog/blog-body'), {
   ssr: false,
 });

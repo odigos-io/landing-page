@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { SectionContainer } from '@/style';
-import { SectionTitle } from '@/reuseable-components';
+import { SectionTitle, Typewriter } from '@/reuseable-components';
 
 const PageBorder = styled.div`
   margin: 0 4px;
@@ -52,32 +52,19 @@ const Body = styled.div`
   }
 `;
 
-const TextBody = styled.span`
-  color: ${({ theme }) => theme.text.primary};
-  text-align: center;
-  font-family: 'Inter Tight';
-  font-size: 64px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 89.6px */
-  @media (max-width: 1200px) {
-    font-size: 44px;
-  }
-  @media (max-width: 1000px) {
-    font-size: 30px;
-  }
-  @media (max-width: 800px) {
-    font-size: 24px;
-  }
-`;
-
 const Container = styled(SectionContainer)`
+  height: auto;
   @media (max-width: 1000px) {
     height: auto;
     margin-top: 80px;
   }
 `;
 const HowWeDo = () => {
+  const multilineText = `Odigos instantly delivers deeper
+  observability by leveraging 
+  eBPF and OpenTelemetry 
+  for effortless implementation.`;
+
   return (
     <Container padding="0">
       <PageBorder>
@@ -90,9 +77,7 @@ const HowWeDo = () => {
                 description: 'Description',
               }}
             />
-            <TextBody>
-              {`Odigos instantly delivers deeper observability by leveraging eBPF and OpenTelemetry for effortless implementation. |`}
-            </TextBody>
+            <Typewriter textAlignment={'center'} text={multilineText} />
           </Body>
         </InnerBorder>
       </PageBorder>

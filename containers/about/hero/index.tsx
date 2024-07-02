@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ColumnContainer } from '@/style';
-import { SectionTitle } from '@/reuseable-components';
+import { SectionTitle, Typewriter } from '@/reuseable-components';
 import theme from '@/style/theme';
 
 const PageContainer = styled.div`
@@ -57,27 +57,16 @@ const VisionContainer = styled.div`
   }
 `;
 
-const TextBody = styled.span`
-  max-width: 60vw;
-  color: ${({ theme }) => theme.text.primary};
-  font-family: 'Inter Tight';
-  font-size: 64px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 89.6px */
-  @media (max-width: 1200px) {
-    font-size: 44px;
-    max-width: 100vw;
-  }
-  @media (max-width: 1000px) {
-    font-size: 30px;
-  }
-  @media (max-width: 800px) {
-    font-size: 24px;
-  }
+const TextBody = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
 `;
 
 const AboutHero = () => {
+  const text = `Pioneering the future 
+  of performance monitoring.`;
+
   return (
     <PageContainer>
       <ColumnContainer>
@@ -96,7 +85,9 @@ const AboutHero = () => {
             description: '',
           }}
         />
-        <TextBody>Pioneering the future of performance monitoring. |</TextBody>
+        <TextBody>
+          <Typewriter text={text}></Typewriter>
+        </TextBody>
       </VisionContainer>
     </PageContainer>
   );

@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
+import PricingHero from '@/containers/pricing/hero';
 
-const PricingHero = dynamic(() => import('@/containers/pricing/hero'));
 const CTASection = dynamic(() => import('@/containers/cta'));
 const FAQComponent = dynamic(() => import('@/containers/pricing/faq'));
 const PricingComponent = dynamic(

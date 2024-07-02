@@ -2,8 +2,9 @@ import Head from 'next/head';
 import { Metadata } from 'next';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
+import Hero from '@/containers/hero';
 
-const Hero = dynamic(() => import('@/containers/hero'), { ssr: true });
+// const Hero = dynamic(() => import('@/containers/hero'), { ssr: true });
 const HowWeDo = dynamic(() => import('@/containers/how-we-do'), { ssr: true });
 const LandingPageBody = dynamic(
   () => import('@/containers/landing-page-body'),
