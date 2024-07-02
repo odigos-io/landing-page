@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import styled from 'styled-components';
-import { UnderlineText, Text } from '@/reuseable-components';
+import { UnderlineText, Text, LazyImage } from '@/reuseable-components';
 import menuData from '../header/menuData';
 
 const NavList = styled.ul`
@@ -47,7 +46,7 @@ const FooterItemList = () => {
         </NavItem>
       ))}
       <NavItem>
-        <Image
+        <LazyImage
           src="/icons/common/github.svg"
           alt="github"
           width={18}

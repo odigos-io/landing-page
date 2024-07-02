@@ -1,10 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import menuData from './menuData';
 import styled from 'styled-components';
-import { UnderlineText, Text } from '@/reuseable-components';
+import { UnderlineText, Text, LazyImage } from '@/reuseable-components';
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -67,7 +66,7 @@ const MobileHeaderMenu = ({ onClick }) => {
           </NavItem>
         ))}
         <NavItem>
-          <Image
+          <LazyImage
             src="/icons/common/github.svg"
             alt="github"
             width={18}

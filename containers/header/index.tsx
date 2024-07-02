@@ -1,11 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import Image from 'next/image';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
-import { Button, UnderlineText } from '@/reuseable-components';
+import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
@@ -68,7 +67,7 @@ export const Header = () => {
         <HeaderInner>
           <LogoContainer>
             <a href="/">
-              <Image
+              <LazyImage
                 src="/images/logo/text-logo.svg"
                 alt="logo"
                 width={133}
@@ -88,7 +87,7 @@ export const Header = () => {
               aria-label="hamburger Toggler"
               onClick={() => setDropdownToggler(!dropdownToggler)}
             >
-              <Image
+              <LazyImage
                 src={
                   dropdownToggler
                     ? '/icons/common/close.svg'

@@ -1,7 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
 import styled from 'styled-components';
 import { GridContainer } from '@/style';
+import { LazyImage } from '@/reuseable-components';
 
 const Title = styled.h1`
   color: ${({ theme }) => theme.text.primary};
@@ -21,19 +21,19 @@ export const TrustedList = () => {
     <Wrapper>
       <Title>TRUSTED BY</Title>
       <GridContainer>
-        <Image
+        <LazyImage
           width={110}
           height={26}
           src="/images/hero/walmart.svg"
           alt="walmart"
         />
-        <Image
+        <LazyImage
           width={110}
           height={26}
           src="/images/hero/access.svg"
-          alt="walmart"
+          alt="access-bank"
         />
-        <Image width={26} height={26} src="/images/hero/hp.svg" alt="walmart" />
+        <LazyImage width={26} height={26} src="/images/hero/hp.svg" alt="hp" />
       </GridContainer>
     </Wrapper>
   );

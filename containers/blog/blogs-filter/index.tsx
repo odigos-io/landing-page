@@ -1,11 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import theme from '@/style/theme';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FlexContainer } from '@/style';
-import { Text, UnderlineText } from '@/reuseable-components';
-import Image from 'next/image';
 import useIsMobile from '@/hooks/useIsMobile';
+import { Text, UnderlineText, LazyImage } from '@/reuseable-components';
 
 const PageContainer = styled.div`
   display: flex;
@@ -157,7 +156,7 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
         ))}
       </TagsContainer>
       <ExpandButtonWrapper>
-        <Image
+        <LazyImage
           src="/icons/common/expand.svg"
           width={15}
           height={15}
