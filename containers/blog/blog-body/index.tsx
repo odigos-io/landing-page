@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import BlogCover from '@/components/Blog/BlogCover';
-import BlogList from '@/components/Blog/BlogList';
+import BlogCover from '@/components/blog/BlogCover';
+import BlogList from '@/components/blog/BlogList';
 
 const BlogFilter = dynamic(() => import('@/containers/blog/blogs-filter'));
 

@@ -1,6 +1,6 @@
 'use client';
 import styled from 'styled-components';
-import BlogItem from '@/components/Blog/BlogItem';
+import BlogItem from '@/components/blog/BlogItem';
 
 const BlogItemsContainer = styled.div`
   padding: 0 64px;
