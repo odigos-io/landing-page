@@ -1,6 +1,7 @@
 pre {
   border-radius: 48px !important;
   background: #151515 !important;
+  padding: 32px 40px !important;
 }
 
 .prism-copy-button {
@@ -107,5 +108,9 @@ pre {
   }
   .wmde-markdown img {
     height: 200px;
+  }
+
+  pre {
+    padding: 40px !important;
   }
 }

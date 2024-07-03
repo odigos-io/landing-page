@@ -64,10 +64,7 @@ const SingleBlogPage = async ({ params }: Props) => {
 
   return content ? (
     <>
-      <section
-        style={{ background: theme.colors.secondary }}
-        className="pt-35 lg:pt-45 xl:pt-35 "
-      >
+      <section style={{ background: theme.colors.secondary }} className="pt-25">
         <BlogPageHeader post={post} />
         <BlogPageContent post={post} />
         <RelatedPosts posts={posts} />
