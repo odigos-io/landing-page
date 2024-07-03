@@ -1,13 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { DATA } from './data';
-import Image from 'next/image';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { FlexContainer } from '@/style';
-import { Button, UnderlineText } from '@/reuseable-components';
 import ContactForm from './contact-us-form';
+import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
@@ -150,12 +150,19 @@ const PricingComponent: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState<boolean>(false);
 
+  const isMobile = useIsMobile(1100);
+
   return (
     <PricingContainer>
       {pricingData.map((plan, index) => (
         <PricingCard key={index}>
           {plan.icon && (
-            <Image src={plan.icon} alt="check" height={100} width={360} />
+            <LazyImage
+              src={plan.icon}
+              alt="check"
+              height={100}
+              width={isMobile ? 260 : 360}
+            />
           )}
           <PlanWrapper>
             <PlanTitle>{plan.plan}</PlanTitle>
@@ -170,7 +177,7 @@ const PricingComponent: React.FC = () => {
           <FeatureList>
             {plan.features.map((feature, index) => (
               <FlexContainer alignments="flex-start" key={index}>
-                <Image
+                <LazyImage
                   src="/icons/common/dot.svg"
                   alt="check"
                   width={16}

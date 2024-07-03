@@ -1,8 +1,8 @@
 import React from 'react';
-import Image from 'next/image';
 import styled, { keyframes } from 'styled-components';
 import { ColumnContainer } from '@/style';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
+import { LazyImage } from '../lazy-image';
 
 type ModalProps = {
   children: React.ReactNode;
@@ -122,6 +122,7 @@ const Description = styled.p`
 `;
 
 const CloseIconWrapper = styled.div`
+  cursor: pointer;
   @media (max-width: 1300px) {
     width: 32px;
     height: 32px;
@@ -154,7 +155,7 @@ const Modal = ({ title, description, onClose, children }: ModalProps) => {
               )}
               <div>
                 <CloseIconWrapper onClick={handleClose}>
-                  <Image
+                  <LazyImage
                     width={16}
                     height={16}
                     src="icons/common/close.svg"

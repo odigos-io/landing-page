@@ -1,25 +1,72 @@
 'use client';
 import Link from 'next/link';
+import BlogFooter from './BlogFooter';
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+
+const BlogItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  height: 100%;
+  border-radius: 48px;
+  border: 1px dashed rgba(249, 249, 249, 0.32);
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  padding: 0px 40px 40px 40px;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+const BlogTitle = styled.h3`
+  color: ${({ theme }) => theme.text.primary};
+  font-family: ${({ theme }) => theme.font_family.primary};
+  font-size: 24px;
+  line-height: 133.333%;
+`;
+
+const BlogDescription = styled.p`
+  color: rgba(249, 249, 249, 0.8);
+  font-family: ${({ theme }) => theme.font_family.primary};
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.32px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 const BlogItem = ({ blog }: { blog: any }) => {
-  const { image, title, metadata, slug, authorImage, author, pubDate } = blog;
+  const [isHydrationComplete, setIsHydrationComplete] = useState(false);
+
+  useEffect(() => {
+    if (!isHydrationComplete) {
+      setIsHydrationComplete(true);
+    }
+  }, []);
+
+  if (!isHydrationComplete) {
+    return null;
+  }
+
+  const { image, title, description, slug, tags } = blog;
 
   return (
     <>
-      <div
-        style={{
-          borderTop: 'solid 1px #d0d7de',
-          paddingTop: 24,
-        }}
-      >
-        <Link href={`/blog/${slug}`}>
+      <Link href={`/blog/${slug}`}>
+        <BlogItemContainer>
           {image ? (
             <img
               style={{
                 objectFit: 'cover',
-                height: 185,
+                height: 200,
                 width: '100%',
-                borderRadius: 6,
+                borderTopLeftRadius: 48,
+                borderTopRightRadius: 48,
               }}
               src={image}
               alt={title}
@@ -27,42 +74,16 @@ const BlogItem = ({ blog }: { blog: any }) => {
           ) : (
             'No image'
           )}
-        </Link>
 
-        <div className="">
-          <h3
-            style={{
-              fontSize: 20,
-              color: '#fff',
-              marginTop: 24,
-              fontWeight: 600,
-            }}
-          >
-            <Link href={`/blog/${slug}`}>{title}</Link>
-          </h3>
-          <p style={{ fontSize: 16, lineHeight: 1.4, marginTop: 8 }}>
-            {metadata}
-          </p>
-          <div style={{ display: 'flex', alignItems: 'center', marginTop: 8 }}>
-            {authorImage && (
-              <img
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 20,
-                }}
-                src={authorImage}
-                alt={title}
-              />
-            )}
-            <h4 style={{ marginLeft: 12, fontWeight: 'bold', color: '#fff' }}>
-              {author}
-            </h4>
-            {/* <h4 style={{ marginLeft: 12, fontWeight: 'bold' }}>{'•'}</h4> */}
-            <h4 style={{ marginLeft: 12 }}>{pubDate}</h4>
-          </div>
-        </div>
-      </div>
+          <TextContainer>
+            <BlogTitle>
+              <Link href={`/blog/${slug}`}>{title}</Link>
+            </BlogTitle>
+            <BlogDescription>{description}</BlogDescription>
+            <BlogFooter blog={blog} />
+          </TextContainer>
+        </BlogItemContainer>
+      </Link>
     </>
   );
 };

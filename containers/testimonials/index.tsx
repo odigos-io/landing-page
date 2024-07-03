@@ -1,16 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { DATA } from './data';
+import theme from '@/style/theme';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { LazyImage } from '@/reuseable-components';
 import {
   ColumnContainer,
   FlexContainer,
-  IconWrapper as OriginalIconWrapper,
   SectionContainer,
+  IconWrapper as OriginalIconWrapper,
 } from '@/style';
-import theme from '@/style/theme';
-import styled from 'styled-components';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { DATA } from './data';
 
 const PageContainer = styled(SectionContainer)`
   flex-direction: column;
@@ -22,12 +22,12 @@ const PageContainer = styled(SectionContainer)`
   }
 `;
 
-const Quote = styled(motion.div)`
+const Quote = styled(motion.div)<{ fontSize: number }>`
   color: ${theme.text.primary};
   max-width: 64%;
   text-align: center;
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 64px;
+  font-size: ${({ fontSize }) => fontSize}px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
@@ -91,38 +91,43 @@ const ArrowIconWrapper = styled(OriginalIconWrapper)`
   }
 `;
 
+const calculateFontSize = (text) => {
+  const baseSize = 64;
+  const maxLength = 64;
+  return Math.max(baseSize - (text.length - maxLength) / 5, 34);
+};
+
 const Testimonials = () => {
-  const [currentItem, setCurrentItem] = React.useState(DATA[0]);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-  const [animate, setAnimate] = React.useState(false);
+  const [currentItem, setCurrentItem] = useState(DATA[0]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [animate, setAnimate] = useState(false);
+  const [fontSize, setFontSize] = useState(
+    calculateFontSize(currentItem.testimonial)
+  );
 
-  function handleNext() {
+  useEffect(() => {
+    setFontSize(calculateFontSize(currentItem.testimonial));
+  }, [currentItem]);
+
+  const handleNext = () => {
     setAnimate(true);
     setTimeout(() => {
-      if (currentIndex === DATA.length - 1) {
-        setCurrentItem(DATA[0]);
-        setCurrentIndex(0);
-      } else {
-        setCurrentItem(DATA[currentIndex + 1]);
-        setCurrentIndex(currentIndex + 1);
-      }
+      const nextIndex = currentIndex === DATA.length - 1 ? 0 : currentIndex + 1;
+      setCurrentItem(DATA[nextIndex]);
+      setCurrentIndex(nextIndex);
       setAnimate(false);
     }, 500);
-  }
+  };
 
-  function handlePrevious() {
+  const handlePrevious = () => {
     setAnimate(true);
     setTimeout(() => {
-      if (currentIndex === 0) {
-        setCurrentItem(DATA[DATA.length - 1]);
-        setCurrentIndex(DATA.length - 1);
-      } else {
-        setCurrentItem(DATA[currentIndex - 1]);
-        setCurrentIndex(currentIndex - 1);
-      }
+      const prevIndex = currentIndex === 0 ? DATA.length - 1 : currentIndex - 1;
+      setCurrentItem(DATA[prevIndex]);
+      setCurrentIndex(prevIndex);
       setAnimate(false);
     }, 500);
-  }
+  };
 
   return (
     <PageContainer background={theme.colors.primary}>
@@ -130,11 +135,12 @@ const Testimonials = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: animate ? 0 : 1, y: animate ? 20 : 0 }}
         transition={{ duration: 0.5 }}
+        fontSize={fontSize}
       >{`“${currentItem.testimonial}”`}</Quote>
       <Footer>
         <FlexContainer>
           <ArrowIconWrapper>
-            <Image
+            <LazyImage
               style={{ transform: 'rotate(180deg)' }}
               src="/icons/common/next.svg"
               alt="previous"
@@ -144,7 +150,7 @@ const Testimonials = () => {
             />
           </ArrowIconWrapper>
           <ArrowIconWrapper onClick={handleNext}>
-            <Image
+            <LazyImage
               src="/icons/common/next.svg"
               alt="next"
               width={15}

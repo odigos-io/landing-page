@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import menuData from './menuData';
-import { UnderlineText, Text } from '@/reuseable-components';
 import Link from 'next/link';
-import Image from 'next/image';
+import menuData from './menuData';
+import styled from 'styled-components';
+import { UnderlineText, Text, LazyImage } from '@/reuseable-components';
+import Github from '@/components/github';
 
 const NavList = styled.ul`
   display: flex;
@@ -53,20 +53,7 @@ const MenuItemList = () => {
         </NavItem>
       ))}
       <NavItem>
-        <Image
-          src="/icons/common/github.svg"
-          alt="github"
-          width={18}
-          height={18}
-        />
-        <UnderlineText>
-          <Link target={'_blank'} href={'https://github.com/odigos-io/odigos'}>
-            {'GITHUB'}
-          </Link>
-        </UnderlineText>
-        <GithubNumberWrapper>
-          <Text size={10}>24K</Text>
-        </GithubNumberWrapper>
+        <Github />
       </NavItem>
     </NavList>
   );

@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
+import AboutHero from '@/containers/about/hero';
 
-const AboutHero = dynamic(() => import('@/containers/about/hero'));
 const Principles = dynamic(() => import('@/containers/about/principles'));
 const Team = dynamic(() => import('@/containers/about/team'));
 const Investors = dynamic(() => import('@/containers/about/investors'));
