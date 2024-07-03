@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { FlexContainer } from '@/style';
 import ContactForm from './contact-us-form';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
@@ -149,12 +150,19 @@ const PricingComponent: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState<boolean>(false);
 
+  const isMobile = useIsMobile(1100);
+
   return (
     <PricingContainer>
       {pricingData.map((plan, index) => (
         <PricingCard key={index}>
           {plan.icon && (
-            <LazyImage src={plan.icon} alt="check" height={100} width={360} />
+            <LazyImage
+              src={plan.icon}
+              alt="check"
+              height={100}
+              width={isMobile ? 260 : 360}
+            />
           )}
           <PlanWrapper>
             <PlanTitle>{plan.plan}</PlanTitle>

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ColumnContainer } from '@/style';
 import { SectionTitle, Typewriter } from '@/reuseable-components';
 import theme from '@/style/theme';
+import TextHero from '@/components/text-hero';
 
 const PageContainer = styled.div`
   display: flex;
@@ -69,14 +70,7 @@ const AboutHero = () => {
 
   return (
     <PageContainer>
-      <ColumnContainer>
-        <HeroTitle>We’re Odigos</HeroTitle>
-      </ColumnContainer>
-      <DividersContainer>
-        {[1, 2, 3, 4].map((_, key) => (
-          <Divider key={key} />
-        ))}
-      </DividersContainer>
+      <TextHero text="We’re Odigos" />
       <VisionContainer>
         <SectionTitle
           headerInfo={{
