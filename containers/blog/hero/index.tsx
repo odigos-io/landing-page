@@ -2,6 +2,7 @@
 import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
+import TextHero from '@/components/text-hero';
 
 const PageContainer = styled.div`
   display: flex;
@@ -18,42 +19,10 @@ const PageContainer = styled.div`
   }
 `;
 
-const HeroTitle = styled.h1`
-  color: ${({ theme }) => theme.text.primary};
-  font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(3.5rem, 6vw, 6rem);
-  font-weight: 400;
-  line-height: 110%;
-  letter-spacing: -1.92px;
-  max-width: 800px;
-  @media (max-width: 600px) {
-    letter-spacing: -1.12px;
-    max-width: 100%;
-  }
-`;
-
-const DividersContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 64px;
-  width: 100%;
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  width: 100%;
-  background: rgba(249, 249, 249, 0.64);
-`;
-
 const BlogHero = () => {
   return (
     <PageContainer>
-      <HeroTitle>Discover our latest articles and insights.</HeroTitle>
-      <DividersContainer>
-        {[1, 2, 3, 4].map((_, key) => (
-          <Divider key={key} />
-        ))}
-      </DividersContainer>
+      <TextHero text="Discover our latest articles and insights." />
     </PageContainer>
   );
 };
