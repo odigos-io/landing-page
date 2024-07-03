@@ -7,9 +7,7 @@ export default function LandingPageBody() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsClient(true);
-    }, 1000);
+    setIsClient(true);
   }, []);
 
   const HowItWorks = isClient
@@ -27,9 +25,12 @@ export default function LandingPageBody() {
   const LearnMore = isClient
     ? dynamic(() => import('@/containers/learn-more'), { ssr: true })
     : () => null;
-
+  const HowWeDo = isClient
+    ? dynamic(() => import('@/containers/how-we-do'), { ssr: true })
+    : () => null;
   return (
     <>
+      <HowWeDo />
       <HowItWorks />
       <HowToStart />
       <Testimonials />

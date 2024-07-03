@@ -2,8 +2,10 @@
 
 import '../globals.css';
 import theme from '@/style/theme';
+import dynamic from 'next/dynamic';
 import { Header } from '@/containers';
-import Footer from '@/containers/footer';
+import { useEffect, useState } from 'react';
+
 import PlausibleProvider from 'next-plausible';
 import useConversionInitiator from '@/hooks/useConversionInitiator';
 import { ThemeProviderWrapper } from '@/reuseable-components/theme.provider/theme.provider';
@@ -13,8 +15,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useConversionInitiator();
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useConversionInitiator();
+  const Footer = isClient
+    ? dynamic(() => import('@/containers/footer'), { ssr: true })
+    : () => null;
   return (
     <html lang="eng">
       <head>
