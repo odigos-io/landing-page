@@ -4,6 +4,7 @@ import Link from 'next/link';
 import menuData from './menuData';
 import styled from 'styled-components';
 import { UnderlineText, Text, LazyImage } from '@/reuseable-components';
+import Github from '@/components/github';
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -31,6 +32,7 @@ const NavList = styled.ul`
 const NavItem = styled.li`
   position: relative;
   display: flex;
+
   gap: 8px;
 
   &.group {
@@ -66,23 +68,7 @@ const MobileHeaderMenu = ({ onClick }) => {
           </NavItem>
         ))}
         <NavItem>
-          <LazyImage
-            src="/icons/common/github.svg"
-            alt="github"
-            width={18}
-            height={18}
-          />
-          <UnderlineText size={24}>
-            <Link
-              target={'_blank'}
-              href={'https://github.com/keyval-dev/odigos'}
-            >
-              {'GITHUB'}
-            </Link>
-          </UnderlineText>
-          <GithubNumberWrapper>
-            <Text size={12}>24K</Text>
-          </GithubNumberWrapper>
+          <Github fontSize={24} />
         </NavItem>
       </NavList>
     </HeaderContainer>
