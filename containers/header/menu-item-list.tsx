@@ -3,6 +3,7 @@ import Link from 'next/link';
 import menuData from './menuData';
 import styled from 'styled-components';
 import { UnderlineText, Text, LazyImage } from '@/reuseable-components';
+import Github from '@/components/github';
 
 const NavList = styled.ul`
   display: flex;
@@ -52,20 +53,7 @@ const MenuItemList = () => {
         </NavItem>
       ))}
       <NavItem>
-        <LazyImage
-          src="/icons/common/github.svg"
-          alt="github"
-          width={18}
-          height={18}
-        />
-        <UnderlineText>
-          <Link target={'_blank'} href={'https://github.com/odigos-io/odigos'}>
-            {'GITHUB'}
-          </Link>
-        </UnderlineText>
-        <GithubNumberWrapper>
-          <Text size={10}>24K</Text>
-        </GithubNumberWrapper>
+        <Github />
       </NavItem>
     </NavList>
   );
