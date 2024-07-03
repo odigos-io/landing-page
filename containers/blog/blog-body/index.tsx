@@ -1,10 +1,8 @@
 'use client';
+import BlogFilter from '../blogs-filter';
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import BlogCover from '@/components/blog/BlogCover';
 import BlogList from '@/components/blog/BlogList';
-
-const BlogFilter = dynamic(() => import('@/containers/blog/blogs-filter'));
+import BlogCover from '@/components/blog/BlogCover';
 
 const BlogBody = ({ posts }) => {
   const [selectedItems, setSelectedItems] = useState<any>(['EXPLORE ALL']);
