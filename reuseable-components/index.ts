@@ -5,6 +5,5 @@ export * from './modal';
 export * from './text';
 export * from './text-terminal';
 export * from './paragraph';
-export * from './blog';
 export * from './lottie';
 export * from './lazy-image';
