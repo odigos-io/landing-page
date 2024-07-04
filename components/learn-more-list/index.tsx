@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GridContainer } from '@/style';
-// import BlogItem from '../blog/BlogItem';
+import BlogItem from '../blog/BlogItem';
 
 type Post = {
   slug: string;
@@ -38,7 +38,9 @@ const LearnMoreList = async () => {
   return (
     <BlogGrid gap={24}>
       {posts.slice(0, 3).map((blog, key) => (
-        <BlogGridItem key={key}>{/* <BlogItem blog={blog} /> */}</BlogGridItem>
+        <BlogGridItem key={key}>
+          <BlogItem blog={blog} />
+        </BlogGridItem>
       ))}
     </BlogGrid>
   );
