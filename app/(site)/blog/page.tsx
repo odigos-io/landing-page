@@ -6,9 +6,8 @@ import BlogHero from '@/containers/blog/hero';
 
 const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
 
-const BlogBody = dynamic(() => import('@/containers/blog/blog-body'), {
-  ssr: false,
-});
+const BlogBody = dynamic(() => import('@/containers/blog/blog-body'));
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
