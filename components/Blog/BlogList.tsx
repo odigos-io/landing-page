@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BlogItem from '@/components/blog/BlogItem';
 
 const BlogItemsContainer = styled.div`
-  padding: 0 64px;
+  padding: 0 64px; //
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(341px, 1fr));
   gap: 24px;
