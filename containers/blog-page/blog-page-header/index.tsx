@@ -2,8 +2,9 @@
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import useIsMobile from '@/hooks/useIsMobile';
-import BlogFooter from '@/components/blog/BlogFooter';
+
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import BlogFooter from '@/components/blog/blog-footer';
 
 type Props = {
   post: any;

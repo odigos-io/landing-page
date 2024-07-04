@@ -2,9 +2,10 @@
 import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import BlogItem from '@/components/blog/BlogItem';
+
 import { SectionTitle } from '@/reuseable-components';
 import { ColumnContainer, GridContainer, SectionContainer } from '@/style';
+import BlogItem from '@/components/blog/blog-item';
 
 const Container = styled(SectionContainer)`
   height: auto;
