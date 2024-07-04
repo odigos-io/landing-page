@@ -23,7 +23,7 @@ export default function RootLayout({
 
   useConversionInitiator();
   const Footer = isClient
-    ? dynamic(() => import('@/containers/footer'), { ssr: true })
+    ? dynamic(() => import('@/containers/footer'))
     : () => null;
   return (
     <html lang="eng">
