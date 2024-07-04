@@ -1,8 +1,9 @@
 'use client';
 import Link from 'next/link';
-import BlogFooter from './BlogFooter';
+// import BlogFooter from './BlogFooter';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import BlogFooter from './BlogFooter';
 
 const BlogItemContainer = styled.div`
   display: flex;
