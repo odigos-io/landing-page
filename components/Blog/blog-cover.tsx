@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import BlogFooter from './BlogFooter';
+import BlogFooter from './blog-footer';
 
 const BlogCoverContainer = styled.div`
   padding: 120px 64px;

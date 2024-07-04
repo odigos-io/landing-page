@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GridContainer } from '@/style';
-import BlogItem from '../blog/BlogItem';
+import BlogItem from '../blog/blog-item';
 
 type Post = {
   slug: string;
