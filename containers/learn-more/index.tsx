@@ -3,7 +3,7 @@ import React from 'react';
 import { SectionContainer } from '@/style';
 import { Button, SectionTitle, UnderlineText } from '@/reuseable-components';
 import styled from 'styled-components';
-// import LearnMoreList from '@/components/learn-more-list';
+import LearnMoreList from '@/components/learn-more-list';
 import Link from 'next/link';
 const Container = styled(SectionContainer)`
   height: auto;
@@ -100,7 +100,7 @@ const Blog = () => {
         </TitleWrapper>
       </HeaderWrapper>
       <Container>
-        {/* <LearnMoreList /> */}
+        <LearnMoreList />
         <MobileButtonWrapper>
           <Link legacyBehavior href={'/blog'}>
             <MobileShowAllButton>
