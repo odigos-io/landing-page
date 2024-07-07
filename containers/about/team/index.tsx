@@ -161,6 +161,7 @@ const Teams = () => {
                     alt="linkedin"
                     width={18}
                     height={18}
+                    style={{ marginTop: 2 }}
                   />
                   <UnderlineText>LinkedIn</UnderlineText>
                 </LinkWrapper>
