@@ -62,6 +62,9 @@ const TextBody = styled.div`
   display: flex;
   justify-content: flex-start;
   text-align: left;
+  div {
+    min-height: auto;
+  }
 `;
 
 const AboutHero = () => {

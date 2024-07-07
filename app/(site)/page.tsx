@@ -4,12 +4,7 @@ import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import Hero from '@/containers/hero';
 
-const LandingPageBody = dynamic(
-  () => import('@/containers/landing-page-body'),
-  {
-    ssr: true,
-  }
-);
+const LandingPageBody = dynamic(() => import('@/containers/landing-page-body'));
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),

@@ -1,3 +1,4 @@
+'use client';
 import theme from '@/style/theme';
 import React from 'react';
 import styled from 'styled-components';

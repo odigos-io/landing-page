@@ -11,22 +11,20 @@ export default function LandingPageBody() {
   }, []);
 
   const HowItWorks = isClient
-    ? dynamic(() => import('@/containers/how-it-works'), { ssr: true })
+    ? dynamic(() => import('@/containers/how-it-works'))
     : () => null;
   const HowToStart = isClient
-    ? dynamic(() => import('@/containers/how-to-start'), { ssr: true })
+    ? dynamic(() => import('@/containers/how-to-start'))
     : () => null;
   const Testimonials = isClient
-    ? dynamic(() => import('@/containers/testimonials'), { ssr: true })
+    ? dynamic(() => import('@/containers/testimonials'))
     : () => null;
-  const CTA = isClient
-    ? dynamic(() => import('@/containers/cta'), { ssr: true })
-    : () => null;
+  const CTA = isClient ? dynamic(() => import('@/containers/cta')) : () => null;
   const LearnMore = isClient
-    ? dynamic(() => import('@/containers/learn-more'), { ssr: true })
+    ? dynamic(() => import('@/containers/learn-more'))
     : () => null;
   const HowWeDo = isClient
-    ? dynamic(() => import('@/containers/how-we-do'), { ssr: true })
+    ? dynamic(() => import('@/containers/how-we-do'))
     : () => null;
   return (
     <>

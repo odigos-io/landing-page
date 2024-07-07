@@ -3,7 +3,7 @@ import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
-import BlogNotFound from '@/components/blog/BlogNotFound';
+import { BlogNotFound } from '@/components';
 
 type Props = {
   params: { slug: string };
@@ -11,12 +11,10 @@ type Props = {
 
 const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
 const RelatedPosts = dynamic(
-  () => import('@/containers/blog-page/related-post'),
-  { ssr: false }
+  () => import('@/containers/blog-page/related-post')
 );
 const BlogPageContent = dynamic(
-  () => import('@/containers/blog-page/blog-page-content'),
-  { ssr: false }
+  () => import('@/containers/blog-page/blog-page-content')
 );
 const BlogPageHeader = dynamic(
   () => import('@/containers/blog-page/blog-page-header'),

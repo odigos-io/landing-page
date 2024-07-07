@@ -60,6 +60,9 @@ const ActionBarWrapper = styled.div`
 
 export const Header = () => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
+  const handleSignInClick = () => {
+    window.open('https://app.odigos.io/signin', '_blank');
+  };
 
   return (
     <>
@@ -78,7 +81,7 @@ export const Header = () => {
 
           <MenuItemList />
           <ActionBarWrapper>
-            <SignInButton variant="secondary">
+            <SignInButton onClick={handleSignInClick} variant="secondary">
               <UnderlineText color={theme.text.secondary}>
                 Sign in
               </UnderlineText>

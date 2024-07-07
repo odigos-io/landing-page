@@ -1,6 +1,6 @@
 'use client';
 import styled from 'styled-components';
-import BlogItem from '@/components/blog/BlogItem';
+import { BlogItem } from '../blog-item';
 
 const BlogItemsContainer = styled.div`
   padding: 0 64px;
@@ -13,7 +13,7 @@ const BlogItemsContainer = styled.div`
   }
 `;
 
-const BlogList = ({ posts }) => {
+export const BlogList = ({ posts }) => {
   return (
     <BlogItemsContainer>
       {posts.length > 0 &&
@@ -21,5 +21,3 @@ const BlogList = ({ posts }) => {
     </BlogItemsContainer>
   );
 };
-
-export default BlogList;

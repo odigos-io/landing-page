@@ -1,10 +1,9 @@
 'use client';
-import theme from '@/style/theme';
-import Link from 'next/link';
 import React from 'react';
+import theme from '@/style/theme';
 import styled from 'styled-components';
-import { Button, UnderlineText, Text, LazyImage } from '@/reuseable-components';
 import Github from '@/components/github';
+import { Button, UnderlineText } from '@/reuseable-components';
 const PageContainer = styled.div`
   width: 100%;
   padding: 160px 0;
@@ -131,13 +130,11 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const GithubNumberWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-left: -4px;
-`;
-
 const CTA: React.FC = () => {
+  const handleSignInClick = () => {
+    window.open('https://app.odigos.io/signin', '_blank');
+  };
+
   return (
     <PageContainer>
       <PageBorder>
@@ -154,9 +151,9 @@ const CTA: React.FC = () => {
                 </Subtitle>
               </TextWrapper>
               <ButtonWrapper>
-                <Button variant="secondary">
+                <Button onClick={handleSignInClick} variant="secondary">
                   <UnderlineText color={theme.text.secondary}>
-                    SIGN UP
+                    SIGN IN
                   </UnderlineText>
                 </Button>
                 <Button color={theme.colors.secondary}>
