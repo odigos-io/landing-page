@@ -53,6 +53,9 @@ const PrincipleItem = styled.div`
   align-self: stretch;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
+  &:hover {
+    border: 1px solid ${theme.colors.white};
+  }
   @media (max-width: 800px) {
     gap: 32px;
   }

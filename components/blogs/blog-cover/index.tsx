@@ -6,6 +6,7 @@ import { BlogFooter } from '../blog-footer';
 
 const BlogCoverContainer = styled.div`
   padding: 120px 64px;
+
   @media (max-width: 800px) {
     padding: 80px 20px 48px 20px;
   }
@@ -17,6 +18,13 @@ const BlogItemContainer = styled.div`
   width: 100%;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.white};
+
+    a {
+      text-decoration: underline;
+    }
+  }
   @media (width <= 1200px) {
     flex-direction: column-reverse;
   }

@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { TrustedList, WatchDemoBtn } from '@/components';
 import { FlexContainer, ColumnContainer, SectionContainer } from '@/style';
 import { LottieAnimation } from '@/reuseable-components';
+import animationData from '../../public/lotties/hero.json';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
-import animationData from '../../public/lotties/hero.json';
 
 const PageContainer = styled.div`
   padding-top: 100px;
@@ -90,6 +90,7 @@ const Hero = () => {
         <ColumnContainer>
           <FlexContainer gap={40}>
             <HeroTitle>Deeper</HeroTitle>
+
             <WatchDemoBtn onClick={() => setOpen(true)} />
           </FlexContainer>
           <HeroTitle>Observability </HeroTitle>

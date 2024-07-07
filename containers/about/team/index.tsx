@@ -67,6 +67,9 @@ const TeamItem = styled.div`
   border: 1px dashed rgba(249, 249, 249, 0.32);
   margin-bottom: 32px; /* Space between items */
   break-inside: avoid;
+  &:hover {
+    border: 1px solid ${theme.colors.white};
+  }
 `;
 
 const TextWrapper = styled.div`

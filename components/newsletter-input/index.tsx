@@ -1,8 +1,8 @@
 'use client';
-import { Button, Text, UnderlineText } from '@/reuseable-components';
 import React from 'react';
 import styled from 'styled-components';
 import { MAILCHIMP_API_URL, sendToService } from './utils';
+import { Text, UnderlineText, GradientButton } from '@/reuseable-components';
 
 const InputContainer = styled.div`
   display: flex;
@@ -10,14 +10,18 @@ const InputContainer = styled.div`
   height: 100%;
 `;
 
-const InputGradient = styled.div`
+const InputGradient = styled.div<{ error?: boolean }>`
   position: relative;
   margin-top: 24px;
   border-radius: 40px;
   padding: 1px;
-  background: linear-gradient(90deg, #f9f9f9 0%, #f9f9f9 0%, #f9f9f900 100%);
+  background: ${({ error }) =>
+    error
+      ? '#E25A5A'
+      : ' linear-gradient(90deg, #f9f9f9 0%, #f9f9f9 0%, #f9f9f900 100%)'};
   @media (max-width: 1100px) {
-    background: #f9f9f9;
+    background: ${({ error, theme }) =>
+      error ? '#E25A5A' : theme.colors.white};
   }
 `;
 
@@ -25,6 +29,7 @@ const ButtonWrapper = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+  height: 64px;
   @media (max-width: 1100px) {
     display: none;
   }
@@ -137,7 +142,7 @@ export const NewsletterInput = () => {
       ) : (
         <>
           <Title>Subscribe to the Odigos newsletter to stay up-to-date.</Title>
-          <InputGradient>
+          <InputGradient error={!!error}>
             <Input
               value={email}
               onChange={handleEmail}
@@ -145,13 +150,14 @@ export const NewsletterInput = () => {
               placeholder="Email Address"
             />
             <ButtonWrapper>
-              <Button
+              <GradientButton
                 onClick={handleSubscribe}
                 disabled={!email}
-                style={{ height: 64 }}
+                style={{ height: '100%' }}
+                containerStyle={{ height: '100%' }}
               >
                 <UnderlineText size={20}>Subscribe</UnderlineText>
-              </Button>
+              </GradientButton>
             </ButtonWrapper>
           </InputGradient>
           <div
@@ -162,15 +168,15 @@ export const NewsletterInput = () => {
             }}
           >
             {error && (
-              <Text color="red" size={14}>
+              <Text color="#E25A5A" size={14}>
                 {error}
               </Text>
             )}
           </div>
           <MobileButton>
-            <Button onClick={handleSubscribe} disabled={!email}>
+            <GradientButton onClick={handleSubscribe} disabled={!email}>
               <UnderlineText size={16}>Subscribe</UnderlineText>
-            </Button>
+            </GradientButton>
           </MobileButton>
         </>
       )}
