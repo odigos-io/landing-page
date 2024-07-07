@@ -4,6 +4,8 @@ import styled, { keyframes } from 'styled-components';
 import { ColumnContainer } from '@/style';
 // import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { LazyImage } from '../lazy-image';
+import { Button } from '../button';
+import useIsMobile from '@/hooks/useIsMobile';
 
 type ModalProps = {
   children: React.ReactNode;
@@ -124,18 +126,44 @@ const Description = styled.p`
 
 const CloseIconWrapper = styled.div`
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 61px;
+  height: 61px;
+  background: ${({ theme }) => theme.colors.primary};
+  @media (max-width: 1300px) {
+    width: 29px;
+    height: 29px;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 64px;
+  height: 64px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 48px;
+  background: linear-gradient(
+    317deg,
+    rgb(249, 249, 249) 4%,
+    rgb(66, 69, 159) 80%,
+    rgb(66, 69, 159) 100%,
+    rgb(249, 249, 249) 100%,
+    rgb(66, 69, 159)
+  );
   @media (max-width: 1300px) {
     width: 32px;
     height: 32px;
   }
 `;
-
 const Modal = ({ title, description, onClose, children }: ModalProps) => {
   const [isVisible, setIsVisible] = React.useState(true);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
-
-  // useOnClickOutside(containerRef, () => handleClose());
+  const isMobile = useIsMobile(1300);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -154,16 +182,16 @@ const Modal = ({ title, description, onClose, children }: ModalProps) => {
                   {description && <Description>{description}</Description>}
                 </ColumnContainer>
               )}
-              <div>
+              <ButtonWrapper>
                 <CloseIconWrapper onClick={handleClose}>
                   <LazyImage
-                    width={16}
-                    height={16}
+                    width={isMobile ? 16 : 24}
+                    height={isMobile ? 14 : 20}
                     src="icons/common/close.svg"
                     alt="close"
                   />
                 </CloseIconWrapper>
-              </div>
+              </ButtonWrapper>
             </ModalHeader>
             {children}
           </ModalBody>
