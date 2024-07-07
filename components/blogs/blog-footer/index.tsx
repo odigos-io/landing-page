@@ -3,7 +3,7 @@ import theme from '@/style/theme';
 import { Text } from '@/reuseable-components';
 import { calculateReadingTime } from '@/utils';
 
-const BlogFooter = ({ blog }: { blog: any }) => {
+export const BlogFooter = ({ blog }: { blog: any }) => {
   const { tags, content } = blog;
 
   return (
@@ -25,5 +25,3 @@ const BlogFooter = ({ blog }: { blog: any }) => {
     </div>
   );
 };
-
-export default BlogFooter;

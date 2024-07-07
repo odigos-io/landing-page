@@ -3,7 +3,7 @@ import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
-import BlogNotFound from '@/components/blog/blog-not-found';
+import { BlogNotFound } from '@/components';
 
 type Props = {
   params: { slug: string };

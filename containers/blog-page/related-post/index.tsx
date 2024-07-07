@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { SectionTitle } from '@/reuseable-components';
 import { ColumnContainer, GridContainer, SectionContainer } from '@/style';
-import BlogItem from '@/components/blog/blog-item';
+import { BlogItem } from '@/components';
 
 const Container = styled(SectionContainer)`
   height: auto;

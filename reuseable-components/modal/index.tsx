@@ -1,7 +1,8 @@
+'use client';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { ColumnContainer } from '@/style';
-import { useOnClickOutside } from '@/hooks/useOnClickOutside';
+// import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { LazyImage } from '../lazy-image';
 
 type ModalProps = {
@@ -134,7 +135,7 @@ const Modal = ({ title, description, onClose, children }: ModalProps) => {
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(containerRef, () => handleClose());
+  // useOnClickOutside(containerRef, () => handleClose());
 
   const handleClose = () => {
     setIsVisible(false);

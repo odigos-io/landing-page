@@ -1,3 +1,4 @@
+'use client';
 import { Button, Text, UnderlineText } from '@/reuseable-components';
 import React from 'react';
 import styled from 'styled-components';

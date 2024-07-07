@@ -1,6 +1,6 @@
 'use client';
 
-import { Markdown } from '@/components/markdown';
+import { Markdown } from '@/components';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 

@@ -1,8 +1,7 @@
 'use client';
+import { BlogCover, BlogList } from '@/components';
 import BlogFilter from '../blogs-filter';
 import { useEffect, useState } from 'react';
-import BlogList from '@/components/blog/blog-list';
-import BlogCover from '@/components/blog/blog-cover';
 
 const BlogBody = ({ posts }) => {
   const [selectedItems, setSelectedItems] = useState<any>(['EXPLORE ALL']);
