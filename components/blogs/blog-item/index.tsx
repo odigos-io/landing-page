@@ -11,6 +11,13 @@ const BlogItemContainer = styled.div`
   height: 100%;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.white};
+
+    a {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const TextContainer = styled.div`
