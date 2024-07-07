@@ -10,14 +10,18 @@ const InputContainer = styled.div`
   height: 100%;
 `;
 
-const InputGradient = styled.div`
+const InputGradient = styled.div<{ error?: boolean }>`
   position: relative;
   margin-top: 24px;
   border-radius: 40px;
   padding: 1px;
-  background: linear-gradient(90deg, #f9f9f9 0%, #f9f9f9 0%, #f9f9f900 100%);
+  background: ${({ error }) =>
+    error
+      ? '#E25A5A'
+      : ' linear-gradient(90deg, #f9f9f9 0%, #f9f9f9 0%, #f9f9f900 100%)'};
   @media (max-width: 1100px) {
-    background: #f9f9f9;
+    background: ${({ error, theme }) =>
+      error ? '#E25A5A' : theme.colors.white};
   }
 `;
 
@@ -138,7 +142,7 @@ export const NewsletterInput = () => {
       ) : (
         <>
           <Title>Subscribe to the Odigos newsletter to stay up-to-date.</Title>
-          <InputGradient>
+          <InputGradient error={!!error}>
             <Input
               value={email}
               onChange={handleEmail}
@@ -164,7 +168,7 @@ export const NewsletterInput = () => {
             }}
           >
             {error && (
-              <Text color="red" size={14}>
+              <Text color="#E25A5A" size={14}>
                 {error}
               </Text>
             )}
