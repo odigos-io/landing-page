@@ -1,8 +1,8 @@
 'use client';
-import { Button, Text, UnderlineText } from '@/reuseable-components';
 import React from 'react';
 import styled from 'styled-components';
 import { MAILCHIMP_API_URL, sendToService } from './utils';
+import { Text, UnderlineText, GradientButton } from '@/reuseable-components';
 
 const InputContainer = styled.div`
   display: flex;
@@ -25,6 +25,7 @@ const ButtonWrapper = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+  height: 64px;
   @media (max-width: 1100px) {
     display: none;
   }
@@ -145,13 +146,14 @@ export const NewsletterInput = () => {
               placeholder="Email Address"
             />
             <ButtonWrapper>
-              <Button
+              <GradientButton
                 onClick={handleSubscribe}
                 disabled={!email}
-                style={{ height: 64 }}
+                style={{ height: '100%' }}
+                containerStyle={{ height: '100%' }}
               >
                 <UnderlineText size={20}>Subscribe</UnderlineText>
-              </Button>
+              </GradientButton>
             </ButtonWrapper>
           </InputGradient>
           <div
@@ -168,9 +170,9 @@ export const NewsletterInput = () => {
             )}
           </div>
           <MobileButton>
-            <Button onClick={handleSubscribe} disabled={!email}>
+            <GradientButton onClick={handleSubscribe} disabled={!email}>
               <UnderlineText size={16}>Subscribe</UnderlineText>
-            </Button>
+            </GradientButton>
           </MobileButton>
         </>
       )}

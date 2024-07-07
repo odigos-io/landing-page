@@ -67,6 +67,17 @@ const StyledButton = styled.button<{
   /* border: ${({ disabled }) =>
     disabled ? '2px solid #f9f9f958' : 'none'}; */
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+
+  &:hover {
+    background: ${({ variant, theme, color }) =>
+      variant === 'primary'
+        ? color
+          ? color
+          : theme.colors.primary
+        : color
+        ? color
+        : 'linear-gradient(90deg, rgb(111 115 225) 1%, rgba(255, 255, 255, 1) 89%)'};
+  }
 `;
 
 export const Button: React.FC<ButtonProps> = ({
