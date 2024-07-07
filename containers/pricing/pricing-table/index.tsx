@@ -137,6 +137,7 @@ const FeatureItem = styled.li`
 const ButtonWrapper = styled.div`
   margin-top: auto;
   width: 100%;
+  margin-top: 48px;
 `;
 
 const PlanWrapper = styled.div`
