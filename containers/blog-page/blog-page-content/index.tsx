@@ -1,6 +1,6 @@
 'use client';
 
-import { Markdown } from '@/components';
+import { MarkdownToHtml } from '@/components';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 
@@ -38,7 +38,7 @@ const BlogPageContent = ({ post }: Props) => {
   return (
     <BlogPageContentContainer>
       <MarkdownWrapper>
-        <Markdown source={post.content} />
+        <MarkdownToHtml source={post.content} />
         <ShareButtons link={post.slug} />
       </MarkdownWrapper>
     </BlogPageContentContainer>
