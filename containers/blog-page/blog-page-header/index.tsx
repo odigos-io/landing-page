@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import useIsMobile from '@/hooks/useIsMobile';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 import { BlogFooter } from '@/components';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   post: any;
@@ -67,11 +68,13 @@ const TitleWrapper = styled.div`
 
 const BlogPageHeader = async ({ post }: Props) => {
   const isMobile = useIsMobile();
+  const router = useRouter();
   return (
     <BlogPageHeaderContainer>
       <TitleWrapper>
         <ButtonWrapper>
           <Button
+            onClick={() => router.push('/blog')}
             style={{
               background: theme.colors.secondary,
               padding: '8px 32px',

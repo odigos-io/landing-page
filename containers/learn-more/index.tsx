@@ -1,7 +1,12 @@
 'use client';
 import React from 'react';
 import { SectionContainer } from '@/style';
-import { Button, SectionTitle, UnderlineText } from '@/reuseable-components';
+import {
+  Button,
+  GradientButton,
+  SectionTitle,
+  UnderlineText,
+} from '@/reuseable-components';
 import styled from 'styled-components';
 import LearnMoreList from '@/components/learn-more-list';
 import Link from 'next/link';
@@ -41,9 +46,10 @@ const Title = styled.h1`
   }
 `;
 
-const ShowAllButton = styled(Button)`
+const ShowAllButton = styled(GradientButton)`
   background: ${({ theme }) => theme.colors.secondary};
-  width: 160px;
+  height: 48px;
+  min-width: 160px;
   @media (max-width: 1000px) {
     display: none;
   }
@@ -57,7 +63,7 @@ const MobileButtonWrapper = styled.div`
   }
 `;
 
-const MobileShowAllButton = styled(Button)`
+const MobileShowAllButton = styled(GradientButton)`
   display: none;
   background: ${({ theme }) => theme.colors.secondary};
   @media (max-width: 1000px) {

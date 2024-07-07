@@ -13,7 +13,7 @@ const Wrapper = styled.div<{
   disabled?: boolean;
 }>`
   border-radius: 48px;
-  padding: ${({ variant }) => (variant === 'primary' ? '0.1rem;' : '0')};
+  padding: ${({ variant }) => (variant === 'primary' ? '1.5px;' : '0')};
   height: fit-content;
   width: 100%;
 
@@ -27,17 +27,8 @@ const Wrapper = styled.div<{
   );
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   &:hover {
-    background: ${({ disabled, theme }) =>
-      disabled
-        ? `linear-gradient(
-    317deg,
-    rgb(249, 249, 249) 4%,
-    rgb(66, 69, 159) 80%,
-    rgb(66, 69, 159) 100%,
-    rgb(249, 249, 249) 100%,
-    rgb(66, 69, 159)
-  )`
-        : theme.colors.white};
+    background: rgba(68, 74, 217, 0.12);
+    padding: ${({ variant }) => (variant === 'primary' ? '0.5px;' : '0')};
   }
 `;
 
@@ -63,24 +54,18 @@ const StyledButton = styled.button<{
   justify-content: center;
   align-items: center;
   gap: 8px;
-  /* opacity: ${({ disabled }) => (disabled ? 0.5 : 1)}; */
-  /* border: ${({ disabled }) =>
-    disabled ? '2px solid #f9f9f958' : 'none'}; */
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   &:hover {
-    background: ${({ variant, theme, color }) =>
+    border: 1.2px solid #f9f9f9;
+    background: ${({ variant, theme }) =>
       variant === 'primary'
-        ? color
-          ? color
-          : theme.colors.primary
-        : color
-        ? color
-        : 'linear-gradient(90deg, rgb(111 115 225) 1%, rgba(255, 255, 255, 1) 89%)'};
+        ? 'rgba(68, 74, 217, 0.12)'
+        : theme.colors.white} !important;
   }
 `;
 
-export const Button: React.FC<ButtonProps> = ({
+export const GradientButton: React.FC<ButtonProps> = ({
   children,
   onClick,
   type = 'button',
