@@ -4,12 +4,12 @@ import { DATA } from './data';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import { SectionTitle } from '@/reuseable-components';
-import { ColumnContainer, SectionContainer } from '@/style';
+import { ColumnContainer, MaxWidthContainer, SectionContainer } from '@/style';
 
 const Container = styled(SectionContainer)`
   height: auto;
   flex-direction: column;
-  max-width: 100%;
+  max-width: 1440px;
   width: 100%;
 
   padding: 0px 64px 120px 64px;
@@ -154,42 +154,40 @@ const InvestorImage = styled.img`
 
 const Investors = () => {
   return (
-    <Container
-      justify={'flex-start'}
-      alignments={'flex-start'}
-      background={theme.colors.secondary}
-    >
-      <Divider />
-      <PageBody>
-        <SectionTitle
-          headerInfo={{
-            title: 'INVESTORS',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TitleWrapper>
-          <PageTitle>Backing Our Vision</PageTitle>
-          <PageDescription>
-            Explore the investors who believe in our potential and are helping
-            us achieve our goals through strategic support and funding.
-          </PageDescription>
-        </TitleWrapper>
-        <InvestorsContainer>
-          {DATA.map((item, index) => (
-            <InvestorItem key={index}>
-              <ImageWrapper>
-                <InvestorImage src={item.logo} alt={item.name} />
-              </ImageWrapper>
-              <TextWrapper>
-                <Title>{item.name}</Title>
-                <Description>{item.description}</Description>
-              </TextWrapper>
-            </InvestorItem>
-          ))}
-        </InvestorsContainer>
-      </PageBody>
-    </Container>
+    <MaxWidthContainer>
+      <Container justify={'flex-start'} alignments={'flex-start'}>
+        <Divider />
+        <PageBody>
+          <SectionTitle
+            headerInfo={{
+              title: 'INVESTORS',
+              subtitle: '',
+              description: '',
+            }}
+          />
+          <TitleWrapper>
+            <PageTitle>Backing Our Vision</PageTitle>
+            <PageDescription>
+              Explore the investors who believe in our potential and are helping
+              us achieve our goals through strategic support and funding.
+            </PageDescription>
+          </TitleWrapper>
+          <InvestorsContainer>
+            {DATA.map((item, index) => (
+              <InvestorItem key={index}>
+                <ImageWrapper>
+                  <InvestorImage src={item.logo} alt={item.name} />
+                </ImageWrapper>
+                <TextWrapper>
+                  <Title>{item.name}</Title>
+                  <Description>{item.description}</Description>
+                </TextWrapper>
+              </InvestorItem>
+            ))}
+          </InvestorsContainer>
+        </PageBody>
+      </Container>
+    </MaxWidthContainer>
   );
 };
 

@@ -3,9 +3,15 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { TrustedList, WatchDemoBtn } from '@/components';
-import { FlexContainer, ColumnContainer, SectionContainer } from '@/style';
+import {
+  FlexContainer,
+  ColumnContainer,
+  SectionContainer,
+  MaxWidthContainer,
+} from '@/style';
 import { LottieAnimation } from '@/reuseable-components';
 import animationData from '../../public/lotties/hero.json';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
@@ -76,6 +82,7 @@ const DemoIframe = styled.iframe`
 
 const Container = styled(SectionContainer)`
   align-items: flex-start;
+  height: auto;
   @media (max-width: 1300px) {
     height: auto;
   }
@@ -84,46 +91,51 @@ const Container = styled(SectionContainer)`
 const Hero = () => {
   const [open, setOpen] = React.useState(false);
 
-  return (
-    <PageContainer>
-      <Container>
-        <ColumnContainer>
-          <FlexContainer gap={40}>
-            <HeroTitle>Deeper</HeroTitle>
+  const isMobile = useIsMobile();
 
-            <WatchDemoBtn onClick={() => setOpen(true)} />
-          </FlexContainer>
-          <HeroTitle>Observability </HeroTitle>
-          <HeroSubTitle>
-            Resolve incidents faster with deeper distributed tracing for all
-            your backend architecture without any code changes.
-          </HeroSubTitle>
-          <TrustedList />
-        </ColumnContainer>
-        <LottieWrapper>
-          <LottieAnimation
-            animationData={animationData}
-            loop={true}
-            autoplay={true}
-          />
-        </LottieWrapper>
-      </Container>
-      {open && (
-        <Modal
-          title="We are Odigos!"
-          description=""
-          onClose={() => setOpen(false)}
-        >
-          <DemoIframe
-            className="rounded-lg demo-view"
-            src={`https://www.youtube.com/embed/nynyV7FC4VI`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Embedded youtube"
-          />
-        </Modal>
-      )}
-    </PageContainer>
+  return (
+    <MaxWidthContainer>
+      <PageContainer>
+        <Container>
+          <ColumnContainer>
+            <FlexContainer gap={40}>
+              <HeroTitle>Deeper</HeroTitle>
+
+              <WatchDemoBtn onClick={() => setOpen(true)} />
+            </FlexContainer>
+            <HeroTitle>Observability </HeroTitle>
+            <HeroSubTitle>
+              Resolve incidents faster with deeper distributed tracing for all
+              your backend architecture without any code changes.
+            </HeroSubTitle>
+            <TrustedList />
+          </ColumnContainer>
+          <LottieWrapper>
+            <LottieAnimation
+              animationData={animationData}
+              loop={true}
+              autoplay={true}
+              height={isMobile ? 235 : '100%'}
+            />
+          </LottieWrapper>
+        </Container>
+        {open && (
+          <Modal
+            title="We are Odigos!"
+            description=""
+            onClose={() => setOpen(false)}
+          >
+            <DemoIframe
+              className="rounded-lg demo-view"
+              src={`https://www.youtube.com/embed/nynyV7FC4VI`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded youtube"
+            />
+          </Modal>
+        )}
+      </PageContainer>
+    </MaxWidthContainer>
   );
 };
 

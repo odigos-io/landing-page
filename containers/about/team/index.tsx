@@ -3,7 +3,7 @@ import React from 'react';
 import theme from '@/style/theme';
 import { DATA } from './data';
 import styled from 'styled-components';
-import { ColumnContainer, SectionContainer } from '@/style';
+import { ColumnContainer, MaxWidthContainer, SectionContainer } from '@/style';
 import {
   SectionTitle,
   Text,
@@ -14,6 +14,8 @@ import {
 const Container = styled(SectionContainer)`
   height: auto;
   padding: 120px 64px;
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 800px) {
     padding: 80px 20px;
   }
@@ -67,6 +69,7 @@ const TeamItem = styled.div`
   border: 1px dashed rgba(249, 249, 249, 0.32);
   margin-bottom: 32px; /* Space between items */
   break-inside: avoid;
+  transition: border 0.3s ease;
   &:hover {
     border: 1px solid ${theme.colors.white};
   }
@@ -105,7 +108,7 @@ const Divider = styled.div`
 
 const TeamImage = styled.img`
   width: 100%;
-  max-width: 45vw;
+  max-width: 40%;
   object-fit: cover;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
@@ -123,57 +126,57 @@ const LinkWrapper = styled.a`
 
 const Teams = () => {
   return (
-    <Container
-      justify={'flex-start'}
-      alignments={'flex-start'}
-      background={theme.colors.secondary}
-    >
-      <PageBody>
-        <SectionTitle
-          headerInfo={{
-            title: 'TEAM',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TitleWrapper>
-          <PageTitle>
-            The Odigos team is comprised of <b>OpenTelemetry</b> maintainers and
-            developers who utilize <b>eBPF</b> to make implementing
-            observability simple and instant.
-          </PageTitle>
-          <TeamImage alt="icon" src={'/images/team/team.jpg'} />
-        </TitleWrapper>
-        <TeamContainer>
-          {DATA.map((data, index) => (
-            <TeamItem key={index}>
-              <TextWrapper>
-                <Text fontFam={theme.font_family.secondary} size={24}>
-                  {data.name}
-                </Text>
-                <Title>{data.title}</Title>
-                <Divider />
-                <Title dangerouslySetInnerHTML={{ __html: data.description }} />
-                <LinkWrapper
-                  href={data.linkedin_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <LazyImage
-                    src={'/icons/social/linkedin.svg'}
-                    alt="linkedin"
-                    width={18}
-                    height={18}
-                    style={{ marginTop: 2 }}
+    <MaxWidthContainer>
+      <Container justify={'flex-start'} alignments={'flex-start'}>
+        <PageBody>
+          <SectionTitle
+            headerInfo={{
+              title: 'TEAM',
+              subtitle: '',
+              description: '',
+            }}
+          />
+          <TitleWrapper>
+            <PageTitle>
+              The Odigos team is comprised of <b>OpenTelemetry</b> maintainers
+              and developers who utilize <b>eBPF</b> to make implementing
+              observability simple and instant.
+            </PageTitle>
+            <TeamImage alt="icon" src={'/images/team/team.jpg'} />
+          </TitleWrapper>
+          <TeamContainer>
+            {DATA.map((data, index) => (
+              <TeamItem key={index}>
+                <TextWrapper>
+                  <Text fontFam={theme.font_family.secondary} size={24}>
+                    {data.name}
+                  </Text>
+                  <Title>{data.title}</Title>
+                  <Divider />
+                  <Title
+                    dangerouslySetInnerHTML={{ __html: data.description }}
                   />
-                  <UnderlineText>LinkedIn</UnderlineText>
-                </LinkWrapper>
-              </TextWrapper>
-            </TeamItem>
-          ))}
-        </TeamContainer>
-      </PageBody>
-    </Container>
+                  <LinkWrapper
+                    href={data.linkedin_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LazyImage
+                      src={'/icons/social/linkedin.svg'}
+                      alt="linkedin"
+                      width={18}
+                      height={18}
+                      style={{ marginTop: 2 }}
+                    />
+                    <UnderlineText>LinkedIn</UnderlineText>
+                  </LinkWrapper>
+                </TextWrapper>
+              </TeamItem>
+            ))}
+          </TeamContainer>
+        </PageBody>
+      </Container>
+    </MaxWidthContainer>
   );
 };
 

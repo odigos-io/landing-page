@@ -1,10 +1,12 @@
 'use client';
 import styled from 'styled-components';
 import { BlogItem } from '../blog-item';
+import { MaxWidthContainer } from '@/style';
 
 const BlogItemsContainer = styled.div`
   padding: 0 64px;
   display: grid;
+
   grid-template-columns: repeat(auto-fill, minmax(341px, 1fr));
   gap: 24px;
   @media (width < 768px) {
@@ -15,9 +17,11 @@ const BlogItemsContainer = styled.div`
 
 export const BlogList = ({ posts }) => {
   return (
-    <BlogItemsContainer>
-      {posts.length > 0 &&
-        posts.map((post, key) => <BlogItem key={key} blog={post} />)}
-    </BlogItemsContainer>
+    <MaxWidthContainer>
+      <BlogItemsContainer>
+        {posts.length > 0 &&
+          posts.map((post, key) => <BlogItem key={key} blog={post} />)}
+      </BlogItemsContainer>
+    </MaxWidthContainer>
   );
 };

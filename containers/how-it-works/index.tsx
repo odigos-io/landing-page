@@ -10,6 +10,7 @@ import HowItWorksIllustrationsMobile from './how-it-works-illustrations-mobile';
 import { HowItWorksTextsMobile } from './how-it-works-texts-mobile';
 import { HowItWorksTextsMedium } from './how-it-works-texts-medium';
 import HowItWorksIllustrationsMedium from './how-it-works-illustrations-medium';
+import { MaxWidthContainer } from '@/style';
 
 const TitleWrapper = styled.div`
   margin-top: 40px;
@@ -37,7 +38,8 @@ const Container = styled.div`
   padding: 160px 64px;
   display: flex;
   flex-direction: column;
-
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 1250px) {
     align-items: center;
   }
@@ -126,19 +128,21 @@ const HowItWorks = () => {
   }
 
   return (
-    <Container style={{ background: theme.colors.primary }}>
-      <SectionTitle
-        headerInfo={{
-          title: 'HOW IT WORKS',
-          subtitle: '',
-          description: '',
-        }}
-      />
-      <TitleWrapper>
-        <PageTitle>Observability made easy</PageTitle>
-      </TitleWrapper>
-      {renderBody()}
-    </Container>
+    <MaxWidthContainer style={{ background: theme.colors.primary }}>
+      <Container>
+        <SectionTitle
+          headerInfo={{
+            title: 'HOW IT WORKS',
+            subtitle: '',
+            description: '',
+          }}
+        />
+        <TitleWrapper>
+          <PageTitle>Observability made easy</PageTitle>
+        </TitleWrapper>
+        {renderBody()}
+      </Container>
+    </MaxWidthContainer>
   );
 };
 

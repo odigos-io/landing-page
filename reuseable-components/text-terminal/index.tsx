@@ -68,7 +68,7 @@ const TextBody = styled.div<{ delay: number; textAlignment?: string }>`
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
-  animation: ${type} 1.5s steps(40) ${(props) => props.delay}s 1 normal both;
+  animation: ${type} 1.2s steps(40) ${(props) => props.delay}s 1 normal both;
   position: relative;
 
   @media (max-width: 1200px) {
@@ -102,7 +102,7 @@ export const Typewriter: React.FC<TypewriterProps> = ({
       {lines.map((line, index) => {
         return (
           <React.Fragment key={index}>
-            <TextBody textAlignment={textAlignment} delay={index * 2}>
+            <TextBody textAlignment={textAlignment} delay={index * 1}>
               {line}
               {index === lines.length - 1 ? <Cursor /> : null}
             </TextBody>

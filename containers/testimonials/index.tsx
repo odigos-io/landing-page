@@ -14,17 +14,20 @@ import {
 
 const PageContainer = styled(SectionContainer)`
   flex-direction: column;
+  padding: 0;
+  height: auto;
+  justify-content: flex-start;
+  padding: 0px 0px 200px;
   @media (max-width: 1100px) {
-    gap: 40px;
     height: auto;
-    padding: 120px 20px;
-    justify-content: flex-start;
+    padding: 0px 20px 120px;
   }
 `;
 
 const Quote = styled(motion.div)<{ fontSize: number }>`
   color: ${theme.text.primary};
   max-width: 64%;
+  margin-top: 200px;
   text-align: center;
   font-family: ${({ theme }) => theme.font_family.primary};
   font-size: ${({ fontSize }) => fontSize}px;
@@ -35,6 +38,7 @@ const Quote = styled(motion.div)<{ fontSize: number }>`
   @media (max-width: 1100px) {
     font-size: 24px;
     max-width: 100%;
+    margin-top: 120px;
   }
 `;
 
@@ -43,9 +47,10 @@ const Footer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 80px;
-
+  margin-top: 80px;
   @media (max-width: 600px) {
     flex-direction: column-reverse;
+    margin-top: 40px;
   }
 `;
 

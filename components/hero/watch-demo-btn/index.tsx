@@ -1,13 +1,9 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import {
-  UnderlineText,
-  LazyImage,
-  GradientButton,
-} from '@/reuseable-components';
+import { UnderlineText, LazyImage, Button } from '@/reuseable-components';
 
-const WatchDemoButton = styled(GradientButton)`
+const WatchDemoButton = styled(Button)`
   background: ${({ theme }) => theme.colors.secondary};
   @media (max-width: 600px) {
     padding: 8px 22px;

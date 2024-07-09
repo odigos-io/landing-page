@@ -3,9 +3,11 @@ import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import Github from '@/components/github';
-import { Button, GradientButton, UnderlineText } from '@/reuseable-components';
+import { Button, UnderlineText } from '@/reuseable-components';
+import { MaxWidthContainer } from '@/style';
 const PageContainer = styled.div`
   width: 100%;
+  max-width: 1440px;
   padding: 160px 0;
   @media (max-width: 1024px) {
     padding: 120px 0;
@@ -72,7 +74,7 @@ const Body = styled.div`
 const Title = styled.h1`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 96px;
+  font-size: 64px;
   font-style: normal;
   font-weight: 400;
   line-height: 110%; /* 105.6px */
@@ -136,35 +138,37 @@ const CTA: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-      <PageBorder>
-        <InnerBorder>
-          <SecondInnerBorder>
-            <Body>
-              <TextWrapper>
-                <Title>
-                  Unlock Full Visibility into Your Application Performance
-                </Title>
-                <Subtitle>
-                  Enterprise-Grade OpenTelemetry for Superior Application
-                  Performance Monitoring
-                </Subtitle>
-              </TextWrapper>
-              <ButtonWrapper>
-                <Button onClick={handleSignInClick} variant="secondary">
-                  <UnderlineText color={theme.text.secondary}>
-                    SIGN IN
-                  </UnderlineText>
-                </Button>
-                <GradientButton color={theme.colors.secondary}>
-                  <Github />
-                </GradientButton>
-              </ButtonWrapper>
-            </Body>
-          </SecondInnerBorder>
-        </InnerBorder>
-      </PageBorder>
-    </PageContainer>
+    <MaxWidthContainer>
+      <PageContainer>
+        <PageBorder>
+          <InnerBorder>
+            <SecondInnerBorder>
+              <Body>
+                <TextWrapper>
+                  <Title>
+                    Unlock Full Visibility into Your Application Performance
+                  </Title>
+                  <Subtitle>
+                    Enterprise-Grade OpenTelemetry for Superior Application
+                    Performance Monitoring
+                  </Subtitle>
+                </TextWrapper>
+                <ButtonWrapper>
+                  <Button onClick={handleSignInClick} variant="secondary">
+                    <UnderlineText color={theme.text.secondary}>
+                      SIGN IN
+                    </UnderlineText>
+                  </Button>
+                  <Button color={theme.colors.secondary}>
+                    <Github />
+                  </Button>
+                </ButtonWrapper>
+              </Body>
+            </SecondInnerBorder>
+          </InnerBorder>
+        </PageBorder>
+      </PageContainer>
+    </MaxWidthContainer>
   );
 };
 

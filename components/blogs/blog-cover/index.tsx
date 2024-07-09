@@ -3,10 +3,12 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { BlogFooter } from '../blog-footer';
+import { MaxWidthContainer } from '@/style';
 
 const BlogCoverContainer = styled.div`
   padding: 120px 64px;
-
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 800px) {
     padding: 80px 20px 48px 20px;
   }
@@ -103,19 +105,21 @@ export const BlogCover = ({ blog }: { blog: any }) => {
   const { image, title, description, slug } = blog;
 
   return (
-    <BlogCoverContainer>
-      <Link href={`/blog/${slug}`}>
-        <BlogItemContainer>
-          <TextContainer>
-            <BlogTitle>
-              <Link href={`/blog/${slug}`}>{title}</Link>
-            </BlogTitle>
-            <BlogDescription>{description}</BlogDescription>
-            <BlogFooter blog={blog} />
-          </TextContainer>
-          {image ? <BlogCoverImage src={image} alt={title} /> : 'No image'}
-        </BlogItemContainer>
-      </Link>
-    </BlogCoverContainer>
+    <MaxWidthContainer>
+      <BlogCoverContainer>
+        <Link href={`/blog/${slug}`}>
+          <BlogItemContainer>
+            <TextContainer>
+              <BlogTitle>
+                <Link href={`/blog/${slug}`}>{title}</Link>
+              </BlogTitle>
+              <BlogDescription>{description}</BlogDescription>
+              <BlogFooter blog={blog} />
+            </TextContainer>
+            {image ? <BlogCoverImage src={image} alt={title} /> : 'No image'}
+          </BlogItemContainer>
+        </Link>
+      </BlogCoverContainer>
+    </MaxWidthContainer>
   );
 };

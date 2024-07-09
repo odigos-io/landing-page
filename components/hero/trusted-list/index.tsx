@@ -14,7 +14,11 @@ const Title = styled.h1`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 100px;
+  margin-top: 153px;
+
+  @media (max-width: 800px) {
+    margin-top: 80px;
+  }
 `;
 
 export const TrustedList = () => {
