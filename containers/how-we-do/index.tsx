@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { SectionContainer } from '@/style';
+import { MaxWidthContainer, SectionContainer } from '@/style';
 import { SectionTitle, Typewriter } from '@/reuseable-components';
 
 const PageBorder = styled.div`
@@ -55,6 +55,8 @@ const Body = styled.div`
 
 const Container = styled(SectionContainer)`
   height: auto;
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 1000px) {
     height: auto;
     margin-top: 80px;
@@ -67,22 +69,24 @@ const HowWeDo = () => {
   for effortless implementation.`;
 
   return (
-    <Container padding="0">
-      <PageBorder>
-        <InnerBorder>
-          <Body>
-            <SectionTitle
-              headerInfo={{
-                title: 'HOW WE DO',
-                subtitle: 'Subtitle',
-                description: 'Description',
-              }}
-            />
-            <Typewriter textAlignment={'center'} text={multilineText} />
-          </Body>
-        </InnerBorder>
-      </PageBorder>
-    </Container>
+    <MaxWidthContainer>
+      <Container padding="0">
+        <PageBorder>
+          <InnerBorder>
+            <Body>
+              <SectionTitle
+                headerInfo={{
+                  title: 'HOW WE DO',
+                  subtitle: 'Subtitle',
+                  description: 'Description',
+                }}
+              />
+              <Typewriter textAlignment={'center'} text={multilineText} />
+            </Body>
+          </InnerBorder>
+        </PageBorder>
+      </Container>
+    </MaxWidthContainer>
   );
 };
 

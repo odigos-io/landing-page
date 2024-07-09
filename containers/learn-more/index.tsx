@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { SectionContainer } from '@/style';
+import { MaxWidthContainer, SectionContainer } from '@/style';
 import { Button, SectionTitle, UnderlineText } from '@/reuseable-components';
 import styled from 'styled-components';
 import LearnMoreList from '@/components/learn-more-list';
@@ -80,37 +80,46 @@ const DesktopDiv = styled.div`
   }
 `;
 
+const BlogContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1440px;
+`;
+
 const Blog = () => {
   return (
-    <>
-      <SectionTitleWrapper>
-        <SectionTitle
-          headerInfo={{ title: 'LEARN MORE', subtitle: '', description: '' }}
-        />
-      </SectionTitleWrapper>
-      <HeaderWrapper>
-        <TitleWrapper>
-          <Title>Discover Insights and Best Practices</Title>
-          <DesktopDiv>
+    <MaxWidthContainer>
+      <BlogContainer>
+        <SectionTitleWrapper>
+          <SectionTitle
+            headerInfo={{ title: 'LEARN MORE', subtitle: '', description: '' }}
+          />
+        </SectionTitleWrapper>
+        <HeaderWrapper>
+          <TitleWrapper>
+            <Title>Discover Insights and Best Practices</Title>
+            <DesktopDiv>
+              <Link legacyBehavior href={'/blog'}>
+                <ShowAllButton>
+                  <UnderlineText size={20}>SHOW ALL</UnderlineText>
+                </ShowAllButton>
+              </Link>
+            </DesktopDiv>
+          </TitleWrapper>
+        </HeaderWrapper>
+        <Container>
+          <LearnMoreList />
+          <MobileButtonWrapper>
             <Link legacyBehavior href={'/blog'}>
-              <ShowAllButton>
-                <UnderlineText size={20}>SHOW ALL</UnderlineText>
-              </ShowAllButton>
+              <MobileShowAllButton>
+                <UnderlineText size={16}>SHOW ALL</UnderlineText>
+              </MobileShowAllButton>
             </Link>
-          </DesktopDiv>
-        </TitleWrapper>
-      </HeaderWrapper>
-      <Container>
-        <LearnMoreList />
-        <MobileButtonWrapper>
-          <Link legacyBehavior href={'/blog'}>
-            <MobileShowAllButton>
-              <UnderlineText size={16}>SHOW ALL</UnderlineText>
-            </MobileShowAllButton>
-          </Link>
-        </MobileButtonWrapper>
-      </Container>
-    </>
+          </MobileButtonWrapper>
+        </Container>
+      </BlogContainer>
+    </MaxWidthContainer>
   );
 };
 

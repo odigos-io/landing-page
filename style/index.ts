@@ -94,3 +94,10 @@ export const IconWrapper = styled(Button)`
     height: 48px;
   }
 `;
+
+export const MaxWidthContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

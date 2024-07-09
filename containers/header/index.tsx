@@ -61,6 +61,7 @@ const MaxWidthContainer = styled.div`
   position: fixed;
   background: ${theme.colors.secondary};
   width: 100%;
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;

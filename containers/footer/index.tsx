@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { NewsletterInput } from '@/components';
 import FooterItemList from './footer-menu-list';
 import { UnderlineText, LazyImage } from '@/reuseable-components';
+import { MaxWidthContainer } from '@/style';
 
 const FooterContainer = styled.footer`
-  background: ${({ theme }) => theme.colors.primary};
   display: flex;
-  padding: 80px 64px 32px 64px;
+  padding: 80px 0px 32px 0px;
   flex-direction: column;
   gap: 64px;
   @media (max-width: 1100px) {
@@ -36,8 +36,6 @@ const MenuItemWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div``;
-
-const Body = styled.section``;
 
 const FooterWrapper = styled.section`
   display: flex;
@@ -75,40 +73,42 @@ const RightsText = styled.span`
 
 const Footer = () => {
   return (
-    <FooterContainer>
-      <Header>
-        <MenuItemWrapper>
-          <LazyImage
-            src="/icons/brand/icon.svg"
-            alt="logo"
-            width={40}
-            height={32}
-          />
-          <FooterItemList />
-        </MenuItemWrapper>
-        <InputWrapper>
-          <NewsletterInput />
-        </InputWrapper>
-      </Header>
-      <Divider />
-      <FooterWrapper>
-        <FooterText>
-          Enterprise-Grade OpenTelemetry for Superior Application Performance
-          Monitoring
-        </FooterText>
-        <Link href="https://app.odigos.io/about/terms-of-use" target="_blank">
-          <UnderlineText
-            weight={300}
-            uppercase={false}
-            font={theme.font_family.primary}
-          >
-            Privacy policy
-          </UnderlineText>
-        </Link>
-      </FooterWrapper>
-      <Divider />
-      <RightsText>© 2024 Odigos. All rights reserved.</RightsText>
-    </FooterContainer>
+    <MaxWidthContainer style={{ background: theme.colors.primary }}>
+      <FooterContainer>
+        <Header>
+          <MenuItemWrapper>
+            <LazyImage
+              src="/icons/brand/icon.svg"
+              alt="logo"
+              width={40}
+              height={32}
+            />
+            <FooterItemList />
+          </MenuItemWrapper>
+          <InputWrapper>
+            <NewsletterInput />
+          </InputWrapper>
+        </Header>
+        <Divider />
+        <FooterWrapper>
+          <FooterText>
+            Enterprise-Grade OpenTelemetry for Superior Application Performance
+            Monitoring
+          </FooterText>
+          <Link href="https://app.odigos.io/about/terms-of-use" target="_blank">
+            <UnderlineText
+              weight={300}
+              uppercase={false}
+              font={theme.font_family.primary}
+            >
+              Privacy policy
+            </UnderlineText>
+          </Link>
+        </FooterWrapper>
+        <Divider />
+        <RightsText>© 2024 Odigos. All rights reserved.</RightsText>
+      </FooterContainer>
+    </MaxWidthContainer>
   );
 };
 

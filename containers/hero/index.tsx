@@ -3,7 +3,12 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { TrustedList, WatchDemoBtn } from '@/components';
-import { FlexContainer, ColumnContainer, SectionContainer } from '@/style';
+import {
+  FlexContainer,
+  ColumnContainer,
+  SectionContainer,
+  MaxWidthContainer,
+} from '@/style';
 import { LottieAnimation } from '@/reuseable-components';
 import animationData from '../../public/lotties/hero.json';
 import useIsMobile from '@/hooks/useIsMobile';
@@ -81,13 +86,6 @@ const Container = styled(SectionContainer)`
   @media (max-width: 1300px) {
     height: auto;
   }
-`;
-
-const MaxWidthContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Hero = () => {

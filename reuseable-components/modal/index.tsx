@@ -40,7 +40,6 @@ const fadeOut = keyframes`
 const ModalContainer = styled.div<{ isVisible: boolean }>`
   width: 100vw;
   height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;

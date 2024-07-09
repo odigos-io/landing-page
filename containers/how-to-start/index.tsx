@@ -3,7 +3,12 @@ import React from 'react';
 import { DATA } from './data';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { ColumnContainer, FlexContainer, SectionContainer } from '@/style';
+import {
+  ColumnContainer,
+  FlexContainer,
+  MaxWidthContainer,
+  SectionContainer,
+} from '@/style';
 import {
   LottieAnimation,
   SectionTitle,
@@ -15,6 +20,7 @@ const Container = styled(SectionContainer)`
   height: auto;
   padding: 120px 64px;
   width: 100%;
+  max-width: 1440px;
   @media (max-width: 1100px) {
     padding: 80px 64px;
   }
@@ -140,61 +146,62 @@ const HowToStart: React.FC = () => {
   const isMobile = useIsMobile(1100);
 
   return (
-    <Container
-      padding="0"
-      justify={'flex-start'}
-      alignments={'flex-start'}
-      background={theme.colors.secondary}
+    <MaxWidthContainer
+      style={{
+        background: theme.colors.secondary,
+      }}
     >
-      <PageBody>
-        <SectionTitle
-          headerInfo={{
-            title: 'HOW TO START',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TitleWrapper>
-          <PageTitle>Implementation in 3 easy step</PageTitle>
-          <Subtitle>
-            Odigos uses OpenTelemetry and eBPF to build agnostic observability
-            pipelines for all applications.
-          </Subtitle>
-        </TitleWrapper>
-        <ListContainer>
-          {DATA.map((item, index) => (
-            <ItemWrapper key={index} gap={32}>
-              <div>
-                <LottieAnimation
-                  animationData={item.lottie}
-                  loop={true}
-                  autoplay={true}
-                  width={320}
-                />
-              </div>
-              <FlexContainer alignments={'flex-start'}>
-                <TextWrapper gap={16}>
-                  <ItemTitle>
-                    {isMobile ? `${index + 1}. ${item.title}` : item.title}
-                  </ItemTitle>
-                  <ItemSubtitle>{item.subtitle}</ItemSubtitle>
-                </TextWrapper>
-                {index !== 2 && (
-                  <ArrowIconWrapper>
-                    <LazyImage
-                      src="/icons/common/arrow.svg"
-                      width={27}
-                      height={40}
-                      alt="arrow"
-                    />
-                  </ArrowIconWrapper>
-                )}
-              </FlexContainer>
-            </ItemWrapper>
-          ))}
-        </ListContainer>
-      </PageBody>
-    </Container>
+      <Container padding="0" justify={'flex-start'} alignments={'flex-start'}>
+        <PageBody>
+          <SectionTitle
+            headerInfo={{
+              title: 'HOW TO START',
+              subtitle: '',
+              description: '',
+            }}
+          />
+          <TitleWrapper>
+            <PageTitle>Implementation in 3 easy step</PageTitle>
+            <Subtitle>
+              Odigos uses OpenTelemetry and eBPF to build agnostic observability
+              pipelines for all applications.
+            </Subtitle>
+          </TitleWrapper>
+          <ListContainer>
+            {DATA.map((item, index) => (
+              <ItemWrapper key={index} gap={32}>
+                <div>
+                  <LottieAnimation
+                    animationData={item.lottie}
+                    loop={true}
+                    autoplay={true}
+                    width={320}
+                  />
+                </div>
+                <FlexContainer alignments={'flex-start'}>
+                  <TextWrapper gap={16}>
+                    <ItemTitle>
+                      {isMobile ? `${index + 1}. ${item.title}` : item.title}
+                    </ItemTitle>
+                    <ItemSubtitle>{item.subtitle}</ItemSubtitle>
+                  </TextWrapper>
+                  {index !== 2 && (
+                    <ArrowIconWrapper>
+                      <LazyImage
+                        src="/icons/common/arrow.svg"
+                        width={27}
+                        height={40}
+                        alt="arrow"
+                      />
+                    </ArrowIconWrapper>
+                  )}
+                </FlexContainer>
+              </ItemWrapper>
+            ))}
+          </ListContainer>
+        </PageBody>
+      </Container>
+    </MaxWidthContainer>
   );
 };
 
