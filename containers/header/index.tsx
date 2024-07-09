@@ -75,7 +75,7 @@ export const Header = () => {
     <>
       <HeaderContainer isOpen={dropdownToggler}>
         <HeaderInner>
-          <LogoContainer>
+          <LogoContainer onClick={() => setCurrentItem(10)}>
             <Link href="/">
               <LazyImage
                 src="/images/logo/text-logo.svg"
