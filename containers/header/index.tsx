@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Link from 'next/link';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
@@ -9,10 +10,8 @@ import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
 const HeaderContainer = styled.header<{ isOpen: boolean }>`
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
+  max-width: 1440px;
   z-index: 9999;
   background: ${({ theme, isOpen }) =>
     isOpen ? theme.colors.primary : theme.colors.secondary};
@@ -58,28 +57,47 @@ const ActionBarWrapper = styled.div`
   }
 `;
 
+const MaxWidthContainer = styled.div`
+  position: fixed;
+  background: ${theme.colors.secondary};
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const Header = () => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
+  const [currentItem, setCurrentItem] = useState(10);
+
   const handleSignInClick = () => {
     window.open('https://app.odigos.io/signin', '_blank');
   };
 
+  const handleMenuItemClick = (index: number) => {
+    setCurrentItem(index);
+  };
+
   return (
-    <>
+    <MaxWidthContainer>
       <HeaderContainer isOpen={dropdownToggler}>
         <HeaderInner>
-          <LogoContainer>
-            <a href="/">
+          <LogoContainer onClick={() => setCurrentItem(10)}>
+            <Link href="/">
               <LazyImage
                 src="/images/logo/text-logo.svg"
                 alt="logo"
                 width={133}
                 height={32}
               />
-            </a>
+            </Link>
           </LogoContainer>
 
-          <MenuItemList />
+          <MenuItemList
+            onClick={handleMenuItemClick}
+            currentIndexItem={currentItem}
+          />
           <ActionBarWrapper>
             <SignInButton onClick={handleSignInClick} variant="secondary">
               <UnderlineText color={theme.text.secondary}>
@@ -107,6 +125,6 @@ export const Header = () => {
       {dropdownToggler && (
         <MobileHeaderMenu onClick={() => setDropdownToggler(false)} />
       )}
-    </>
+    </MaxWidthContainer>
   );
 };

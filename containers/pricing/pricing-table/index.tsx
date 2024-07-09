@@ -6,12 +6,7 @@ import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { FlexContainer } from '@/style';
 import ContactForm from './contact-us-form';
-import {
-  Button,
-  UnderlineText,
-  LazyImage,
-  GradientButton,
-} from '@/reuseable-components';
+import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 import useIsMobile from '@/hooks/useIsMobile';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
@@ -196,7 +191,7 @@ const PricingComponent: React.FC = () => {
           </FeatureList>
           {plan.button.text && (
             <ButtonWrapper style={{ background: theme.colors.secondary }}>
-              <GradientButton
+              <Button
                 style={{ background: theme.colors.secondary }}
                 onClick={() =>
                   index === 2
@@ -205,7 +200,7 @@ const PricingComponent: React.FC = () => {
                 }
               >
                 <UnderlineText>{plan.button.text}</UnderlineText>
-              </GradientButton>
+              </Button>
             </ButtonWrapper>
           )}
         </PricingCard>

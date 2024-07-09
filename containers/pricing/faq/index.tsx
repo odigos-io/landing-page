@@ -9,12 +9,13 @@ import {
   ColumnContainer,
   SectionContainer,
   IconWrapper as OriginalIconWrapper,
+  MaxWidthContainer,
 } from '@/style';
 
 const Container = styled(SectionContainer)`
   height: auto;
   flex-direction: column;
-  max-width: 100%;
+  max-width: 1440px;
   width: 100%;
   padding: 160px 64px 0px 64px;
   @media (max-width: 800px) {
@@ -93,6 +94,7 @@ const Answer = styled.div`
 
 const ExpandIcon = styled(OriginalIconWrapper)`
   display: flex;
+  background-color: ${theme.colors.secondary};
   width: 64px;
   height: 64px;
   justify-content: center;
@@ -113,51 +115,49 @@ const FAQ = () => {
   };
 
   return (
-    <Container
-      justify={'flex-start'}
-      alignments={'flex-start'}
-      background={theme.colors.secondary}
-    >
-      <PageBody>
-        <SectionTitle
-          headerInfo={{
-            title: 'FAQs',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TitleWrapper>
-          <PageTitle>Frequently asked questions</PageTitle>
-        </TitleWrapper>
-        <FAQContainer>
-          {DATA.map((item, index) => (
-            <FAQItem key={item.id} onClick={() => handleToggle(index)}>
-              <Question>
-                {item.quest}
+    <MaxWidthContainer>
+      <Container justify={'flex-start'} alignments={'flex-start'}>
+        <PageBody>
+          <SectionTitle
+            headerInfo={{
+              title: 'FAQs',
+              subtitle: '',
+              description: '',
+            }}
+          />
+          <TitleWrapper>
+            <PageTitle>Frequently asked questions</PageTitle>
+          </TitleWrapper>
+          <FAQContainer>
+            {DATA.map((item, index) => (
+              <FAQItem key={item.id} onClick={() => handleToggle(index)}>
+                <Question>
+                  {item.quest}
 
-                <div>
-                  <ExpandIcon>
-                    <LazyImage
-                      src={'/icons/common/expand.svg'}
-                      alt={'expand'}
-                      width={isMobile ? 16 : 24}
-                      height={isMobile ? 16 : 24}
-                      style={{
-                        transform:
-                          activeIndex === index
-                            ? 'rotate(180deg)'
-                            : 'rotate(0deg)',
-                      }}
-                    />
-                  </ExpandIcon>
-                </div>
-              </Question>
-              {activeIndex === index && <Answer>{item.ans}</Answer>}
-            </FAQItem>
-          ))}
-        </FAQContainer>
-      </PageBody>
-    </Container>
+                  <div>
+                    <ExpandIcon>
+                      <LazyImage
+                        src={'/icons/common/expand.svg'}
+                        alt={'expand'}
+                        width={isMobile ? 16 : 24}
+                        height={isMobile ? 16 : 24}
+                        style={{
+                          transform:
+                            activeIndex === index
+                              ? 'rotate(180deg)'
+                              : 'rotate(0deg)',
+                        }}
+                      />
+                    </ExpandIcon>
+                  </div>
+                </Question>
+                {activeIndex === index && <Answer>{item.ans}</Answer>}
+              </FAQItem>
+            ))}
+          </FAQContainer>
+        </PageBody>
+      </Container>
+    </MaxWidthContainer>
   );
 };
 

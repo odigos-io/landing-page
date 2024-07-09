@@ -2,14 +2,15 @@
 import React, { useState } from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { FlexContainer } from '@/style';
+import { FlexContainer, MaxWidthContainer } from '@/style';
 import useIsMobile from '@/hooks/useIsMobile';
 import { Text, UnderlineText, LazyImage } from '@/reuseable-components';
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background: ${theme.colors.primary};
+  width: 100%;
+  max-width: 1440px;
   padding: 120px 64px;
   @media (max-width: 800px) {
     padding: 40px 20px;
@@ -88,92 +89,94 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
   const isMobile = useIsMobile();
 
   return (
-    <PageContainer>
-      <TagsContainer expanded={expanded}>
-        <FlexContainer
-          onClick={() => handleTagClick('EXPLORE ALL')}
-          alignments="flex-end"
-          key="explore-all"
-          gap={12}
-          style={{ cursor: 'pointer' }}
-        >
-          <UnderlineText
-            color={
-              selectedItems.includes('EXPLORE ALL')
-                ? theme.text.off_white
-                : 'rgba(249, 249, 249, 0.32)'
-            }
-            size={isMobile ? 20 : 32}
-          >
-            EXPLORE ALL
-          </UnderlineText>
-          <div style={{ paddingBottom: 4 }}>
-            <Text
-              color={
-                selectedItems.includes('EXPLORE ALL')
-                  ? theme.text.off_white
-                  : 'rgba(249, 249, 249, 0.32)'
-              }
-              fontFam={theme.font_family.secondary}
-              size={14}
-            >
-              {posts.length}
-            </Text>
-          </div>
-        </FlexContainer>
-        {Object.keys(tagCounts).map((tag) => (
+    <MaxWidthContainer style={{ background: theme.colors.primary }}>
+      <PageContainer>
+        <TagsContainer expanded={expanded}>
           <FlexContainer
-            onClick={() => handleTagClick(tag)}
+            onClick={() => handleTagClick('EXPLORE ALL')}
             alignments="flex-end"
-            key={tag}
+            key="explore-all"
             gap={12}
             style={{ cursor: 'pointer' }}
           >
             <UnderlineText
               color={
-                selectedItems.includes(tag)
+                selectedItems.includes('EXPLORE ALL')
                   ? theme.text.off_white
                   : 'rgba(249, 249, 249, 0.32)'
               }
               size={isMobile ? 20 : 32}
             >
-              {tag}
+              EXPLORE ALL
             </UnderlineText>
             <div style={{ paddingBottom: 4 }}>
               <Text
                 color={
-                  selectedItems.includes(tag)
+                  selectedItems.includes('EXPLORE ALL')
                     ? theme.text.off_white
                     : 'rgba(249, 249, 249, 0.32)'
                 }
                 fontFam={theme.font_family.secondary}
                 size={14}
               >
-                {tagCounts[tag]}
+                {posts.length}
               </Text>
             </div>
           </FlexContainer>
-        ))}
-      </TagsContainer>
-      <ExpandButtonWrapper>
-        <LazyImage
-          src="/icons/common/expand.svg"
-          width={15}
-          height={15}
-          alt="arrow"
-          style={{ transform: !expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-        />
-        <ExpandButton onClick={() => setExpanded(!expanded)}>
-          <Text
-            color={theme.text.off_white}
-            fontFam={theme.font_family.secondary}
-            size={14}
-          >
-            {expanded ? 'Show Less' : 'Show More'}
-          </Text>
-        </ExpandButton>
-      </ExpandButtonWrapper>
-    </PageContainer>
+          {Object.keys(tagCounts).map((tag) => (
+            <FlexContainer
+              onClick={() => handleTagClick(tag)}
+              alignments="flex-end"
+              key={tag}
+              gap={12}
+              style={{ cursor: 'pointer' }}
+            >
+              <UnderlineText
+                color={
+                  selectedItems.includes(tag)
+                    ? theme.text.off_white
+                    : 'rgba(249, 249, 249, 0.32)'
+                }
+                size={isMobile ? 20 : 32}
+              >
+                {tag}
+              </UnderlineText>
+              <div style={{ paddingBottom: 4 }}>
+                <Text
+                  color={
+                    selectedItems.includes(tag)
+                      ? theme.text.off_white
+                      : 'rgba(249, 249, 249, 0.32)'
+                  }
+                  fontFam={theme.font_family.secondary}
+                  size={14}
+                >
+                  {tagCounts[tag]}
+                </Text>
+              </div>
+            </FlexContainer>
+          ))}
+        </TagsContainer>
+        <ExpandButtonWrapper>
+          <LazyImage
+            src="/icons/common/expand.svg"
+            width={15}
+            height={15}
+            alt="arrow"
+            style={{ transform: !expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          />
+          <ExpandButton onClick={() => setExpanded(!expanded)}>
+            <Text
+              color={theme.text.off_white}
+              fontFam={theme.font_family.secondary}
+              size={14}
+            >
+              {expanded ? 'Show Less' : 'Show More'}
+            </Text>
+          </ExpandButton>
+        </ExpandButtonWrapper>
+      </PageContainer>
+    </MaxWidthContainer>
   );
 };
 

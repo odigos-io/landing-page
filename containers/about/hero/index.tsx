@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { ColumnContainer } from '@/style';
+import { ColumnContainer, MaxWidthContainer } from '@/style';
 import { SectionTitle, Typewriter } from '@/reuseable-components';
 import theme from '@/style/theme';
 import TextHero from '@/components/text-hero';
@@ -19,31 +19,6 @@ const PageContainer = styled.div`
     padding-top: 84px;
     gap: 32px;
   }
-`;
-
-const HeroTitle = styled.h1`
-  color: ${({ theme }) => theme.text.primary};
-  font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(3.5rem, 6vw, 6rem);
-  font-weight: 400;
-  line-height: 110%;
-  letter-spacing: -1.92px;
-  @media (max-width: 600px) {
-    letter-spacing: -1.12px;
-  }
-`;
-
-const DividersContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 64px;
-  width: 100%;
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  width: 100%;
-  background: rgba(249, 249, 249, 0.64);
 `;
 
 const VisionContainer = styled.div`
@@ -72,21 +47,23 @@ const AboutHero = () => {
   of performance monitoring.`;
 
   return (
-    <PageContainer>
-      <TextHero text="We’re Odigos" />
-      <VisionContainer>
-        <SectionTitle
-          headerInfo={{
-            title: 'VISION',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TextBody>
-          <Typewriter text={text}></Typewriter>
-        </TextBody>
-      </VisionContainer>
-    </PageContainer>
+    <MaxWidthContainer>
+      <PageContainer>
+        <TextHero text="We’re Odigos" />
+        <VisionContainer>
+          <SectionTitle
+            headerInfo={{
+              title: 'VISION',
+              subtitle: '',
+              description: '',
+            }}
+          />
+          <TextBody>
+            <Typewriter text={text}></Typewriter>
+          </TextBody>
+        </VisionContainer>
+      </PageContainer>
+    </MaxWidthContainer>
   );
 };
 

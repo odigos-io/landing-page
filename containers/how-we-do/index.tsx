@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { SectionContainer } from '@/style';
+import { MaxWidthContainer, SectionContainer } from '@/style';
 import { SectionTitle, Typewriter } from '@/reuseable-components';
 
 const PageBorder = styled.div`
-  margin: 0 4px;
+  margin-top: 40px;
   padding: 0px 80px;
   width: 100%;
   border-radius: 120px 120px 0px 0px;
@@ -13,6 +13,7 @@ const PageBorder = styled.div`
   border-bottom: 0;
 
   @media (max-width: 800px) {
+    margin-top: 0px;
     padding: 0px;
     border-radius: 48px 48px 0px 0px;
   }
@@ -33,7 +34,7 @@ const InnerBorder = styled.div`
 
 const Body = styled.div`
   display: flex;
-  padding: 160px 80px;
+  padding: 80px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -54,6 +55,8 @@ const Body = styled.div`
 
 const Container = styled(SectionContainer)`
   height: auto;
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 1000px) {
     height: auto;
     margin-top: 80px;
@@ -66,22 +69,24 @@ const HowWeDo = () => {
   for effortless implementation.`;
 
   return (
-    <Container padding="0">
-      <PageBorder>
-        <InnerBorder>
-          <Body>
-            <SectionTitle
-              headerInfo={{
-                title: 'HOW WE DO',
-                subtitle: 'Subtitle',
-                description: 'Description',
-              }}
-            />
-            <Typewriter textAlignment={'center'} text={multilineText} />
-          </Body>
-        </InnerBorder>
-      </PageBorder>
-    </Container>
+    <MaxWidthContainer>
+      <Container padding="0">
+        <PageBorder>
+          <InnerBorder>
+            <Body>
+              <SectionTitle
+                headerInfo={{
+                  title: 'HOW WE DO',
+                  subtitle: 'Subtitle',
+                  description: 'Description',
+                }}
+              />
+              <Typewriter textAlignment={'center'} text={multilineText} />
+            </Body>
+          </InnerBorder>
+        </PageBorder>
+      </Container>
+    </MaxWidthContainer>
   );
 };
 
