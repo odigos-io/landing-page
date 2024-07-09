@@ -9,6 +9,7 @@ import {
   SectionTitle,
   LazyImage,
 } from '@/reuseable-components';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -136,6 +137,8 @@ const TextWrapper = styled(ColumnContainer)`
 `;
 
 const HowToStart: React.FC = () => {
+  const isMobile = useIsMobile(1100);
+
   return (
     <Container
       padding="0"
@@ -160,34 +163,34 @@ const HowToStart: React.FC = () => {
         </TitleWrapper>
         <ListContainer>
           {DATA.map((item, index) => (
-            <>
-              <ItemWrapper key={index} gap={32}>
-                <div>
-                  <LottieAnimation
-                    animationData={item.lottie}
-                    loop={true}
-                    autoplay={true}
-                    width={320}
-                  />
-                </div>
-                <FlexContainer alignments={'flex-start'}>
-                  <TextWrapper gap={16}>
-                    <ItemTitle>{item.title}</ItemTitle>
-                    <ItemSubtitle>{item.subtitle}</ItemSubtitle>
-                  </TextWrapper>
-                  {index !== 2 && (
-                    <ArrowIconWrapper>
-                      <LazyImage
-                        src="/icons/common/arrow.svg"
-                        width={27}
-                        height={40}
-                        alt="arrow"
-                      />
-                    </ArrowIconWrapper>
-                  )}
-                </FlexContainer>
-              </ItemWrapper>
-            </>
+            <ItemWrapper key={index} gap={32}>
+              <div>
+                <LottieAnimation
+                  animationData={item.lottie}
+                  loop={true}
+                  autoplay={true}
+                  width={320}
+                />
+              </div>
+              <FlexContainer alignments={'flex-start'}>
+                <TextWrapper gap={16}>
+                  <ItemTitle>
+                    {isMobile ? `${index + 1}. ${item.title}` : item.title}
+                  </ItemTitle>
+                  <ItemSubtitle>{item.subtitle}</ItemSubtitle>
+                </TextWrapper>
+                {index !== 2 && (
+                  <ArrowIconWrapper>
+                    <LazyImage
+                      src="/icons/common/arrow.svg"
+                      width={27}
+                      height={40}
+                      alt="arrow"
+                    />
+                  </ArrowIconWrapper>
+                )}
+              </FlexContainer>
+            </ItemWrapper>
           ))}
         </ListContainer>
       </PageBody>
