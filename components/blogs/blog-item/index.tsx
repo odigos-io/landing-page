@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { BlogFooter } from '../blog-footer';
+import Image from 'next/image';
 
 const BlogItemContainer = styled.div`
   display: flex;
@@ -62,6 +63,11 @@ export const BlogItem = ({ blog }: { blog: any }) => {
 
   const { image, title, description, slug, tags } = blog;
 
+  const imagesArray = [
+    '/images/blogs-cover/odigos_blog1.png',
+    '/images/blogs-cover/odigos_blog3.png',
+  ];
+
   return (
     <>
       <Link href={`/blog/${slug}`}>
@@ -69,13 +75,13 @@ export const BlogItem = ({ blog }: { blog: any }) => {
           {image ? (
             <img
               style={{
-                objectFit: 'cover',
+                // objectFit: 'cover',
                 height: 200,
                 width: '100%',
                 borderTopLeftRadius: 48,
                 borderTopRightRadius: 48,
               }}
-              src={image}
+              src={imagesArray[Math.floor(Math.random() * imagesArray.length)]}
               alt={title}
             />
           ) : (
