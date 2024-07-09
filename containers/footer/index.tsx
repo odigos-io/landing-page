@@ -10,7 +10,7 @@ import { MaxWidthContainer } from '@/style';
 
 const FooterContainer = styled.footer`
   display: flex;
-  padding: 80px 0px 32px 0px;
+  padding: 80px 32px;
   flex-direction: column;
   gap: 64px;
   @media (max-width: 1100px) {

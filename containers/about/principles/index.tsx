@@ -3,12 +3,19 @@ import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import { DATA } from './data';
-import { ColumnContainer, GridContainer, SectionContainer } from '@/style';
+import {
+  ColumnContainer,
+  GridContainer,
+  MaxWidthContainer,
+  SectionContainer,
+} from '@/style';
 import { SectionTitle, Text, LazyImage } from '@/reuseable-components';
 
 const Container = styled(SectionContainer)`
   height: auto;
   padding: 160px 64px;
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 800px) {
     padding: 80px 20px;
   }
@@ -84,37 +91,35 @@ const Description = styled.div`
 
 const Principles = () => {
   return (
-    <Container
-      justify={'flex-start'}
-      alignments={'flex-start'}
-      background={theme.colors.primary}
-    >
-      <PageBody>
-        <SectionTitle
-          headerInfo={{
-            title: 'PRINCIPLES',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TitleWrapper>
-          <PageTitle>Our Principles</PageTitle>
-        </TitleWrapper>
-        <PrinciplesContainer gap={24}>
-          {DATA.map((data, index) => (
-            <PrincipleItem key={index}>
-              <LazyImage alt="icon" src={data.icon} width={64} height={64} />
-              <TextWrapper>
-                <Text fontFam={theme.font_family.secondary} size={24}>
-                  {data.title}
-                </Text>
-                <Description>{data.description}</Description>
-              </TextWrapper>
-            </PrincipleItem>
-          ))}
-        </PrinciplesContainer>
-      </PageBody>
-    </Container>
+    <MaxWidthContainer style={{ background: theme.colors.primary }}>
+      <Container justify={'flex-start'} alignments={'flex-start'}>
+        <PageBody>
+          <SectionTitle
+            headerInfo={{
+              title: 'PRINCIPLES',
+              subtitle: '',
+              description: '',
+            }}
+          />
+          <TitleWrapper>
+            <PageTitle>Our Principles</PageTitle>
+          </TitleWrapper>
+          <PrinciplesContainer gap={24}>
+            {DATA.map((data, index) => (
+              <PrincipleItem key={index}>
+                <LazyImage alt="icon" src={data.icon} width={64} height={64} />
+                <TextWrapper>
+                  <Text fontFam={theme.font_family.secondary} size={24}>
+                    {data.title}
+                  </Text>
+                  <Description>{data.description}</Description>
+                </TextWrapper>
+              </PrincipleItem>
+            ))}
+          </PrinciplesContainer>
+        </PageBody>
+      </Container>
+    </MaxWidthContainer>
   );
 };
 

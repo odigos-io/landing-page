@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { ColumnContainer } from '@/style';
+import { ColumnContainer, MaxWidthContainer } from '@/style';
 import { SectionTitle, Typewriter } from '@/reuseable-components';
 import theme from '@/style/theme';
 import TextHero from '@/components/text-hero';
@@ -72,21 +72,23 @@ const AboutHero = () => {
   of performance monitoring.`;
 
   return (
-    <PageContainer>
-      <TextHero text="We’re Odigos" />
-      <VisionContainer>
-        <SectionTitle
-          headerInfo={{
-            title: 'VISION',
-            subtitle: '',
-            description: '',
-          }}
-        />
-        <TextBody>
-          <Typewriter text={text}></Typewriter>
-        </TextBody>
-      </VisionContainer>
-    </PageContainer>
+    <MaxWidthContainer>
+      <PageContainer>
+        <TextHero text="We’re Odigos" />
+        <VisionContainer>
+          <SectionTitle
+            headerInfo={{
+              title: 'VISION',
+              subtitle: '',
+              description: '',
+            }}
+          />
+          <TextBody>
+            <Typewriter text={text}></Typewriter>
+          </TextBody>
+        </VisionContainer>
+      </PageContainer>
+    </MaxWidthContainer>
   );
 };
 
