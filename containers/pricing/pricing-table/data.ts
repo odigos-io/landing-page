@@ -7,7 +7,7 @@ export const DATA = [
     price: 'Free',
     isBeta: false,
     features: [
-      'Support for Java, Python, Go, NET, and JavaScript applications',
+      'Support for Java, Python, Go, .NET, and NodeJS applications',
       'Kubernetes environment',
       'Local UI for a single cluster',
       'Community Support',

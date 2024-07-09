@@ -93,6 +93,7 @@ const Answer = styled.div`
 
 const ExpandIcon = styled(OriginalIconWrapper)`
   display: flex;
+  background-color: ${theme.colors.secondary};
   width: 64px;
   height: 64px;
   justify-content: center;

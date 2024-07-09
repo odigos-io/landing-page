@@ -3,7 +3,7 @@ import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import Github from '@/components/github';
-import { Button, GradientButton, UnderlineText } from '@/reuseable-components';
+import { Button, UnderlineText } from '@/reuseable-components';
 const PageContainer = styled.div`
   width: 100%;
   padding: 160px 0;
@@ -156,9 +156,9 @@ const CTA: React.FC = () => {
                     SIGN IN
                   </UnderlineText>
                 </Button>
-                <GradientButton color={theme.colors.secondary}>
+                <Button color={theme.colors.secondary}>
                   <Github />
-                </GradientButton>
+                </Button>
               </ButtonWrapper>
             </Body>
           </SecondInnerBorder>
