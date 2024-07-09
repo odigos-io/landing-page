@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import Link from 'next/link';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
@@ -60,8 +61,14 @@ const ActionBarWrapper = styled.div`
 
 export const Header = () => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
+  const [currentItem, setCurrentItem] = useState(10);
+
   const handleSignInClick = () => {
     window.open('https://app.odigos.io/signin', '_blank');
+  };
+
+  const handleMenuItemClick = (index: number) => {
+    setCurrentItem(index);
   };
 
   return (
@@ -69,17 +76,20 @@ export const Header = () => {
       <HeaderContainer isOpen={dropdownToggler}>
         <HeaderInner>
           <LogoContainer>
-            <a href="/">
+            <Link href="/">
               <LazyImage
                 src="/images/logo/text-logo.svg"
                 alt="logo"
                 width={133}
                 height={32}
               />
-            </a>
+            </Link>
           </LogoContainer>
 
-          <MenuItemList />
+          <MenuItemList
+            onClick={handleMenuItemClick}
+            currentIndexItem={currentItem}
+          />
           <ActionBarWrapper>
             <SignInButton onClick={handleSignInClick} variant="secondary">
               <UnderlineText color={theme.text.secondary}>

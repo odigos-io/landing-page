@@ -21,21 +21,36 @@ const NavList = styled.ul`
   }
 `;
 
-const NavItem = styled.li`
+const NavItem = styled.li<{ selected?: boolean }>`
   position: relative;
   display: flex;
   gap: 8px;
+  opacity: ${({ selected }) => (selected ? 1 : 0.4)};
+  transition: opacity 0.3s ease;
 
+  &:hover {
+    opacity: 0.64;
+  }
   &.group {
     cursor: pointer;
   }
 `;
 
-const MenuItemList = () => {
+const MenuItemList = ({
+  onClick,
+  currentIndexItem,
+}: {
+  onClick: (index: number) => void;
+  currentIndexItem: number;
+}) => {
   return (
     <NavList>
       {menuData.map((menuItem, key) => (
-        <NavItem key={key}>
+        <NavItem
+          key={key}
+          onClick={() => onClick(key)}
+          selected={key === currentIndexItem}
+        >
           <UnderlineText>
             <Link
               href={`${menuItem.path}`}
