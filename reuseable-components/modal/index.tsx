@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { ColumnContainer } from '@/style';
-// import { useOnClickOutside } from '@/hooks/useOnClickOutside';
+import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { LazyImage } from '../lazy-image';
 import { Button } from '../button';
 import useIsMobile from '@/hooks/useIsMobile';
@@ -160,16 +160,33 @@ const ButtonWrapper = styled.div`
     height: 32px;
   }
 `;
+
 const Modal = ({ title, description, onClose, children }: ModalProps) => {
   const [isVisible, setIsVisible] = React.useState(true);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile(1300);
 
-  const handleClose = () => {
+  useOnClickOutside(containerRef, handleClose);
+
+  function handleClose() {
     setIsVisible(false);
     setTimeout(onClose, 300); // Match the duration of the fade-out animation
-  };
+  }
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      handleClose();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <ModalContainer isVisible={isVisible}>
