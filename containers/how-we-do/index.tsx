@@ -5,7 +5,7 @@ import { SectionContainer } from '@/style';
 import { SectionTitle, Typewriter } from '@/reuseable-components';
 
 const PageBorder = styled.div`
-  margin: 0 4px;
+  margin-top: 40px;
   padding: 0px 80px;
   width: 100%;
   border-radius: 120px 120px 0px 0px;
@@ -13,6 +13,7 @@ const PageBorder = styled.div`
   border-bottom: 0;
 
   @media (max-width: 800px) {
+    margin-top: 0px;
     padding: 0px;
     border-radius: 48px 48px 0px 0px;
   }

@@ -6,6 +6,7 @@ import { TrustedList, WatchDemoBtn } from '@/components';
 import { FlexContainer, ColumnContainer, SectionContainer } from '@/style';
 import { LottieAnimation } from '@/reuseable-components';
 import animationData from '../../public/lotties/hero.json';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
@@ -76,6 +77,7 @@ const DemoIframe = styled.iframe`
 
 const Container = styled(SectionContainer)`
   align-items: flex-start;
+  height: auto;
   @media (max-width: 1300px) {
     height: auto;
   }
@@ -83,6 +85,8 @@ const Container = styled(SectionContainer)`
 
 const Hero = () => {
   const [open, setOpen] = React.useState(false);
+
+  const isMobile = useIsMobile();
 
   return (
     <PageContainer>
@@ -105,6 +109,7 @@ const Hero = () => {
             animationData={animationData}
             loop={true}
             autoplay={true}
+            height={isMobile ? 235 : '100%'}
           />
         </LottieWrapper>
       </Container>
