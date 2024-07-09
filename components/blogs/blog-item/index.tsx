@@ -75,7 +75,7 @@ export const BlogItem = ({ blog }: { blog: any }) => {
           {image ? (
             <img
               style={{
-                // objectFit: 'cover',
+                objectFit: 'cover',
                 height: 200,
                 width: '100%',
                 borderTopLeftRadius: 48,
