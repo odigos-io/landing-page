@@ -15,7 +15,10 @@ const Container = styled(SectionContainer)`
   padding: 120px 64px;
   width: 100%;
   @media (max-width: 1100px) {
-    padding: 80px 20px;
+    padding: 80px 64px;
+  }
+  @media (max-width: 800px) {
+    padding: 80px 32px;
   }
 `;
 
@@ -43,7 +46,7 @@ const PageTitle = styled.span`
   font-style: normal;
   font-weight: 400;
   line-height: 130%;
-  @media (max-width: 1100px) {
+  @media (max-width: 600px) {
     font-size: 28px;
   }
 `;
@@ -58,7 +61,6 @@ const Subtitle = styled.h2`
   line-height: 150%;
   opacity: 0.8;
   @media (max-width: 1100px) {
-    font-size: 16px;
     margin-bottom: 0px;
   }
 `;
@@ -69,7 +71,7 @@ const ListContainer = styled.div`
   width: 100%;
 
   @media (max-width: 1100px) {
-    gap: 40px;
+    gap: 80px;
     flex-direction: column;
     justify-content: center;
   }
@@ -97,6 +99,9 @@ const ItemSubtitle = styled.span`
   line-height: 150%;
   letter-spacing: 0.32px;
   opacity: 0.8;
+  @media (max-width: 1100px) {
+    max-width: 422px;
+  }
 `;
 
 const ArrowIconWrapper = styled.div`
@@ -107,6 +112,26 @@ const ArrowIconWrapper = styled.div`
 
   @media (max-width: 1100px) {
     display: none;
+  }
+`;
+
+const ItemWrapper = styled(ColumnContainer)`
+  @media (max-width: 1100px) {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    gap: 48px;
+  }
+  @media (max-width: 800px) {
+    flex-direction: column;
+    gap: 32px;
+  }
+`;
+
+const TextWrapper = styled(ColumnContainer)`
+  @media (max-width: 1100px) {
+    justify-content: center;
   }
 `;
 
@@ -136,7 +161,7 @@ const HowToStart: React.FC = () => {
         <ListContainer>
           {DATA.map((item, index) => (
             <>
-              <ColumnContainer key={index} gap={32}>
+              <ItemWrapper key={index} gap={32}>
                 <div>
                   <LottieAnimation
                     animationData={item.lottie}
@@ -146,10 +171,10 @@ const HowToStart: React.FC = () => {
                   />
                 </div>
                 <FlexContainer alignments={'flex-start'}>
-                  <ColumnContainer gap={16}>
+                  <TextWrapper gap={16}>
                     <ItemTitle>{item.title}</ItemTitle>
                     <ItemSubtitle>{item.subtitle}</ItemSubtitle>
-                  </ColumnContainer>
+                  </TextWrapper>
                   {index !== 2 && (
                     <ArrowIconWrapper>
                       <LazyImage
@@ -161,7 +186,7 @@ const HowToStart: React.FC = () => {
                     </ArrowIconWrapper>
                   )}
                 </FlexContainer>
-              </ColumnContainer>
+              </ItemWrapper>
             </>
           ))}
         </ListContainer>
