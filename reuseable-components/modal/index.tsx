@@ -40,6 +40,7 @@ const fadeOut = keyframes`
 const ModalContainer = styled.div<{ isVisible: boolean }>`
   width: 100vw;
   height: 100vh;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,6 +48,7 @@ const ModalContainer = styled.div<{ isVisible: boolean }>`
   position: fixed;
   z-index: 9999;
   top: 0;
+  left: 0;
   animation: ${({ isVisible }) => (isVisible ? fadeIn : fadeOut)} 0.3s ease-out;
   display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};
 `;

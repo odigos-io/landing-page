@@ -83,52 +83,61 @@ const Container = styled(SectionContainer)`
   }
 `;
 
+const MaxWidthContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Hero = () => {
   const [open, setOpen] = React.useState(false);
 
   const isMobile = useIsMobile();
 
   return (
-    <PageContainer>
-      <Container>
-        <ColumnContainer>
-          <FlexContainer gap={40}>
-            <HeroTitle>Deeper</HeroTitle>
+    <MaxWidthContainer>
+      <PageContainer>
+        <Container>
+          <ColumnContainer>
+            <FlexContainer gap={40}>
+              <HeroTitle>Deeper</HeroTitle>
 
-            <WatchDemoBtn onClick={() => setOpen(true)} />
-          </FlexContainer>
-          <HeroTitle>Observability </HeroTitle>
-          <HeroSubTitle>
-            Resolve incidents faster with deeper distributed tracing for all
-            your backend architecture without any code changes.
-          </HeroSubTitle>
-          <TrustedList />
-        </ColumnContainer>
-        <LottieWrapper>
-          <LottieAnimation
-            animationData={animationData}
-            loop={true}
-            autoplay={true}
-            height={isMobile ? 235 : '100%'}
-          />
-        </LottieWrapper>
-      </Container>
-      {open && (
-        <Modal
-          title="We are Odigos!"
-          description=""
-          onClose={() => setOpen(false)}
-        >
-          <DemoIframe
-            className="rounded-lg demo-view"
-            src={`https://www.youtube.com/embed/nynyV7FC4VI`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Embedded youtube"
-          />
-        </Modal>
-      )}
-    </PageContainer>
+              <WatchDemoBtn onClick={() => setOpen(true)} />
+            </FlexContainer>
+            <HeroTitle>Observability </HeroTitle>
+            <HeroSubTitle>
+              Resolve incidents faster with deeper distributed tracing for all
+              your backend architecture without any code changes.
+            </HeroSubTitle>
+            <TrustedList />
+          </ColumnContainer>
+          <LottieWrapper>
+            <LottieAnimation
+              animationData={animationData}
+              loop={true}
+              autoplay={true}
+              height={isMobile ? 235 : '100%'}
+            />
+          </LottieWrapper>
+        </Container>
+        {open && (
+          <Modal
+            title="We are Odigos!"
+            description=""
+            onClose={() => setOpen(false)}
+          >
+            <DemoIframe
+              className="rounded-lg demo-view"
+              src={`https://www.youtube.com/embed/nynyV7FC4VI`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded youtube"
+            />
+          </Modal>
+        )}
+      </PageContainer>
+    </MaxWidthContainer>
   );
 };
 

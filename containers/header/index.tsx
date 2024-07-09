@@ -1,19 +1,17 @@
 'use client';
 import React, { useState } from 'react';
+import Link from 'next/link';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
-import Link from 'next/link';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
 const HeaderContainer = styled.header<{ isOpen: boolean }>`
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
+  max-width: 1440px;
   z-index: 9999;
   background: ${({ theme, isOpen }) =>
     isOpen ? theme.colors.primary : theme.colors.secondary};
@@ -59,6 +57,15 @@ const ActionBarWrapper = styled.div`
   }
 `;
 
+const MaxWidthContainer = styled.div`
+  position: fixed;
+  background: ${theme.colors.secondary};
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const Header = () => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [currentItem, setCurrentItem] = useState(10);
@@ -72,7 +79,7 @@ export const Header = () => {
   };
 
   return (
-    <>
+    <MaxWidthContainer>
       <HeaderContainer isOpen={dropdownToggler}>
         <HeaderInner>
           <LogoContainer onClick={() => setCurrentItem(10)}>
@@ -117,6 +124,6 @@ export const Header = () => {
       {dropdownToggler && (
         <MobileHeaderMenu onClick={() => setDropdownToggler(false)} />
       )}
-    </>
+    </MaxWidthContainer>
   );
 };
