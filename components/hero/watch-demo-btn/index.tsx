@@ -16,6 +16,7 @@ const MobileButtonContent = styled.div`
   display: none;
   @media (max-width: 600px) {
     display: flex;
+    align-items: center;
     gap: 8px;
     span {
       font-size: 16px;
