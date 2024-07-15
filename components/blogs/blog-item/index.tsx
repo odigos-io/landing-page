@@ -64,8 +64,9 @@ export const BlogItem = ({ blog }: { blog: any }) => {
   const { image, title, description, slug, tags } = blog;
 
   const imagesArray = [
-    '/images/blogs-cover/odigos_blog1.png',
-    '/images/blogs-cover/odigos_blog3.png',
+    '/images/blogs-cover/odigos_blog1.svg',
+    '/images/blogs-cover/odigos_blog2.svg',
+    '/images/blogs-cover/odigos_blog3.svg',
   ];
 
   return (
