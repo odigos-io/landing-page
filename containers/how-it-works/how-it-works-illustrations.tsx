@@ -11,6 +11,7 @@ import animationData3 from '../../public/lotties/Odigos-3rd-animation.json';
 import animationData4 from '../../public/lotties/Odigos-4th-animation.json';
 import animationData5 from '../../public/lotties/Odigos-5th-animation.json';
 import lines from '../../public/lotties/Odigos-bg-lines.json';
+import { BlurFade } from '@/components';
 
 const LottieMap = {
   1: {
@@ -170,12 +171,14 @@ const HowItWorksIllustrations = () => {
       <AnimationContainer>
         <div style={{ position: 'absolute', top: -16 }} ref={backgroundRef} />
         {DATA.map((data, index) => (
-          <AnimatedIllustration key={index} top={index * 900}>
-            <LottieAnimation
-              ref={(el) => (animationRefs.current[index] = el)}
-              {...LottieMap[index + 1]}
-            />
-          </AnimatedIllustration>
+          <BlurFade key={index} delay={0.25 + index * 0.05} inView>
+            <AnimatedIllustration key={index} top={index * 900}>
+              <LottieAnimation
+                ref={(el) => (animationRefs.current[index] = el)}
+                {...LottieMap[index + 1]}
+              />
+            </AnimatedIllustration>
+          </BlurFade>
         ))}
       </AnimationContainer>
     </div>

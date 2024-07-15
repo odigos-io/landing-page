@@ -11,6 +11,7 @@ import animationData3 from '../../public/lotties/Odigos-3rd-animation.json';
 import animationData4 from '../../public/lotties/Odigos-4th-animation.json';
 import animationData5 from '../../public/lotties/Odigos-5th-animation.json';
 import linesMobile from '../../public/lotties/Odigos-bg-lines-mobile.json';
+import { BlurFade } from '@/components';
 
 const LottieMap = {
   1: {
