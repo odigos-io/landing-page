@@ -2,6 +2,7 @@
 import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
+import { BlurFade } from '@/components';
 import { DATA } from './data';
 import {
   ColumnContainer,
@@ -106,15 +107,22 @@ const Principles = () => {
           </TitleWrapper>
           <PrinciplesContainer gap={24}>
             {DATA.map((data, index) => (
-              <PrincipleItem key={index}>
-                <LazyImage alt="icon" src={data.icon} width={64} height={64} />
-                <TextWrapper>
-                  <Text fontFam={theme.font_family.secondary} size={24}>
-                    {data.title}
-                  </Text>
-                  <Description>{data.description}</Description>
-                </TextWrapper>
-              </PrincipleItem>
+              <BlurFade key={index} delay={0.25 + index * 0.05} inView>
+                <PrincipleItem key={index}>
+                  <LazyImage
+                    alt="icon"
+                    src={data.icon}
+                    width={64}
+                    height={64}
+                  />
+                  <TextWrapper>
+                    <Text fontFam={theme.font_family.secondary} size={24}>
+                      {data.title}
+                    </Text>
+                    <Description>{data.description}</Description>
+                  </TextWrapper>
+                </PrincipleItem>
+              </BlurFade>
             ))}
           </PrinciplesContainer>
         </PageBody>

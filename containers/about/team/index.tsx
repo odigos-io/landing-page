@@ -10,6 +10,7 @@ import {
   UnderlineText,
   LazyImage,
 } from '@/reuseable-components';
+import { BlurFade } from '@/components';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -146,32 +147,34 @@ const Teams = () => {
           </TitleWrapper>
           <TeamContainer>
             {DATA.map((data, index) => (
-              <TeamItem key={index}>
-                <TextWrapper>
-                  <Text fontFam={theme.font_family.secondary} size={24}>
-                    {data.name}
-                  </Text>
-                  <Title>{data.title}</Title>
-                  <Divider />
-                  <Title
-                    dangerouslySetInnerHTML={{ __html: data.description }}
-                  />
-                  <LinkWrapper
-                    href={data.linkedin_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LazyImage
-                      src={'/icons/social/linkedin.svg'}
-                      alt="linkedin"
-                      width={18}
-                      height={18}
-                      style={{ marginTop: 2 }}
+              <BlurFade key={index} delay={0.25 + index * 0.05} inView>
+                <TeamItem>
+                  <TextWrapper>
+                    <Text fontFam={theme.font_family.secondary} size={24}>
+                      {data.name}
+                    </Text>
+                    <Title>{data.title}</Title>
+                    <Divider />
+                    <Title
+                      dangerouslySetInnerHTML={{ __html: data.description }}
                     />
-                    <UnderlineText>LinkedIn</UnderlineText>
-                  </LinkWrapper>
-                </TextWrapper>
-              </TeamItem>
+                    <LinkWrapper
+                      href={data.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <LazyImage
+                        src={'/icons/social/linkedin.svg'}
+                        alt="linkedin"
+                        width={18}
+                        height={18}
+                        style={{ marginTop: 2 }}
+                      />
+                      <UnderlineText>LinkedIn</UnderlineText>
+                    </LinkWrapper>
+                  </TextWrapper>
+                </TeamItem>
+              </BlurFade>
             ))}
           </TeamContainer>
         </PageBody>
