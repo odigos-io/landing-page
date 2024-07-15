@@ -11,6 +11,7 @@ import {
   IconWrapper as OriginalIconWrapper,
   MaxWidthContainer,
 } from '@/style';
+import { BlurFade } from '@/components';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -151,7 +152,11 @@ const FAQ = () => {
                     </ExpandIcon>
                   </div>
                 </Question>
-                {activeIndex === index && <Answer>{item.ans}</Answer>}
+                {activeIndex === index && (
+                  <BlurFade>
+                    <Answer>{item.ans}</Answer>
+                  </BlurFade>
+                )}
               </FAQItem>
             ))}
           </FAQContainer>
