@@ -40,12 +40,18 @@ const TitleWrapper = styled.div`
 const PageTitle = styled.div`
   color: ${theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 3vw;
+  font-size: 48px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
   max-width: 50vw;
-  @media (max-width: 800px) {
+  @media (max-width: 1400px) {
+    font-size: 32px;
+  }
+  @media (max-width: 1100px) {
+    font-size: 28px;
+  }
+  @media (max-width: 1100px) {
     font-size: 24px;
     max-width: 100%;
   }
@@ -110,6 +116,7 @@ const Divider = styled.div`
 const TeamImage = styled.img`
   width: 100%;
   max-width: 40%;
+  max-height: 400px;
   object-fit: cover;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
