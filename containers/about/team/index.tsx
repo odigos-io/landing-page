@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import theme from '@/style/theme';
-import { DATA } from './data';
+import { DATA, MOBILE_DATA } from './data';
 import styled from 'styled-components';
 import { ColumnContainer, MaxWidthContainer, SectionContainer } from '@/style';
 import {
@@ -11,6 +11,7 @@ import {
   LazyImage,
 } from '@/reuseable-components';
 import { BlurFade } from '@/components';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -133,6 +134,7 @@ const LinkWrapper = styled.a`
 `;
 
 const Teams = () => {
+  const isMobile = useIsMobile();
   return (
     <MaxWidthContainer>
       <Container justify={'flex-start'} alignments={'flex-start'}>
@@ -153,7 +155,7 @@ const Teams = () => {
             <TeamImage alt="icon" src={'/images/team/team.jpg'} />
           </TitleWrapper>
           <TeamContainer>
-            {DATA.map((data, index) => (
+            {(isMobile ? MOBILE_DATA : DATA).map((data, index) => (
               <BlurFade key={index} delay={0.25 + index * 0.05} inView>
                 <TeamItem>
                   <TextWrapper>
