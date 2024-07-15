@@ -44,6 +44,7 @@ const LottieWrapper = styled.div`
     }
   }
   @media (max-width: 650px) {
+    height: 235px;
     div {
       width: 100% !important;
     }
