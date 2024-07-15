@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import { BlogItem } from '../blog-item';
 import { MaxWidthContainer } from '@/style';
+import { BlurFade } from '@/components';
 
 const BlogItemsContainer = styled.div`
   padding: 0 64px;
@@ -20,7 +21,11 @@ export const BlogList = ({ posts }) => {
     <MaxWidthContainer>
       <BlogItemsContainer>
         {posts.length > 0 &&
-          posts.map((post, key) => <BlogItem key={key} blog={post} />)}
+          posts.map((post, key) => (
+            <BlurFade key={key} delay={0.05 + key * 0.05} inView>
+              <BlogItem key={key} blog={post} />
+            </BlurFade>
+          ))}
       </BlogItemsContainer>
     </MaxWidthContainer>
   );

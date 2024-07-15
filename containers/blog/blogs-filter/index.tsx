@@ -51,6 +51,22 @@ const ExpandButtonWrapper = styled.div`
   align-items: center;
 `;
 
+const NavItem = styled.div<{ selected?: boolean }>`
+  position: relative;
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  opacity: ${({ selected }) => (selected ? 1 : 0.4)};
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.64;
+  }
+  &.group {
+    cursor: pointer;
+  }
+`;
+
 const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -99,29 +115,29 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
             gap={12}
             style={{ cursor: 'pointer' }}
           >
-            <UnderlineText
-              color={
-                selectedItems.includes('EXPLORE ALL')
-                  ? theme.text.off_white
-                  : 'rgba(249, 249, 249, 0.32)'
+            <NavItem
+              selected={
+                selectedItems.includes('EXPLORE ALL') ||
+                Object.keys(tagCounts).length === selectedItems.length
               }
-              size={isMobile ? 20 : 32}
             >
-              EXPLORE ALL
-            </UnderlineText>
-            <div style={{ paddingBottom: 4 }}>
-              <Text
-                color={
-                  selectedItems.includes('EXPLORE ALL')
-                    ? theme.text.off_white
-                    : 'rgba(249, 249, 249, 0.32)'
-                }
-                fontFam={theme.font_family.secondary}
-                size={14}
-              >
-                {posts.length}
-              </Text>
-            </div>
+              <UnderlineText size={isMobile ? 20 : 32}>
+                EXPLORE ALL
+              </UnderlineText>
+              <div style={{ paddingBottom: 4 }}>
+                <Text
+                  color={
+                    selectedItems.includes('EXPLORE ALL')
+                      ? theme.text.off_white
+                      : 'rgba(249, 249, 249, 0.32)'
+                  }
+                  fontFam={theme.font_family.secondary}
+                  size={14}
+                >
+                  {posts.length}
+                </Text>
+              </div>
+            </NavItem>
           </FlexContainer>
           {Object.keys(tagCounts).map((tag) => (
             <FlexContainer
@@ -131,29 +147,14 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
               gap={12}
               style={{ cursor: 'pointer' }}
             >
-              <UnderlineText
-                color={
-                  selectedItems.includes(tag)
-                    ? theme.text.off_white
-                    : 'rgba(249, 249, 249, 0.32)'
-                }
-                size={isMobile ? 20 : 32}
-              >
-                {tag}
-              </UnderlineText>
-              <div style={{ paddingBottom: 4 }}>
-                <Text
-                  color={
-                    selectedItems.includes(tag)
-                      ? theme.text.off_white
-                      : 'rgba(249, 249, 249, 0.32)'
-                  }
-                  fontFam={theme.font_family.secondary}
-                  size={14}
-                >
-                  {tagCounts[tag]}
-                </Text>
-              </div>
+              <NavItem selected={selectedItems.includes(tag)}>
+                <UnderlineText size={isMobile ? 20 : 32}>{tag}</UnderlineText>
+                <div style={{ paddingBottom: 4 }}>
+                  <Text fontFam={theme.font_family.secondary} size={14}>
+                    {tagCounts[tag]}
+                  </Text>
+                </div>
+              </NavItem>
             </FlexContainer>
           ))}
         </TagsContainer>

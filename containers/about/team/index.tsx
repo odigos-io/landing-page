@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import theme from '@/style/theme';
-import { DATA } from './data';
+import { DATA, MOBILE_DATA } from './data';
 import styled from 'styled-components';
 import { ColumnContainer, MaxWidthContainer, SectionContainer } from '@/style';
 import {
@@ -10,6 +10,8 @@ import {
   UnderlineText,
   LazyImage,
 } from '@/reuseable-components';
+import { BlurFade } from '@/components';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -39,12 +41,18 @@ const TitleWrapper = styled.div`
 const PageTitle = styled.div`
   color: ${theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 3vw;
+  font-size: 48px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
   max-width: 50vw;
-  @media (max-width: 800px) {
+  @media (max-width: 1400px) {
+    font-size: 32px;
+  }
+  @media (max-width: 1100px) {
+    font-size: 28px;
+  }
+  @media (max-width: 1100px) {
     font-size: 24px;
     max-width: 100%;
   }
@@ -109,6 +117,7 @@ const Divider = styled.div`
 const TeamImage = styled.img`
   width: 100%;
   max-width: 40%;
+  max-height: 400px;
   object-fit: cover;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
@@ -125,6 +134,7 @@ const LinkWrapper = styled.a`
 `;
 
 const Teams = () => {
+  const isMobile = useIsMobile();
   return (
     <MaxWidthContainer>
       <Container justify={'flex-start'} alignments={'flex-start'}>
@@ -145,33 +155,35 @@ const Teams = () => {
             <TeamImage alt="icon" src={'/images/team/team.jpg'} />
           </TitleWrapper>
           <TeamContainer>
-            {DATA.map((data, index) => (
-              <TeamItem key={index}>
-                <TextWrapper>
-                  <Text fontFam={theme.font_family.secondary} size={24}>
-                    {data.name}
-                  </Text>
-                  <Title>{data.title}</Title>
-                  <Divider />
-                  <Title
-                    dangerouslySetInnerHTML={{ __html: data.description }}
-                  />
-                  <LinkWrapper
-                    href={data.linkedin_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LazyImage
-                      src={'/icons/social/linkedin.svg'}
-                      alt="linkedin"
-                      width={18}
-                      height={18}
-                      style={{ marginTop: 2 }}
+            {(isMobile ? MOBILE_DATA : DATA).map((data, index) => (
+              <BlurFade key={index} delay={0.25 + index * 0.05} inView>
+                <TeamItem>
+                  <TextWrapper>
+                    <Text fontFam={theme.font_family.secondary} size={24}>
+                      {data.name}
+                    </Text>
+                    <Title>{data.title}</Title>
+                    <Divider />
+                    <Title
+                      dangerouslySetInnerHTML={{ __html: data.description }}
                     />
-                    <UnderlineText>LinkedIn</UnderlineText>
-                  </LinkWrapper>
-                </TextWrapper>
-              </TeamItem>
+                    <LinkWrapper
+                      href={data.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <LazyImage
+                        src={'/icons/social/linkedin.svg'}
+                        alt="linkedin"
+                        width={18}
+                        height={18}
+                        style={{ marginTop: 2 }}
+                      />
+                      <UnderlineText>LinkedIn</UnderlineText>
+                    </LinkWrapper>
+                  </TextWrapper>
+                </TeamItem>
+              </BlurFade>
             ))}
           </TeamContainer>
         </PageBody>
