@@ -23,7 +23,12 @@ const PageContainer = styled.div`
 `;
 
 const LottieWrapper = styled.div`
-  width: 36%;
+  min-width: 33vw;
+
+  @media (max-width: 1800px) {
+    min-width: 37vw;
+  }
+
   @media (max-width: 1300px) {
     width: 80%;
     margin-bottom: 32px;
