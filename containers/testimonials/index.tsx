@@ -99,7 +99,8 @@ const ArrowIconWrapper = styled(OriginalIconWrapper)`
 const calculateFontSize = (text) => {
   const baseSize = 64;
   const maxLength = 64;
-  return Math.max(baseSize - (text.length - maxLength) / 5, 34);
+
+  return Math.max(baseSize - (text.length - maxLength) / 5, 48);
 };
 
 const Testimonials = () => {

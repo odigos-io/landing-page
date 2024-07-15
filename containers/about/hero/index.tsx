@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { ColumnContainer, MaxWidthContainer } from '@/style';
+import { MaxWidthContainer } from '@/style';
 import { SectionTitle, Typewriter } from '@/reuseable-components';
 import theme from '@/style/theme';
 import TextHero from '@/components/text-hero';
@@ -11,6 +11,8 @@ const PageContainer = styled.div`
   flex-direction: column;
   gap: 80px;
   background: ${theme.colors.secondary};
+  width: 100%;
+  max-width: 1440px;
   padding: 160px 64px;
   @media (max-width: 800px) {
     padding: 24px 20px;

@@ -49,6 +49,10 @@ const PricingCard = styled.div`
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
 
+  transition: border 0.3s ease;
+  &:hover {
+    border: 1px solid ${theme.colors.white};
+  }
   @media (width <= 1450px) {
     height: 692px;
     padding: 20px 40px;

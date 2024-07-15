@@ -10,6 +10,7 @@ import {
   UnderlineText,
   LazyImage,
 } from '@/reuseable-components';
+import { BlurFade } from '@/components';
 
 const Container = styled(SectionContainer)`
   height: auto;
@@ -39,12 +40,18 @@ const TitleWrapper = styled.div`
 const PageTitle = styled.div`
   color: ${theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 3vw;
+  font-size: 48px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
   max-width: 50vw;
-  @media (max-width: 800px) {
+  @media (max-width: 1400px) {
+    font-size: 32px;
+  }
+  @media (max-width: 1100px) {
+    font-size: 28px;
+  }
+  @media (max-width: 1100px) {
     font-size: 24px;
     max-width: 100%;
   }
@@ -109,6 +116,7 @@ const Divider = styled.div`
 const TeamImage = styled.img`
   width: 100%;
   max-width: 40%;
+  max-height: 400px;
   object-fit: cover;
   border-radius: 48px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
@@ -146,32 +154,34 @@ const Teams = () => {
           </TitleWrapper>
           <TeamContainer>
             {DATA.map((data, index) => (
-              <TeamItem key={index}>
-                <TextWrapper>
-                  <Text fontFam={theme.font_family.secondary} size={24}>
-                    {data.name}
-                  </Text>
-                  <Title>{data.title}</Title>
-                  <Divider />
-                  <Title
-                    dangerouslySetInnerHTML={{ __html: data.description }}
-                  />
-                  <LinkWrapper
-                    href={data.linkedin_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LazyImage
-                      src={'/icons/social/linkedin.svg'}
-                      alt="linkedin"
-                      width={18}
-                      height={18}
-                      style={{ marginTop: 2 }}
+              <BlurFade key={index} delay={0.25 + index * 0.05} inView>
+                <TeamItem>
+                  <TextWrapper>
+                    <Text fontFam={theme.font_family.secondary} size={24}>
+                      {data.name}
+                    </Text>
+                    <Title>{data.title}</Title>
+                    <Divider />
+                    <Title
+                      dangerouslySetInnerHTML={{ __html: data.description }}
                     />
-                    <UnderlineText>LinkedIn</UnderlineText>
-                  </LinkWrapper>
-                </TextWrapper>
-              </TeamItem>
+                    <LinkWrapper
+                      href={data.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <LazyImage
+                        src={'/icons/social/linkedin.svg'}
+                        alt="linkedin"
+                        width={18}
+                        height={18}
+                        style={{ marginTop: 2 }}
+                      />
+                      <UnderlineText>LinkedIn</UnderlineText>
+                    </LinkWrapper>
+                  </TextWrapper>
+                </TeamItem>
+              </BlurFade>
             ))}
           </TeamContainer>
         </PageBody>
