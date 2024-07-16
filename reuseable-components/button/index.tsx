@@ -107,6 +107,7 @@ const LinearGradientBackground = styled.div<{
 const PrimaryHoverBackground = styled.div<{
   show: boolean;
 }>`
+  gap: 8px;
   border: 1px solid #f9f9f9;
   position: absolute;
   display: flex;
