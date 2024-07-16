@@ -31,7 +31,7 @@ Sounds promising, but how many companies are actually using distributed tracing?
 
 The adoption of distributed tracing has not hit critical mass.
 
-![Tracing Adoption Chart](/adoption.png)
+![Tracing Adoption Chart](/images/blog/adoption.png)
 
 This slow adoption is due to the difficulty in implementing distributed tracing - simply put, it is much more complicated to implement than any other telemetry signal. As opposed to metrics or logs, distributed tracing is not a stand-alone signal that spans just one application, but a collaborative metric that requires the instrumentation of all your applications. Since distributed traces span across all your applications, collaboration is required between the different development teams, who all need to make sure their applications are instrumented. If some of the applications in the chain are not instrumented properly, the trace will not be able to complete.
 
