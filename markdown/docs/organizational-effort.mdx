@@ -20,7 +20,7 @@ Distributed tracing has the potential to transform the way we monitor and debug 
 
 The downside is that it is difficult to implement. Unlike metrics or logs, the value of distributed tracing is gained only after implementing it across multiple applications. If even one of your applications does not produce distributed tracing, the context propagation is broken and the value of the traces drops significantly. This is because the traces will not be able to show the complete path of the request. This can make it difficult to identify the source of the problem (in contrast, metrics and logs can often be generated automatically by leveraging existing infrastructure or logging frameworks).
 
-![Distributed Tracing Effort Graph](/traces_values.png)
+![Distributed Tracing Effort Graph](/images/blog/traces_values.png)
 
 Successfully implementing distributed tracing requires **collaboration across multiple development & operations teams** in an organization. Each has an important role:
 
