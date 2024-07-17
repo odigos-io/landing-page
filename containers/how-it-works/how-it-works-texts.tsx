@@ -2,7 +2,6 @@ import React from 'react';
 import { DATA } from './data';
 import styled from 'styled-components';
 import { ParagraphComponent } from '@/reuseable-components';
-import { BlurFade } from '@/components';
 
 const TextContainer = styled.div`
   position: relative;
@@ -27,7 +26,7 @@ export const HowItWorksTexts = () => {
       case 3:
         return 2800;
       case 4:
-        return 3600;
+        return 3324;
       default:
         return 260;
     }
@@ -37,14 +36,12 @@ export const HowItWorksTexts = () => {
     <div>
       <TextContainer>
         {DATA.map((data, index) => (
-          <BlurFade key={index} delay={0.25 + index * 0.05} inView>
-            <AnimatedText key={index} top={getTop(index)}>
-              <ParagraphComponent
-                title={data.title}
-                paragraphs={data.paragraphs}
-              />
-            </AnimatedText>
-          </BlurFade>
+          <AnimatedText key={index} top={getTop(index)}>
+            <ParagraphComponent
+              title={data.title}
+              paragraphs={data.paragraphs}
+            />
+          </AnimatedText>
         ))}
       </TextContainer>
     </div>
