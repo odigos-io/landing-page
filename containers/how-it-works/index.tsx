@@ -61,12 +61,6 @@ const MobileBody = styled.div`
   width: 350px;
 `;
 
-const MediumBody = styled.div`
-  position: relative;
-  width: 660px;
-  height: 5832px;
-`;
-
 const HowItWorks = () => {
   const isMobile = useIsMobile(800);
   const isMedium = useIsMobile(1250);
@@ -81,34 +75,16 @@ const HowItWorks = () => {
 
   function renderMediumScreen() {
     return (
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <MediumBody>
-          <HowItWorksTextsMedium />
-          <HowItWorksIllustrationsMedium />
-        </MediumBody>
-      </div>
+      <Body>
+        <HowItWorksTextsMedium />
+        <HowItWorksIllustrationsMedium />
+      </Body>
     );
   }
 
   function renderMobile() {
     return (
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
+      <div>
         <MobileBody>
           <HowItWorksTextsMobile />
           <HowItWorksIllustrationsMobile />
