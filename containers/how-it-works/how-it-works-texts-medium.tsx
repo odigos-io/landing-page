@@ -19,17 +19,17 @@ export const HowItWorksTextsMedium = () => {
   function getTop(index: number) {
     switch (index) {
       case 0:
-        return 700;
+        return 0;
       case 1:
-        return 2000;
+        return 480;
       case 2:
-        return 3200;
+        return 1000;
       case 3:
-        return 4600;
+        return 1620;
       case 4:
-        return 5500;
+        return 2018;
       default:
-        return 260;
+        return 0;
     }
   }
   return (
@@ -38,13 +38,11 @@ export const HowItWorksTextsMedium = () => {
         <AnimatedText key={index} top={getTop(index)}>
           <ParagraphComponent
             title={data.title}
-            paragraphs={data.paragraphs}
-            style={{
-              padding: '64px 0',
-              justifyContent: 'center',
-              alignItems: 'center',
-              textAlign: 'center',
+            titleStyle={{
+              fontSize: 28,
             }}
+            paragraphStyle={{ fontSize: 16 }}
+            paragraphs={data.paragraphs}
           />
         </AnimatedText>
       ))}

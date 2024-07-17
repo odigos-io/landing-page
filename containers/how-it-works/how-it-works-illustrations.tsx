@@ -22,7 +22,7 @@ const LottieMap = {
     animationData: animationData2,
     loop: true,
     autoplay: true,
-    width: 382,
+    width: 310,
   },
   3: {
     animationData: animationData3,
@@ -34,13 +34,13 @@ const LottieMap = {
     animationData: animationData4,
     loop: true,
     autoplay: true,
-    width: 600,
+    width: 450,
   },
   5: {
     animationData: animationData5,
     loop: true,
     autoplay: true,
-    width: 661,
+    width: 500,
   },
 };
 
@@ -61,17 +61,17 @@ const HowItWorksIllustrations = () => {
   function getTop(index: number) {
     switch (index) {
       case 4:
-        return index * 900 - 276;
+        return index * 658;
       default:
-        return index * 900;
+        return index * 700;
     }
   }
 
   return (
     <div>
       <AnimationContainer>
-        <div style={{ position: 'absolute', top: -16 }}>
-          <LottieAnimation animationData={lines} />
+        <div style={{ position: 'absolute', top: 100, width: 660 }}>
+          <LottieAnimation animationData={lines} width={500} />
         </div>
         {DATA.map((_, index) => (
           <AnimatedIllustration key={index} top={getTop(index)}>

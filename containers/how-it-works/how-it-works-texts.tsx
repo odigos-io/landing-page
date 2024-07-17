@@ -18,15 +18,15 @@ export const HowItWorksTexts = () => {
   function getTop(index: number) {
     switch (index) {
       case 0:
-        return 160;
+        return 120;
       case 1:
-        return 1000;
+        return 750;
       case 2:
-        return 1850;
+        return 1450;
       case 3:
-        return 2800;
+        return 2150;
       case 4:
-        return 3324;
+        return 2600;
       default:
         return 260;
     }
