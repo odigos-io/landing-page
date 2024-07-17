@@ -47,12 +47,6 @@ const CoverImage = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: 48px;
-  background: linear-gradient(
-      0deg,
-      rgba(36, 32, 35, 0.16) 0%,
-      rgba(36, 32, 35, 0.16) 100%
-    ),
-    url(<path-to-image>) lightgray 50% / cover no-repeat;
   height: 360px;
 `;
 
@@ -69,6 +63,17 @@ const TitleWrapper = styled.div`
 const BlogPageHeader = async ({ post }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
+
+  const imagesArray = [
+    '/images/blogs-cover/odigos_blog1.svg',
+    '/images/blogs-cover/odigos_blog2.svg',
+    '/images/blogs-cover/odigos_blog3.svg',
+    '/images/blogs-cover/odigos_blog4.svg',
+    '/images/blogs-cover/odigos_blog5.svg',
+    '/images/blogs-cover/odigos_blog6.svg',
+    '/images/blogs-cover/odigos_blog7.svg',
+  ];
+
   return (
     <BlogPageHeaderContainer>
       <TitleWrapper>
@@ -102,7 +107,10 @@ const BlogPageHeader = async ({ post }: Props) => {
           <BlogFooter blog={post} />
         </div>
       </TitleWrapper>
-      <CoverImage src={post.image} alt={post.title} />
+      <CoverImage
+        src={imagesArray[Math.floor(Math.random() * imagesArray.length)]}
+        alt={post.title}
+      />
     </BlogPageHeaderContainer>
   );
 };

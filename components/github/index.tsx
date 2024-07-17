@@ -9,6 +9,7 @@ const GithubNumberWrapper = styled.div`
   display: flex;
   align-items: flex-end;
   margin-left: -4px;
+  width: 20px;
 `;
 
 // Utility function to format the stars count
@@ -56,9 +57,7 @@ const Github: React.FC<GithubProps> = ({ fontSize }) => {
         <UnderlineText size={fontSize}>{'GITHUB'}</UnderlineText>
       </Link>
       <GithubNumberWrapper>
-        <Text size={10}>
-          {stars !== null ? formatStars(stars) : 'Loading...'}
-        </Text>
+        <Text size={10}>{stars !== null ? formatStars(stars) : ''}</Text>
       </GithubNumberWrapper>
     </div>
   );

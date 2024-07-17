@@ -67,6 +67,10 @@ export const BlogItem = ({ blog }: { blog: any }) => {
     '/images/blogs-cover/odigos_blog1.svg',
     '/images/blogs-cover/odigos_blog2.svg',
     '/images/blogs-cover/odigos_blog3.svg',
+    '/images/blogs-cover/odigos_blog4.svg',
+    '/images/blogs-cover/odigos_blog5.svg',
+    '/images/blogs-cover/odigos_blog6.svg',
+    '/images/blogs-cover/odigos_blog7.svg',
   ];
 
   return (

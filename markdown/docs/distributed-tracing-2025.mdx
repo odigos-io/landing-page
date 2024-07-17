@@ -31,7 +31,7 @@ Sounds promising, but how many companies are actually using distributed tracing?
 
 The adoption of distributed tracing has not hit critical mass.
 
-![Tracing Adoption Chart](/adoption.png)
+![Tracing Adoption Chart](/images/blog/adoption.png)
 
 This slow adoption is due to the difficulty in implementing distributed tracing - simply put, it is much more complicated to implement than any other telemetry signal. As opposed to metrics or logs, distributed tracing is not a stand-alone signal that spans just one application, but a collaborative metric that requires the instrumentation of all your applications. Since distributed traces span across all your applications, collaboration is required between the different development teams, who all need to make sure their applications are instrumented. If some of the applications in the chain are not instrumented properly, the trace will not be able to complete.
 
@@ -43,7 +43,7 @@ tracing:
 
 ## Prediction #1 - Applicative Distributed Traces Becomes Mainstream
 
-![App Trace](/trace_apps.png)
+![App Trace](/images/blog/trace_apps.png)
 
 We believe 2023 is the year distributed tracing will achieve mass adoption. At first, most traces will span across backend applications. The required context propagation will start at the first application layer after the load balancer, tracing across applications, backend services and databases.
 
@@ -68,7 +68,7 @@ advancement in distributed tracing – enabling us to look deeper into the stack
 
 #### Automatic Instrumentation of Databases & Kubernetes
 
-![Kubernetes and Databases Trace](/trace_kube.png)
+![Kubernetes and Databases Trace](/images/blog/trace_kube.png)
 
 According to [Data On Kubernetes](https://dok.community/data-on-kubernetes-2022-report/) community survey, more and more companies are running stateful workloads on kubernetes. **We predict the next phase of distributed tracing will allow us to look deeper into those stateful workloads**. Instead of having a single span representing a database query execution, we’ll have multiple spans that break the query execution even deeper, giving us additional visibility and detail and what is actually occurring in the database (i.e. logical plan, physical plan, query execution, etc.). We can already see this change happen in projects like [sqlcommenter](https://github.com/google/sqlcommenter) that enables context propagation over SQL queries. There are a few databases (like [Vitess](https://vitess.io/docs/14.0/user-guides/configuration-advanced/tracing/)) that are already instrumented, and we expect this trend to continue and that automatic instrumentation will be developed for additional databases.
 
@@ -77,7 +77,7 @@ There is already work being done by [SIG instrumentation](https://github.com/kub
 
 #### Cloud Providers & Frontends
 
-![Frontend and Cloud Providers Trace](/trace_frontend.png)
+![Frontend and Cloud Providers Trace](/images/blog/trace_frontend.png)
 
 The rise of OpenTelemetry as a standard also affects the main cloud providers.
 [AWS](https://aws.amazon.com/blogs/opensource/migrating-x-ray-tracing-to-aws-distro-for-opentelemetry/), [Google Cloud](https://cloud.google.com/blog/products/databases/consume-spanner-metrics-using-opentelemetery), and [Azure](https://devblogs.microsoft.com/azure-sdk/introducing-experimental-opentelemetry-support-in-the-azure-sdk-for-net/) all support OpenTelemetry. We predict that in coming years, managed services provided by these cloud providers will include instrumentation in the OTLP format by default - allowing for distributed traces that go beyond the compute services.
@@ -88,7 +88,7 @@ applications as well.
 
 #### Automatic Instrumentation of CI/CD
 
-![CI CD Trace](/trace_cicd.png)
+![CI CD Trace](/images/blog/trace_cicd.png)
 
 Once we achieve coverage of everything that runs code, the next logical step will be to add everything that builds code. This is already partially supported today with projects like [buildevents](https://github.com/honeycombio/buildevents) but requires the big effort of manually instrumenting any tool used during the CI/CD pipelines. As many of the pipelines are simply bash scripts, there is always a race between new commands being added and adding instrumentation to those commands. Automatic instrumentation of CLI applications lays the foundations for building automatic instrumentation for the entire CI/CD pipeline.
 
