@@ -84,15 +84,7 @@ const HowItWorks = () => {
 
   function renderMobile() {
     return (
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
+      <div>
         <MobileBody>
           <HowItWorksTextsMobile />
           <HowItWorksIllustrationsMobile />
