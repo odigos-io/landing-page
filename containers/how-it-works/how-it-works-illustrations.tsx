@@ -47,7 +47,7 @@ const LottieMap = {
 const AnimationContainer = styled.div`
   position: relative;
   width: 660px;
-  height: 3932px;
+  background-color: aliceblue;
 `;
 
 const AnimatedIllustration = styled.div<{ top: number }>`
