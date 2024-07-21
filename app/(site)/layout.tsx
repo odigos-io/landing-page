@@ -1,34 +1,41 @@
 'use client';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import ScrollToTop from '@/components/ScrollToTop';
-import { ThemeProvider } from 'next-themes';
+
 import '../globals.css';
+import theme from '@/style/theme';
+import dynamic from 'next/dynamic';
+import { Header } from '@/containers';
+import { useEffect, useState } from 'react';
+
 import PlausibleProvider from 'next-plausible';
-import ConversionInitiator from '@/components/Conversions/landing.simple.tracking';
+import useConversionInitiator from '@/hooks/useConversionInitiator';
+import { ThemeProviderWrapper } from '@/reuseable-components/theme.provider/theme.provider';
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useConversionInitiator();
+  const Footer = isClient
+    ? dynamic(() => import('@/containers/footer'))
+    : () => null;
   return (
     <html lang="eng">
       <head>
         <PlausibleProvider domain="odigos.io" />
       </head>
-      <body className={`dark:bg-black no-scrollbar`}>
-        <ThemeProvider
-          enableSystem={false}
-          attribute="class"
-          defaultTheme="dark"
-        >
-          <ConversionInitiator />
-          {/* <Header /> */}
+      <body style={{ background: theme.colors.secondary }}>
+        <ThemeProviderWrapper>
+          <Header />
           {children}
           <Footer />
-          <ScrollToTop />
-        </ThemeProvider>
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

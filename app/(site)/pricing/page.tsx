@@ -1,16 +1,30 @@
 import { Metadata } from 'next';
-import Pricing from '@/components/Pricing';
+import theme from '@/style/theme';
+import dynamic from 'next/dynamic';
+import PricingHero from '@/containers/pricing/hero';
 
+const CTASection = dynamic(() => import('@/containers/cta'));
+const FAQComponent = dynamic(() => import('@/containers/pricing/faq'));
+const PricingComponent = dynamic(
+  () => import('@/containers/pricing/pricing-table')
+);
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
-  icons: '/images/logo/logo.png',
+  icons: '/icons/brand/black-icon.svg',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: '/images/hero/overview.gif',
+    images: '/icons/brand/black-icon.svg',
   },
 };
 
 export default function PricingPage() {
-  return <Pricing />;
+  return (
+    <main style={{ background: theme.colors.secondary }}>
+      <PricingHero />
+      <PricingComponent />
+      <FAQComponent />
+      <CTASection />
+    </main>
+  );
 }

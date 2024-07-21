@@ -1,48 +1,56 @@
+import Head from 'next/head';
 import { Metadata } from 'next';
-import Hero from '@/components/Hero';
-import Brands from '@/components/Brands';
-import Feature from '@/components/Features';
-import FeaturesTab from '@/components/FeaturesTab';
-import Integration from '@/components/Integration';
-import CTA from '@/components/CTA';
-import FAQ from '@/components/FAQ';
-import Blog from '@/components/Blog';
-import Testimonial from '@/components/Testimonial';
+import theme from '@/style/theme';
+import dynamic from 'next/dynamic';
+import Hero from '@/containers/hero';
 
-import Performance from '@/components/Performance';
-import Overview from '@/components/Overview';
-import FloatingParagraph from '@/components/FloatingParagraph';
-import { Montserrat } from 'next/font/google';
-import HowItWork from '@/components/HowItWork';
-
-const fontFamily = Montserrat({
-  subsets: ['latin'],
-  display: 'swap',
-});
+const LandingPageBody = dynamic(() => import('@/containers/landing-page-body'));
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
-  icons: '/images/logo/logo.png',
+  icons: '/icons/brand/black-icon.svg',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: '/images/hero/overview.gif',
+    images: '/icons/brand/black-icon.svg',
   },
 };
 
 export default function Home() {
   return (
-    <main className={fontFamily.className} style={{ background: '#060606' }}>
-      <Overview />
-      <FloatingParagraph />
-      <Feature />
-      <Performance />
-      <HowItWork />
-      <Integration />
-      <CTA />
-      <FAQ />
-      <Testimonial />
-      <Blog />
+    <main style={{ background: theme.colors.secondary }}>
+      <Head>
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;700&display=swap"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;700&display=swap"
+          as="style"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;700&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;700&display=swap"
+        />
+        <link rel="preload" href="../../public/lotties/hero.json" as="image" />
+      </Head>
+      <Hero />
+      <LandingPageBody />
     </main>
   );
 }
