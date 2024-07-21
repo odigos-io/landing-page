@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { BlogFooter } from '../blog-footer';
 import Image from 'next/image';
+import { BLOGS_COVERS } from '@/public/images/blogs-cover';
 
 const BlogItemContainer = styled.div`
   display: flex;
@@ -63,16 +64,6 @@ export const BlogItem = ({ blog }: { blog: any }) => {
 
   const { image, title, description, slug, tags } = blog;
 
-  const imagesArray = [
-    '/images/blogs-cover/odigos_blog1.svg',
-    '/images/blogs-cover/odigos_blog2.svg',
-    '/images/blogs-cover/odigos_blog3.svg',
-    '/images/blogs-cover/odigos_blog4.svg',
-    '/images/blogs-cover/odigos_blog5.svg',
-    '/images/blogs-cover/odigos_blog6.svg',
-    '/images/blogs-cover/odigos_blog7.svg',
-  ];
-
   return (
     <>
       <Link href={`/blog/${slug}`}>
@@ -86,7 +77,9 @@ export const BlogItem = ({ blog }: { blog: any }) => {
                 borderTopLeftRadius: 48,
                 borderTopRightRadius: 48,
               }}
-              src={imagesArray[Math.floor(Math.random() * imagesArray.length)]}
+              src={
+                BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)]
+              }
               alt={title}
             />
           ) : (

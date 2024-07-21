@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { BlogFooter } from '../blog-footer';
 import { MaxWidthContainer } from '@/style';
+import { BLOGS_COVERS } from '@/public/images/blogs-cover';
 
 const BlogCoverContainer = styled.div`
   padding: 120px 64px;
@@ -104,16 +105,6 @@ export const BlogCover = ({ blog }: { blog: any }) => {
 
   const { image, title, description, slug } = blog;
 
-  const imagesArray = [
-    '/images/blogs-cover/odigos_blog1.svg',
-    '/images/blogs-cover/odigos_blog2.svg',
-    '/images/blogs-cover/odigos_blog3.svg',
-    '/images/blogs-cover/odigos_blog4.svg',
-    '/images/blogs-cover/odigos_blog5.svg',
-    '/images/blogs-cover/odigos_blog6.svg',
-    '/images/blogs-cover/odigos_blog7.svg',
-  ];
-
   return (
     <MaxWidthContainer>
       <BlogCoverContainer>
@@ -129,7 +120,7 @@ export const BlogCover = ({ blog }: { blog: any }) => {
             {image ? (
               <BlogCoverImage
                 src={
-                  imagesArray[Math.floor(Math.random() * imagesArray.length)]
+                  BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)]
                 }
                 alt={title}
               />
