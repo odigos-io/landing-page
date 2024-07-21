@@ -17,12 +17,14 @@ const formatStars = (count: number): string => {
   if (count >= 1000) {
     return (count / 1000).toFixed(1) + 'k';
   }
-  return count.toString();
+  return count?.toString();
 };
 
 interface GithubProps {
   fontSize?: number;
 }
+
+const ODIGOS_GITHUB_URL = 'https://api.github.com/repos/odigos-io/odigos';
 
 const Github: React.FC<GithubProps> = ({ fontSize }) => {
   const [stars, setStars] = useState<number | null>(null);
@@ -30,9 +32,7 @@ const Github: React.FC<GithubProps> = ({ fontSize }) => {
   useEffect(() => {
     const fetchStars = async () => {
       try {
-        const response = await fetch(
-          'https://api.github.com/repos/odigos-io/odigos'
-        );
+        const response = await fetch(ODIGOS_GITHUB_URL);
         const data = await response.json();
         setStars(data.stargazers_count);
       } catch (error) {
