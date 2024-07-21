@@ -63,11 +63,19 @@ export const BlogItem = ({ blog }: { blog: any }) => {
   }
 
   const { image, title, description, slug, tags } = blog;
+  const blogCover =
+    BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
+
+  function saveCurrentBlogImageInLocalStorage(img: string) {
+    localStorage.setItem(slug, img);
+  }
 
   return (
     <>
       <Link href={`/blog/${slug}`}>
-        <BlogItemContainer>
+        <BlogItemContainer
+          onClick={() => saveCurrentBlogImageInLocalStorage(blogCover)}
+        >
           {image ? (
             <img
               style={{
@@ -77,9 +85,7 @@ export const BlogItem = ({ blog }: { blog: any }) => {
                 borderTopLeftRadius: 48,
                 borderTopRightRadius: 48,
               }}
-              src={
-                BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)]
-              }
+              src={blogCover}
               alt={title}
             />
           ) : (

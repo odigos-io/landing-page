@@ -105,9 +105,18 @@ export const BlogCover = ({ blog }: { blog: any }) => {
 
   const { image, title, description, slug } = blog;
 
+  const blogCover =
+    BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
+
+  function saveCurrentBlogImageInLocalStorage(img: string) {
+    localStorage.setItem(slug, img);
+  }
+
   return (
     <MaxWidthContainer>
-      <BlogCoverContainer>
+      <BlogCoverContainer
+        onClick={() => saveCurrentBlogImageInLocalStorage(blogCover)}
+      >
         <Link href={`/blog/${slug}`}>
           <BlogItemContainer>
             <TextContainer>
@@ -118,12 +127,7 @@ export const BlogCover = ({ blog }: { blog: any }) => {
               <BlogFooter blog={blog} />
             </TextContainer>
             {image ? (
-              <BlogCoverImage
-                src={
-                  BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)]
-                }
-                alt={title}
-              />
+              <BlogCoverImage src={blogCover} alt={title} />
             ) : (
               'No image'
             )}

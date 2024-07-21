@@ -65,6 +65,16 @@ const BlogPageHeader = async ({ post }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
 
+  function getCurrentBlogImage() {
+    const currentBlogImage = localStorage.getItem(post.slug);
+
+    if (currentBlogImage) {
+      return currentBlogImage;
+    }
+
+    return BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
+  }
+
   return (
     <BlogPageHeaderContainer>
       <TitleWrapper>
@@ -98,10 +108,7 @@ const BlogPageHeader = async ({ post }: Props) => {
           <BlogFooter blog={post} />
         </div>
       </TitleWrapper>
-      <CoverImage
-        src={BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)]}
-        alt={post.title}
-      />
+      <CoverImage src={getCurrentBlogImage()} alt={post.title} />
     </BlogPageHeaderContainer>
   );
 };
