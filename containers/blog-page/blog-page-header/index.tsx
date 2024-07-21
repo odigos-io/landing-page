@@ -5,6 +5,7 @@ import useIsMobile from '@/hooks/useIsMobile';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 import { BlogFooter } from '@/components';
 import { useRouter } from 'next/navigation';
+import { BLOGS_COVERS } from '@/public/images/blogs-cover';
 
 type Props = {
   post: any;
@@ -64,15 +65,15 @@ const BlogPageHeader = async ({ post }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
 
-  const imagesArray = [
-    '/images/blogs-cover/odigos_blog1.svg',
-    '/images/blogs-cover/odigos_blog2.svg',
-    '/images/blogs-cover/odigos_blog3.svg',
-    '/images/blogs-cover/odigos_blog4.svg',
-    '/images/blogs-cover/odigos_blog5.svg',
-    '/images/blogs-cover/odigos_blog6.svg',
-    '/images/blogs-cover/odigos_blog7.svg',
-  ];
+  function getCurrentBlogImage() {
+    const currentBlogImage = localStorage.getItem(post.slug);
+
+    if (currentBlogImage) {
+      return currentBlogImage;
+    }
+
+    return BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
+  }
 
   return (
     <BlogPageHeaderContainer>
@@ -107,10 +108,7 @@ const BlogPageHeader = async ({ post }: Props) => {
           <BlogFooter blog={post} />
         </div>
       </TitleWrapper>
-      <CoverImage
-        src={imagesArray[Math.floor(Math.random() * imagesArray.length)]}
-        alt={post.title}
-      />
+      <CoverImage src={getCurrentBlogImage()} alt={post.title} />
     </BlogPageHeaderContainer>
   );
 };
