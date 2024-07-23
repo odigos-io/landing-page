@@ -9,11 +9,10 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
 
   @media (min-width: 1024px) {
     flex-direction: row;
-    gap: 3rem;
   }
 
   @media (max-width: 1024px) {
@@ -24,12 +23,20 @@ const NavList = styled.ul`
 const NavItem = styled.li<{ selected?: boolean }>`
   position: relative;
   display: flex;
+  height: 56px;
+  padding: 8px 24px;
+  justify-content: center;
+  align-items: center;
   gap: 8px;
-  opacity: ${({ selected }) => (selected ? 1 : 0.4)};
-  transition: opacity 0.3s ease;
+
+  transition: background-color 0.3s ease;
+
+  border-radius: 48px;
+  background-color: ${({ selected }) =>
+    selected ? 'rgba(68, 74, 217, 0.20)' : 'transparent'};
 
   &:hover {
-    opacity: 0.64;
+    background: rgba(68, 74, 217, 0.12);
   }
   &.group {
     cursor: pointer;

@@ -14,8 +14,10 @@ const Title = styled.h1`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 153px;
-
+  margin-top: 36%;
+  @media (max-width: 1200px) {
+    margin-top: 18%;
+  }
   @media (max-width: 800px) {
     margin-top: 80px;
   }
