@@ -26,12 +26,12 @@ export const TrustedList = () => {
     <Wrapper>
       <Title>TRUSTED BY</Title>
       <GridContainer>
-        <LazyImage
+        {/* <LazyImage
           width={110}
           height={26}
           src="/images/hero/walmart.svg"
           alt="walmart"
-        />
+        /> */}
         <LazyImage
           width={110}
           height={26}
