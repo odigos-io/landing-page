@@ -24,7 +24,6 @@ const PageContainer = styled.div`
 
 const LottieWrapper = styled.div`
   min-width: 33vw;
-
   @media (max-width: 1800px) {
     min-width: 37vw;
   }
@@ -72,6 +71,11 @@ const HeroSubTitle = styled.h2`
   opacity: 0.8;
   margin-top: 40px;
 
+  @media (max-width: 1200px) {
+    font-size: 24px;
+    width: 80%;
+  }
+
   @media (max-width: 600px) {
     line-height: 155%;
   }
@@ -89,9 +93,6 @@ const DemoIframe = styled.iframe`
 const Container = styled(SectionContainer)`
   align-items: flex-start;
   height: auto;
-  @media (max-width: 1300px) {
-    height: auto;
-  }
 `;
 
 const Hero = () => {

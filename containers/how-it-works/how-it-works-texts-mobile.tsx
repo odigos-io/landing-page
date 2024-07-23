@@ -27,7 +27,7 @@ export const HowItWorksTextsMobile = () => {
       case 3:
         return 1840;
       case 4:
-        return 2300;
+        return 2290;
       default:
         return 260;
     }
