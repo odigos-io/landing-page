@@ -24,7 +24,9 @@ const PageBorder = styled.div`
   align-items: center;
   border-radius: 120px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
-
+  @media (max-width: 1450px) {
+    padding: 0px 40px;
+  }
   @media (max-width: 1024px) {
     padding: 0px;
     border: none;
@@ -41,6 +43,9 @@ const InnerBorder = styled.div`
   border: 1px dashed rgba(249, 249, 249, 0.48);
   width: 100%;
   height: 100%;
+  @media (max-width: 1450px) {
+    padding: 0px 40px;
+  }
   @media (max-width: 1024px) {
     padding: 16px;
     border-radius: 64px;
@@ -49,6 +54,9 @@ const InnerBorder = styled.div`
 
 const SecondInnerBorder = styled(InnerBorder)`
   padding: 80px;
+  @media (max-width: 1450px) {
+    padding: 0px 40px;
+  }
   @media (max-width: 1024px) {
     padding: 0 16px;
     border-radius: 48px;
@@ -57,7 +65,7 @@ const SecondInnerBorder = styled(InnerBorder)`
 
 const Body = styled.div`
   display: flex;
-  padding: 80px 120px;
+  padding: 80px 160px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -65,6 +73,9 @@ const Body = styled.div`
   width: 100%;
   border-radius: 64px;
   border: 1px solid #f9f9f9;
+  @media (max-width: 1450px) {
+    padding: 80px 120px;
+  }
   @media (max-width: 1024px) {
     padding: 40px 20px 32px 20px;
     border-radius: 48px;

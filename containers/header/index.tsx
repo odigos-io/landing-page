@@ -25,7 +25,7 @@ const HeaderInner = styled.div`
   justify-content: space-between;
   position: relative;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     padding: 20px;
     height: 84px;
   }
@@ -34,7 +34,7 @@ const HeaderInner = styled.div`
 const LogoContainer = styled.div``;
 
 const SignInButton = styled(Button)`
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     padding: 8px 16px;
     font-size: 16px;
   }
@@ -42,7 +42,7 @@ const SignInButton = styled(Button)`
 
 const HamburgerButton = styled.button`
   display: block;
-  @media (min-width: 1024px) {
+  @media (min-width: 1100px) {
     display: none;
   }
 `;
@@ -51,7 +51,7 @@ const ActionBarWrapper = styled.div`
   display: flex;
 
   justify-content: flex-end;
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     gap: 1rem;
     width: 172px;
   }
