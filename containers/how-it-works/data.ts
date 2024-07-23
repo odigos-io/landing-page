@@ -16,8 +16,8 @@ export const DATA = [
   {
     title: 'Minimal performance overhead',
     paragraphs: [
-      'Traditional auto-instrumentation solutions can introduce performance latencies as high as 50%. Odigos leverages its eBPF-based auto-instrumentation solutions to seamlessly instrument applications with minimal performance impact.',
-      'Manual instrumentation — eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code.',
+      'Traditional auto-instrumentation solutions introduce performance latencies. Odigos leverages its eBPF-based solutions to seamlessly instrument applications with minimal performance impact.',
+      'eBPF-based auto-instrumentation is over twenty times faster than manual code instrumentation',
     ],
   },
   {

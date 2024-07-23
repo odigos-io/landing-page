@@ -57,7 +57,7 @@ const Body = styled.div`
 
 const MobileBody = styled.div`
   position: relative;
-  height: 2864px;
+  height: 2600px;
   width: 350px;
 `;
 

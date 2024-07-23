@@ -6,7 +6,7 @@ import { ParagraphComponent } from '@/reuseable-components';
 const TextContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 3932px;
+  /* height: 3932px; */
 `;
 
 const AnimatedText = styled.div<{ top: number }>`
@@ -23,11 +23,11 @@ export const HowItWorksTextsMobile = () => {
       case 1:
         return 500;
       case 2:
-        return 1260;
+        return 1160;
       case 3:
-        return 2070;
+        return 1840;
       case 4:
-        return 2560;
+        return 2300;
       default:
         return 260;
     }
