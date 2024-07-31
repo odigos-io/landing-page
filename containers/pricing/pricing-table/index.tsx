@@ -171,7 +171,7 @@ const PricingComponent: React.FC = () => {
           )}
           <PlanWrapper>
             <PlanTitle>{plan.plan}</PlanTitle>
-            {plan.status && <PlanStatus>{plan.status}</PlanStatus>}
+            {/* {plan.status && <PlanStatus>{plan.status}</PlanStatus>} */}
           </PlanWrapper>
           <Description>{plan.description}</Description>
           <Divider />
@@ -198,7 +198,7 @@ const PricingComponent: React.FC = () => {
               <Button
                 style={{ background: theme.colors.secondary }}
                 onClick={() =>
-                  index === 2
+                  index !== 0
                     ? setOpen(true)
                     : window.open(plan.button.link, '_blank')
                 }
