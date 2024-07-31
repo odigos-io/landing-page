@@ -5,7 +5,7 @@ import { MaxWidthContainer } from '@/style';
 import { BlurFade } from '@/components';
 
 const BlogItemsContainer = styled.div`
-  padding: 0 64px;
+  padding: 120px 64px 0;
   display: grid;
 
   grid-template-columns: repeat(auto-fill, minmax(341px, 1fr));
