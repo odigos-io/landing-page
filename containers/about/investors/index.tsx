@@ -145,8 +145,8 @@ const ImageWrapper = styled.div`
 `;
 
 const InvestorImage = styled.img`
-  height: 56px;
-  object-fit: cover;
+  /* height: 56px; */
+  /* object-fit: cover; */
   @media (max-width: 650px) {
     height: 32px;
   }
