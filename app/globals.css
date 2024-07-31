@@ -1,7 +1,7 @@
 /* Preload key fonts in your global CSS */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100;200;300;400;700&display=swap');
 
 @tailwind base;
 @tailwind components;

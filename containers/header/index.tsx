@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import Modal from '@/reuseable-components/modal';
+import ContactForm from '../pricing/pricing-table/contact-us-form';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
@@ -70,6 +72,8 @@ const MaxWidthContainer = styled.div`
 export const Header = () => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [currentItem, setCurrentItem] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const handleSignInClick = () => {
     window.open('https://calendly.com/edenfederman/odigos-demo', '_blank');
@@ -99,7 +103,7 @@ export const Header = () => {
             currentIndexItem={currentItem}
           />
           <ActionBarWrapper>
-            <SignInButton onClick={handleSignInClick} variant="secondary">
+            <SignInButton onClick={() => setOpen(true)} variant="secondary">
               <UnderlineText color={theme.text.secondary}>
                 Contact Us
               </UnderlineText>
@@ -124,6 +128,21 @@ export const Header = () => {
       </HeaderContainer>
       {dropdownToggler && (
         <MobileHeaderMenu onClick={() => setDropdownToggler(false)} />
+      )}
+      {open && (
+        <Modal
+          title={success ? '' : 'Let’s talk!'}
+          description={
+            "Questions about our products/services, orders, or just want to say hello? We're here to help."
+          }
+          onClose={() => setOpen(false)}
+        >
+          <ContactForm
+            success={success}
+            setSuccess={setSuccess}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
       )}
     </MaxWidthContainer>
   );

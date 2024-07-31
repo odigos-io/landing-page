@@ -71,11 +71,11 @@ const HeroTitle = styled.h1`
   }
 `;
 
-const HeroSubTitle = styled.h2`
+const HeroSubTitle = styled.div`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(1.1rem, 3vw, 1.875rem);
-  font-weight: 200;
+  font-size: 30px;
+  font-weight: 300;
   line-height: 133%;
   opacity: 0.8;
   margin-top: 40px;
@@ -127,13 +127,12 @@ const Hero = () => {
           <ColumnContainer>
             <FlexContainer gap={40}>
               <HeroTitle>Enterprise-Grade </HeroTitle>
-
-              {/* <WatchDemoBtn onClick={() => setOpen(true)} /> */}
             </FlexContainer>
             <HeroTitle>OpenTelemetry </HeroTitle>
             <HeroSubTitle>
-              Resolve incidents faster with deeper distributed tracing for all
-              your backend architecture without any code changes.
+              Accelerate OpenTelemetry implementation with Odigos, an eBPF-based
+              solution providing zero-code, zero-performance overhead for deeper
+              tracing
             </HeroSubTitle>
             <WatchDemoBtn onClick={() => setOpen(true)} />
             <TrustedList />
