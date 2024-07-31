@@ -72,7 +72,7 @@ export const Header = () => {
   const [currentItem, setCurrentItem] = useState(10);
 
   const handleSignInClick = () => {
-    window.open('https://app.odigos.io/signin', '_blank');
+    window.open('https://calendly.com/edenfederman/odigos-demo', '_blank');
   };
 
   const handleMenuItemClick = (index: number) => {
@@ -101,7 +101,7 @@ export const Header = () => {
           <ActionBarWrapper>
             <SignInButton onClick={handleSignInClick} variant="secondary">
               <UnderlineText color={theme.text.secondary}>
-                Sign in
+                Contact Us
               </UnderlineText>
             </SignInButton>
             <HamburgerButton

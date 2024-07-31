@@ -39,7 +39,7 @@ const LottieWrapper = styled.div`
     justify-content: center;
     align-items: center;
     div {
-      width: 60% !important;
+      /* width: 80% !important; */
     }
   }
   @media (max-width: 650px) {
@@ -53,10 +53,19 @@ const LottieWrapper = styled.div`
 const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(3.5rem, 6vw, 6rem);
+  font-size: 80px;
   font-weight: 400;
   line-height: 110%;
   letter-spacing: -1.92px;
+  @media (max-width: 1050px) {
+    font-size: 62px;
+  }
+  @media (max-width: 900px) {
+    font-size: 48px;
+  }
+  @media (max-width: 650px) {
+    font-size: 40px;
+  }
   @media (max-width: 600px) {
     letter-spacing: -1.12px;
   }
@@ -75,9 +84,14 @@ const HeroSubTitle = styled.h2`
     font-size: 24px;
     width: 80%;
   }
+  @media (max-width: 750px) {
+    font-size: 20px;
+    width: 80%;
+  }
 
   @media (max-width: 600px) {
     line-height: 155%;
+    font-size: 24px;
   }
 `;
 
@@ -93,6 +107,12 @@ const DemoIframe = styled.iframe`
 const Container = styled(SectionContainer)`
   align-items: flex-start;
   height: auto;
+  @media (max-width: 900px) {
+    flex-direction: row !important;
+  }
+  @media (max-width: 610px) {
+    flex-direction: column-reverse !important;
+  }
 `;
 
 const Hero = () => {
@@ -106,15 +126,16 @@ const Hero = () => {
         <Container>
           <ColumnContainer>
             <FlexContainer gap={40}>
-              <HeroTitle>Deeper</HeroTitle>
+              <HeroTitle>Enterprise-Grade </HeroTitle>
 
-              <WatchDemoBtn onClick={() => setOpen(true)} />
+              {/* <WatchDemoBtn onClick={() => setOpen(true)} /> */}
             </FlexContainer>
-            <HeroTitle>Observability </HeroTitle>
+            <HeroTitle>OpenTelemetry </HeroTitle>
             <HeroSubTitle>
               Resolve incidents faster with deeper distributed tracing for all
               your backend architecture without any code changes.
             </HeroSubTitle>
+            <WatchDemoBtn onClick={() => setOpen(true)} />
             <TrustedList />
           </ColumnContainer>
           <LottieWrapper>
