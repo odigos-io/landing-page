@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import Modal from '@/reuseable-components/modal';
+import ContactForm from '../pricing/pricing-table/contact-us-form';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
@@ -25,7 +27,7 @@ const HeaderInner = styled.div`
   justify-content: space-between;
   position: relative;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     padding: 20px;
     height: 84px;
   }
@@ -34,7 +36,7 @@ const HeaderInner = styled.div`
 const LogoContainer = styled.div``;
 
 const SignInButton = styled(Button)`
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     padding: 8px 16px;
     font-size: 16px;
   }
@@ -42,7 +44,7 @@ const SignInButton = styled(Button)`
 
 const HamburgerButton = styled.button`
   display: block;
-  @media (min-width: 1024px) {
+  @media (min-width: 1100px) {
     display: none;
   }
 `;
@@ -51,7 +53,7 @@ const ActionBarWrapper = styled.div`
   display: flex;
 
   justify-content: flex-end;
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     gap: 1rem;
     width: 172px;
   }
@@ -70,9 +72,11 @@ const MaxWidthContainer = styled.div`
 export const Header = () => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [currentItem, setCurrentItem] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const handleSignInClick = () => {
-    window.open('https://app.odigos.io/signin', '_blank');
+    window.open('https://calendly.com/edenfederman/odigos-demo', '_blank');
   };
 
   const handleMenuItemClick = (index: number) => {
@@ -99,9 +103,9 @@ export const Header = () => {
             currentIndexItem={currentItem}
           />
           <ActionBarWrapper>
-            <SignInButton onClick={handleSignInClick} variant="secondary">
+            <SignInButton onClick={() => setOpen(true)} variant="secondary">
               <UnderlineText color={theme.text.secondary}>
-                Sign in
+                Contact Us
               </UnderlineText>
             </SignInButton>
             <HamburgerButton
@@ -124,6 +128,21 @@ export const Header = () => {
       </HeaderContainer>
       {dropdownToggler && (
         <MobileHeaderMenu onClick={() => setDropdownToggler(false)} />
+      )}
+      {open && (
+        <Modal
+          title={success ? '' : 'Let’s talk!'}
+          description={
+            "Questions about our products/services, orders, or just want to say hello? We're here to help."
+          }
+          onClose={() => setOpen(false)}
+        >
+          <ContactForm
+            success={success}
+            setSuccess={setSuccess}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
       )}
     </MaxWidthContainer>
   );

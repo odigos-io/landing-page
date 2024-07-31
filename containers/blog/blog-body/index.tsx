@@ -31,12 +31,13 @@ const BlogBody = ({ posts }) => {
 
   return (
     <>
+      <BlogCover blog={posts[0]} />
       <BlogFilter
         posts={posts}
         selectedItems={selectedItems}
         setSelectedItems={handleSetSelectedItems}
       />
-      <BlogCover blog={posts[0]} />
+
       <BlogList posts={filteredPosts} />
     </>
   );

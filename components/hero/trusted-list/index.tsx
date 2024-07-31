@@ -14,8 +14,10 @@ const Title = styled.h1`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 153px;
-
+  margin-top: 26%;
+  @media (max-width: 1200px) {
+    margin-top: 18%;
+  }
   @media (max-width: 800px) {
     margin-top: 80px;
   }
@@ -26,12 +28,12 @@ export const TrustedList = () => {
     <Wrapper>
       <Title>TRUSTED BY</Title>
       <GridContainer>
-        <LazyImage
+        {/* <LazyImage
           width={110}
           height={26}
           src="/images/hero/walmart.svg"
           alt="walmart"
-        />
+        /> */}
         <LazyImage
           width={110}
           height={26}

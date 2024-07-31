@@ -1,10 +1,12 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import Github from '@/components/github';
 import { Button, UnderlineText } from '@/reuseable-components';
 import { MaxWidthContainer } from '@/style';
+import Modal from '@/reuseable-components/modal';
+import ContactForm from '../pricing/pricing-table/contact-us-form';
 const PageContainer = styled.div`
   width: 100%;
   max-width: 1440px;
@@ -24,7 +26,9 @@ const PageBorder = styled.div`
   align-items: center;
   border-radius: 120px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
-
+  @media (max-width: 1450px) {
+    padding: 0px 40px;
+  }
   @media (max-width: 1024px) {
     padding: 0px;
     border: none;
@@ -41,6 +45,9 @@ const InnerBorder = styled.div`
   border: 1px dashed rgba(249, 249, 249, 0.48);
   width: 100%;
   height: 100%;
+  @media (max-width: 1450px) {
+    padding: 0px 40px;
+  }
   @media (max-width: 1024px) {
     padding: 16px;
     border-radius: 64px;
@@ -49,6 +56,9 @@ const InnerBorder = styled.div`
 
 const SecondInnerBorder = styled(InnerBorder)`
   padding: 80px;
+  @media (max-width: 1450px) {
+    padding: 0px 40px;
+  }
   @media (max-width: 1024px) {
     padding: 0 16px;
     border-radius: 48px;
@@ -57,7 +67,7 @@ const SecondInnerBorder = styled(InnerBorder)`
 
 const Body = styled.div`
   display: flex;
-  padding: 80px 120px;
+  padding: 80px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -65,6 +75,9 @@ const Body = styled.div`
   width: 100%;
   border-radius: 64px;
   border: 1px solid #f9f9f9;
+  @media (max-width: 1450px) {
+    padding: 80px 120px;
+  }
   @media (max-width: 1024px) {
     padding: 40px 20px 32px 20px;
     border-radius: 48px;
@@ -133,6 +146,9 @@ const ButtonWrapper = styled.div`
 `;
 
 const CTA: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
+
   const handleSignInClick = () => {
     window.open('https://app.odigos.io/signin', '_blank');
   };
@@ -145,18 +161,16 @@ const CTA: React.FC = () => {
             <SecondInnerBorder>
               <Body>
                 <TextWrapper>
-                  <Title>
-                    Unlock Full Visibility into Your Application Performance
-                  </Title>
+                  <Title>Unlock Deeper Observability</Title>
                   <Subtitle>
                     Enterprise-Grade OpenTelemetry for Superior Application
                     Performance Monitoring
                   </Subtitle>
                 </TextWrapper>
                 <ButtonWrapper>
-                  <Button onClick={handleSignInClick} variant="secondary">
+                  <Button onClick={() => setOpen(true)} variant="secondary">
                     <UnderlineText color={theme.text.secondary}>
-                      SIGN IN
+                      Contact Us
                     </UnderlineText>
                   </Button>
                   <Button color={theme.colors.secondary}>
@@ -168,6 +182,21 @@ const CTA: React.FC = () => {
           </InnerBorder>
         </PageBorder>
       </PageContainer>
+      {open && (
+        <Modal
+          title={success ? '' : 'Let’s talk!'}
+          description={
+            "Questions about our products/services, orders, or just want to say hello? We're here to help."
+          }
+          onClose={() => setOpen(false)}
+        >
+          <ContactForm
+            success={success}
+            setSuccess={setSuccess}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
+      )}
     </MaxWidthContainer>
   );
 };

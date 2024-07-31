@@ -1,12 +1,15 @@
 'use client';
-import React from 'react';
+import React, { use } from 'react';
 import styled from 'styled-components';
 import { UnderlineText, LazyImage, Button } from '@/reuseable-components';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const WatchDemoButton = styled(Button)`
   background: ${({ theme }) => theme.colors.secondary};
+  width: 250px;
   @media (max-width: 600px) {
     padding: 8px 22px;
+    width: 100%;
     .desktop {
       display: none;
     }
@@ -28,8 +31,12 @@ type WatchDemoBtnProps = {
   onClick: () => void;
 };
 export const WatchDemoBtn = ({ onClick }: WatchDemoBtnProps) => {
+  const isMobile = useIsMobile(600);
   return (
-    <WatchDemoButton containerStyle={{ marginTop: 12 }} onClick={onClick}>
+    <WatchDemoButton
+      containerStyle={{ marginTop: 24, width: isMobile ? '100%' : 253 }}
+      onClick={onClick}
+    >
       <UnderlineText className="desktop" size={20}>
         WATCH DEMO
       </UnderlineText>
@@ -40,7 +47,7 @@ export const WatchDemoBtn = ({ onClick }: WatchDemoBtnProps) => {
           src="/icons/hero/play.svg"
           alt="play"
         />
-        <UnderlineText size={20}> DEMO</UnderlineText>
+        <UnderlineText size={20}> WATCH DEMO</UnderlineText>
       </MobileButtonContent>
     </WatchDemoButton>
   );

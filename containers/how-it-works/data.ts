@@ -1,36 +1,37 @@
 export const DATA = [
   {
-    title: 'Instant implementation',
+    title: 'Instant Implementation',
     paragraphs: [
-      'Instant Distributed Tracing — Odigos supports application written in Java, Python, .NET, Node.js, and Go.',
-      'No Code Changes — Odigos instrument applications without any code changes or redeployments.',
+      'Odigos first scans and recognizes running applications',
+      'Using eBPF, Odigos auto-instruments any application written in Java, Python, NodeJS, .NET & Go',
+      'Odigos continuously instruments new code ensuring end-to-end tracing for all new deployments',
     ],
   },
   {
-    title: 'Unprecedented telemetry',
+    title: 'Unprecedented Telemetry',
     paragraphs: [
-      'Deeper Observability — Using eBPF, Odigos is the first and only product able to generate distributed traces any part of your architecture including databases, message queues & more.',
-      'Dynamic Instrumentation — Enables the addition of new attributes to traces at runtime, such as SQL queries, HTTPbodies, Kafka messages, etc.',
+      'Deeper Observability — Odigos generates distributed traces across your entire architecture, including database internals and message queues.',
+      'Dynamic Instrumentation — Enables the addition of new attributes to traces at runtime, such as SQL queries, HTTP payloads and Kafka messages.',
     ],
   },
   {
-    title: 'Minimal performance overhead',
+    title: 'Superior Performance',
     paragraphs: [
-      'Traditional auto-instrumentation solutions can introduce performance latencies as high as 50%. Odigos leverages its eBPF-based auto-instrumentation solutions to seamlessly instrument applications with minimal performance impact.',
-      'Manual instrumentation — eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code.',
+      'Traditional auto-instrumentation solutions add significant performance overhead. Using eBPF, Odigos instruments applications with less then 1% performance impact.',
+      'eBPF-based auto-instrumentation is over 20x faster than manual code instrumentation',
     ],
   },
   {
-    title: 'Collectors management',
+    title: 'Collectors Management',
     paragraphs: [
-      'Odigos efficiently handles the configuration and deployment of collectors, simplifying telemetry data aggregation and processing.',
+      'Odigos configures, deploys and auto-scales OpenTelemetry collectors, simplifying telemetry data aggregation and processing.',
     ],
   },
   {
-    title: 'No vendor lock-in',
+    title: 'Avoid Vendor Lock-in',
     paragraphs: [
-      'Agnostic — Odigos creates traces in the OpenTelemetry format, ensuring compatibility with all major monitoring backends and preventing vendor lock-in.',
-      'Odigos works alongside existing monitoring tools, supporting over 25 managed and OSS solution.',
+      'Odigos generates traces in OpenTelemetry format, ensuring compatibility with all major monitoring backends and preventing vendor lock-in.',
+      'Odigos works alongside existing monitoring tools, supporting over 30 managed and open-source solutions.',
     ],
   },
 ];

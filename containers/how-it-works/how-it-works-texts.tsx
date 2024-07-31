@@ -6,7 +6,7 @@ import { ParagraphComponent } from '@/reuseable-components';
 const TextContainer = styled.div`
   position: relative;
   width: 40vw;
-  height: 2860px;
+  height: 2940px;
 `;
 
 const AnimatedText = styled.div<{ top: number }>`

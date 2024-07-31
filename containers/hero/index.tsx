@@ -24,7 +24,6 @@ const PageContainer = styled.div`
 
 const LottieWrapper = styled.div`
   min-width: 33vw;
-
   @media (max-width: 1800px) {
     min-width: 37vw;
   }
@@ -40,7 +39,7 @@ const LottieWrapper = styled.div`
     justify-content: center;
     align-items: center;
     div {
-      width: 60% !important;
+      /* width: 80% !important; */
     }
   }
   @media (max-width: 650px) {
@@ -54,26 +53,45 @@ const LottieWrapper = styled.div`
 const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(3.5rem, 6vw, 6rem);
+  font-size: 80px;
   font-weight: 400;
   line-height: 110%;
   letter-spacing: -1.92px;
+  @media (max-width: 1050px) {
+    font-size: 62px;
+  }
+  @media (max-width: 900px) {
+    font-size: 48px;
+  }
+  @media (max-width: 650px) {
+    font-size: 40px;
+  }
   @media (max-width: 600px) {
     letter-spacing: -1.12px;
   }
 `;
 
-const HeroSubTitle = styled.h2`
+const HeroSubTitle = styled.div`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: clamp(1.1rem, 3vw, 1.875rem);
-  font-weight: 200;
+  font-size: 30px;
+  font-weight: 300;
   line-height: 133%;
   opacity: 0.8;
   margin-top: 40px;
 
+  @media (max-width: 1200px) {
+    font-size: 24px;
+    width: 80%;
+  }
+  @media (max-width: 750px) {
+    font-size: 20px;
+    width: 80%;
+  }
+
   @media (max-width: 600px) {
     line-height: 155%;
+    font-size: 24px;
   }
 `;
 
@@ -89,8 +107,11 @@ const DemoIframe = styled.iframe`
 const Container = styled(SectionContainer)`
   align-items: flex-start;
   height: auto;
-  @media (max-width: 1300px) {
-    height: auto;
+  @media (max-width: 900px) {
+    flex-direction: row !important;
+  }
+  @media (max-width: 610px) {
+    flex-direction: column-reverse !important;
   }
 `;
 
@@ -105,15 +126,15 @@ const Hero = () => {
         <Container>
           <ColumnContainer>
             <FlexContainer gap={40}>
-              <HeroTitle>Deeper</HeroTitle>
-
-              <WatchDemoBtn onClick={() => setOpen(true)} />
+              <HeroTitle>Enterprise-Grade </HeroTitle>
             </FlexContainer>
-            <HeroTitle>Observability </HeroTitle>
+            <HeroTitle>OpenTelemetry </HeroTitle>
             <HeroSubTitle>
-              Resolve incidents faster with deeper distributed tracing for all
-              your backend architecture without any code changes.
+              Accelerate OpenTelemetry implementation with Odigos, an eBPF-based
+              solution providing zero-code, zero-performance overhead for deeper
+              tracing
             </HeroSubTitle>
+            <WatchDemoBtn onClick={() => setOpen(true)} />
             <TrustedList />
           </ColumnContainer>
           <LottieWrapper>

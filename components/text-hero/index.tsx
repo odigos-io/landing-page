@@ -17,7 +17,7 @@ const HeroTitle = styled.h1`
 const DividersContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 48px;
   width: 100%;
 `;
 
