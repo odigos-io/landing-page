@@ -155,7 +155,7 @@ const HowToStart: React.FC = () => {
         <PageBody>
           <SectionTitle
             headerInfo={{
-              title: 'HOW TO START',
+              title: 'GETTING STARTED',
               subtitle: '',
               description: '',
             }}

@@ -14,9 +14,9 @@ type ParagraphComponentProps = {
 
 const Title = styled.span`
   color: ${theme.text.primary};
-  font-family: ${theme.font_family.primary};
+  font-family: ${theme.font_family.secondary};
   font-size: 40px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 120%;
   @media (max-width: 850px) {
     font-size: 24px;
