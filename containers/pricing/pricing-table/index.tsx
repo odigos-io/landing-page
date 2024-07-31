@@ -42,7 +42,6 @@ const PricingContainer = styled.div`
 const PricingCard = styled.div`
   padding: 40px;
   max-width: 420px;
-  height: 746px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -54,8 +53,7 @@ const PricingCard = styled.div`
     border: 1px solid ${theme.colors.white};
   }
   @media (width <= 1450px) {
-    height: 692px;
-    padding: 20px 40px;
+    padding: 20px;
     max-width: 335px;
   }
 `;
@@ -173,10 +171,13 @@ const PricingComponent: React.FC = () => {
             <PlanTitle>{plan.plan}</PlanTitle>
             {/* {plan.status && <PlanStatus>{plan.status}</PlanStatus>} */}
           </PlanWrapper>
+
           <Description>{plan.description}</Description>
           <Divider />
-          <Description>{plan.priceTitle}</Description>
+
+          <Description style={{ height: 32 }}>{plan.priceTitle}</Description>
           <Price>{plan.price}</Price>
+
           <Divider />
 
           <FeatureList>
