@@ -45,8 +45,7 @@ export const ParagraphComponent: React.FC<ParagraphComponentProps> = ({
   titleStyle = {},
   paragraphStyle = {},
 }) => {
-  const wordsToBold = ['20x faster', 'less then 1% performance impact']; // Replace with desired words
-  // const boldedText = boldWordsInText(text, wordsToBold);
+  const wordsToBold = ['20x faster', 'less then 1% performance impact'];
 
   return (
     <ColumnContainer

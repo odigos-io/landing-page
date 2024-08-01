@@ -2,14 +2,14 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
-import { TrustedList, WatchDemoBtn } from '@/components';
+import { QuickStartBtn, TrustedList, WatchDemoBtn } from '@/components';
 import {
   FlexContainer,
   ColumnContainer,
   SectionContainer,
   MaxWidthContainer,
 } from '@/style';
-import { LottieAnimation } from '@/reuseable-components';
+import { Button, LottieAnimation, UnderlineText } from '@/reuseable-components';
 import animationData from '../../public/lotties/hero.json';
 import useIsMobile from '@/hooks/useIsMobile';
 
@@ -91,7 +91,8 @@ const HeroSubTitle = styled.div`
 
   @media (max-width: 600px) {
     line-height: 155%;
-    font-size: 24px;
+    font-size: 20px;
+    width: 100%;
   }
 `;
 
@@ -115,6 +116,17 @@ const Container = styled(SectionContainer)`
   }
 `;
 
+const ActionButtonsWrapper = styled.div`
+  display: flex;
+  gap: 24px;
+  margin-top: 64px;
+  width: 100%;
+  @media (max-width: 700px) {
+    gap: 16px;
+    flex-direction: column-reverse;
+  }
+`;
+
 const Hero = () => {
   const [open, setOpen] = React.useState(false);
 
@@ -134,7 +146,10 @@ const Hero = () => {
               solution providing zero-code, zero-performance overhead for deeper
               tracing
             </HeroSubTitle>
-            <WatchDemoBtn onClick={() => setOpen(true)} />
+            <ActionButtonsWrapper>
+              <WatchDemoBtn onClick={() => setOpen(true)} />
+              <QuickStartBtn />
+            </ActionButtonsWrapper>
             <TrustedList />
           </ColumnContainer>
           <LottieWrapper>

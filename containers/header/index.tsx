@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
@@ -51,7 +51,6 @@ const HamburgerButton = styled.button`
 
 const ActionBarWrapper = styled.div`
   display: flex;
-
   justify-content: flex-end;
   @media (max-width: 1100px) {
     gap: 1rem;
@@ -74,14 +73,29 @@ export const Header = () => {
   const [currentItem, setCurrentItem] = useState(10);
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState<boolean>(false);
-
-  const handleSignInClick = () => {
-    window.open('https://calendly.com/edenfederman/odigos-demo', '_blank');
-  };
+  const [showSignInButton, setShowSignInButton] = useState(false);
 
   const handleMenuItemClick = (index: number) => {
     setCurrentItem(index);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition =
+        window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      if (scrollPosition >= windowHeight) {
+        setShowSignInButton(true);
+      } else {
+        setShowSignInButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <MaxWidthContainer>
@@ -103,11 +117,19 @@ export const Header = () => {
             currentIndexItem={currentItem}
           />
           <ActionBarWrapper>
-            <SignInButton onClick={() => setOpen(true)} variant="secondary">
+            <SignInButton
+              style={{ visibility: showSignInButton ? 'visible' : 'hidden' }}
+              containerStyle={{
+                visibility: showSignInButton ? 'visible' : 'hidden',
+              }}
+              onClick={() => setOpen(true)}
+              variant="secondary"
+            >
               <UnderlineText color={theme.text.secondary}>
                 Contact Us
               </UnderlineText>
             </SignInButton>
+
             <HamburgerButton
               aria-label="hamburger Toggler"
               onClick={() => setDropdownToggler(!dropdownToggler)}
