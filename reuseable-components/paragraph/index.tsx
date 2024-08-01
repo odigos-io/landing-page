@@ -45,6 +45,8 @@ export const ParagraphComponent: React.FC<ParagraphComponentProps> = ({
   titleStyle = {},
   paragraphStyle = {},
 }) => {
+  const wordsToBold = ['20x faster', 'less then 1% performance impact'];
+
   return (
     <ColumnContainer
       gap={24}
@@ -54,10 +56,21 @@ export const ParagraphComponent: React.FC<ParagraphComponentProps> = ({
       <ColumnContainer gap={15}>
         {paragraphs.map((text, index) => (
           <Paragraph style={{ ...paragraphStyle }} key={index}>
-            {text}
+            {/* {text} */}
+            <span
+              dangerouslySetInnerHTML={{
+                __html: boldWordsInText(text, wordsToBold),
+              }}
+            />
           </Paragraph>
         ))}
       </ColumnContainer>
     </ColumnContainer>
   );
+};
+
+// Function to make specified words bold in a text
+const boldWordsInText = (text: string, wordsToBold: string[]): string => {
+  const regex = new RegExp(`\\b(${wordsToBold.join('|')})\\b`, 'gi');
+  return text.replace(regex, '<b><u>$1</u></b>');
 };

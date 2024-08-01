@@ -64,7 +64,7 @@ const Container = styled(SectionContainer)`
   }
 `;
 const HowWeDo = () => {
-  const multilineText = `The only solution to generate 100%
+  const multilineText = `The only solution to generate 
   accurate distributed tracing 
   using eBPF-based context
   propagation across all applications.`;

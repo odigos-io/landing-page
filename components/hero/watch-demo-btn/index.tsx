@@ -7,7 +7,7 @@ import useIsMobile from '@/hooks/useIsMobile';
 const WatchDemoButton = styled(Button)`
   background: ${({ theme }) => theme.colors.secondary};
   width: 250px;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     padding: 8px 22px;
     width: 100%;
     .desktop {
@@ -17,7 +17,7 @@ const WatchDemoButton = styled(Button)`
 `;
 const MobileButtonContent = styled.div`
   display: none;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -31,10 +31,10 @@ type WatchDemoBtnProps = {
   onClick: () => void;
 };
 export const WatchDemoBtn = ({ onClick }: WatchDemoBtnProps) => {
-  const isMobile = useIsMobile(600);
+  const isMobile = useIsMobile(900);
   return (
     <WatchDemoButton
-      containerStyle={{ marginTop: 24, width: isMobile ? '100%' : 253 }}
+      containerStyle={{ width: isMobile ? '100%' : 253 }}
       onClick={onClick}
     >
       <UnderlineText className="desktop" size={20}>
