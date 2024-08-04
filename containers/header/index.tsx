@@ -1,11 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import Modal from '@/reuseable-components/modal';
+import ContactForm from '../pricing/pricing-table/contact-us-form';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
@@ -49,7 +51,6 @@ const HamburgerButton = styled.button`
 
 const ActionBarWrapper = styled.div`
   display: flex;
-
   justify-content: flex-end;
   @media (max-width: 1100px) {
     gap: 1rem;
@@ -70,14 +71,31 @@ const MaxWidthContainer = styled.div`
 export const Header = () => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [currentItem, setCurrentItem] = useState(10);
-
-  const handleSignInClick = () => {
-    window.open('https://app.odigos.io/signin', '_blank');
-  };
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [showSignInButton, setShowSignInButton] = useState(false);
 
   const handleMenuItemClick = (index: number) => {
     setCurrentItem(index);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition =
+        window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      if (scrollPosition >= windowHeight) {
+        setShowSignInButton(true);
+      } else {
+        setShowSignInButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <MaxWidthContainer>
@@ -99,11 +117,19 @@ export const Header = () => {
             currentIndexItem={currentItem}
           />
           <ActionBarWrapper>
-            <SignInButton onClick={handleSignInClick} variant="secondary">
+            <SignInButton
+              style={{ visibility: showSignInButton ? 'visible' : 'hidden' }}
+              containerStyle={{
+                visibility: showSignInButton ? 'visible' : 'hidden',
+              }}
+              onClick={() => setOpen(true)}
+              variant="secondary"
+            >
               <UnderlineText color={theme.text.secondary}>
-                Sign in
+                Contact Us
               </UnderlineText>
             </SignInButton>
+
             <HamburgerButton
               aria-label="hamburger Toggler"
               onClick={() => setDropdownToggler(!dropdownToggler)}
@@ -124,6 +150,21 @@ export const Header = () => {
       </HeaderContainer>
       {dropdownToggler && (
         <MobileHeaderMenu onClick={() => setDropdownToggler(false)} />
+      )}
+      {open && (
+        <Modal
+          title={success ? '' : 'We’d love to hear from you!'}
+          description={
+            'Whether you have questions, feedback, or need assistance, our team is here to help. '
+          }
+          onClose={() => setOpen(false)}
+        >
+          <ContactForm
+            success={success}
+            setSuccess={setSuccess}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
       )}
     </MaxWidthContainer>
   );

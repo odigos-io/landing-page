@@ -42,7 +42,6 @@ const PricingContainer = styled.div`
 const PricingCard = styled.div`
   padding: 40px;
   max-width: 420px;
-  height: 746px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -54,8 +53,7 @@ const PricingCard = styled.div`
     border: 1px solid ${theme.colors.white};
   }
   @media (width <= 1450px) {
-    height: 692px;
-    padding: 20px 40px;
+    padding: 20px;
     max-width: 335px;
   }
 `;
@@ -171,12 +169,15 @@ const PricingComponent: React.FC = () => {
           )}
           <PlanWrapper>
             <PlanTitle>{plan.plan}</PlanTitle>
-            {plan.status && <PlanStatus>{plan.status}</PlanStatus>}
+            {/* {plan.status && <PlanStatus>{plan.status}</PlanStatus>} */}
           </PlanWrapper>
+
           <Description>{plan.description}</Description>
           <Divider />
-          <Description>{plan.priceTitle}</Description>
+
+          <Description style={{ height: 32 }}>{plan.priceTitle}</Description>
           <Price>{plan.price}</Price>
+
           <Divider />
 
           <FeatureList>
@@ -198,7 +199,7 @@ const PricingComponent: React.FC = () => {
               <Button
                 style={{ background: theme.colors.secondary }}
                 onClick={() =>
-                  index === 2
+                  index !== 0
                     ? setOpen(true)
                     : window.open(plan.button.link, '_blank')
                 }
@@ -211,9 +212,9 @@ const PricingComponent: React.FC = () => {
       ))}
       {open && (
         <Modal
-          title={success ? '' : 'Let’s talk!'}
+          title={success ? '' : 'We’d love to hear from you!'}
           description={
-            "Questions about our products/services, orders, or just want to say hello? We're here to help."
+            'Whether you have questions, feedback, or need assistance, our team is here to help. '
           }
           onClose={() => setOpen(false)}
         >

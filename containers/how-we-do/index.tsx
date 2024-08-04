@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
+import { Typewriter } from '@/reuseable-components';
 import { MaxWidthContainer, SectionContainer } from '@/style';
-import { SectionTitle, Typewriter } from '@/reuseable-components';
 
 const PageBorder = styled.div`
   margin-top: 40px;
@@ -45,11 +45,12 @@ const Body = styled.div`
   height: 100%;
   border: 1px solid #f9f9f9;
   border-bottom: 0;
-  @media (max-width: 1200px) {
-    padding: 64px 40px;
+  @media (max-width: 1300px) {
+    padding: 64px 40px 0;
   }
   @media (max-width: 800px) {
     border-radius: 48px 48px 0px 0px;
+    padding: 64px 40px;
   }
 `;
 
@@ -63,10 +64,10 @@ const Container = styled(SectionContainer)`
   }
 `;
 const HowWeDo = () => {
-  const multilineText = `Odigos instantly delivers deeper
-  observability by leveraging 
-  eBPF and OpenTelemetry 
-  for effortless implementation.`;
+  const multilineText = `The only solution to generate 
+  accurate distributed tracing 
+  using eBPF-based context
+  propagation across all applications.`;
 
   return (
     <MaxWidthContainer>
@@ -74,13 +75,6 @@ const HowWeDo = () => {
         <PageBorder>
           <InnerBorder>
             <Body>
-              <SectionTitle
-                headerInfo={{
-                  title: 'HOW WE DO',
-                  subtitle: 'Subtitle',
-                  description: 'Description',
-                }}
-              />
               <Typewriter textAlignment={'center'} text={multilineText} />
             </Body>
           </InnerBorder>

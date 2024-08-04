@@ -47,12 +47,14 @@ const TypewriterWrapper = styled.div`
   width: var(--width);
   min-height: 40vh;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1000px) {
     min-height: 30vh;
   }
-
-  @media (max-width: 900px) {
+  @media (max-width: 800px) {
     min-height: 20vh;
+  }
+  @media (max-width: 600px) {
+    min-height: 16vh;
   }
 `;
 
@@ -71,14 +73,14 @@ const TextBody = styled.div<{ delay: number; textAlignment?: string }>`
   animation: ${type} 1.2s steps(40) ${(props) => props.delay}s 1 normal both;
   position: relative;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1300px) {
     font-size: 44px;
   }
   @media (max-width: 1000px) {
     font-size: 30px;
   }
-  @media (max-width: 800px) {
-    font-size: 24px;
+  @media (max-width: 600px) {
+    font-size: 20px;
   }
 `;
 

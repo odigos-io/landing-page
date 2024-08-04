@@ -11,6 +11,7 @@ import {
   SectionContainer,
   IconWrapper as OriginalIconWrapper,
 } from '@/style';
+import Image from 'next/image';
 
 const PageContainer = styled(SectionContainer)`
   flex-direction: column;
@@ -46,7 +47,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 80px;
+  gap: 40px;
   margin-top: 80px;
   @media (max-width: 600px) {
     flex-direction: column-reverse;
@@ -83,6 +84,7 @@ const TextWrapper = styled(ColumnContainer)`
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
   }
 `;
 
@@ -145,7 +147,7 @@ const Testimonials = () => {
       >{`“${currentItem.testimonial}”`}</Quote>
       <Footer>
         <FlexContainer>
-          <ArrowIconWrapper>
+          {/* <ArrowIconWrapper>
             <LazyImage
               style={{ transform: 'rotate(180deg)' }}
               src="/icons/common/next.svg"
@@ -162,7 +164,15 @@ const Testimonials = () => {
               width={15}
               height={24}
             />
-          </ArrowIconWrapper>
+          </ArrowIconWrapper> */}
+          <Image
+            src="/images/investors/access.jpg"
+            alt="access-bank"
+            width={46}
+            height={46}
+            onClick={handlePrevious}
+            style={{ borderRadius: '50%' }}
+          />
         </FlexContainer>
         <TextWrapper>
           <GiverName>{currentItem.name}</GiverName>

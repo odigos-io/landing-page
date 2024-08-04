@@ -22,8 +22,8 @@ export const DATA = [
     plan: 'Pro',
     status: 'Open Beta',
     description: 'Multiple clusters and teams.',
-    priceTitle: 'starting at',
-    price: '$100/month',
+    priceTitle: '',
+    price: 'COMING SOON',
     isBeta: true,
     features: [
       'Control instrumentation in runtime',
@@ -32,7 +32,7 @@ export const DATA = [
       'Business Hours Support',
     ],
     button: {
-      text: 'SIGN IN',
+      text: 'Contact Us',
       link: 'https://app.odigos.io/signin',
     },
   },

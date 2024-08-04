@@ -7,7 +7,7 @@ import { MaxWidthContainer } from '@/style';
 import { BLOGS_COVERS } from '@/public/images/blogs-cover';
 
 const BlogCoverContainer = styled.div`
-  padding: 120px 64px;
+  padding: 0px 120px 120px 64px;
   width: 100%;
   max-width: 1440px;
   @media (max-width: 800px) {

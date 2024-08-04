@@ -127,7 +127,7 @@ const Description = styled.div`
 
 const ImageWrapper = styled.div`
   display: flex;
-  width: 200px;
+  width: 260px;
   height: 120px;
   flex-direction: column;
   justify-content: center;
@@ -136,7 +136,6 @@ const ImageWrapper = styled.div`
   border-radius: 80px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
   background: #242023;
-
   @media (max-width: 650px) {
     width: 80px;
     height: 80px;
@@ -146,7 +145,7 @@ const ImageWrapper = styled.div`
 
 const InvestorImage = styled.img`
   height: 56px;
-  object-fit: cover;
+  /* object-fit: cover; */
   @media (max-width: 650px) {
     height: 32px;
   }
@@ -176,7 +175,11 @@ const Investors = () => {
             {DATA.map((item, index) => (
               <InvestorItem key={index}>
                 <ImageWrapper>
-                  <InvestorImage src={item.logo} alt={item.name} />
+                  <InvestorImage
+                    src={item.logo}
+                    alt={item.name}
+                    style={{ opacity: index !== 2 ? 0.6 : 1 }}
+                  />
                 </ImageWrapper>
                 <TextWrapper>
                   <Title>{item.name}</Title>

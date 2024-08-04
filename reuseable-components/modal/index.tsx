@@ -103,7 +103,7 @@ const ModalHeader = styled.div`
 
 const Title = styled.h1`
   color: ${({ theme }) => theme.text.primary};
-  font-size: clamp(1.8rem, 6vw, 3.5rem);
+  font-size: 48px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
