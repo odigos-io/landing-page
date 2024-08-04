@@ -184,9 +184,9 @@ const CTA: React.FC = () => {
       </PageContainer>
       {open && (
         <Modal
-          title={success ? '' : 'Let’s talk!'}
+          title={success ? '' : 'We’d love to hear from you!'}
           description={
-            "Questions about our products/services, orders, or just want to say hello? We're here to help."
+            'Whether you have questions, feedback, or need assistance, our team is here to help. '
           }
           onClose={() => setOpen(false)}
         >
