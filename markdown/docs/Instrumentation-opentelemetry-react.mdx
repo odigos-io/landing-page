@@ -1,0 +1,166 @@
+---
+pubDate: 'May 17 2023'
+title: 'Instrumenting a React App with OpenTelemetry'
+image: '/new_lang_detector_cover.png'
+category: 'Odigos'
+description: 'Latest improvements to Odigos language detection.'
+tags: [odigos, kubernetes, language-detection, instrumentation, opentelemetry]
+authorImage: '/eden.jpg'
+author: Eden Federman
+metadata: Discover the latest enhancements in language detection within Odigos, including improved speed and efficiency.
+---
+
+# Instrumenting a React App with OpenTelemetry and Exporting Traces to Jaeger
+
+In this tutorial, we'll walk through the steps to instrument a React application using OpenTelemetry and export the collected traces to Jaeger. This setup will help you monitor and troubleshoot your app's performance and interactions.
+
+## 1. Create a React App
+
+First, set up a basic React application if you don't already have one. You can create a new React app using the following command:
+
+```sh
+npx create-react-app odigos-react-app
+```
+
+## 2. Install Dependencies
+
+Next, we'll install the necessary OpenTelemetry packages. Run the following command to add them to your project:
+
+```sh
+yarn add @opentelemetry/api @opentelemetry/sdk-trace-web @opentelemetry/sdk-trace-base @opentelemetry/context-zone @opentelemetry/resources @opentelemetry/semantic-conventions @opentelemetry/exporter-trace-otlp-http @opentelemetry/instrumentation
+```
+
+## 3. Install Instrumentation Libraries
+
+For automatic instrumentation, we need the \`@opentelemetry/auto-instrumentations-web\` package:
+
+```sh
+yarn add @opentelemetry/auto-instrumentations-web
+```
+
+## 4. Add OpenTelemetry SDK Setup Code
+
+Create a file named \`opentelemetry.ts\` in your application, and add the following code:
+
+```typescript
+import { WebTracerProvider } from '@opentelemetry/sdk-trace-web';
+import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { ZoneContextManager } from '@opentelemetry/context-zone';
+import {
+  Resource,
+  detectResources,
+  browserDetector,
+} from '@opentelemetry/resources';
+import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
+
+const serviceName = 'odigos-react-app';
+
+const propagateTraceHeaderCorsUrls = [/my\.company\.domain/];
+const ignoreUrls = [/third\.parties\.urls/];
+
+export const registerOpenTelemetry = async () => {
+  const autoResource = await detectResources({ detectors: [browserDetector] });
+
+  const resource = new Resource({
+    [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+  }).merge(autoResource);
+
+  const provider = new WebTracerProvider({ resource });
+
+  const otlpExporter = new OTLPTraceExporter({
+    url: 'http://localhost:4318/v1/traces',
+  });
+  provider.addSpanProcessor(new BatchSpanProcessor(otlpExporter));
+
+  provider.register({ contextManager: new ZoneContextManager() });
+
+  const instrumentations = getWebAutoInstrumentations({
+    '@opentelemetry/instrumentation-xml-http-request': {
+      propagateTraceHeaderCorsUrls,
+      ignoreUrls,
+    },
+  });
+
+  registerInstrumentations({ instrumentations });
+};
+```
+
+This code sets up the OpenTelemetry tracing provider, configures an OTLP exporter to send trace data to a local collector, and registers automatic instrumentations for various web technologies.
+
+To ensure that OpenTelemetry starts collecting and exporting traces when your app runs, you need to call the registerOpenTelemetry function at the entry point of your application. Typically, this would be in the main file where your React application is initialized, such as index.tsx or App.tsx.
+
+```typescript
+import React from 'react';
+import App from './App';
+import ReactDOM from 'react-dom/client';
+import { registerOpenTelemetry } from './opentelemetry';
+
+registerOpenTelemetry();
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
+## 5. Create an OpenTelemetry Collector
+
+Next, we'll set up an OpenTelemetry Collector to receive and export the trace data. Create a configuration file named \`otelcol-config.yml\`:
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+        endpoint: '0.0.0.0:4318'
+        cors:
+          allowed_origins:
+            - 'http://*'
+            - 'https://*'
+exporters:
+  otlp:
+    endpoint: 'host.docker.internal:4317'
+    tls:
+      insecure: true
+  debug:
+    verbosity: detailed
+    sampling_initial: 5
+    sampling_thereafter: 200
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [debug, otlp]
+```
+
+## 6. Run the OpenTelemetry Collector
+
+To start the OpenTelemetry Collector, use the following Docker command:
+
+```bash
+docker run -v $(pwd)/otelcol-config.yml:/etc/otelcol/config.yaml --rm -p 4318:4318 otel/opentelemetry-collector:0.106.0
+```
+
+This command mounts the configuration file and exposes the necessary port for the OTLP receiver.
+
+## 7. Run Your App
+
+Start your React app as usual. The OpenTelemetry setup will automatically instrument your application and send traces to the collector.
+
+## 8. Open Jaeger to View Traces
+
+Finally, open Jaeger to visualize the traces collected from your React app. You can access Jaeger by navigating to \`http://localhost:16686\` in your browser.
+
+You should see traces in the Jaeger dashboard. These traces include detailed information about your application's operations, such as document load and HTTP fetch requests. This visibility allows you to monitor the performance and identify potential issues in your app's interactions.
+
+![jeager-dashboard](/images/blog/jeager-dashboard.png)
+
+---
+
+This setup provides a robust way to monitor your React application's performance and trace its interactions. You can further customize the OpenTelemetry configuration and explore more advanced features as needed. Happy tracing!
