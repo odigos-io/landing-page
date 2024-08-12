@@ -1,0 +1,77 @@
+---
+pubDate: 'Aug 12 2024'
+title: 'Opentelemetry Trace Sampling'
+image: '/access_bank_cover.png'
+category: 'Odigos'
+description: 'Using Odigos to simply sample opentelemetry traces'
+tags: [distributed tracing, odigos, opentelemetry, sampling]
+authorImage: '/tamir.jpeg'
+author: Tamir David
+metadata: tail sampling using opentelemetry, traces sampling, opentelemetry traces sampling, reduce cost opentelemetry, managed opentelemetry, headsampling, opentelemetry headsampling
+---
+
+*How to use Odigos for cost-effective trace data sampling with no code changes*
+
+
+## Why Sampling?
+In the world of distributed systems and microservices, tracing has become an essential tool for understanding and troubleshooting complex architectures. However, as systems scale and generate massive amounts of trace data, the cost and performance impact of collecting and storing every single trace can become excessive. Trace sampling addresses this challenge.
+
+Trace sampling is the practice of selectively collecting and storing a subset of traces, rather than capturing every single trace. By intelligently sampling traces, companies can strike a balance between capturing enough data to gain insights into system behavior and reducing the overhead associated with storing and analyzing large volumes of trace data.
+
+There are several reasons why companies use trace sampling:
+
+- Cost Optimization: Storing and processing trace data can be expensive, especially at scale. By sampling traces, companies can reduce the costs associated with capturing and analyzing every single trace. This allows better cost allocation and leads to significant savings.
+
+- Performance Impact: Collecting and processing every single trace can introduce overhead on the system being traced. This can impact the performance and scalability of the application, especially in high-throughput environments. By sampling traces, companies can mitigate this performance impact and ensure that their systems continue to operate smoothly.
+
+- Focus on Relevant Data: Not all traces are equally important or informative. Sampling allows companies to focus on capturing traces that are most relevant to their specific use cases or areas of interest. Filtering out less relevant traces allows companies to focus their analysis on the most critical aspects of their system.
+
+
+## Tail sampling VS Head Sampling
+
+Tail-based sampling makes the decision to sample a trace after all spans in a request are completed. This allows the system to evaluate the entire trace before deciding whether it should be kept or discarded. In contrast, head-based sampling makes the sampling decision at the beginning of a request, as soon as the first span begins processing. This approach means that the decision is made without the full context of the trace.
+
+Head-based sampling is generally more efficient as it reduces the need to collect and store data that may ultimately be discarded. By making the decision early, it minimizes resource usage and has less impact on system performance. However, head-based sampling can't apply sampling policies that require the context of the entire trace, such as identifying traces that contain error messages or other critical events. Tail-based sampling, while more resource-intensive, is better suited for capturing these important traces because it has access to the complete context before making a decision.
+
+With Odigos, you simply choose your preferred sampling strategy, and we implement it in the most effective way possible, allowing you to focus on your use case without worrying about the underlying complexities.
+
+## Sampling with Odigos: Simpler Than Ever
+
+Odigos introduces "Sampling Actions" which are abstractions built on top of OpenTelemetry's sampling methods.  
+These actions are designed to capture user use cases and simplify their implementation using the Odigos platform. In this blog, we'll walk you through a brief demo on implementing sampling for common use cases using our intuitive actions.
+
+## Example Use Case
+
+We’re going to sample traces for Company X, which has five main applications: Frontend, Pricing, Membership, Inventory, and Coupon. Here’s an overview of their architecture:  
+![Odigos Demo Architecture](/images/blog/odigos-sampling/demo-architecture.png)
+
+The company aims to implement the following sampling strategies:
+
+1. Capture 100% of error logs and retain only 5% of non-error logs.
+2. For the Frontend service, capture requests to /buy only if they exceed 1 second, while still keeping 10% of shorter traces.
+3. For the Frontend service, capture all requests to /products that exceed 1 ms.
+
+### Here’s how to implement it:
+
+First, we will create the Error Sampler action to capture 100% of error logs and retain only 5% of non-error logs. To do this, navigate to the Odigos UI:  
+* In the Odigos UI, go to Actions > Add New Action > Error Sampler:  
+![Creating Error Sampler Action](/images/blog/odigos-sampling/error-sampling.png)
+<br>
+
+Next, we’ll create the Latency Sampler action to capture specific requests in the Frontend service. We want to capture all requests to /products that exceed 1 ms and requests to /buy that exceed 1 second, while still keeping 10% of shorter traces. In the Odigos UI:  
+* In the Odigos UI, go to Actions > Add New Action > Latency Sampler:  
+![Creating Latency Sampler Action](/images/blog/odigos-sampling/latency-sampling.png)
+<br>
+
+Now, let’s explore Jaeger, the trace backend installed on my cluster. (Odigos supports all major tracing backends.)  
+* We’ll review the traces that have been sent to the backend:  
+![Traces in Jaeger](/images/blog/odigos-sampling/jaeger.png)
+<br>
+
+## Links
+
+[Odigos Sampling documentation](https://docs.odigos.io/pipeline/actions/sampling)
+
+## Feedback
+
+As always, we would love to hear your feedback. Please reach out to us on [Odigos Slack](https://join.slack.com/t/odigos/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A) or [GitHub](https://github.com/keyval-dev/odigos/issues) if you have any questions or suggestions.
