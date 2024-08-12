@@ -33,6 +33,13 @@ pre {
   letter-spacing: 0.4px;
 }
 
+.wmde-markdown ol {
+  list-style-type: decimal;
+}
+.wmde-markdown ul {
+  list-style-type: decimal;
+}
+
 .wmde-markdown li {
   color: #f9f9f9 !important;
   font-family: 'Inter Tight';
