@@ -32,18 +32,12 @@ pre {
   line-height: 160%;
   letter-spacing: 0.4px;
 }
-.wmde-markdown ol {
-  list-style-type: decimal;
-}
-.wmde-markdown ul {
-  list-style-type: disc;
-}
 
 .wmde-markdown ol {
   list-style-type: decimal;
 }
 .wmde-markdown ul {
-  list-style-type: decimal;
+  list-style-type: disc;
 }
 
 .wmde-markdown li {
@@ -58,7 +52,8 @@ pre {
 }
 
 .wmde-markdown img {
-  border-radius: 48px;
+  margin: 24px 0;
+  border-radius: 24px;
 }
 
 .wmde-markdown ul li strong {

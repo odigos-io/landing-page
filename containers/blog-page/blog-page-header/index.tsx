@@ -49,6 +49,7 @@ const CoverImage = styled.img`
   object-fit: cover;
   border-radius: 48px;
   height: 360px;
+  border: 1px dashed rgba(249, 249, 249, 0.32);
 `;
 
 const TitleWrapper = styled.div`
