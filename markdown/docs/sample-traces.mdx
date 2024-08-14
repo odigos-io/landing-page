@@ -44,25 +44,27 @@ We’re going to sample traces for Company X, which has five main applications: 
 
 Company X aims to implement the following sampling strategies:
 
-1. Capture 100% of error logs and retain only 5% of non-error logs.
+1. Capture 100% of error traces and retain only 5% of non-error traces.
 2. For the Frontend service: 
     - Capture requests to /buy only if they exceed 1 second, while still keeping 10% of shorter traces.
-    - Capture all requests to /products that exceed 1 ms.
+    - Capture all requests to /products that exceed 290 ms.
 
 ### Here’s how to implement it:
 
-First, we will create the Error Sampler action to capture 100% of error logs and retain only 5% of non-error logs.  
+First, we will create the Error Sampler action to capture 100% of error traces and retain only 5% of non-error traces.  
 * Go to Actions > Add New Action > Error Sampler:  
 ![Creating Error Sampler Action](/images/blog/odigos-sampling/error-sampling.png)
 <br>
 
-Next, we’ll create the Latency Sampler action to capture specific requests in the Frontend service. We want to capture all requests to /products that exceed 1 ms and requests to /buy that exceed 1 second, while still keeping 10% of shorter traces.  
+Next, we’ll create the Latency Sampler action to capture specific requests in the Frontend service. We want to capture all requests to /products that exceed 290 ms and requests to /buy that exceed 1 second, while still keeping 10% of shorter traces.  
 * Go to Actions > Add New Action > Latency Sampler:  
-![Creating Latency Sampler Action](/images/blog/odigos-sampling/latency-sampling.png)
+![Creating Latency Sampler Action](/images/blog/odigos-sampling/frontend-latency-sampling.png)
 <br>
 
 Now, let’s explore Jaeger, the trace backend installed on my cluster. (Odigos supports all major tracing backends.)  
-* We’ll review the traces that have been sent to the backend:  
+* The first two traces were sampled due to the presence of errors.
+* The third trace was sampled because it exceeded the 1-second threshold defined for the /buy endpoint.
+* The last trace was sampled because it exceeded the 290ms threshold defined for the /products endpoint.
 ![Traces in Jaeger](/images/blog/odigos-sampling/jaeger.png)
 <br>
 
