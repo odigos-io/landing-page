@@ -170,7 +170,7 @@ const Testimonials = () => {
             alt="access-bank"
             width={46}
             height={46}
-            onClick={handlePrevious}
+            // onClick={handlePrevious}
             style={{ borderRadius: '50%' }}
           />
         </FlexContainer>

@@ -169,7 +169,7 @@ const Hero = () => {
           >
             <DemoIframe
               className="rounded-lg demo-view"
-              src={`https://www.youtube.com/embed/nynyV7FC4VI`}
+              src={`https://www.youtube.com/embed/nynyV7FC4VI?autoplay=1`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               title="Embedded youtube"

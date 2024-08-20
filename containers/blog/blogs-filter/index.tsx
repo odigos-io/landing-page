@@ -75,7 +75,7 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
       if (selectedItems.includes('EXPLORE ALL')) {
         setSelectedItems([]);
       } else {
-        setSelectedItems(['EXPLORE ALL', ...Object.keys(tagCounts)]);
+        setSelectedItems(['EXPLORE ALL']);
       }
     } else {
       if (selectedItems.includes(tag)) {

@@ -1,7 +1,7 @@
 'use client';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { putContactFormItem } from '@/containers/footer/utils';
 import { Button, Text, UnderlineText } from '@/reuseable-components';
 
@@ -99,6 +99,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
   });
 
   const [error, setError] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    // Check if all required fields are filled
+    const { name, email, organization } = state;
+    setIsDisabled(!(name && email && organization && !error));
+  }, [state, error]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === 'email') {
@@ -235,7 +242,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
           onChange={onTextAreaChange}
         />
       </InputsContainer>
-      <Button variant="secondary" onClick={onSubmit}>
+      <Button variant="secondary" onClick={onSubmit} disabled={isDisabled}>
         <UnderlineText color={theme.text.secondary}>SEND MESSAGE</UnderlineText>
       </Button>
     </FormContainer>
