@@ -14,7 +14,7 @@ export const DATA = [
     ],
     button: {
       text: 'Go to GitHub',
-      link: 'https://github.com/odigos-io',
+      link: 'https://github.com/odigos-io/odigos',
     },
   },
   {

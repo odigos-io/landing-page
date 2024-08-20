@@ -127,7 +127,7 @@ const FAQ = () => {
             }}
           />
           <TitleWrapper>
-            <PageTitle>Frequently asked questions</PageTitle>
+            <PageTitle>Your Questions, Answered</PageTitle>
           </TitleWrapper>
           <FAQContainer>
             {DATA.map((item, index) => (
@@ -143,10 +143,11 @@ const FAQ = () => {
                         width={isMobile ? 16 : 24}
                         height={isMobile ? 16 : 24}
                         style={{
+                          transition: 'transform 0.3s ease',
                           transform:
                             activeIndex === index
-                              ? 'rotate(180deg)'
-                              : 'rotate(0deg)',
+                              ? 'rotate(0deg)'
+                              : 'rotate(180deg)',
                         }}
                       />
                     </ExpandIcon>
