@@ -9,10 +9,12 @@ const LandingPageBody = dynamic(() => import('@/containers/landing-page-body'));
 export const metadata: Metadata = {
   metadataBase: new URL('https://odigos.io'),
   title: 'Odigos - Instant Distributed Tracing',
-  icons: '/icons/brand/black-icon.svg',
+  icons: '/icons/brand/icon-png.png',
+  description:
+    'Distributed tracing without code changes. Instantly monitor any application using OpenTelemetry and eBPF',
   openGraph: {
     title: 'Odigos - Instant Distributed Tracing',
-    images: '/icons/brand/black-icon.svg',
+    images: '/icons/brand/icon-png.png',
   },
 };
 
