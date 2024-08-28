@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { MAILCHIMP_API_URL, sendToService } from './utils';
 import { Text, UnderlineText, GradientButton } from '@/reuseable-components';
 import { HUBSPOT_API_URL } from '@/containers/footer/utils';
-import { m } from 'framer-motion';
 
 const InputContainer = styled.div`
   display: flex;
