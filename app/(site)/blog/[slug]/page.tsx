@@ -25,18 +25,21 @@ export function generateMetadata({ params }: Props): Metadata {
   const posts = getAllBlogs(['title', 'date', 'coverImage', 'slug']);
 
   const post = posts.find((post) => post.slug === slug);
+  //random number 1-6
+  const random = Math.floor(Math.random() * 6) + 1;
+  const url = `/images/blogs-cover-png/odigos_blog${random}.png`;
 
   return {
     metadataBase: new URL('https://odigos.io'),
     title: post?.title,
     keywords: post?.tags,
     description: post?.description,
-    icons: '/icons/brand/black-icon.svg',
+    icons: '/icons/brand/icon-png.png',
     openGraph: {
       title: post?.title,
       images: [
         {
-          url: post?.image,
+          url,
           width: 1000,
           height: 470,
           alt: post?.title,
