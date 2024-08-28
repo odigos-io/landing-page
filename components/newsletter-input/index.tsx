@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { MAILCHIMP_API_URL, sendToService } from './utils';
+import { sendToService } from './utils';
 import { Text, UnderlineText, GradientButton } from '@/reuseable-components';
+import { HUBSPOT_API_URL } from '@/containers/footer/utils';
 
 const InputContainer = styled.div`
   display: flex;
@@ -111,7 +112,7 @@ export const NewsletterInput = () => {
     setEmail(e.target.value);
   };
   function handleSubscribe() {
-    const body = { email, name: '' };
+    const body = { email, name: '', message: 'newsletter' };
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -126,7 +127,7 @@ export const NewsletterInput = () => {
       return;
     }
 
-    sendToService(body, MAILCHIMP_API_URL);
+    sendToService(body, HUBSPOT_API_URL);
     setEmail('');
     setIsSubscribed(true);
   }
