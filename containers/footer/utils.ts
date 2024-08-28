@@ -13,6 +13,8 @@ export const CONTACT_API_URL =
 export const SLACK_CONTACT_API_URL =
   'https://zogs1txbee.execute-api.us-east-2.amazonaws.com/default/contact-form-post-slack-channel-message';
 
+export const HUBSPOT_API_URL =
+  'https://gf4yl5rodi.execute-api.us-east-2.amazonaws.com/default/landing-page-form-submission';
 export const putContactFormItem = async (body) => {
   try {
     const response = await fetch(CONTACT_API_URL, {
@@ -38,6 +40,14 @@ export const putContactFormItem = async (body) => {
       organization: body.organizationName,
     };
 
+    const hubspotData = {
+      email: body.businessEmail,
+      firstName: body.fullName.split(' ')[0],
+      lastName: body.fullName.split(' ')[1],
+      company: body.organizationName,
+      message: body.message,
+    };
+    sendToService(hubspotData, HUBSPOT_API_URL);
     sendToService(data, SLACK_CONTACT_API_URL);
 
     return true;
@@ -47,7 +57,7 @@ export const putContactFormItem = async (body) => {
   }
 };
 export async function sendToService(
-  body: { name: string; email: string },
+  body: { [key: string]: string },
   url: string
 ) {
   try {
