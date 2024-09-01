@@ -37,7 +37,7 @@ kind create cluster
 Deploy the application using the following command:
 
 ```console
-kubectl apply -k github.com/keyval-dev/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
+kubectl apply -k github.com/odigos-io/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
 ```
 
 ## Installing Jaeger
@@ -47,7 +47,7 @@ We will use [Jaeger](https://www.jaegertracing.io/) as our distributed tracing b
 Install Jaeger using the following command:
 
 ```console
-kubectl apply -f https://raw.githubusercontent.com/keyval-dev/opentelemetry-go-instrumentation/master/docs/getting-started/jaeger.yaml -n emojivoto
+kubectl apply -f https://raw.githubusercontent.com/odigos-io/opentelemetry-go-instrumentation/master/docs/getting-started/jaeger.yaml -n emojivoto
 ```
 
 ## Installing Odigos
@@ -55,7 +55,7 @@ kubectl apply -f https://raw.githubusercontent.com/keyval-dev/opentelemetry-go-i
 Odigos will be used for generating and sending traces to Jaeger. Install Odigos using the following command:
 
 ```console
-helm repo add odigos https://keyval-dev.github.io/odigos-charts/
+helm repo add odigos https://odigos-io.github.io/odigos-charts/
 helm install my-odigos odigos/odigos --namespace odigos-system --create-namespace
 ```
 
@@ -104,4 +104,4 @@ Select one of the services from the list and click on **Find Traces**:
 
 ## Summary
 
-In this tutorial, we showed how to combine Odigos and Jaeger to make distributed tracing easy. At Keyval, we believe that adopting distributed tracing should be easy and accessible to everyone. We are working hard to make this a reality. If you have any questions or feedback, please reach out to us on [Slack](https://join.slack.com/t/odigos/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A) or [GitHub](https://github.com/keyval-dev/odigos/issues).
+In this tutorial, we showed how to combine Odigos and Jaeger to make distributed tracing easy. At Keyval, we believe that adopting distributed tracing should be easy and accessible to everyone. We are working hard to make this a reality. If you have any questions or feedback, please reach out to us on [Slack](https://join.slack.com/t/odigos/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A) or [GitHub](https://github.com/odigos-io/odigos/issues).
