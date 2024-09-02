@@ -130,13 +130,9 @@ const ActionButtonsWrapper = styled.div`
 
 const HeroPageContent = () => {
   const [open, setOpen] = React.useState(false);
-  const { isOpen } = useAnnouncementStore();
-
-  useEffect(() => {
-    console.log({ isOpen });
-  }, [isOpen]);
 
   const isMobile = useIsMobile();
+  const { isOpen } = useAnnouncementStore();
 
   return (
     <PageContainer largePadding={isOpen}>
