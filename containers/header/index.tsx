@@ -5,7 +5,12 @@ import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
-import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
+import {
+  Button,
+  UnderlineText,
+  LazyImage,
+  AnnouncementBanner,
+} from '@/reuseable-components';
 import Modal from '@/reuseable-components/modal';
 import ContactForm from '../pricing/pricing-table/contact-us-form';
 
@@ -64,6 +69,7 @@ const MaxWidthContainer = styled.div`
   width: 100%;
   z-index: 9999;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -99,6 +105,11 @@ export const Header = () => {
 
   return (
     <MaxWidthContainer>
+      <AnnouncementBanner
+        title={''}
+        link={'https://odigos.io/blog'}
+        linkText={'Go to article'}
+      />
       <HeaderContainer isOpen={dropdownToggler}>
         <HeaderInner>
           <LogoContainer onClick={() => setCurrentItem(10)}>

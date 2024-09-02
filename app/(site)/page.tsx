@@ -51,6 +51,7 @@ export default function Home() {
         />
         <link rel="preload" href="../../public/lotties/hero.json" as="image" />
       </Head>
+
       <Hero />
       <LandingPageBody />
     </main>
