@@ -7,6 +7,7 @@ import { NewsletterInput } from '@/components';
 import FooterItemList from './footer-menu-list';
 import { UnderlineText, LazyImage } from '@/reuseable-components';
 import { MaxWidthContainer } from '@/style';
+import { URL } from '@/utils';
 
 const FooterContainer = styled.footer`
   display: flex;
@@ -95,7 +96,7 @@ const Footer = () => {
             Enterprise-Grade OpenTelemetry for Superior Application Performance
             Monitoring
           </FooterText>
-          <Link href="https://app.odigos.io/about/terms-of-use" target="_blank">
+          <Link href={URL.PRIVACY_POLICY} target="_blank">
             <UnderlineText
               weight={300}
               uppercase={false}
