@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Text } from '../text';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,15 +11,31 @@ interface AnnouncementBannerProps {
   linkText: string;
 }
 
+// Define the slide-in animation
+const slideIn = keyframes`
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+`;
+
 const Banner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #444ad9;
   width: 100%;
-  border-top-right-radius: 24px;
-  border-top-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
   padding: 16px 64px;
+  visibility: hidden;
+  animation: ${slideIn} 0.8s ease-out 2s forwards; /* 0.8s for animation, 2s delay */
 
   @media (max-width: 1100px) {
     padding: 20px;
@@ -60,6 +76,13 @@ const LinksWrapper = styled.div`
   align-items: center;
 `;
 
+const CloseIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
 const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
   title,
   link,
@@ -83,20 +106,21 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
         />
         <Title>{title}</Title>
       </Content>
-      <Link href={link}>
+      <Link href={link} target="_blank">
         <LinksWrapper>
           <StyledLink>{linkText}</StyledLink>
           <Divider />
         </LinksWrapper>
       </Link>
-
-      <Image
-        onClick={closeBanner}
-        alt="frame"
-        src={'/icons/common/close.svg'}
-        width={15}
-        height={12}
-      />
+      <CloseIconWrapper>
+        <Image
+          onClick={closeBanner}
+          alt="frame"
+          src={'/icons/common/close.svg'}
+          width={15}
+          height={12}
+        />
+      </CloseIconWrapper>
     </Banner>
   );
 };
