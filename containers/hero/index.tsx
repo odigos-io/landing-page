@@ -9,7 +9,10 @@ import {
   SectionContainer,
   MaxWidthContainer,
 } from '@/style';
-import { LottieAnimation } from '@/reuseable-components';
+import {
+  LottieAnimation,
+  SlackIntegrationButton,
+} from '@/reuseable-components';
 import animationData from '../../public/lotties/hero.json';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useAnnouncementStore } from '@/store/announcementStore';
@@ -128,6 +131,38 @@ const ActionButtonsWrapper = styled.div`
   }
 `;
 
+const ModalFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 16px;
+  }
+`;
+
+const SlackButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SlackDescription = styled.p`
+  color: ${({ theme }) => theme.text.primary};
+  font-size: 16px;
+  font-weight: 300;
+  opacity: 0.7;
+
+  @media (max-width: 1300px) {
+    font-size: 14px;
+  }
+`;
+
 const HeroPageContent = () => {
   const [open, setOpen] = React.useState(false);
 
@@ -174,7 +209,17 @@ const HeroPageContent = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title="Embedded youtube"
+            style={{ borderRadius: 40 }}
           />
+          <ModalFooter>
+            <SlackDescription>
+              Join our slack community to get the latest updates and ask
+              questions
+            </SlackDescription>
+            <SlackButtonWrapper>
+              <SlackIntegrationButton />
+            </SlackButtonWrapper>
+          </ModalFooter>
         </Modal>
       )}
     </PageContainer>

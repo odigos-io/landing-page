@@ -66,8 +66,11 @@ const DashedLayer = styled.div<{
     border: 1px dashed rgba(249, 249, 249, 0);
     padding: 0 16px;
     height: fit-content;
-    width: 100%;
+    width: 70%;
     border-radius: 48px;
+  }
+  @media (max-width: 800px) {
+    width: 100%;
   }
 `;
 
