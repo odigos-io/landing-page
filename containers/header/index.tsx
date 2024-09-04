@@ -106,7 +106,7 @@ export const Header = () => {
   return (
     <MaxWidthContainer>
       <AnnouncementBanner
-        title={''}
+        title={'sdfds fsdfds sdf sd'}
         link={'https://odigos.io/blog'}
         linkText={'Go to article'}
       />

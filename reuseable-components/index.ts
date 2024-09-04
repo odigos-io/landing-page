@@ -9,3 +9,4 @@ export * from './paragraph';
 export * from './lottie';
 export * from './lazy-image';
 export * from './announcement-banner';
+export * from './slack-integration-button';
