@@ -55,6 +55,13 @@ export const DATA = [
       'Yoav focuses on backend development at Odigos. With a background in software engineering, Yoav specializes in building robust and scalable server-side applications.',
     linkedin_url: 'https://www.linkedin.com/in/yoav-levy-097563106/',
   },
+  {
+    name: 'Daria Dovzhikova',
+    title: 'Marketing Manager',
+    description:
+      'Daria drives marketing at Odigos. With over 12 years of experience in developer tools marketing, Daria focuses on creating impactful campaigns and enhancing user acquisition strategies. ',
+    linkedin_url: 'https://www.linkedin.com/in/dariadovzhikova',
+  },
 ];
 
 export const MOBILE_DATA = [
@@ -113,5 +120,12 @@ export const MOBILE_DATA = [
     description:
       'Yoav focuses on backend development at Odigos. With a background in software engineering, Yoav specializes in building robust and scalable server-side applications.',
     linkedin_url: 'https://www.linkedin.com/in/yoav-levy-097563106/',
+  },
+  {
+    name: 'Daria Dovzhikova',
+    title: 'Marketing Manager',
+    description:
+      'Daria drives marketing at Odigos. With over 12 years of experience in developer tools marketing, Daria focuses on creating impactful campaigns and enhancing user acquisition strategies. ',
+    linkedin_url: 'https://www.linkedin.com/in/dariadovzhikova',
   },
 ];
