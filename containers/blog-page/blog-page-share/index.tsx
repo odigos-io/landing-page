@@ -1,7 +1,11 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { Button, UnderlineText } from '@/reuseable-components';
+import {
+  Button,
+  SlackIntegrationButton,
+  UnderlineText,
+} from '@/reuseable-components';
 import useIsMobile from '@/hooks/useIsMobile';
 import theme from '@/style/theme';
 
@@ -90,6 +94,19 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
             </Button>
           </ButtonWrapper>
         </ButtonGroup>
+        <VerticalDivider />
+        <ButtonWrapper>
+          <SlackIntegrationButton
+            style={{
+              background: theme.colors.secondary,
+              padding: '8px 32px',
+              height: isMobile ? 48 : 64,
+              width: isMobile ? 120 : 141,
+            }}
+            containerStyle={{ width: isMobile ? 123 : 144 }}
+            textStyles={isMobile ? 16 : 20}
+          />
+        </ButtonWrapper>
       </Container>
     </>
   );
@@ -101,6 +118,14 @@ const Divider = styled.div`
   background: #f9f9f9;
   opacity: 0.4;
   margin: 64px 0;
+`;
+
+const VerticalDivider = styled.div`
+  width: 1px;
+  height: 64px;
+  background: #f9f9f9;
+  opacity: 0.4;
+  margin: 0 16px;
 `;
 
 const Container = styled.div`
