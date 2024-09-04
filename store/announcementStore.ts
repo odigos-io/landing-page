@@ -7,7 +7,7 @@ interface AnnouncementState {
 }
 
 export const useAnnouncementStore = create<AnnouncementState>((set) => ({
-  isOpen: false,
+  isOpen: true,
   openBanner: () => set({ isOpen: true }),
   closeBanner: () => set({ isOpen: false }),
 }));
