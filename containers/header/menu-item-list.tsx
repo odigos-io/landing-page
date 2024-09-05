@@ -56,7 +56,7 @@ const MenuItemList = ({
         <NavItem
           key={key}
           onClick={() => onClick(key)}
-          selected={key === currentIndexItem}
+          selected={key === currentIndexItem && menuItem.id !== 5}
         >
           <UnderlineText>
             <Link
