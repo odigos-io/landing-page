@@ -10,7 +10,7 @@ const QuickStartButton = styled(Button)`
   flex-direction: column;
   height: 64px;
   gap: 0px;
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     padding: 8px 22px;
     width: 100%;
     .desktop {
@@ -20,7 +20,7 @@ const QuickStartButton = styled(Button)`
 `;
 
 export const QuickStartBtn = () => {
-  const isMobile = useIsMobile(900);
+  const isMobile = useIsMobile(1000);
 
   function handleClick() {
     window.open('https://docs.odigos.io/quickstart/introduction', '_blank');
@@ -43,11 +43,6 @@ export const QuickStartBtn = () => {
       >
         OPEN SOURCE
       </Text>
-      {/* <MobileButtonContent className="mobile">
-        <UnderlineText color={theme.colors.primary} size={16}>
-          QUICK START
-        </UnderlineText>
-      </MobileButtonContent> */}
     </QuickStartButton>
   );
 };

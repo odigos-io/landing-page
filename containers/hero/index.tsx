@@ -123,7 +123,7 @@ const Container = styled(SectionContainer)`
   @media (max-width: 900px) {
     flex-direction: row !important;
   }
-  @media (max-width: 610px) {
+  @media (max-width: 700px) {
     flex-direction: column-reverse !important;
     padding: 0 20px;
   }
@@ -134,9 +134,9 @@ const ActionButtonsWrapper = styled.div`
   gap: 24px;
   margin-top: 64px;
   width: 100%;
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     gap: 16px;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 `;
 
@@ -192,8 +192,8 @@ const HeroPageContent = () => {
             tracing
           </HeroSubTitle>
           <ActionButtonsWrapper>
-            <WatchDemoBtn onClick={() => setOpen(true)} />
             <QuickStartBtn />
+            <WatchDemoBtn onClick={() => setOpen(true)} />
           </ActionButtonsWrapper>
           <TrustedList />
         </ColumnContainer>
