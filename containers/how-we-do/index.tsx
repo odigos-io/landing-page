@@ -34,7 +34,7 @@ const InnerBorder = styled.div`
 
 const Body = styled.div`
   display: flex;
-  padding: 80px;
+  padding: 80px 64px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -67,7 +67,7 @@ const HowWeDo = () => {
   const multilineText = `The only solution to generate 
   accurate distributed tracing 
   using eBPF-based context
-  propagation across all applications.`;
+  propagation across all apps.`;
 
   return (
     <MaxWidthContainer>
