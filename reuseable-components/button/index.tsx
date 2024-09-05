@@ -64,14 +64,14 @@ const StyledButton = styled.button<{
       : color
       ? color
       : theme.colors.white};
-  box-shadow: ${({ variant }) =>
-    variant === 'primary' ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : 'none'};
+  /* box-shadow: ${({ variant }) =>
+    variant === 'primary' ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : 'none'}; */
   display: flex;
   width: 100%;
   padding: 12px 32px;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  /* gap: 8px; */
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
 
@@ -87,21 +87,21 @@ const LinearGradientBackground = styled.div<{
   border-radius: 48px;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    317deg,
-    rgb(249, 249, 249) 4%,
-    rgb(66, 69, 159) 80%,
-    rgb(66, 69, 159) 100%,
-    rgb(249, 249, 249) 100%,
-    rgb(66, 69, 159)
-  );
   ${({ show }) =>
     show
       ? css`
+          background: linear-gradient(
+            317deg,
+            rgb(249, 249, 249) 4%,
+            rgb(66, 69, 159) 80%,
+            rgb(66, 69, 159) 100%,
+            rgb(249, 249, 249) 100%,
+            rgb(66, 69, 159)
+          );
           animation: ${gradientAnimationShow} 0.5s forwards;
         `
       : css`
-          animation: ${gradientAnimationHide} 0.5s forwards;
+          animation: ${gradientAnimationHide} 0.3s forwards;
         `};
 `;
 
