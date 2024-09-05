@@ -20,7 +20,7 @@ const gradientAnimationShow = keyframes`
 const gradientAnimationHide = keyframes`
   from {
     opacity: 1;
-    border: 1px solid #f9f9f9;
+    border: 1px solid transparent;
   }
   to {
     opacity: 0;
@@ -82,6 +82,7 @@ const LinearGradientBackground = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   opacity: 0;
   border-radius: 48px;
   width: 100%;

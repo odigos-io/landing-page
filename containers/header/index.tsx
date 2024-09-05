@@ -69,7 +69,11 @@ const ActionBarWrapper = styled.div`
   justify-content: flex-end;
   @media (max-width: 1112px) {
     gap: 1rem;
-    width: 172px;
+    width: 200px;
+  }
+  @media (max-width: 600px) {
+    gap: 1rem;
+    width: 170px;
   }
 `;
 

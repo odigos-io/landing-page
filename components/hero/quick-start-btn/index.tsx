@@ -3,44 +3,18 @@ import React from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import useIsMobile from '@/hooks/useIsMobile';
-import { UnderlineText, Button } from '@/reuseable-components';
-
-const PlanStatus = styled.div<{ isMobile: boolean }>`
-  border-radius: 32px;
-  padding: ${({ isMobile }) => (isMobile ? '2px 4px' : '4px 8px')};
-  align-items: center;
-  gap: 8px;
-  border: 1px dashed rgba(249, 249, 249, 0.6);
-  color: ${({ theme }) => theme.text.primary};
-  font-family: ${({ theme }) => theme.font_family.secondary};
-  font-size: ${({ isMobile }) => (isMobile ? '8px' : '10px')};
-  font-style: normal;
-  font-weight: 400;
-  line-height: 133.333%; /*  */
-  text-transform: uppercase;
-  position: absolute;
-  top: ${({ isMobile }) => (isMobile ? '-10px' : '-10px')};
-  right: ${({ isMobile }) => (isMobile ? '-20px' : '-30px')};
-  background-color: ${({ theme }) => theme.colors.secondary};
-`;
+import { UnderlineText, Button, Text } from '@/reuseable-components';
 
 const QuickStartButton = styled(Button)`
+  display: flex;
+  flex-direction: column;
+  height: 64px;
+  gap: 0px;
   @media (max-width: 900px) {
     padding: 8px 22px;
     width: 100%;
     .desktop {
       display: none;
-    }
-  }
-`;
-const MobileButtonContent = styled.div`
-  display: none;
-  @media (max-width: 900px) {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    span {
-      font-size: 16px;
     }
   }
 `;
@@ -58,15 +32,22 @@ export const QuickStartBtn = () => {
       onClick={handleClick}
       variant="secondary"
     >
-      <PlanStatus isMobile={isMobile}>{'open source'}</PlanStatus>
-      <UnderlineText color={theme.colors.primary} className="desktop" size={20}>
+      <UnderlineText color={theme.colors.primary} size={20}>
         QUICK START
       </UnderlineText>
-      <MobileButtonContent className="mobile">
+      <Text
+        size={10}
+        weight={500}
+        color={theme.colors.primary}
+        style={{ letterSpacing: '0.1px' }}
+      >
+        OPEN SOURCE
+      </Text>
+      {/* <MobileButtonContent className="mobile">
         <UnderlineText color={theme.colors.primary} size={16}>
           QUICK START
         </UnderlineText>
-      </MobileButtonContent>
+      </MobileButtonContent> */}
     </QuickStartButton>
   );
 };
