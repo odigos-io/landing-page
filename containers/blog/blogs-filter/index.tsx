@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import theme from '@/style/theme';
 import styled from 'styled-components';
-import { FlexContainer, MaxWidthContainer } from '@/style';
 import useIsMobile from '@/hooks/useIsMobile';
-import { Text, UnderlineText, LazyImage } from '@/reuseable-components';
+import { FlexContainer, MaxWidthContainer } from '@/style';
+import { Text, UnderlineText } from '@/reuseable-components';
 
 const PageContainer = styled.div`
   display: flex;
@@ -47,7 +47,6 @@ const ExpandButtonWrapper = styled.div`
   width: 100%;
   gap: 8px;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
 `;
 
@@ -159,20 +158,20 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
           ))}
         </TagsContainer>
         <ExpandButtonWrapper>
-          <LazyImage
-            src="/icons/common/expand.svg"
-            width={15}
-            height={15}
-            alt="arrow"
-            style={{ transform: !expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-          />
+          <Text
+            color={theme.text.off_white}
+            fontFam={theme.font_family.secondary}
+            size={20}
+          >
+            {'+'}
+          </Text>
           <ExpandButton onClick={() => setExpanded(!expanded)}>
             <Text
               color={theme.text.off_white}
               fontFam={theme.font_family.secondary}
               size={14}
             >
-              {expanded ? 'Show Less' : 'Show More'}
+              {expanded ? 'SHOW LESS' : 'SHOW MORE'}
             </Text>
           </ExpandButton>
         </ExpandButtonWrapper>
