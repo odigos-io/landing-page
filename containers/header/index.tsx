@@ -26,6 +26,9 @@ const HeaderContainer = styled.header<{ isOpen: boolean }>`
   @media (width < 1700px) {
     padding: 0 64px;
   }
+  @media (max-width: 610px) {
+    padding: 0 20px;
+  }
 `;
 
 const HeaderInner = styled.div`
@@ -36,16 +39,19 @@ const HeaderInner = styled.div`
   justify-content: space-between;
   position: relative;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1112px) {
     padding: 20px;
     height: 84px;
+  }
+  @media (max-width: 610px) {
+    padding: 20px 0;
   }
 `;
 
 const LogoContainer = styled.div``;
 
 const SignInButton = styled(Button)`
-  @media (max-width: 1100px) {
+  @media (max-width: 1112px) {
     padding: 8px 16px;
     font-size: 16px;
   }
@@ -53,7 +59,7 @@ const SignInButton = styled(Button)`
 
 const HamburgerButton = styled.button`
   display: block;
-  @media (min-width: 1100px) {
+  @media (min-width: 1112px) {
     display: none;
   }
 `;
@@ -61,7 +67,7 @@ const HamburgerButton = styled.button`
 const ActionBarWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  @media (max-width: 1100px) {
+  @media (max-width: 1112px) {
     gap: 1rem;
     width: 172px;
   }

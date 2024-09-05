@@ -125,6 +125,7 @@ const Container = styled(SectionContainer)`
   }
   @media (max-width: 610px) {
     flex-direction: column-reverse !important;
+    padding: 0 20px;
   }
 `;
 
