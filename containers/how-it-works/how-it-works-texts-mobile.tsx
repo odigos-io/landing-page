@@ -23,9 +23,9 @@ export const HowItWorksTextsMobile = () => {
       case 1:
         return 500;
       case 2:
-        return 1160;
+        return 1200;
       case 3:
-        return 1840;
+        return 1900;
       case 4:
         return 2290;
       default:
@@ -40,7 +40,7 @@ export const HowItWorksTextsMobile = () => {
           <ParagraphComponent
             title={data.title}
             paragraphs={data.paragraphs}
-            style={{ padding: '64px 0' }}
+            style={{ padding: '32px 0' }}
           />
         </AnimatedText>
       ))}
