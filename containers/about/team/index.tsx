@@ -131,6 +131,7 @@ const LinkWrapper = styled.a`
   align-items: flex-start;
   gap: 8px;
   text-decoration: none;
+  margin-top: 16px;
 `;
 
 const Teams = () => {
