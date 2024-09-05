@@ -1,10 +1,19 @@
 'use client';
 
+import { NewsletterPopup } from '@/components';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
 export default function LandingPageBody() {
   const [isClient, setIsClient] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 30000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     setIsClient(true);
@@ -34,6 +43,7 @@ export default function LandingPageBody() {
       <Testimonials />
       <CTA />
       <LearnMore />
+      {showPopup && <NewsletterPopup />}
     </>
   );
 }

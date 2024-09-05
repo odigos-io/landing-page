@@ -4,7 +4,6 @@ import { DATA } from './data';
 import theme from '@/style/theme';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { LazyImage } from '@/reuseable-components';
 import {
   ColumnContainer,
   FlexContainer,

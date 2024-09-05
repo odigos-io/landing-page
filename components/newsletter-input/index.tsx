@@ -103,7 +103,7 @@ function isFreeEmail(email: string): boolean {
   return freeEmailDomains.includes(domain);
 }
 
-export const NewsletterInput = () => {
+export const NewsletterInput = ({ onConfirm }: { onConfirm?: () => void }) => {
   const [email, setEmail] = React.useState('');
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [error, setError] = React.useState('');
@@ -130,6 +130,7 @@ export const NewsletterInput = () => {
     sendToService(body, HUBSPOT_API_URL);
     setEmail('');
     setIsSubscribed(true);
+    onConfirm && onConfirm();
   }
 
   return (

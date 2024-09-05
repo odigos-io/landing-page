@@ -1,7 +1,8 @@
 'use client';
 
-import { MarkdownToHtml } from '@/components';
+import { MarkdownToHtml, NewsletterPopup } from '@/components';
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -35,12 +36,33 @@ const MarkdownWrapper = styled.div`
 `;
 
 const BlogPageContent = ({ post }: Props) => {
+  const [showNewsletter, setShowNewsletter] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if the user has scrolled to the bottom of the blog post
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const bottomPosition = document.documentElement.scrollHeight - 1400; // Adjusting to trigger a little before the absolute bottom
+
+      if (scrollPosition >= bottomPosition) {
+        setShowNewsletter(true);
+        window.removeEventListener('scroll', handleScroll); // Remove event listener once the popup is shown
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll); // Clean up listener
+    };
+  }, []);
   return (
     <BlogPageContentContainer>
       <MarkdownWrapper>
         <MarkdownToHtml source={post.content} />
         <ShareButtons link={post.slug} />
       </MarkdownWrapper>
+      {showNewsletter && <NewsletterPopup />}
     </BlogPageContentContainer>
   );
 };
