@@ -1,18 +1,18 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import MenuItemList from './menu-item-list';
-import {
-  Button,
-  UnderlineText,
-  LazyImage,
-  AnnouncementBanner,
-} from '@/reuseable-components';
 import Modal from '@/reuseable-components/modal';
 import ContactForm from '../pricing/pricing-table/contact-us-form';
+import {
+  Button,
+  LazyImage,
+  UnderlineText,
+  AnnouncementBanner,
+} from '@/reuseable-components';
 
 const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
@@ -22,26 +22,36 @@ const HeaderContainer = styled.header<{ isOpen: boolean }>`
   z-index: 9999;
   background: ${({ theme, isOpen }) =>
     isOpen ? theme.colors.primary : theme.colors.secondary};
+
+  @media (width < 1700px) {
+    padding: 0 64px;
+  }
+  @media (max-width: 610px) {
+    padding: 0 20px;
+  }
 `;
 
 const HeaderInner = styled.div`
   margin: 0 auto;
-  padding: 24px 64px;
+  padding: 24px 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1112px) {
     padding: 20px;
     height: 84px;
+  }
+  @media (max-width: 610px) {
+    padding: 20px 0;
   }
 `;
 
 const LogoContainer = styled.div``;
 
 const SignInButton = styled(Button)`
-  @media (max-width: 1100px) {
+  @media (max-width: 1112px) {
     padding: 8px 16px;
     font-size: 16px;
   }
@@ -49,7 +59,7 @@ const SignInButton = styled(Button)`
 
 const HamburgerButton = styled.button`
   display: block;
-  @media (min-width: 1100px) {
+  @media (min-width: 1112px) {
     display: none;
   }
 `;
@@ -57,9 +67,13 @@ const HamburgerButton = styled.button`
 const ActionBarWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  @media (max-width: 1100px) {
+  @media (max-width: 1112px) {
     gap: 1rem;
-    width: 172px;
+    width: 200px;
+  }
+  @media (max-width: 600px) {
+    gap: 1rem;
+    width: 170px;
   }
 `;
 
@@ -75,33 +89,14 @@ const MaxWidthContainer = styled.div`
 `;
 
 export const Header = () => {
-  const [dropdownToggler, setDropdownToggler] = useState(false);
-  const [currentItem, setCurrentItem] = useState(10);
   const [open, setOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState(10);
   const [success, setSuccess] = useState<boolean>(false);
-  const [showSignInButton, setShowSignInButton] = useState(false);
+  const [dropdownToggler, setDropdownToggler] = useState(false);
 
   const handleMenuItemClick = (index: number) => {
     setCurrentItem(index);
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition =
-        window.scrollY || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      if (scrollPosition >= windowHeight) {
-        setShowSignInButton(true);
-      } else {
-        setShowSignInButton(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   return (
     <MaxWidthContainer>
@@ -129,16 +124,10 @@ export const Header = () => {
           />
           <ActionBarWrapper>
             <SignInButton
-              style={{ visibility: showSignInButton ? 'visible' : 'hidden' }}
-              containerStyle={{
-                visibility: showSignInButton ? 'visible' : 'hidden',
-              }}
+              style={{ backgroundColor: theme.colors.secondary }}
               onClick={() => setOpen(true)}
-              variant="secondary"
             >
-              <UnderlineText color={theme.text.secondary}>
-                Contact Us
-              </UnderlineText>
+              <UnderlineText>Contact Us</UnderlineText>
             </SignInButton>
 
             <HamburgerButton

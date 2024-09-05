@@ -1,18 +1,20 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
+import { URL } from '@/utils';
 import theme from '@/style/theme';
 import styled from 'styled-components';
+import { MaxWidthContainer } from '@/style';
 import { NewsletterInput } from '@/components';
 import FooterItemList from './footer-menu-list';
 import { UnderlineText, LazyImage } from '@/reuseable-components';
-import { MaxWidthContainer } from '@/style';
-import { URL } from '@/utils';
 
 const FooterContainer = styled.footer`
   display: flex;
-  padding: 80px 32px;
+  padding: 80px 64px;
   flex-direction: column;
+  width: 100%;
+  max-width: 1440px;
   gap: 64px;
   @media (max-width: 1100px) {
     gap: 48px;

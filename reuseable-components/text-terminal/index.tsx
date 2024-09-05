@@ -44,7 +44,7 @@ const TypewriterWrapper = styled.div`
   max-height: var(--lineHeight);
   overflow: hidden;
   position: relative;
-  width: var(--width);
+  /* width: var(--width); */
   min-height: 40vh;
 
   @media (max-width: 1000px) {

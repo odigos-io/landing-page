@@ -1,29 +1,24 @@
 'use client';
-import React, { use } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { UnderlineText, LazyImage, Button } from '@/reuseable-components';
-import useIsMobile from '@/hooks/useIsMobile';
+import { UnderlineText, LazyImage } from '@/reuseable-components';
 
-const WatchDemoButton = styled(Button)`
-  background: ${({ theme }) => theme.colors.secondary};
-  width: 250px;
-  @media (max-width: 900px) {
-    padding: 8px 22px;
-    width: 100%;
-    .desktop {
-      display: none;
-    }
+const ButtonWrapper = styled.div`
+  display: flex;
+  padding: 8px 32px;
+  max-width: 253px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
+  cursor: pointer;
+  border-radius: 48px;
+  transition: background 0.3s;
+  @media (max-width: 1000px) {
+    max-width: 100%;
   }
-`;
-const MobileButtonContent = styled.div`
-  display: none;
-  @media (max-width: 900px) {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    span {
-      font-size: 16px;
-    }
+  &:hover {
+    background: rgba(68, 74, 217, 0.12);
   }
 `;
 
@@ -31,24 +26,10 @@ type WatchDemoBtnProps = {
   onClick: () => void;
 };
 export const WatchDemoBtn = ({ onClick }: WatchDemoBtnProps) => {
-  const isMobile = useIsMobile(900);
   return (
-    <WatchDemoButton
-      containerStyle={{ width: isMobile ? '100%' : 253 }}
-      onClick={onClick}
-    >
-      <UnderlineText className="desktop" size={20}>
-        WATCH DEMO
-      </UnderlineText>
-      <MobileButtonContent className="mobile">
-        <LazyImage
-          width={20}
-          height={20}
-          src="/icons/hero/play.svg"
-          alt="play"
-        />
-        <UnderlineText size={20}> WATCH DEMO</UnderlineText>
-      </MobileButtonContent>
-    </WatchDemoButton>
+    <ButtonWrapper onClick={onClick}>
+      <LazyImage width={24} height={24} src="/icons/hero/play.svg" alt="play" />
+      <UnderlineText size={20}>WATCH DEMO</UnderlineText>
+    </ButtonWrapper>
   );
 };

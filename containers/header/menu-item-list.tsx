@@ -7,15 +7,15 @@ import { UnderlineText } from '@/reuseable-components';
 
 const NavList = styled.ul`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 1rem;
 
-  @media (min-width: 1024px) {
-    flex-direction: row;
+  @media (width < 1112px) {
+    flex-direction: column;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1112px) {
     display: none;
   }
 `;
@@ -56,7 +56,7 @@ const MenuItemList = ({
         <NavItem
           key={key}
           onClick={() => onClick(key)}
-          selected={key === currentIndexItem}
+          selected={key === currentIndexItem && menuItem.id !== 5}
         >
           <UnderlineText>
             <Link

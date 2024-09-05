@@ -23,8 +23,8 @@ const NavList = styled.ul`
   height: 100%;
   gap: 1.25rem;
   padding: 44px 56px;
-  @media (min-width: 1024px) {
-    flex-direction: row;
+  @media (width < 1112px) {
+    flex-direction: column;
     gap: 3rem;
   }
 `;

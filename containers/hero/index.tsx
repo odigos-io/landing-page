@@ -21,8 +21,10 @@ const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
 const PageContainer = styled.div<{ largePadding: boolean }>`
   padding-top: 100px;
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 600px) {
-    padding-top: ${({ largePadding }) => (largePadding ? '160px' : '60px')};
+    padding-top: ${({ largePadding }) => (largePadding ? '60px' : '60px')};
   }
 `;
 
@@ -78,7 +80,7 @@ const HeroTitle = styled.h1`
 const HeroSubTitle = styled.div`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 300;
   line-height: 133%;
   opacity: 0.8;
@@ -112,11 +114,18 @@ const DemoIframe = styled.iframe`
 const Container = styled(SectionContainer)`
   align-items: flex-start;
   height: auto;
+  padding: 80px 0;
+  justify-content: space-between;
+  width: 100%;
+  @media (width < 1700px) {
+    padding: 80px 64px;
+  }
   @media (max-width: 900px) {
     flex-direction: row !important;
   }
-  @media (max-width: 610px) {
+  @media (max-width: 700px) {
     flex-direction: column-reverse !important;
+    padding: 0 20px;
   }
 `;
 
@@ -125,9 +134,9 @@ const ActionButtonsWrapper = styled.div`
   gap: 24px;
   margin-top: 64px;
   width: 100%;
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     gap: 16px;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 `;
 
@@ -183,8 +192,8 @@ const HeroPageContent = () => {
             tracing
           </HeroSubTitle>
           <ActionButtonsWrapper>
-            <WatchDemoBtn onClick={() => setOpen(true)} />
             <QuickStartBtn />
+            <WatchDemoBtn onClick={() => setOpen(true)} />
           </ActionButtonsWrapper>
           <TrustedList />
         </ColumnContainer>

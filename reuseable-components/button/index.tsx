@@ -20,11 +20,11 @@ const gradientAnimationShow = keyframes`
 const gradientAnimationHide = keyframes`
   from {
     opacity: 1;
-    border: 1px solid #f9f9f9;
+    border: 2px solid transparent;
   }
   to {
     opacity: 0;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
 
   }
 `;
@@ -36,7 +36,7 @@ const Wrapper = styled.div<{
 }>`
   position: relative;
   border-radius: 48px;
-  padding: ${({ variant }) => (variant === 'primary' ? '0.1rem;' : '0')};
+  padding: ${({ variant }) => (variant === 'primary' ? '2px' : '0')};
   height: fit-content;
   width: 100%;
   opacity: 1;
@@ -53,6 +53,7 @@ const StyledButton = styled.button<{
   variant: 'primary' | 'secondary';
   color?: string;
   disabled?: boolean;
+  show?: boolean;
 }>`
   position: relative;
   border-radius: 48px;
@@ -64,14 +65,11 @@ const StyledButton = styled.button<{
       : color
       ? color
       : theme.colors.white};
-  box-shadow: ${({ variant }) =>
-    variant === 'primary' ? '0px 4px 4px rgba(0, 0, 0, 0.25)' : 'none'};
   display: flex;
   width: 100%;
   padding: 12px 32px;
   justify-content: center;
   align-items: center;
-  gap: 8px;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
 
@@ -82,25 +80,27 @@ const LinearGradientBackground = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   opacity: 0;
+
   border-radius: 48px;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    317deg,
-    rgb(249, 249, 249) 4%,
-    rgb(66, 69, 159) 80%,
-    rgb(66, 69, 159) 100%,
-    rgb(249, 249, 249) 100%,
-    rgb(66, 69, 159)
-  );
   ${({ show }) =>
     show
       ? css`
+          background: linear-gradient(
+            317deg,
+            rgb(249, 249, 249) 4%,
+            rgb(66, 69, 159) 80%,
+            rgb(66, 69, 159) 100%,
+            rgb(249, 249, 249) 100%,
+            rgb(66, 69, 159)
+          );
           animation: ${gradientAnimationShow} 0.5s forwards;
         `
       : css`
-          animation: ${gradientAnimationHide} 0.5s forwards;
+          animation: ${gradientAnimationHide} 0.3s forwards;
         `};
 `;
 
@@ -108,7 +108,6 @@ const PrimaryHoverBackground = styled.div<{
   show: boolean;
 }>`
   gap: 8px;
-  border: 1px solid #f9f9f9;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -116,14 +115,16 @@ const PrimaryHoverBackground = styled.div<{
   border-radius: 48px;
   width: 100%;
   height: 100%;
-  background: rgba(68, 74, 217, 0.12);
+
   ${({ show }) =>
     show
       ? css`
+          background: rgba(68, 74, 217, 0.12);
           animation: ${gradientAnimationShow} 0.5s forwards;
+          border: 2px solid #f9f9f9;
         `
       : css`
-          animation: ${gradientAnimationHide} 0.5s forwards;
+          animation: ${gradientAnimationHide} 0.3s forwards;
         `};
 `;
 
@@ -153,6 +154,7 @@ export const Button: React.FC<ButtonProps> = ({
         variant={variant}
         onClick={onClick}
         type={type}
+        show={hover}
         {...props}
       >
         {variant === 'secondary' && (
