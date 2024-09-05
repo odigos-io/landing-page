@@ -22,11 +22,15 @@ const HeaderContainer = styled.header<{ isOpen: boolean }>`
   z-index: 9999;
   background: ${({ theme, isOpen }) =>
     isOpen ? theme.colors.primary : theme.colors.secondary};
+
+  @media (width < 1700px) {
+    padding: 0 64px;
+  }
 `;
 
 const HeaderInner = styled.div`
   margin: 0 auto;
-  padding: 24px 64px;
+  padding: 24px 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;

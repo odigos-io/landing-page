@@ -21,6 +21,8 @@ const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
 const PageContainer = styled.div<{ largePadding: boolean }>`
   padding-top: 100px;
+  width: 100%;
+  max-width: 1440px;
   @media (max-width: 600px) {
     padding-top: ${({ largePadding }) => (largePadding ? '160px' : '60px')};
   }
@@ -112,6 +114,12 @@ const DemoIframe = styled.iframe`
 const Container = styled(SectionContainer)`
   align-items: flex-start;
   height: auto;
+  padding: 80px 0;
+  justify-content: space-between;
+  width: 100%;
+  @media (width < 1700px) {
+    padding: 80px 64px;
+  }
   @media (max-width: 900px) {
     flex-direction: row !important;
   }
