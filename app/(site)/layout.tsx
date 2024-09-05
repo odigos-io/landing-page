@@ -5,7 +5,6 @@ import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import { Header } from '@/containers';
 import { useEffect, useState } from 'react';
-
 import PlausibleProvider from 'next-plausible';
 import useConversionInitiator from '@/hooks/useConversionInitiator';
 import { ThemeProviderWrapper } from '@/reuseable-components/theme.provider/theme.provider';
