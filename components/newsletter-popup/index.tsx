@@ -1,8 +1,10 @@
+'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { NewsletterInput } from '../newsletter-input';
 
+// Keyframe animations for sliding in and out
 const slideIn = keyframes`
   from {
     transform: translateX(100%);
@@ -21,18 +23,28 @@ const slideOut = keyframes`
   }
 `;
 
+// Styled components for the popup and icon
 const PopupWrapper = styled.div<{ isVisible: boolean }>`
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
-  border: 0.5px solid ${({ theme }) => theme.colors.white};
+  border: 0.5px dashed ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.primary};
   padding: 20px;
+  width: 600px;
+  height: 170px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: 48px;
   display: ${(props) => (props.isVisible ? 'block' : 'none')};
   animation: ${(props) => (props.isVisible ? slideIn : slideOut)} 0.3s forwards;
+
+  @media (max-width: 700px) {
+    width: 100%;
+    height: 200px;
+    bottom: 20px;
+    right: 0px;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -41,7 +53,6 @@ const CloseButton = styled.button`
   right: 24px;
   background: none;
   border: none;
-  font-size: 16px;
   cursor: pointer;
 `;
 
@@ -57,12 +68,23 @@ const IconWrapper = styled.div<{ isVisible: boolean }>`
 `;
 
 const NewsletterPopup: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [showIcon, setShowIcon] = useState(false);
 
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0]; // Get today's date (yyyy-mm-dd)
+    const lastSeen = localStorage.getItem('newsletterLastSeen');
+
+    if (lastSeen !== today) {
+      setIsOpen(true); // Show popup if it hasn't been seen today
+    }
+  }, []);
+
   const handleClose = () => {
+    const today = new Date().toISOString().split('T')[0]; // Get today's date (yyyy-mm-dd)
+    localStorage.setItem('newsletterLastSeen', today); // Store the current date in localStorage
     setIsOpen(false);
-    setTimeout(() => setShowIcon(true), 300);
+    setTimeout(() => setShowIcon(true), 300); // Show the icon after the popup closes
   };
 
   const handleIconClick = () => {
@@ -81,7 +103,7 @@ const NewsletterPopup: React.FC = () => {
             alt="odigos"
           />
         </CloseButton>
-        <NewsletterInput />
+        <NewsletterInput onConfirm={() => setTimeout(handleClose, 2000)} />
       </PopupWrapper>
 
       <IconWrapper isVisible={showIcon} onClick={handleIconClick}>
