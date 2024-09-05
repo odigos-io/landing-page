@@ -80,7 +80,7 @@ const HeroTitle = styled.h1`
 const HeroSubTitle = styled.div`
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 300;
   line-height: 133%;
   opacity: 0.8;

@@ -14,7 +14,7 @@ const Title = styled.h1`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 26%;
+  margin-top: 20%;
   @media (max-width: 1200px) {
     margin-top: 18%;
   }
