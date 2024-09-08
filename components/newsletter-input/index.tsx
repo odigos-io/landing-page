@@ -83,30 +83,10 @@ const MobileButton = styled.div`
   }
 `;
 
-function isFreeEmail(email: string): boolean {
-  const freeEmailDomains = [
-    'gmail.com',
-    'yahoo.com',
-    'hotmail.com',
-    'outlook.com',
-    'aol.com',
-    'icloud.com',
-    'live.com',
-    'zoho.com',
-    'protonmail.com',
-    'yandex.com',
-    'mail.com',
-    'gmx.com',
-    'inbox.com',
-  ];
-  const domain = email.split('@')[1];
-  return freeEmailDomains.includes(domain);
-}
-
 export const NewsletterInput = ({ onConfirm }: { onConfirm?: () => void }) => {
   const [email, setEmail] = React.useState('');
-  const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [isSubscribed, setIsSubscribed] = React.useState(false);
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -117,12 +97,6 @@ export const NewsletterInput = ({ onConfirm }: { onConfirm?: () => void }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email address');
-      setTimeout(() => setError(''), 3000);
-      return;
-    }
-
-    if (isFreeEmail(email)) {
-      setError('Please use a work email');
       setTimeout(() => setError(''), 3000);
       return;
     }
