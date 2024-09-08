@@ -24,7 +24,7 @@ const PageContainer = styled.div<{ largePadding: boolean }>`
   width: 100%;
   max-width: 1440px;
   @media (max-width: 600px) {
-    padding-top: ${({ largePadding }) => (largePadding ? '60px' : '60px')};
+    padding-top: ${({ largePadding }) => (largePadding ? '200px' : '60px')};
   }
 `;
 

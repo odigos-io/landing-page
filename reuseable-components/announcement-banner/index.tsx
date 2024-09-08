@@ -35,7 +35,12 @@ const Banner = styled.div`
   border-bottom-left-radius: 24px;
   padding: 16px 64px;
   visibility: hidden;
-  animation: ${slideIn} 0.8s ease-out 2s forwards; /* 0.8s for animation, 2s delay */
+  animation: ${slideIn} 0.8s ease-out 1s forwards; /* 0.8s for animation, 2s delay */
+
+  @media (max-width: 600px) {
+    padding: 20px;
+    animation: ${slideIn} 0.8s ease-out 0s forwards; /* Remove delay on mobile */
+  }
 
   @media (max-width: 1100px) {
     padding: 20px;
@@ -45,8 +50,8 @@ const Banner = styled.div`
 const Content = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
-  max-width: 1440px;
+  /* width: 100%; */
+  /* max-width: 1440px; */
   padding-right: 4px;
 `;
 
@@ -81,6 +86,8 @@ const CloseIconWrapper = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: absolute;
+  right: 16px;
 `;
 
 const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
@@ -106,10 +113,10 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
         />
         <Title>{title}</Title>
       </Content>
+      <Divider />
       <Link href={link} target="_blank">
         <LinksWrapper>
           <StyledLink>{linkText}</StyledLink>
-          <Divider />
         </LinksWrapper>
       </Link>
       <CloseIconWrapper>
