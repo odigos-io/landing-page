@@ -38,7 +38,8 @@ const Banner = styled.div`
   animation: ${slideIn} 0.8s ease-out 1s forwards; /* 0.8s for animation, 2s delay */
 
   @media (max-width: 600px) {
-    padding: 20px;
+    padding: 20px 4px;
+    justify-content: space-evenly;
     animation: ${slideIn} 0.8s ease-out 0s forwards; /* Remove delay on mobile */
   }
 
@@ -50,9 +51,11 @@ const Banner = styled.div`
 const Content = styled.div`
   display: flex;
   align-items: center;
-  /* width: 100%; */
-  /* max-width: 1440px; */
   padding-right: 4px;
+
+  @media (max-width: 600px) {
+    width: 60%;
+  }
 `;
 
 const Title = styled(Text)``;
@@ -73,6 +76,7 @@ const Divider = styled.div`
   @media (width < 600px) {
     opacity: 0;
     margin: 0 8px;
+    display: none;
   }
 `;
 
