@@ -33,7 +33,6 @@ const PopupWrapper = styled.div<{ isVisible: boolean }>`
   background-color: ${({ theme }) => theme.colors.primary};
   padding: 20px;
   width: 600px;
-  height: 170px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 48px;
   display: ${(props) => (props.isVisible ? 'block' : 'none')};
@@ -62,6 +61,7 @@ const IconWrapper = styled.div<{ isVisible: boolean }>`
   right: 20px;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 10px;
+  z-index: 99999;
   border-radius: 32px;
   cursor: pointer;
   display: ${(props) => (props.isVisible ? 'block' : 'none')};
