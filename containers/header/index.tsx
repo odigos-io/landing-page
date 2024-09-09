@@ -26,7 +26,7 @@ const HeaderContainer = styled.header<{ isOpen: boolean }>`
   @media (width < 1700px) {
     padding: 0 64px;
   }
-  @media (max-width: 610px) {
+  @media (max-width: 1150px) {
     padding: 0 20px;
   }
 `;

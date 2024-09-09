@@ -19,7 +19,12 @@ const SlackIntegrationButton: React.FC<SlackButtonProps> = (props) => {
   }
 
   return (
-    <Button onClick={onClick} containerStyle={{ maxWidth: 200 }} {...props}>
+    <Button
+      onClick={onClick}
+      containerStyle={{ maxWidth: 200 }}
+      style={{ gap: 8 }}
+      {...props}
+    >
       <Image
         src="/icons/social/slack.svg"
         alt="Slack Logo"

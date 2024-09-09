@@ -6,6 +6,7 @@ import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 import { BlogFooter } from '@/components';
 import { useRouter } from 'next/navigation';
 import { BLOGS_COVERS } from '@/public/images/blogs-cover';
+import { MaxWidthContainer } from '@/style';
 
 type Props = {
   post: any;
@@ -18,7 +19,7 @@ const Title = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 110%;
-  @media (width < 1000px) {
+  @media (width < 1200px) {
     font-size: 56px;
   }
 
@@ -35,6 +36,8 @@ const ButtonWrapper = styled.div`
 const BlogPageHeaderContainer = styled.div`
   padding: 120px 64px 0px 64px;
   display: flex;
+  width: 100%;
+  max-width: 1440px;
   flex-direction: column;
   gap: 80px;
   @media (width < 1000px) {
@@ -77,40 +80,43 @@ const BlogPageHeader = async ({ post }: Props) => {
   }
 
   return (
-    <BlogPageHeaderContainer>
-      <TitleWrapper>
-        <ButtonWrapper>
-          <Button
-            onClick={() => router.push('/blog')}
+    <MaxWidthContainer>
+      <BlogPageHeaderContainer>
+        <TitleWrapper>
+          <ButtonWrapper>
+            <Button
+              onClick={() => router.push('/blog')}
+              style={{
+                background: theme.colors.secondary,
+                padding: '8px 32px',
+                height: isMobile ? 48 : 64,
+                gap: 8,
+              }}
+            >
+              <LazyImage
+                src="/icons/common/expand.svg"
+                alt="back"
+                width={16}
+                height={24}
+                style={{ transform: 'rotate(-90deg)' }}
+              />
+              <UnderlineText size={20}>BACK</UnderlineText>
+            </Button>
+          </ButtonWrapper>
+          <div
             style={{
-              background: theme.colors.secondary,
-              padding: '8px 32px',
-              height: isMobile ? 48 : 64,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: isMobile ? 15 : 32,
             }}
           >
-            <LazyImage
-              src="/icons/common/expand.svg"
-              alt="back"
-              width={16}
-              height={24}
-              style={{ transform: 'rotate(-90deg)' }}
-            />
-            <UnderlineText size={20}>BACK</UnderlineText>
-          </Button>
-        </ButtonWrapper>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: isMobile ? 15 : 32,
-          }}
-        >
-          <Title>{post.title}</Title>
-          <BlogFooter blog={post} />
-        </div>
-      </TitleWrapper>
-      <CoverImage src={getCurrentBlogImage()} alt={post.title} />
-    </BlogPageHeaderContainer>
+            <Title>{post.title}</Title>
+            <BlogFooter blog={post} />
+          </div>
+        </TitleWrapper>
+        <CoverImage src={getCurrentBlogImage()} alt={post.title} />
+      </BlogPageHeaderContainer>
+    </MaxWidthContainer>
   );
 };
 

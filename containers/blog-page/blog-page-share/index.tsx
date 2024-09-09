@@ -102,6 +102,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ link }) => {
               padding: '8px 32px',
               height: isMobile ? 48 : 64,
               width: isMobile ? 120 : 141,
+              gap: 8,
             }}
             containerStyle={{ width: isMobile ? 123 : 144 }}
             textStyles={isMobile ? 16 : 20}
