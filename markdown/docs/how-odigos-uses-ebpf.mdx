@@ -3,7 +3,7 @@ pubDate: 'Sep 25 2024'
 title: 'eBPF: The Swiss Army Knife of Linux, and How Odigos Wields It'
 image: '/new_ui_cover.png'
 category: 'eBPF'
-description: 'Explore eBPF's advanced Linux kernel programmability and how Odigos leverages it for cutting-edge observability in distributed systems.'
+description: 'Explore eBPF`s advanced Linux kernel programmability and how Odigos leverages it for cutting-edge observability in distributed systems.'
 tags: [odigos, ebpf, observability]
 authorImage: ''
 author: Daria Dovzhikova
@@ -12,7 +12,7 @@ metadata: 'eBPF: The Swiss Army Knife of Linux, and How Odigos Wields It'
 
 ## Introduction
 
-In the ever-evolving landscape of cloud computing and distributed systems, observability—the ability to measure a system’s current state based on the data it generates—has become a critical concern. As systems grow more complex, traditional monitoring approaches often fall short. eBPF (extended Berkeley Packet Filter) is a powerful technology that’s revolutionizing how we monitor, secure, and optimize Linux-based systems. 
+In the ever-evolving landscape of cloud computing and distributed systems, observability—the ability to measure a system’s current state based on the data it generates—has become a critical concern. As systems grow more complex, traditional monitoring approaches often fall short. eBPF (extended Berkeley Packet Filter) is a powerful technology that’s revolutionizing how we monitor, secure, and optimize Linux-based systems.
 
 ## What is eBPF?
 
@@ -23,17 +23,17 @@ eBPF evolved from the original Berkeley Packet Filter (BPF), which was primarily
 ### Key Features of eBPF:
 
 1. **Safety and Security**:
-The eBPF verifier ensures that programs are safe to run and cannot crash the kernel. This allows untrusted user-space applications to load custom logic into the kernel safely. For example, a container orchestration system could use eBPF to implement custom network policies without risking kernel stability.
+   The eBPF verifier ensures that programs are safe to run and cannot crash the kernel. This allows untrusted user-space applications to load custom logic into the kernel safely. For example, a container orchestration system could use eBPF to implement custom network policies without risking kernel stability.
 2. **In-kernel Execution and Performance**:
-eBPF programs run directly in the kernel, providing high performance and low overhead. This makes eBPF ideal for scenarios where minimal latency is crucial, such as packet processing or real-time monitoring. An XDP program, for instance, can drop malicious packets before they even reach the network stack.
+   eBPF programs run directly in the kernel, providing high performance and low overhead. This makes eBPF ideal for scenarios where minimal latency is crucial, such as packet processing or real-time monitoring. An XDP program, for instance, can drop malicious packets before they even reach the network stack.
 3. **Rich Context and Observability**:
-eBPF programs have access to a wealth of kernel and application data. They can inspect process information, network packets, system calls, and more, providing unprecedented visibility into system behavior. This enables detailed performance analysis and troubleshooting without modifying application code.
+   eBPF programs have access to a wealth of kernel and application data. They can inspect process information, network packets, system calls, and more, providing unprecedented visibility into system behavior. This enables detailed performance analysis and troubleshooting without modifying application code.
 4. **Dynamic Loading and Flexibility**:
-Programs can be loaded and unloaded on the fly without rebooting or modifying the kernel. This flexibility is crucial for adapting to changing requirements in production environments. For example, a system administrator could dynamically load a new eBPF program to trace a specific function call during a production issue.
+   Programs can be loaded and unloaded on the fly without rebooting or modifying the kernel. This flexibility is crucial for adapting to changing requirements in production environments. For example, a system administrator could dynamically load a new eBPF program to trace a specific function call during a production issue.
 5. **Programmability and Extensibility**:
-While eBPF bytecode is low-level, developers typically write eBPF programs in C and use LLVM to compile them. Higher-level languages and frameworks are also available, making eBPF accessible to a wider range of developers. This allows for custom extensions to kernel functionality without the risks associated with kernel modules.
+   While eBPF bytecode is low-level, developers typically write eBPF programs in C and use LLVM to compile them. Higher-level languages and frameworks are also available, making eBPF accessible to a wider range of developers. This allows for custom extensions to kernel functionality without the risks associated with kernel modules.
 6. **Networking Capabilities**:
-In the networking stack, eBPF allows for programmable packet processing at various points. This enables advanced load balancing, DDoS mitigation, and custom network functions. For instance, an eBPF program could implement a custom load balancing algorithm based on application-layer information.
+   In the networking stack, eBPF allows for programmable packet processing at various points. This enables advanced load balancing, DDoS mitigation, and custom network functions. For instance, an eBPF program could implement a custom load balancing algorithm based on application-layer information.
 
 ## How Odigos Leverages eBPF
 
@@ -61,7 +61,7 @@ By using eBPF to monitor system calls and other security-relevant events, Odigos
 
 ### 6. Observability Pipeline Integration
 
-The data collected by eBPF programs is seamlessly integrated into Odigos’ observability pipeline. This allows for correlation between low-level system data and high-level application traces, metrics, and logs, providing a holistic view of system behavior. 
+The data collected by eBPF programs is seamlessly integrated into Odigos’ observability pipeline. This allows for correlation between low-level system data and high-level application traces, metrics, and logs, providing a holistic view of system behavior.
 
 ### 7. Dynamic Reconfiguration
 

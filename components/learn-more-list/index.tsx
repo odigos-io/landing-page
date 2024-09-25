@@ -27,9 +27,28 @@ const LearnMoreList = async () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/posts?type=post');
-      const data = await res.json();
-      setPosts(data);
+      try {
+        const res = await fetch('/api/posts?type=post');
+
+        // Check if the response is OK (status code 200-299)
+        if (!res.ok) {
+          console.error('Failed to fetch posts:', res.statusText);
+          return;
+        }
+
+        // Check if the response has content to parse
+        const text = await res.text();
+        if (!text) {
+          console.error('Response is empty');
+          return;
+        }
+
+        // Parse the JSON content
+        const data = JSON.parse(text);
+        setPosts(data);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
     };
 
     fetchPosts();
