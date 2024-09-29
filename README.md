@@ -34,13 +34,7 @@ or
     
 ```bash
     yarn install
- ```
-
-or
-    
-```bash
-    yarn install
- ```
+```
 
 ## Follow Next Steps
 
