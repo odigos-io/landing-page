@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { putContactFormItem } from '@/containers/footer/utils';
 import { Button, Text, UnderlineText } from '@/reuseable-components';
+import { usePlausible } from '@/hooks/usePlausible';
 
 const FormContainer = styled.div`
   display: flex;
@@ -100,7 +101,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
   const [error, setError] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
-
+  const trackEvent = usePlausible();
   useEffect(() => {
     // Check if all required fields are filled
     const { name, email, organization } = state;
@@ -150,6 +151,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
     });
 
     setSuccess(res);
+    trackEvent('ContactFormSubmitted', {
+      name,
+      email,
+      organization,
+      message,
+    });
     res &&
       setTimeout(() => {
         onClose();

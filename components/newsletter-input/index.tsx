@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { sendToService } from './utils';
 import { Text, UnderlineText, GradientButton } from '@/reuseable-components';
 import { HUBSPOT_API_URL } from '@/containers/footer/utils';
+import { usePlausible } from '@/hooks/usePlausible';
 
 const InputContainer = styled.div`
   display: flex;
@@ -88,6 +89,8 @@ export const NewsletterInput = ({ onConfirm }: { onConfirm?: () => void }) => {
   const [error, setError] = React.useState('');
   const [isSubscribed, setIsSubscribed] = React.useState(false);
 
+  const trackEvent = usePlausible();
+
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -104,6 +107,7 @@ export const NewsletterInput = ({ onConfirm }: { onConfirm?: () => void }) => {
     sendToService(body, HUBSPOT_API_URL);
     setEmail('');
     setIsSubscribed(true);
+    trackEvent('NewsletterSignup', { email });
     onConfirm && onConfirm();
   }
 
