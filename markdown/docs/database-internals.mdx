@@ -1,0 +1,100 @@
+---
+pubDate: 'Oct 14 2024'
+title: 'Revolutionizing Database Internals Monitoring with eBPF and Real-Time Insights'
+image: '/new_ui_cover.png'
+category: 'Observability'
+description: 'Discover how Odigos revolutionizes database monitoring with eBPF technology. Gain real-time insights into MySQL and PostgreSQL performance by connecting client and server activities in a single trace. Optimize queries, troubleshoot issues, and enhance database efficiency with minimal overhead. Experience the future of observability with Odigos's innovative eBPF-powered monitoring solution.'
+tags: [odigos, observability, Database]
+authorImage: ''
+author: Daria Dovzhikova
+metadata: 'Revolutionizing Database Internals Monitoring with eBPF and Real-Time Insights'
+---
+
+Traditional monitoring tools often provide only surface-level insights into database internals, leaving gaps between client applications and database servers. Odigos bridges this divide by leveraging **eBPF (extended Berkeley Packet Filter)** technology, offering unparalleled real-time insights that connect client and server activities in a single, cohesive trace.
+
+> Note: These features are available in the Enterprise Edition of Odigos.
+
+## The Power of eBPF in Database Monitoring
+
+**eBPF** allows programs to run directly in the Linux kernel space, enabling deeper system-level observability with minimal overhead. Odigos leverages this power to provide next-level database monitoring. Here’s how **Odigos powered by eBPF** stacks up against traditional monitoring methods:
+
+| **Aspect** | **Traditional Monitoring** | **eBPF with Odigos** |
+| --- | --- | --- |
+| **Overhead** | Often high with detailed logging | Minimal, thanks to efficient kernel-level operation |
+| **Flexibility** | Limited to predefined metrics | Highly flexible, captures custom events |
+| **Depth of Insight** | Application-level only | Kernel-level insights available |
+| **Dynamic Updates** | Often requires restarts | Can be updated on-the-fly |
+| **Code Modifications** | May require code changes or agents | Non-intrusive, no code changes needed |
+| **Real-time Visibility** | Often delayed or batched | Immediate, real-time insights |
+| **Client-Server Correlation** | Typically separate, disconnected views | Unified traces connecting client and server activities |
+
+## Odigos: A Deep Dive into Database Internals
+
+Odigos leverages eBPF to provide comprehensive insights into MySQL and PostgreSQL internals. Here are the key features that make Odigos stand out in database monitoring:
+
+### **Query-Related Monitoring**
+
+1. **Query Capture and Analysis with Client Context**- **Feature**: Real-time SQL query interception with client-side correlation
+- **How it Works**: eBPF probes intercept queries at both the client application and database engine levels
+- **Insights Gained**:
+    - Full visibility into executed SQL queries with originating client context
+    - Performance metrics paired with query text and client-side operations
+    - Identification of frequent and problematic queries linked to specific client action
+
+![Query-Related Monitoring](/images/blog/database-internals/query-related-monitoring.png)
+
+1. **Query Execution Tracing**
+    - **Feature**: Detailed query execution pipeline analysis
+    - **How it Works**: probes trace key functions in query execution
+    - **Insights Gained**:
+        - Timing breakdowns of query stages (parsing, planning, execution)
+        - Correlation between queries and their execution metrics
+        - Identification of bottlenecks in query processing
+            
+            ![Query Execution Tracing](/images/blog/database-internals/query-execution-tracing.png)
+            
+
+### **Resource-Related Monitoring**
+
+1. **I/O Operations Monitoring**
+    - **Feature**: Real-time I/O tracking
+    - **How it Works**: eBPF programs trace I/O-related system calls
+    - **Insights Gained**: End-to-end visibility into database file operations, network communication, and client-side I/O
+2. **Lock Contention Detection**
+    - **Feature**: Identification of locking issues
+    - **How it Works**: eBPF probes attach to locking functions
+    - **Insights Gained**: Detection of lock contention and its impact on performance
+        
+        ![Lock Contention Detection](/images/blog/database-internals/lock-contention-detection.png)
+        
+3. **Resource Utilization Tracking**
+    - **Feature**: Granular resource usage monitoring
+    - **How it Works**: eBPF monitors CPU, memory, and I/O at a low level
+    - **Insights Gained**: Correlation between database operations and resource consumption
+        
+        ![Resource Utilization Tracking](/images/blog/database-internals/resource-utilization-tracking.png)
+        
+
+## Odigos Advantages for Database Monitoring
+
+- **Unified Client-Server Insights**: Offers a holistic view of database activity, connecting client-side operations with server-side execution in a single, coherent trace.
+- **Comprehensive Query Insights**: Provides full visibility into SQL query texts, performance metrics, and their originating client context.
+- **Automatic Instrumentation**: Simplifies the setup of advanced eBPF-based monitoring across the entire application stack.
+- **Kubernetes Integration**: Provides seamless monitoring for databases and client applications deployed in Kubernetes environments. Odigos automatically detects and instruments both database and application pods, offering deep visibility into containerized performance without manual configuration.
+- **Full-Stack Correlation**: Links client application insights with database server traces for a complete picture of system behavior.
+
+> Odigos supports a wide variety of destinations, including Grafana, Dynatrace, Datadog, Tempo, Jaeger, and more, ensuring you can integrate with your preferred observability stack.
+> 
+
+Odigos, powered by eBPF, is setting a new standard in database monitoring. By offering deep, real-time insights with minimal overhead, Odigos empowers teams to:
+
+- Optimize query performance with unparalleled visibility
+- Troubleshoot complex issues by correlating database and system-level events
+- Gain a comprehensive understanding of database behavior in production environments
+
+**Don’t wait for your next performance issue.** Start using **Odigos** today and revolutionize your approach to database monitoring.
+
+To begin your journey with Odigos and experience the power of unified client-server tracing, visit our [Getting Started guide](https://www.odigos.io/docs/getting-started) or [contact our sales team](https://www.odigos.io/contact) for a demo of the Enterprise Edition features.
+
+
+
