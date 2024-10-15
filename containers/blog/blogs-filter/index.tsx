@@ -89,7 +89,7 @@ const BlogFilter = ({ posts, selectedItems, setSelectedItems }) => {
   const groupTags = (posts) => {
     const tagCount = {};
     posts.forEach((post) => {
-      post.tags.forEach((tag) => {
+      post.tags?.forEach((tag) => {
         if (tagCount[tag]) {
           tagCount[tag] += 1;
         } else {
