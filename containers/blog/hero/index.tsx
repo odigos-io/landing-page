@@ -4,8 +4,9 @@ import theme from '@/style/theme';
 import styled from 'styled-components';
 import TextHero from '@/components/text-hero';
 import { MaxWidthContainer } from '@/style';
+import { useAnnouncementStore } from '@/store/announcementStore';
 
-const PageContainer = styled.div`
+const PageContainer = styled.div<{ largePadding: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 80px;
@@ -17,15 +18,16 @@ const PageContainer = styled.div`
     padding: 24px 20px;
   }
   @media (max-width: 600px) {
-    padding-top: 84px;
+    padding-top: ${({ largePadding }) => (largePadding ? '200px' : '84px')};
     gap: 32px;
   }
 `;
 
 const BlogHero = () => {
+  const { isOpen } = useAnnouncementStore();
   return (
     <MaxWidthContainer>
-      <PageContainer>
+      <PageContainer largePadding={isOpen}>
         <TextHero text="Discover our latest articles and insights." />
       </PageContainer>
     </MaxWidthContainer>

@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
+import { BlogNotFound } from '@/components';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
-import { BlogNotFound } from '@/components';
+import HubSpotForm from '@/components/forms/HubSpotForm';
 
 type Props = {
   params: { slug: string };
@@ -64,11 +65,15 @@ const SingleBlogPage = async ({ params }: Props) => {
   const post = posts.find((post) => post.slug === slug);
   const content = await markdownToHtml(post?.content || '');
 
+  const isKubeCon =
+    post.title ===
+    'Join Odigos at KubeCon + CloudNativeCon North America 2024! ';
   return content ? (
     <>
       <section style={{ background: theme.colors.secondary }} className="pt-25">
         <BlogPageHeader post={post} />
         <BlogPageContent post={post} />
+        {isKubeCon && <HubSpotForm />}
         <RelatedPosts posts={posts} />
         <CTASection />
       </section>
