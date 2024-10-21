@@ -7,7 +7,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="eng">
-      <body className={`no-scrollbar`}>{children}</body>
+      <body className='no-scrollbar'>{children}</body>
     </html>
   );
 }
