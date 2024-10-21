@@ -101,8 +101,8 @@ export const Header = () => {
   return (
     <MaxWidthContainer>
       <AnnouncementBanner
-        title={'We Raised $13M to Bring Distributed Traces to the Masses!'}
-        link={'https://odigos.io/blog/fundraising-announcement'}
+        title={'Join Odigos at KubeCon + CloudNativeCon North America 2024!'}
+        link={'https://odigos.io/blog/meet-odigos-kubecon-2024'}
         linkText={'Read more'}
       />
       <HeaderContainer isOpen={dropdownToggler}>
