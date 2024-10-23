@@ -33,7 +33,19 @@ const PageTitle = styled.span`
   }
 `;
 
-const HubSpotForm = () => {
+const HubSpotForm = ({
+  isKubeCon,
+  isHappyHour,
+}: {
+  isKubeCon: boolean;
+  isHappyHour: boolean;
+}) => {
+  const formId = isKubeCon
+    ? '0bbe6016-e303-47f5-aaa0-74abda733d8d'
+    : isHappyHour
+    ? '87589fc5-0ec8-4360-9fa3-985238f10e74'
+    : '';
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '//js-eu1.hsforms.net/forms/embed/v2.js';
@@ -48,7 +60,7 @@ const HubSpotForm = () => {
         window.hbspt.forms.create({
           region: 'eu1',
           portalId: '144171524',
-          formId: '0bbe6016-e303-47f5-aaa0-74abda733d8d',
+          formId,
           target: '#hubspotForm',
         });
       }

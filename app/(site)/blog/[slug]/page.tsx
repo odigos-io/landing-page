@@ -68,12 +68,17 @@ const SingleBlogPage = async ({ params }: Props) => {
   const isKubeCon =
     post.title ===
     'Join Odigos at KubeCon + CloudNativeCon North America 2024! ';
+
+  const isHappyHour = post.title === 'Join Odigos for a Happy Hour at KubeCon!';
+
   return content ? (
     <>
       <section style={{ background: theme.colors.secondary }} className="pt-25">
         <BlogPageHeader post={post} />
         <BlogPageContent post={post} />
-        {isKubeCon && <HubSpotForm />}
+        {(isKubeCon || isHappyHour) && (
+          <HubSpotForm isKubeCon={isKubeCon} isHappyHour={isHappyHour} />
+        )}
         <RelatedPosts posts={posts} />
         <CTASection />
       </section>
