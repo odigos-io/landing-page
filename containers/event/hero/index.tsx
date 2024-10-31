@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { MaxWidthContainer } from '@/style';
 import useIsMobile from '@/hooks/useIsMobile';
 import { BLOGS_COVERS } from '@/public/images/blogs-cover';
+import { useAnnouncementStore } from '@/store/announcementStore';
 
 type Props = {
   post: any;
 };
 
-const BlogPageHeaderContainer = styled.div`
+const BlogPageHeaderContainer = styled.div<{ largePadding: boolean }>`
   padding: 120px 64px 0px 64px;
   display: flex;
   width: 100%;
@@ -16,8 +17,11 @@ const BlogPageHeaderContainer = styled.div`
   flex-direction: column;
   gap: 80px;
   @media (width < 1000px) {
-    padding: 0px 20px 0px 20px;
+    padding: 120px 20px 0px 20px;
     gap: 40px;
+    @media (max-width: 600px) {
+      padding-top: ${({ largePadding }) => (largePadding ? '120px' : '60px')};
+    }
   }
 `;
 
@@ -32,6 +36,7 @@ const CoverImage = styled.img`
 
 const EventHero = async ({ post }: Props) => {
   const isMobile = useIsMobile();
+  const { isOpen } = useAnnouncementStore();
 
   function getCurrentBlogImage() {
     if (post.webCoverImage) {
@@ -51,7 +56,7 @@ const EventHero = async ({ post }: Props) => {
 
   return (
     <MaxWidthContainer>
-      <BlogPageHeaderContainer>
+      <BlogPageHeaderContainer largePadding={isOpen}>
         <CoverImage src={getCurrentBlogImage()} alt={post.title} />
       </BlogPageHeaderContainer>
     </MaxWidthContainer>

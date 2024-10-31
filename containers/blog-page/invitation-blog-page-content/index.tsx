@@ -19,7 +19,8 @@ const BlogPageContentContainer = styled.div`
     padding: 40px 40px 120px 40px;
     gap: 48px;
   }
-  @media (width < 800px) {
+  @media (width < 1000px) {
+    flex-direction: column;
     padding: 40px 20px 120px 20px;
     gap: 48px;
   }
