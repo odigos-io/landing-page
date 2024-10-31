@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import { BlogNotFound } from '@/components';
 import { getAllBlogs } from '@/app/libs/markdown';
 import markdownToHtml from '@/app/libs/markdownToHtml';
-import HubSpotForm from '@/components/forms/HubSpotForm';
 
 type Props = {
   params: { slug: string };
@@ -65,20 +64,11 @@ const SingleBlogPage = async ({ params }: Props) => {
   const post = posts.find((post) => post.slug === slug);
   const content = await markdownToHtml(post?.content || '');
 
-  const isKubeCon =
-    post.title ===
-    'Join Odigos at KubeCon + CloudNativeCon North America 2024! ';
-
-  const isHappyHour = post.title === 'Join Odigos for a Happy Hour at KubeCon!';
-
   return content ? (
     <>
       <section style={{ background: theme.colors.secondary }} className="pt-25">
         <BlogPageHeader post={post} />
         <BlogPageContent post={post} />
-        {(isKubeCon || isHappyHour) && (
-          <HubSpotForm isKubeCon={isKubeCon} isHappyHour={isHappyHour} />
-        )}
         <RelatedPosts posts={posts} />
         <CTASection />
       </section>

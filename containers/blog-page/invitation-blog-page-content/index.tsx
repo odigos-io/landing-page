@@ -11,7 +11,6 @@ type Props = {
 const BlogPageContentContainer = styled.div`
   padding: 120px 64px 80px 64px;
   display: flex;
-  align-items: center;
   width: 100%;
   max-width: 1440px;
   gap: 64px;
