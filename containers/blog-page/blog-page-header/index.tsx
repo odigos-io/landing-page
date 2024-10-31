@@ -70,6 +70,12 @@ const BlogPageHeader = async ({ post }: Props) => {
   const router = useRouter();
 
   function getCurrentBlogImage() {
+    if (post.webCoverImage) {
+      return isMobile && post.mobileCoverImage
+        ? post.mobileCoverImage
+        : post.webCoverImage;
+    }
+
     const currentBlogImage = localStorage.getItem(post.slug);
 
     if (currentBlogImage) {

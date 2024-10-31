@@ -10,3 +10,5 @@ export const BLOGS_COVERS = [
   '/images/blogs-cover/odigos_blog_9.svg',
   '/images/blogs-cover/odigos_blog_10.svg',
 ];
+
+export const KUBE_CON_COVERS = '/images/blogs-cover/kubecon_invite.png';
