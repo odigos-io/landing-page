@@ -1,30 +1,22 @@
 'use client';
-
-import { SectionTitle } from '@/reuseable-components';
-import { MaxWidthContainer } from '@/style';
 import theme from '@/style/theme';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { MaxWidthContainer } from '@/style';
 
 const FormContainer = styled.div`
-  margin: 80px 0;
-  max-width: 500px;
-  background-color: ${({ theme }) => theme.colors.primary};
-
-  @media (max-width: 800px) {
-    padding: 24px;
-    width: 100%;
-  }
+  border-radius: 48px;
+  border: 1px dashed rgba(249, 249, 249, 0.64);
+  padding: 40px;
+  min-width: 400px;
 `;
 
-const TitleWrapper = styled.div`
-  margin-top: 40px;
-`;
+const TitleWrapper = styled.div``;
 
 const PageTitle = styled.span`
   color: ${theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.primary};
-  font-size: 56px;
+  font-size: 40px;
   font-style: normal;
   font-weight: 400;
   line-height: 130%;
@@ -72,24 +64,14 @@ const HubSpotForm = ({
   }, []);
 
   return (
-    <MaxWidthContainer
-      style={{ flexDirection: 'column', backgroundColor: theme.colors.primary }}
-    >
-      <TitleWrapper>
-        <PageTitle>Join Odigos at KubeCon</PageTitle>
-      </TitleWrapper>
+    <MaxWidthContainer style={{ flexDirection: 'column', padding: '0 64px' }}>
       <FormContainer>
-        <SectionTitle
-          headerInfo={{
-            title:
-              'Fill out the form below to schedule a meeting with us at KubeCon',
-            subtitle: '',
-            description: '',
-            position: undefined,
-          }}
-        />
+        <TitleWrapper>
+          <PageTitle>Join Odigos at KubeCon</PageTitle>
+        </TitleWrapper>
+
         <div style={{ marginTop: 20 }} />
-        <div id="hubspotForm"></div>
+        <div style={{}} id="hubspotForm"></div>
       </FormContainer>
     </MaxWidthContainer>
   );
