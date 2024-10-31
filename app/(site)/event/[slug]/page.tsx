@@ -9,20 +9,21 @@ type Props = {
   params: { slug: string };
 };
 
-const CTASection = dynamic(() => import('@/containers/cta'), { ssr: false });
-const RelatedPosts = dynamic(
-  () => import('@/containers/blog-page/related-post')
+const EventPageContent = dynamic(
+  () => import('@/containers/blog-page/invitation-blog-page-content')
 );
-const BlogPageContent = dynamic(
-  () => import('@/containers/blog-page/blog-page-content')
-);
-const BlogPageHeader = dynamic(
-  () => import('@/containers/blog-page/blog-page-header'),
-  { ssr: false }
-);
+const EventHero = dynamic(() => import('@/containers/event/hero'), {
+  ssr: false,
+});
 export function generateMetadata({ params }: Props): Metadata {
   const { slug } = params;
-  const posts = getAllBlogs(['title', 'date', 'coverImage', 'slug']);
+  const posts = getAllBlogs([
+    'title',
+    'date',
+    'webCoverImage',
+    'mobileCoverImage',
+    'slug',
+  ]);
 
   const post = posts.find((post) => post.slug === slug);
   //random number 1-6
@@ -50,7 +51,7 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-const SingleBlogPage = async ({ params }: Props) => {
+const EventPage = async ({ params }: Props) => {
   const { slug } = params;
   const posts = getAllBlogs([
     'title',
@@ -67,10 +68,8 @@ const SingleBlogPage = async ({ params }: Props) => {
   return content ? (
     <>
       <section style={{ background: theme.colors.secondary }} className="pt-25">
-        <BlogPageHeader post={post} />
-        <BlogPageContent post={post} />
-        <RelatedPosts posts={posts} />
-        <CTASection />
+        <EventHero post={post} />
+        <EventPageContent post={post} />
       </section>
     </>
   ) : (
@@ -78,4 +77,4 @@ const SingleBlogPage = async ({ params }: Props) => {
   );
 };
 
-export default SingleBlogPage;
+export default EventPage;
