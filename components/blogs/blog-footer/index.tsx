@@ -14,7 +14,7 @@ export const BlogFooter = ({ blog }: { blog: any }) => {
       }}
     >
       <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
-        {tags[0]?.toUpperCase() || 'OBSERVABILITY'}
+        {tags?.[0]?.toUpperCase() || 'OBSERVABILITY'}
       </Text>
       <Text color="#f5f5f576" fontFam={theme.font_family.secondary}>
         {'|'}
