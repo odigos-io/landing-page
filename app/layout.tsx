@@ -11,7 +11,11 @@ export default function RootLayout({
     <html lang="eng">
       <body className="no-scrollbar">
         {children}
-
+        <Script
+          id="hs-script-loader"
+          strategy="afterInteractive"
+          src="//js-eu1.hs-scripts.com/144171524.js"
+        />
         <Script id="zoominfo-integration" strategy="afterInteractive">
           {`
             window[(function(_yFM, _tT) {
