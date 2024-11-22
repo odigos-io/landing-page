@@ -12,7 +12,7 @@ const BlogBody = ({ posts }) => {
       selectedItems.length === 0 || selectedItems.includes('EXPLORE ALL')
         ? posts
         : posts.filter((post) =>
-            post.tags.some((tag) => selectedItems.includes(tag))
+            post.tags?.some((tag) => selectedItems.includes(tag))
           )
     );
   }, [selectedItems]);
