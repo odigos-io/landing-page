@@ -100,11 +100,7 @@ export const Header = () => {
 
   return (
     <MaxWidthContainer>
-      <AnnouncementBanner
-        title={'Join Odigos at KubeCon + CloudNativeCon North America 2024!'}
-        link={'https://odigos.io/event/meet-odigos-kubecon-2024'}
-        linkText={'Read more'}
-      />
+      <AnnouncementBanner title={''} link={''} linkText={'Read more'} />
       <HeaderContainer isOpen={dropdownToggler}>
         <HeaderInner>
           <LogoContainer onClick={() => setCurrentItem(10)}>

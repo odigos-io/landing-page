@@ -49,11 +49,11 @@ export const DATA = [
     linkedin_url: 'https://www.linkedin.com/in/david-feldman-b4a06b94/',
   },
   {
-    name: 'Yoav Levy',
+    name: 'Ben Elferink',
     title: 'Software Engineer',
     description:
-      'Yoav focuses on backend development at Odigos. With a background in software engineering, Yoav specializes in building robust and scalable server-side applications.',
-    linkedin_url: 'https://www.linkedin.com/in/yoav-levy-097563106/',
+      'Ben focuses on full stack development at Odigos. With a background in software engineering, Ben specializes in building robust and scalable applications across the frontend and backend.',
+    linkedin_url: 'https://www.linkedin.com/in/ben-elferink-37ba251b9/',
   },
   {
     name: 'Daria Dovzhikova',
@@ -115,11 +115,11 @@ export const MOBILE_DATA = [
     linkedin_url: 'https://www.linkedin.com/in/david-feldman-b4a06b94/',
   },
   {
-    name: 'Yoav Levy',
+    name: 'Ben Elferink',
     title: 'Software Engineer',
     description:
-      'Yoav focuses on backend development at Odigos. With a background in software engineering, Yoav specializes in building robust and scalable server-side applications.',
-    linkedin_url: 'https://www.linkedin.com/in/yoav-levy-097563106/',
+      'Ben focuses on full stack development at Odigos. With a background in software engineering, Ben specializes in building robust and scalable applications across the frontend and backend.',
+    linkedin_url: 'https://www.linkedin.com/in/ben-elferink-37ba251b9/',
   },
   {
     name: 'Daria Dovzhikova',
