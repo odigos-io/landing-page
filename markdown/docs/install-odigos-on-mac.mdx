@@ -1,0 +1,440 @@
+---
+pubDate: 'Sep 28 2024'
+title: 'Running Odigos Demo on your Mac - Complete Walkthrough'
+image: '/log_pipelines.png'
+category: 'Odigos'
+description: 'This is a complete guide on how to run Odigos demo on Mac from start to end with detailed steps and explanations.'
+tags: [odigos]
+authorImage: '/amir.png'
+author: Amir Blum
+metadata: 'Running Odigos Demo on your Mac - Complete Walkthrough'
+---
+
+## Audience
+
+- Users who follow the QuickStart section in Odigos documentation and need more detailed instructions on setting up the demo on their local machine.
+- Non technical people who want to see the Odigos demo in action and understand how it works.
+
+## Steps Overview
+
+The following steps will be covered in this guide:
+
+- **Step 0: Installing required tools**
+- **Step 1: Setting up a local Kubernetes cluster**
+- **Step 2: Deploy the demo application**
+- **Step 3: Install Jaeger as a destination for traces**
+- **Step 4: Install Odigos**
+- **Step 5: Instrument the application with OpenTelemetry**
+- **Step 6: Generate traffic and view the generated traces**
+
+## Step 0: Installing Required Tools
+
+**One Time Setup Per Computer**
+
+You will only need to install these tools once on your Mac. Next time you want to run the demo, you can skip this step and go directly to Step 1.
+
+### Open Terminal
+
+Open the Terminal app on your Mac. You can find it in the Applications folder under Utilities.
+
+TODO: image of the terminal
+
+### Install Homebrew
+
+#### Purpose
+
+Homebrew is a package manager for macOS that simplifies the installation of software packages. We will use Homebrew to install Docker Desktop, KinD (Kubernetes in Docker), and the odigos CLI.
+
+#### Check if Homebrew is Installed
+
+```
+brew --version
+```
+
+If you see a version number being displayed, Homebrew is already installed and you can skip to the next step. If not, you will need to install Homebrew:
+
+#### Installation
+
+Run the following command in your terminal:
+
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+And follow the instructions on the screen. 
+
+You will may need to enter your password and press Enter to confirm the installation.
+
+#### Adding Homebrew to your PATH
+
+To make brew works if you open a new terminal window in the future, you will need to add it to your PATH. 
+The terminal should print instructions on how to do this at the end of the installation process. This might look like:
+
+```shell
+echo 'export PATH="$(brew --prefix)/bin:$PATH"' >> ~/.bash_profile
+source ~/.bash_profile
+```
+
+### Install Docker Desktop
+
+#### Purpose
+
+Docker Desktop is the virtualization infrastructure for running Docker containers and Kubernetes clusters on your Mac.
+
+#### Check if Docker Desktop is Installed
+
+Run the following command in your terminal:
+
+```shell
+docker --version
+```
+
+If you see a version number being displayed, Docker Desktop is already installed and you can skip to the next step. If not, you need to install Docker Desktop:
+
+#### Installation
+
+Run the following command in your terminal:
+
+```shell
+brew install --cask docker
+```
+
+### Starting Docker Desktop
+
+#### Purpose
+
+For Docker Desktop to work and run our kubernetes cluster for the demo, you need to start it.
+
+#### Check if Docker Desktop is Running
+
+Run the following command in your terminal:
+
+```shell
+docker info
+```
+
+If detailed information about your Docker setup is displayed, Docker is running and you can skip to the next step. 
+If you see an error message indicating that it cannot connect to the Docker daemon, Docker is not running and needs to be started.
+
+#### Starting Docker Desktop
+
+You can do this by searching for Docker Desktop in your Applications folder and opening it.
+
+In the first time you open Docker Desktop, it might ask you for your computer password, and to create an account in docker. Follow the instructions on the screen.
+
+Once Docker Desktop is running, you should see a whale icon in your menu bar.
+
+### Install KinD
+
+#### Purpose
+
+KinD (Kubernetes in Docker) is a tool for running local Kubernetes clusters using Docker container nodes. 
+It will be used to easily run the odigos demo on your local mac without needing a cloud infrastructure.
+
+#### Check if KinD is Installed
+
+Run the following command in your terminal:
+
+```shell
+kind --version
+```
+
+- If you see a version number being displayed, KinD is already installed and you can skip to the next step.
+- If not, you will need to install it:
+
+#### Installation
+
+Run the following command in your terminal:
+
+```shell
+brew install kind
+```
+
+## Step 1: Setting Up a Local Kubernetes Cluster
+
+### Purpose
+
+In this step, we will set up a local ephemeral Kubernetes cluster using a tool named KinD.
+This cluster will be used to deploy the demo application and run Odigos on your mac.
+
+### Create a New Kubernetes Cluster
+
+Run the following command in your terminal to create a new Kubernetes cluster named `odigos-demo` (and replace any exiting one if exists from previous runs):
+
+```shell
+kind delete cluster --name odigos-demo
+kind create cluster --name odigos-demo
+```
+
+You should see something like this:
+
+```shell
+Creating cluster "odigos-demo" ...
+ ✓ Ensuring node image (kindest/node:v1.29.2) 🖼
+ ✓ Preparing nodes 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Set kubectl context to "kind-odigos-demo"
+```
+
+### Verify the Cluster
+
+Run the following command in your terminal to verify that the cluster is up and running:
+
+```shell
+kubectl cluster-info --context kind-odigos-demo
+```
+
+- If you see a message saying "Kubernetes control plane is running", the cluster is up and running.
+
+## Step 2: Deploy the Demo Application
+
+### Purpose
+
+We are going to demonstrate Odigos on a simple e-commerce application running in a Kubernetes cluster.
+When you use Odigos in your own applications, you will be able to observe the distributed traces and metrics of your own services.
+
+The demo application consists of 5 microservices written in different languages: `Go`, `Node.js`, `Python`, `Java`, and `.NET`. They simulate various common business functions like: `inventory`, `membership`, `coupon`, `pricing` and serving the `frontend` web application running in the browser.
+
+It has a web UI that simulates buying products, which generates traffic to the backend services running in kubernetes which we want to observe. with OpenTelemetry.
+More details on the demo application can be found [here](https://github.com/odigos-io/simple-demo).
+
+### Deploy the Demo Application
+
+Run the following command in your terminal to deploy the demo application in the Kubernetes cluster:
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/odigos-io/simple-demo/main/kubernetes/deployment.yaml
+```
+
+### Wait for Deployments to be Ready
+
+Installing the demo application might take a few minutes. You can wait for this process to complete by running the following command in the terminal:
+
+```shell
+kubectl wait --for=condition=available --timeout=300s deployment --all
+```
+
+When the command completes, all the deployments should be ready.
+
+### Access the Demo Application
+
+At this point, the demo e-commerce application should be up and running in the Kubernetes cluster.
+Since it is running inside kubernetes, we need to expose it to our local machine to access it.
+
+Run the following command in your terminal:
+
+```shell
+kubectl port-forward svc/frontend 8080:8080
+```
+
+**Notice**: This command will keep running in the terminal, so you might want to open a new terminal window to continue with the next steps. you can Open a new terminal tab by pressing `Cmd + T`.
+
+Then open your browser and navigate to [http://localhost:8080](http://localhost:8080). Your browser should display the demo e-commerce website.
+
+Click around the website to generate some traffic and interactions with the services.
+
+## Step 3: Install Jaeger
+
+#### Purpose
+
+Jaeger is a popular open-source distributed tracing system that can process and store traces, and provide a UI to search and visualize them.
+
+In this demo, we will be using Jaeger as the destination for the traces collected by Odigos.
+
+#### Install Jaeger
+
+Run the following command in your terminal to install a lightweight Jaeger instance in the Kubernetes cluster for the demo:
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/odigos-io/simple-demo/main/kubernetes/jaeger.yaml
+```
+
+#### Wait for Jaeger Deployment to be Ready
+
+Run the following command in the terminal and wait for the Jaeger deployment to be ready:
+
+```shell
+kubectl wait --for=condition=available --timeout=300s deployment jaeger -n tracing
+```
+
+#### Access Jaeger UI
+
+Our end goal is to see OpenTelemetry distributed traces in Jaeger which are gives us a UI to search and visualize them.
+
+First, we need to expose the Jaeger service running inside kubernetes to our local machine by running the following command in the terminal:
+
+```shell
+kubectl port-forward -n tracing svc/jaeger 16686:16686
+```
+
+**Notice**: This command will keep running in the terminal, so you might want to open a new terminal window to continue with the next steps. you can Open a new terminal tab by pressing `Cmd + T`.
+
+Then open your browser and navigate to [http://localhost:16686](http://localhost:16686). You should see the Jaeger UI.
+
+Since we haven't instrumented the demo application with Odigos yet, you won't see any traces in Jaeger at this point. Continue to the next step to instrument the application and generate traces.
+
+## Step 4: Install Odigos
+
+### Install Odigos CLI
+
+#### Purpose
+
+Odigos CLI is a tool you can run in your terminal to install, configure, and manage Odigos in your Kubernetes cluster.
+
+Installing the CLI does not make odigos run in your cluster quite yet.
+
+#### Install
+
+Run the following command in your terminal to install Odigos:
+
+```shell
+brew install odigos-io/homebrew-odigos-cli/odigos
+```
+
+This will install the Odigos CLI on your Mac if not already installed, or upgrade it to the latest version if it was installed in this mac previously.
+
+We recommend to run this command in order to use the latest version of Odigos to get the latest features and bug fixes.
+
+#### Verify CLI Installation
+
+To verify that Odigos is installed, run the following command in your terminal:
+
+```shell
+odigos --version
+```
+
+This will print version numbers, which can be useful for troubleshooting and upgrading Odigos in the future.
+
+### Install Odigos in the Kubernetes Cluster
+
+#### Purpose
+
+To use Odigos, we need to install it in the cluster. This steps deploys the Odigos components and enable Odigos UI which is used to kickstart the actual instrumentation process.
+
+#### Install
+
+Install odigos in your mac by running the following command in your terminal:
+
+```shell
+odigos install
+```
+
+and wait for the installation to complete (might take up to a minute or two depending on your internet and cache).
+
+You should see something like this:
+
+```shell
+odigos install
+Installing Odigos version v1.0.108 in namespace odigos-system ...
+Detected Kubernetes: Kind version 1.29
+> Creating namespace odigos-system                ✔
+> Creating OdigosDeployment                       ✔
+> Creating OdigosConfig                           ✔
+> Creating OwnTelemetry Pipeline                  ✔
+> Creating DataCollection                         ✔
+> Creating Instrumentor                           ✔
+> Creating Scheduler                              ✔
+> Creating Odiglet                                ✔
+> Creating AutoScaler                             ✔
+> Creating UI                                     ✔
+> Creating Profiles                               ✔
+Waiting for Odigos pods to be ready ...           ✔
+
+SUCCESS: Odigos installed.
+```
+
+#### Verify Odigos Installation
+
+**Optional**: To verify that Odigos is installed, run the following command in your terminal:
+
+```shell
+odigos version
+```
+
+This will print something similar to this:
+
+```
+Odigos Version (in cluster): version.Info{Version:'v1.0.108'}
+```
+
+Which indicates that Odigos is installed in the cluster and it's version number.
+
+### Open Odigos UI
+
+#### Purpose
+
+Odigos UI is a web-based interface or control plane, that allows you to manage and configure various aspects of Odigos, including the sources you want to observe, the destinations you want to export data to, and the configuration of the OpenTelemetry pipeline.
+
+#### Access the UI
+
+To open the Odigos UI, run the following command in your terminal:
+
+```shell
+odigos ui
+```
+
+Then open your browser and navigate to [http://localhost:3000](http://localhost:3000). You should see the Odigos UI opened on the onboarding page.
+
+**Notice**: The terminal command will keep running, so you might want to open a new terminal window to continue with the next steps. you can Open a new terminal tab by pressing `Cmd + T`.
+
+## Step 5: Instrument the Application with OpenTelemetry
+
+### Add Odigos Sources
+
+#### Purpose
+
+Sources in Odigos are the entities we are going to observe with OpenTelemetry distributed tracing.
+They are kubernetes deployments that runs the business logic of the application as web services, and are typically using databases, messaging systems 3rd party services and other dependencies.
+
+By adding Sources to Odigos, you can "instrument" them, which means injecting OpenTelemetry code with instrumentation libraries, SDK, and exporters, which will collect telemetry data - traces, metrics and logs. 
+
+#### Choose Sources
+
+In the Odigos UI, you will be prompted to choose the sources you want to observe. For this demo, we will choose `Select All` to instrument all the 5 demo services for the e-commerce application we deployed to the cluster in step 2 and observe distributed traces across them.
+
+Click on `Select All` nob to make all 5 services selected and then click on `Next ->`.
+
+### Adding Odigos Destinations
+
+#### Purpose
+
+Odigos is a tool for collecting, processing, and reliably exporting the OpenTelemetry signals and enable state-of-the-art observability.
+Odigos destinations are the backends which can received this data, further process it, store, index and visualize the data Odigos collected from the Sources.
+ 
+In this demo we will use the Open-Source popular Jaeger backend we installed in step 3. 
+You can also use other destinations like Grafana, Prometheus, ElasticSearch, Chronosphere, DataDog and many more.
+
+#### Choose Destination
+
+From the Odigos UI, choose the `Jaeger` destination, and fill in the following details:
+
+Destination Name:
+
+```
+test
+```
+
+you can choose any name you like, it is only used for display in the UI.
+
+Endpoint:
+
+```
+jaeger.tracing
+```
+
+this is the endpoint where the Jaeger we installed in step 2 is listening for traces.
+
+#### Verify the Destination
+
+Click the `Test Connection` button to verify that Odigos can connect to the Jaeger destination.
+
+
+3. Click the `Create Destination` button.
+
+### Explore Odigos UI
+
+After you create the destination, you will be taken to the Odigos UI overview where you can see monitor and manage the telemetry data being collected and exported to the destination.
+
