@@ -109,7 +109,11 @@ const Footer = () => {
           </Link>
         </FooterWrapper>
         <Divider />
-        <RightsText>© 2024 Odigos. All rights reserved.</RightsText>
+
+        <RightsText>
+          © 2024 Odigos, 100 Causeway St. Boston, MA 02114 USA. All rights
+          reserved.
+        </RightsText>
       </FooterContainer>
     </MaxWidthContainer>
   );
