@@ -10,53 +10,44 @@ author: Amir Blum
 metadata: GOMEMLIMIT, CPU consumption, resource management
 ---
 
-## Managing Resources in Go Applications: A Balancing Act
+This blog post describes our experience with GOMEMLIMIT environment variable and how it can cause unexpected high CPU consumption in Go applications.
 
-Balancing resources usage like memory and CPU in go applications is not a straight forward task. With numerous configurations, runtime factors, and workload variability, it can be hard to predict how the application will behave under different conditions.
-
-One such configuration is the GOMEMLIMIT environment variable. Popular for controlling memory consumption and tuning garbage collection frequency, GOMEMLIMIT is a powerful tool—but it’s also a double-edged sword. When misused or misconfigured, it can lead to drastically increased CPU consumption, potentially crippling application performance.
+We want to document this behavior and share our findings to help others (and future us) avoid similar issues.
 
 ## Audience
 
-This blog is for developers, SREs, and anyone working with Go applications, particularly those considering or already using the GOMEMLIMIT environment variable.
-If you're dealing with memory constraints or tuning garbage collection, this post will give you actionable insights to avoid potential pitfalls.
+Anyone developing, maintaining or operating Go applications, particularly those considering or already using the GOMEMLIMIT environment variable.
 
-## What You’ll Learn
+We will briefly overview GOMEMLIMIT, how it works, how it can fail - and how we mitigated the issue.
 
-- GOMEMLIMIT Demystified: A clear explanation of what GOMEMLIMIT does.
-- The CPU Spike Mystery: How we uncovered extreme CPU usage caused by GOMEMLIMIT.
-- Lessons Learned: How we mitigated the issue, and what you can do to prevent it.
+## Terms
 
-## What’s Not Covered
-
-While resource management is a broad topic, this post specifically focuses on GOMEMLIMIT. Other considerations like general GC/CPU tuning or managing OOM events will be explored in future posts.
-
-## Key Terms
-
-- **OOM** - Out Of Memory: When an application requests more memory than the OS can provide, leading to process termination.
+- **OOM** - Out Of Memory: When an application requests more memory than the OS can provide, leading to process termination. 
 - **GC** - Garbage Collection: The Go runtime's process of reclaiming unused memory.
 
 ## GOMEMLIMIT
 
-Efficient memory and CPU management in Go applications involves a delicate balance, particularly around garbage collection (GC).
+Efficient memory and CPU management in Go applications involves a delicate balance, particularly around garbage collection.
 
-- Running Garbage Collection in Go is a blocking operation, and is considered relatively expensive (resource wise).
+- Running GC in Go is a blocking operation (affect requests latencies), and is considered relatively expensive (CPU wise).
 - We want to run GC as little as possible, so our CPU cycles are spent most in the business logic and not on GC.
-- We want to avoid running out of memory - which will crash the process - degrade user experience, lose data, create operation noisy, etc.
+- We want to avoid running out of memory - which will crash the process - degrade user experience, lose data, and create operation noisy.
 
-Given a fixed amount of memory guaranteed by the OS, we need to carefully control how often GC runs to avoid unnecessary overhead while preventing OOM crashes. This is where the GOMEMLIMIT environment variable comes into play.
+Given a fixed amount of memory guaranteed by the OS - we need to carefully control how often GC runs to avoid unnecessary overhead, while preventing OOM crashes.
 
-### What Is GOMEMLIMIT?
+This is where the GOMEMLIMIT environment variable comes into play.
 
-The GOMEMLIMIT environment variable helps control when the Go runtime triggers garbage collection based on memory usage.
+### How GOMEMLIMIT Works
 
-- Far From the Limit: GC runs less frequently, leading to more efficient CPU utilization.
-- Approaching the Limit: GC runs more aggressively to free memory and bring usage back to safer levels, reducing the risk of OOM crashes.
+Go runtime garbage collector tracks the amount of heap memory size it allocated.
+Every so often, during allocation of new memory, the runtime will compare the current heap size to GOMEMLIMIT and trigger GC if the heap size exceeds the limit.
+The GC will reclaims unused memory, and hopefully bring memory usage back down to safe levels.
+This practice helps avoid OOM crashes by setting a limit, as well as delaying GC until necessary.
 
-Key Considerations About GOMEMLIMIT:
+Things to be aware of:
 
 - **It is a soft limit** - GOMEMLIMIT doesn’t guarantee an immediate GC trigger when the limit is reached. Instead, the GC runs at a “convenient” point, introducing slight variability.
-- **GC Behavior Is Workload-Dependent** - After GC runs, it reclaims unused memory. How much memory is freed depends on your application’s workload. Some application can free a lot of memory, but others might not.
+- **GC Behavior Is Workload-Dependent** - After GC runs, it reclaims unused memory. How much memory is freed depends on your application. Some application can free a lot of memory, but others might not.
 - **Frequent GC Cycles Can Hurt Performance** - Once memory usage crosses the limit, the runtime will soon trigger GC again. Repeated GC cycles can consume significant CPU resources, impacting overall performance.
 - **It’s a Trade-Off Game** - The GOMEMLIMIT value is arbitrary, and tuning it requires balancing stability and resource efficiency. The “right” value isn’t always obvious and depends on your specific use case.
 - **Not a Silver Bullet** - GOMEMLIMIT is just one tool in the Go memory management toolbox. It won’t solve all memory-related issues and should be combined with other resource management strategies.
@@ -66,140 +57,54 @@ Key Considerations About GOMEMLIMIT:
 
 For those who want to explore the implementation details, check out the Go runtime source code: [runtime/mgcpacer.go](https://github.com/golang/go/blob/3bd08b97921826c1b0a5fbf0789f4b49d7619977/src/runtime/mgcpacer.go#L966C29-L966C48).
 
-### Choosing the right value for GOMEMLIMIT
+## Queueing
 
-Deciding to use GOMEMLIMIT is straightforward. Choosing the right value? Not so much. 
-The optimal value is inherently subjective, dependent on your application’s behavior, traffic patterns, and performance goals.
+The go application we are using (OpenTelemetry Collector) is a pipeline component that receives data, processes it, and exports it downstream.
+Exporting is done by a pool of worker consumers (go-routines). data is stored in a queue until a consumer picks it up, export it and makes the memory available for GC to reclaim.
 
-To guide you through this process, here are the key considerations:
+Under normal conditions, the rate of incoming data is such that the downstream receiver can handle - keeping data in the heap for short time and memory usage under control.
 
-- **Memory Guarantees** - How much memory can you confidently allocate to the application without risking an OOM (Out of Memory) event? In kubernetes, this value is controlled by the memory resource request in the pod manifest.
-- **Worst-Case Memory Usage** - What is the maximum memory your application might consume? This is often unbounded in real-world scenarios, and is hard to calculate and predict accurately.
-- **Crash Tolerance** - How tolerant is your application to crashes? For example, under extreme load, do you prioritize stability with larger safety margins, or do you prefer to maximize resource efficiency?
+However, if the downstream receiver fails to process the data at the required rate for any reason, data will accumulate in the queue, and the heap will constantly grow.
 
-These factors are not formulaic! the Go runtime’s GC logic is too complex to optimize with precision. Instead, selecting a GOMEMLIMIT value involves a series of trade-offs between performance, memory efficiency, and stability.
-However, there are few observations that can help you in choosing a value:
+## Constantly Staying Above GOMEMLIMIT
 
-Key Trade-Offs:
+The queue example is one way an application can grow it's heap unboundedly, and keep most objects alive and non-reclaimable by GC.
+Other example can be a cache (that stores values in memory).
 
-- **Memory Reservation** - ensure your platform (e.g., Kubernetes) reserves a guaranteed amount of memory for your application. Without this, an OOM Kill event could occur unpredictably, undermining stability regardless of the GOMEMLIMIT value.
-- **Buffer for Stability** - GOMEMLIMIT should be less than the total memory allocated to your application. This accounts for:
-    - Memory not tracked by GOMEMLIMIT (e.g., stack memory, code memory).
-    - A buffer to accommodate GC delays when memory usage crosses the limit.
-    - safety margin.
-- **Low vs High GOMEMLIMIT**:
-    - **Lower Value** - Provides greater stability by allocating more memory headroom, reducing the risk of crashes.
-    - **Higher Value** - Improves memory efficiency by prioritizing business logic over safety margins, but increases the risk of hitting OOM under load.
+We followed best practices and configured for our application with:
 
-In our setup, we followed the [OpenTelemetry memory limiter processor best practices](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/memorylimiterprocessor#best-practices):
+- memory request and limit in Kubernetes,
+- GOMEMLIMIT
+- reject new data if the heap memory usage is above the GOMEMLIMIT.
 
-- We reduced 50MB from the memory request in Kubernetes and assumed this is roughly the memory allocated to the heap.
-- We used 80% of the remaining memory as the GOMEMLIMIT value (leaving 20% of the assumed heap memory as a buffer).
-
-### Understanding What Goes Into GOMEMLIMIT
-
-To pick the right value for GOMEMLIMIT, you must first measure, analyze, and model your application’s memory usage. The key contributors to heap memory are:
-
-- **Baseline Memory Usage** - The Go runtime and application frameworks consume a fixed amount of heap memory, regardless of traffic.
-- **Global Memory Consumers** - Caches, pools, and other shared resources that persist across requests.
-- **Per-Request Memory Usage** - For server applications that handle requests and responses:
-    - Estimate the memory consumed by each request.
-    - Determine the maximum number of concurrent requests under peak load.
-- **Internal Queues and Buffers** - Any internal data structures, such as queues or buffers, that can grow under high load.
-
-If you can estimate or bound the memory usage for each category, sum them up and add a safety margin for unaccounted memory.
-
-If your application supports horizontal scaling, memory pressure becomes less critical:
-
-- As memory usage grows, new replicas can be spun up to balance the load.
-- This helps maintain stability as long as the application remains within the platform’s memory limits.
-
-However, understanding and optimizing memory usage is still important to avoid excessive scaling and ensure cost-efficiency.
+Once the application memory reaches the GOMEMLIMIT, GC will kick in to free up memory. 
+However, if significant part of the heap is allocated to queued object, the overall memory will stay near or cross the limit right away and the a new GC will shortly follow, locking us in a loop.
 
 ## High CPU Consumption
 
-After researching best practices, we deployed the application in Kubernetes with memory limits, GOMEMLIMIT, and no CPU limits.
+When an application is unable to reduce memory consumption effectively, GC can be triggered very often and consume a lot of CPU, degrade the performance of the application and affect system stability.
 
-The OpenTelemetry Collector operates as a pipeline component: it receives data, processes it, and exports it downstream. Under normal conditions, the collector runs smoothly within memory and CPU limits because the downstream receiver can handle the incoming data rate.
+If you don't limit or throttle the CPU, it can skyrocket, consume all available CPU resource of the node and affect the stability of other applications sharing the same resources.
 
-However, when exporting fails (due to reasons like downstream overload, short outages, or network issues), a sequence of events can lead to high CPU consumption:
-
-### The Problem
-
-1. **Buffered Data Accumulation**:
-    - When export attempts fail, data accumulates in memory queues as the collector retries with exponential backoff.
-    - The memory usage rises steadily until it hits the GOMEMLIMIT threshold.
-2. **GC Kicks In**:
-    - Once the memory limit is reached, the Go runtime triggers GC to free up memory.
-    - However, most of the memory is occupied by queued data, which cannot be freed until it is successfully exported.
-3. **Repetitive GC Cycles**:
-    - New incoming data further fills the already-loaded memory queues.
-    - The GC runs repeatedly, unable to reduce memory usage below the GOMEMLIMIT threshold.
-4. **CPU Saturation**:
-    - The runtime becomes dominated by GC activity, consuming significant CPU cycles.
-    - As GC cycles intensify, the collector spends most of its time on garbage collection rather than processing and exporting data.
-5. **Unbounded CPU Growth**:
-    - If no CPU limits are in place, CPU consumption can grow uncontrollably.
-    - This can lead to resource starvation for other applications running on the same node and wasted CPU cycles on GC activity that provides little to no benefit.
-
-### The Consequence
-
-At this point, the collector is caught in a spiral:
-
-- Memory usage is high but stagnant due to queued data.
-- CPU usage is skyrocketing, dominated by garbage collection.
-- Operational performance degrades, with little work being done.
-
-If left unaddressed, this can result in:
-
-- Application instability.
-- Resource starvation across the node.
-- Poor overall system performance.
-
-This operational issue needs immediate attention to restore stability and ensure efficient resource usage.
+While CPU limit is recommended and will protect the system stability, the application itself will just waste most of it's time on GC and effectively be unresponsive.
 
 ## Mitigation
 
-To address high CPU consumption and memory pressure caused by unbounded allocations and excessive garbage collection, consider the following strategies:
+Process stability is crucial and with a heap that is constantly breaching the memory limit, the CPU will suffer.
 
-### Application Limits
+If you are expecting this to be a transient state which will get resolved soon (for example - with auto scaling), it might be fine to just wait while the senders buffer and retry the send.
 
-Limit the size and memory usage of your application's data structures to prevent uncontrolled memory growth. If left unchecked, global heap allocations—those unrelated to incoming traffic—can consume all available memory, leaving the garbage collector (GC) powerless to recover.
+However, if you are interested to have your application functioning in this situation, you will need to make sure memory is reclaimed somehow to avoid the GC cycles.
 
-Here’s what to do:
+What you can do:
 
-- Memory Caches: Set a limit on the number of entries stored in the cache. For example, use an LRU (Least Recently Used) strategy to evict older items.
-- Memory Queues: Cap the number of items that can be enqueued at any given time.
-- Memory Pools: Restrict the number of reusable items retained in memory pools.
-
-Tip: Measure the impact of these limits on the heap usage and ensure they fit within the GOMEMLIMIT quota.
-
-Important Note: Many of these configurations are specified in terms of number of items rather than memory usage. This can make the settings approximate and heuristic, so it’s essential to:
-
-- Observe actual heap consumption.
-- Adjust the limits iteratively based on real-world data.
-
-### Back-Pressure the Senders
-
-When the application is under heavy load, apply back-pressure by rejecting incoming requests. This slows down the data flow and reduces memory pressure, preventing the system from becoming overwhelmed.
-
-Key considerations:
-
-- Senders (upstream components) should be designed to handle rejection gracefully and retry later.
-- Back-pressure helps propagate the load condition, ensuring stability across the entire system rather than degrading the collector.
-
-### Drop Data
-
-If the incoming data rate exceeds what the application can process and store, consider consciously dropping data.
-This prevents the system from exhausting resources and entering an unsustainable state.
-
-Why this works:
-
-- It’s better to detect and drop excess data early rather than grinding the CPU on repetitive GC cycles.
-- Controlled data loss is preferable to uncontrolled failure, such as crashes or severe performance degradation.
+- **Set Limits in Application** - Everywhere data can accumulate in heap over long periods should have limits set to avoid it growing indefinitely.
+- **Back-Pressure the Senders** - If the application is under heavy load - apply back-pressure by rejecting incoming requests to avoid storing more heap memory.
+- **Drop Data** - When incoming data rate exceeds what the application can process and store, consider consciously dropping data to prevent the system from exhausting resources.
 
 ## Summary
 
-GOMEMLIMIT, requires a careful balance between stability, performance, and resource efficiency. While GOMEMLIMIT can help prevent out-of-memory issues, it is not a silver bullet—it requires thoughtful configuration, continuous monitoring, and an understanding of your application's behavior under load.
+GOMEMLIMIT is an important configuration option that helps avoid OOM crashes and control GC overhead in Go applications.
+If the heap can grow in size under certain conditions and stay near or above the GOMEMLIMIT, the application can suffer from high CPU consumption and degraded performance.
 
-By applying limits to your data structures, implementing back-pressure, and being prepared to drop data when necessary, you can mitigate high CPU consumption and ensure your system remains resilient, even during periods of instability or heavy load.
+Application maintainers should avoid storing unbounded data in memory, and have a plan to reduce it when necessary.
