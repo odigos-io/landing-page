@@ -147,9 +147,9 @@ You can confirm that these Sources were created with `kubectl`:
 
 ```
 $ kubectl get sources
-NAME		  WORKLOAD	KIND		    NAMESPACE
-frontend	frontend	Deployment	default
-backend	  backend	  Deployment	default
+NAME      WORKLOAD  KIND        NAMESPACE
+frontend  frontend  Deployment  default
+backend   backend   Deployment  default
 ```
 
 ### Instrumenting entire namespaces
@@ -178,8 +178,8 @@ single Source:
 
 ```
 $ kubectl get sources
-NAME			      WORKLOAD	KIND		  NAMESPACE
-myapp-namespace	default	  Namespace	default
+NAME            WORKLOAD  KIND      NAMESPACE
+myapp-namespace default   Namespace default
 ```
 
 You can also create an individual workload Source in the same
@@ -188,9 +188,9 @@ Source, and the list for the namespace would now look like this:
 
 ```
 $ kubectl get sources
-NAME		      	WORKLOAD	KIND		    NAMESPACE
-myapp-namespace	default	  Namespace	  default
-frontend	    	default	  Deployment	default
+NAME            WORKLOAD  KIND        NAMESPACE
+myapp-namespace default   Namespace   default
+frontend        default   Deployment  default
 ```
 
 Doing so will keep the `frontend` deployment instrumented even if the
@@ -246,9 +246,9 @@ native Kubernetes LabelSelectors:
 
 ```
 $ kubectl get sources -l odigos.io/workload-kind=Deployment
-NAME		  WORKLOAD	KIND		    NAMESPACE
-frontend	frontend	Deployment	default
-backend	  backend	  Deployment	default
+NAME      WORKLOAD  KIND        NAMESPACE
+frontend  frontend  Deployment  default
+backend   backend   Deployment  default
 ```
 
 This approach was chosen to support older versions of Kubernetes that
