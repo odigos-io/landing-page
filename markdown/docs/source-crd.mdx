@@ -1,8 +1,8 @@
 ---
-pubDate: 'Jan 24 2024'
+pubDate: 'Jan 21 2024'
 title: 'The new Source of truth: introducing persistent, stateless instrumentation with Source objects'
-image: '/collectors_cover.png'
-category: 'Golang'
+image: '/source_cover.png'
+category: 'Odigos'
 description: 'Learn about Source resources in Odigos'
 tags: [golang, resource-management]
 authorImage: '/mike.jpg'
@@ -10,13 +10,15 @@ author: Mike Dame
 metadata: application management
 ---
 
-We are excited to announce a change to the way you control instrumented workloads with Odigos: Source objects.
+We are excited to announce a change to the way you control
+instrumented workloads with Odigos: Source objects.
 
-The new Source object is a Custom Resource that allows declarative
-control over which workloads and namespaces are instrumented in your
-cluster. This is an evolution from the current approach in which you
-enable or disable instrumentation by setting the
-`odigos-instrumentation=enabled` label directly on your workload.
+Beginning in Odigos v1.0.144, the new Source object is a Custom
+Resource that allows declarative control over which workloads and
+namespaces are instrumented in your cluster. This is an evolution from
+the current approach in which you enable or disable instrumentation by
+setting the `odigos-instrumentation=enabled` label directly on your
+workload.
 
 An example Source object looks like this:
 
