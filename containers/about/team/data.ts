@@ -56,11 +56,11 @@ export const DATA = [
     linkedin_url: 'https://www.linkedin.com/in/ben-elferink-37ba251b9/',
   },
   {
-    name: 'Daria Dovzhikova',
-    title: 'Marketing Manager',
+    name: 'Avihu Hanya',
+    title: 'Backend Engineer',
     description:
-      'Daria drives marketing at Odigos. With over 12 years of experience in developer tools marketing, Daria focuses on creating impactful campaigns and enhancing user acquisition strategies. ',
-    linkedin_url: 'https://www.linkedin.com/in/dariadovzhikova',
+      'Avihu is a backend engineer at Odigos, specializing in designing and optimizing scalable backend systems. With a strong foundation in distributed architectures, Avihu ensures performance and reliability across services.',
+    linkedin_url: 'https://www.linkedin.com/in/avihu-henya/',
   },
 ];
 
@@ -122,10 +122,10 @@ export const MOBILE_DATA = [
     linkedin_url: 'https://www.linkedin.com/in/ben-elferink-37ba251b9/',
   },
   {
-    name: 'Daria Dovzhikova',
-    title: 'Marketing Manager',
+    name: 'Avihu Hanya',
+    title: 'Backend Engineer',
     description:
-      'Daria drives marketing at Odigos. With over 12 years of experience in developer tools marketing, Daria focuses on creating impactful campaigns and enhancing user acquisition strategies. ',
-    linkedin_url: 'https://www.linkedin.com/in/dariadovzhikova',
+      'Avihu is a backend engineer at Odigos, specializing in designing and optimizing scalable backend systems. With a strong foundation in distributed architectures, Avihu ensures performance and reliability across services.',
+    linkedin_url: 'https://www.linkedin.com/in/avihu-henya/',
   },
 ];
