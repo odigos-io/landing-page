@@ -62,6 +62,13 @@ export const DATA = [
       'Avihu is a backend engineer at Odigos, specializing in designing and optimizing scalable backend systems. With a strong foundation in distributed architectures, Avihu ensures performance and reliability across services.',
     linkedin_url: 'https://www.linkedin.com/in/avihu-henya/',
   },
+  {
+    name: 'Mike Dame',
+    title: 'Software Engineer',
+    description:
+      'Mike is a backend engineer at Odigos with a specialization in Kubernetes, OpenTelemetry, and eBPF.',
+    linkedin_url: 'https://www.linkedin.com/in/mike-dame-98600b35/',
+  },
 ];
 
 export const MOBILE_DATA = [
@@ -127,5 +134,12 @@ export const MOBILE_DATA = [
     description:
       'Avihu is a backend engineer at Odigos, specializing in designing and optimizing scalable backend systems. With a strong foundation in distributed architectures, Avihu ensures performance and reliability across services.',
     linkedin_url: 'https://www.linkedin.com/in/avihu-henya/',
+  },
+  {
+    name: 'Mike Dame',
+    title: 'Software Engineer',
+    description:
+      'Mike is a backend engineer at Odigos with a specialization in Kubernetes, OpenTelemetry, and eBPF.',
+    linkedin_url: 'https://www.linkedin.com/in/mike-dame-98600b35/',
   },
 ];
