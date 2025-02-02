@@ -1,22 +1,14 @@
-'use client';
+'use client'
 
-import Script from 'next/script';
+import Script from 'next/script'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="eng">
-      <body className="no-scrollbar">
+    <html lang='eng'>
+      <body className='no-scrollbar'>
         {children}
-        <Script
-          id="hs-script-loader"
-          strategy="afterInteractive"
-          src="//js-eu1.hs-scripts.com/144171524.js"
-        />
-        <Script id="zoominfo-integration" strategy="afterInteractive">
+        <Script id='hs-script-loader' strategy='afterInteractive' src='//js-eu1.hs-scripts.com/144171524.js' />
+        <Script id='zoominfo-integration' strategy='afterInteractive'>
           {`
             window[(function(_yFM, _tT) {
               var _DWg1K = '';
@@ -60,7 +52,27 @@ export default function RootLayout({
                 });
           `}
         </Script>
+        <Script id='common-room-integration' strategy='afterInteractive'>
+          {`(function() {
+            if (typeof window === 'undefined') return;
+            if (typeof window.signals !== 'undefined') return;
+            var script = document.createElement('script');
+            script.src = 'https://cdn.cr-relay.com/v1/site/7656e600-6a02-4e3c-993a-55ec7f2d29be/signals.js';
+            script.async = true;
+            window.signals = Object.assign(
+              [],
+              ['page', 'identify', 'form'].reduce(function (acc, method){
+                acc[method] = function () {
+                  signals.push([method, arguments]);
+                  return signals;
+                };
+                return acc;
+              }, {})
+            );
+            document.head.appendChild(script);
+          })();`}
+        </Script>
       </body>
     </html>
-  );
+  )
 }
