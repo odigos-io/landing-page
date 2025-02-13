@@ -7,13 +7,13 @@ import { useEffect, useState } from 'react';
 export default function LandingPageBody() {
   const [isClient, setIsClient] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-    }, 30000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setShowPopup(true);
+  //   }, 30000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
     setIsClient(true);
