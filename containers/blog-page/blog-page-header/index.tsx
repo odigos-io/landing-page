@@ -1,16 +1,16 @@
-'use client';
-import theme from '@/style/theme';
-import styled from 'styled-components';
-import useIsMobile from '@/hooks/useIsMobile';
-import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
-import { BlogFooter } from '@/components';
-import { useRouter } from 'next/navigation';
-import { BLOGS_COVERS } from '@/public/images/blogs-cover';
-import { MaxWidthContainer } from '@/style';
+'use client'
+import theme from '@/style/theme'
+import styled from 'styled-components'
+import useIsMobile from '@/hooks/useIsMobile'
+import { Button, UnderlineText, LazyImage } from '@/reuseable-components'
+import { BlogFooter } from '@/components'
+import { useRouter } from 'next/navigation'
+import { BLOGS_COVERS } from '@/public/images/blogs-cover'
+import { MaxWidthContainer } from '@/style'
 
 type Props = {
-  post: any;
-};
+  post: any
+}
 
 const Title = styled.div`
   color: ${theme.colors.white};
@@ -26,12 +26,12 @@ const Title = styled.div`
   @media (width < 600px) {
     font-size: 40px;
   }
-`;
+`
 
 const ButtonWrapper = styled.div`
   width: 144px;
   height: 64px;
-`;
+`
 
 const BlogPageHeaderContainer = styled.div`
   padding: 120px 64px 0px 64px;
@@ -44,7 +44,7 @@ const BlogPageHeaderContainer = styled.div`
     padding: 0px 20px 0px 20px;
     gap: 40px;
   }
-`;
+`
 
 const CoverImage = styled.img`
   width: 100%;
@@ -53,7 +53,7 @@ const CoverImage = styled.img`
   border-radius: 48px;
   height: 360px;
   border: 1px dashed rgba(249, 249, 249, 0.32);
-`;
+`
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -63,26 +63,24 @@ const TitleWrapper = styled.div`
     flex-direction: column;
     gap: 24px;
   }
-`;
+`
 
 const BlogPageHeader = async ({ post }: Props) => {
-  const isMobile = useIsMobile();
-  const router = useRouter();
+  const isMobile = useIsMobile()
+  const router = useRouter()
 
   function getCurrentBlogImage() {
     if (post.webCoverImage) {
-      return isMobile && post.mobileCoverImage
-        ? post.mobileCoverImage
-        : post.webCoverImage;
+      return isMobile && post.mobileCoverImage ? post.mobileCoverImage : post.webCoverImage
     }
 
-    const currentBlogImage = localStorage.getItem(post.slug);
+    const currentBlogImage = localStorage.getItem(post.slug)
 
     if (currentBlogImage) {
-      return currentBlogImage;
+      return currentBlogImage
     }
 
-    return BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
+    return BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)]
   }
 
   return (
@@ -99,13 +97,7 @@ const BlogPageHeader = async ({ post }: Props) => {
                 gap: 8,
               }}
             >
-              <LazyImage
-                src="/icons/common/expand.svg"
-                alt="back"
-                width={16}
-                height={24}
-                style={{ transform: 'rotate(-90deg)' }}
-              />
+              <LazyImage src='/icons/common/expand.svg' alt='back' width={16} height={24} style={{ transform: 'rotate(-90deg)' }} />
               <UnderlineText size={20}>BACK</UnderlineText>
             </Button>
           </ButtonWrapper>
@@ -117,13 +109,13 @@ const BlogPageHeader = async ({ post }: Props) => {
             }}
           >
             <Title>{post.title}</Title>
-            <BlogFooter blog={post} />
+            <BlogFooter blog={post} isBlogPage />
           </div>
         </TitleWrapper>
         <CoverImage src={getCurrentBlogImage()} alt={post.title} />
       </BlogPageHeaderContainer>
     </MaxWidthContainer>
-  );
-};
+  )
+}
 
-export default BlogPageHeader;
+export default BlogPageHeader
