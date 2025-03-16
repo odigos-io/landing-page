@@ -189,9 +189,7 @@ const EventPageHeader = async ({ post }: Props) => {
                   <ButtonWrapper isMobile={isMobile}>
                     <Button
                       onClick={() =>
-                        window.open(
-                          'https://calendly.com/d/cmtj-z7h-vgn/test-eden?month=2025-02'
-                        )
+                        window.open('https://calendly.com/events-odigos/30min')
                       }
                       style={{
                         background: theme.colors.secondary,
