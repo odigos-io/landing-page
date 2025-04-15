@@ -1,15 +1,15 @@
-'use client'
-import React, { useState } from 'react'
-import Link from 'next/link'
-import theme from '@/style/theme'
-import dynamic from 'next/dynamic'
-import styled from 'styled-components'
-import MenuItemList from './menu-item-list'
-import Modal from '@/reuseable-components/modal'
-import ContactForm from '../pricing/pricing-table/contact-us-form'
-import { Button, LazyImage, UnderlineText, AnnouncementBanner } from '@/reuseable-components'
+'use client';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import theme from '@/style/theme';
+import dynamic from 'next/dynamic';
+import styled from 'styled-components';
+import MenuItemList from './menu-item-list';
+import Modal from '@/reuseable-components/modal';
+import ContactForm from '../pricing/pricing-table/contact-us-form';
+import { Button, LazyImage, UnderlineText, AnnouncementBanner } from '@/reuseable-components';
 
-const MobileHeaderMenu = dynamic(() => import('./mobile-menu'))
+const MobileHeaderMenu = dynamic(() => import('./mobile-menu'));
 
 const HeaderContainer = styled.header<{ isOpen: boolean }>`
   width: 100%;
@@ -23,7 +23,7 @@ const HeaderContainer = styled.header<{ isOpen: boolean }>`
   @media (max-width: 1150px) {
     padding: 0 20px;
   }
-`
+`;
 
 const HeaderInner = styled.div`
   margin: 0 auto;
@@ -40,23 +40,23 @@ const HeaderInner = styled.div`
   @media (max-width: 610px) {
     padding: 20px 0;
   }
-`
+`;
 
-const LogoContainer = styled.div``
+const LogoContainer = styled.div``;
 
 const SignInButton = styled(Button)`
   @media (max-width: 1112px) {
     padding: 8px 16px;
     font-size: 16px;
   }
-`
+`;
 
 const HamburgerButton = styled.button`
   display: block;
   @media (min-width: 1112px) {
     display: none;
   }
-`
+`;
 
 const ActionBarWrapper = styled.div`
   display: flex;
@@ -69,7 +69,7 @@ const ActionBarWrapper = styled.div`
     gap: 1rem;
     width: 170px;
   }
-`
+`;
 
 const MaxWidthContainer = styled.div`
   position: fixed;
@@ -80,25 +80,21 @@ const MaxWidthContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const Header = () => {
-  const [open, setOpen] = useState(false)
-  const [currentItem, setCurrentItem] = useState(10)
-  const [success, setSuccess] = useState<boolean>(false)
-  const [dropdownToggler, setDropdownToggler] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState(10);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [dropdownToggler, setDropdownToggler] = useState(false);
 
   const handleMenuItemClick = (index: number) => {
-    setCurrentItem(index)
-  }
+    setCurrentItem(index);
+  };
 
   return (
     <MaxWidthContainer>
-      <AnnouncementBanner
-        title={'Come meet Odigos at SREcon Americas 2025!'}
-        link={'https://odigos.io/blog/meet-odigos-srecon-2025'}
-        linkText={'Read more'}
-      />
+      <AnnouncementBanner title={''} link={''} linkText={'Read more'} />
       <HeaderContainer isOpen={dropdownToggler}>
         <HeaderInner>
           <LogoContainer onClick={() => setCurrentItem(10)}>
@@ -121,14 +117,10 @@ export const Header = () => {
       </HeaderContainer>
       {dropdownToggler && <MobileHeaderMenu onClick={() => setDropdownToggler(false)} />}
       {open && (
-        <Modal
-          title={success ? '' : 'We’d love to hear from you!'}
-          description={'Whether you have questions, feedback, or need assistance, our team is here to help. '}
-          onClose={() => setOpen(false)}
-        >
+        <Modal title={success ? '' : 'We’d love to hear from you!'} description={'Whether you have questions, feedback, or need assistance, our team is here to help. '} onClose={() => setOpen(false)}>
           <ContactForm success={success} setSuccess={setSuccess} onClose={() => setOpen(false)} />
         </Modal>
       )}
     </MaxWidthContainer>
-  )
-}
+  );
+};
