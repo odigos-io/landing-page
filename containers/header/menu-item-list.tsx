@@ -9,7 +9,6 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
 
   @media (width < 1112px) {
     flex-direction: column;
@@ -27,13 +26,11 @@ const NavItem = styled.li<{ selected?: boolean }>`
   padding: 8px 24px;
   justify-content: center;
   align-items: center;
-  gap: 8px;
 
   transition: background-color 0.3s ease;
 
   border-radius: 48px;
-  background-color: ${({ selected }) =>
-    selected ? 'rgba(68, 74, 217, 0.20)' : 'transparent'};
+  background-color: ${({ selected }) => (selected ? 'rgba(68, 74, 217, 0.20)' : 'transparent')};
 
   &:hover {
     background: rgba(68, 74, 217, 0.12);
@@ -43,26 +40,13 @@ const NavItem = styled.li<{ selected?: boolean }>`
   }
 `;
 
-const MenuItemList = ({
-  onClick,
-  currentIndexItem,
-}: {
-  onClick: (index: number) => void;
-  currentIndexItem: number;
-}) => {
+const MenuItemList = ({ onClick, currentIndexItem }: { onClick: (index: number) => void; currentIndexItem: number }) => {
   return (
     <NavList>
       {menuData.map((menuItem, key) => (
-        <NavItem
-          key={key}
-          onClick={() => onClick(key)}
-          selected={key === currentIndexItem && menuItem.id !== 5}
-        >
+        <NavItem key={key} onClick={() => onClick(key)} selected={key === currentIndexItem && menuItem.id !== 5}>
           <UnderlineText>
-            <Link
-              href={`${menuItem.path}`}
-              target={menuItem.newTab ? '_blank' : '_self'}
-            >
+            <Link href={`${menuItem.path}`} target={menuItem.newTab ? '_blank' : '_self'}>
               {menuItem.title}
             </Link>
           </UnderlineText>
