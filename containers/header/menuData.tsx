@@ -23,6 +23,12 @@ const menuData: Menu[] = [
   },
   {
     id: 5,
+    title: 'Career',
+    newTab: true,
+    path: 'https://www.comeet.com/jobs/odigos/5A.001',
+  },
+  {
+    id: 6,
     title: 'Documentation',
     newTab: true,
     path: 'https://docs.odigos.io',
