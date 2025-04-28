@@ -16,7 +16,7 @@ export const DATA = [
   },
   {
     id: 4,
-    quest: 'Does Odigos adds performance overhead?',
-    ans: 'Odigos instrument applications using eBPF. eBPF is a kernel technology that adds almost zero overhead to the application.',
+    quest: 'Does Odigos add performance overhead?',
+    ans: 'Odigos instruments applications using eBPF. eBPF is a kernel technology that adds almost zero overhead to the application.',
   },
 ];
