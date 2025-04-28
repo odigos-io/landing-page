@@ -22,7 +22,7 @@ export default function PricingPage() {
     <main style={{ background: theme.colors.secondary }}>
       <PricingHero />
       <PricingTable />
-      <PricingComponent />
+
       <FAQComponent />
       <CTASection />
     </main>

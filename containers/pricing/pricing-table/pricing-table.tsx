@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import styled from 'styled-components';
 import { HEADER_DATA, pricingPlan } from './data';
 import ContactForm from './contact-us-form';
@@ -8,13 +8,15 @@ import { Button, UnderlineText } from '@/reuseable-components';
 import theme from '@/style/theme';
 import Image from 'next/image';
 import { SectionContainer } from '@/style';
+import useIsMobile from '@/hooks/useIsMobile';
+import PricingComponent from '.';
 
 const Container = styled(SectionContainer)`
   height: auto;
   flex-direction: column;
 
   width: 100%;
-  padding: 160px 64px 0px 64px;
+  padding: 0px 64px 0px 64px;
   @media (max-width: 800px) {
     padding: 80px 20px;
   }
@@ -79,6 +81,7 @@ const Tr = styled.tr``;
 
 const SectionRow = styled.tr`
   height: 64px;
+
   opacity: 0.8;
 
   td {
@@ -86,19 +89,20 @@ const SectionRow = styled.tr`
     text-transform: uppercase;
     font-weight: 500;
     font-size: 24px;
+    padding: 24px 0;
     line-height: 32px;
     padding-left: 16px;
     max-width: 300px;
   }
 `;
 
-const CheckMark = () => <Image src='/icons/common/v.svg' alt='check' width={16} height={16} style={{ margin: '0 auto' }} />;
-const CrossMark = () => <Image src='/icons/common/close2.svg' alt='cross' width={16} height={16} style={{ margin: '0 auto', opacity: 0.4 }} />;
+export const CheckMark = () => <Image src='/icons/common/v.svg' alt='check' width={16} height={16} style={{ margin: '0 auto' }} />;
+export const CrossMark = () => <Image src='/icons/common/close2.svg' alt='cross' width={16} height={16} style={{ margin: '0 auto', opacity: 0.4 }} />;
 
 const PricingTable: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
-
+  const isMobile = useIsMobile(800);
   const handleButtonClick = (index: number, link: string) => {
     if (index === 0) {
       window.open(link, '_blank');
@@ -106,6 +110,10 @@ const PricingTable: React.FC = () => {
       setOpen(true);
     }
   };
+
+  if (isMobile) {
+    return <PricingComponent />;
+  }
 
   return (
     <Container>
