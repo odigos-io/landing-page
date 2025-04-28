@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { DATA } from './data';
+import { DATA, pricingPlan } from './data';
 import theme from '@/style/theme';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import { FlexContainer } from '@/style';
 import ContactForm from './contact-us-form';
 import { Button, UnderlineText, LazyImage } from '@/reuseable-components';
 import useIsMobile from '@/hooks/useIsMobile';
+import { CheckMark, CrossMark } from './pricing-table';
 
 const Modal = dynamic(() => import('@/reuseable-components/modal'));
 
@@ -79,19 +80,20 @@ const Divider = styled.div`
   margin: 32px 0;
 `;
 
-const PlanStatus = styled.span`
+const PlanStatus = styled.div`
   border-radius: 32px;
   padding: 4px 12px;
   align-items: center;
-  gap: 8px;
+  opacity: 0.8;
   border: 1px dashed rgba(249, 249, 249, 0.4);
   color: ${({ theme }) => theme.text.primary};
   font-family: ${({ theme }) => theme.font_family.secondary};
-  font-size: 16px;
+  font-size: 12px;
   font-style: normal;
-  font-weight: 500;
-  line-height: 133.333%; /*  */
+  font-weight: 300;
+  line-height: 133.333%;
   text-transform: uppercase;
+  width: 100%;
 `;
 
 const Description = styled.p`
@@ -131,6 +133,7 @@ const FeatureItem = styled.li`
   font-size: 20px;
   font-weight: 300;
   line-height: 140%;
+  max-width: 160px;
   @media (width <= 1450px) {
     font-size: 16px;
   }
@@ -145,7 +148,6 @@ const ButtonWrapper = styled.div`
 const PlanWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 48px;
   gap: 16px;
 `;
 
@@ -159,17 +161,9 @@ const PricingComponent: React.FC = () => {
     <PricingContainer>
       {pricingData.map((plan, index) => (
         <PricingCard key={index}>
-          {plan.icon && (
-            <LazyImage
-              src={plan.icon}
-              alt="check"
-              height={100}
-              width={isMobile ? 260 : 360}
-            />
-          )}
+          {plan.icon && <LazyImage src={plan.icon} alt='check' height={100} width={isMobile ? 260 : 360} />}
           <PlanWrapper>
             <PlanTitle>{plan.plan}</PlanTitle>
-            {/* {plan.status && <PlanStatus>{plan.status}</PlanStatus>} */}
           </PlanWrapper>
 
           <Description>{plan.description}</Description>
@@ -181,29 +175,20 @@ const PricingComponent: React.FC = () => {
           <Divider />
 
           <FeatureList>
-            {plan.features.map((feature, index) => (
-              <FlexContainer alignments="flex-start" key={index}>
-                <LazyImage
-                  src="/icons/common/dot.svg"
-                  alt="check"
-                  width={16}
-                  height={16}
-                  style={{ paddingTop: 6 }}
-                />
-                <FeatureItem>{feature}</FeatureItem>
+            {pricingPlan.map((item, index) => (
+              <FlexContainer alignments='center' justify='space-between' key={index}>
+                <FeatureItem>{item.feature}</FeatureItem>
+                {plan.plan === 'Open Source' ? (
+                  <div>{typeof item.community === 'boolean' ? item.community ? <CheckMark /> : <CrossMark /> : item.community && <PlanStatus>{item.community}</PlanStatus>}</div>
+                ) : (
+                  <div>{typeof item.premium === 'boolean' ? item.premium ? <CheckMark /> : <CrossMark /> : item.premium && <PlanStatus>{item.premium}</PlanStatus>}</div>
+                )}
               </FlexContainer>
             ))}
           </FeatureList>
           {plan.button.text && (
             <ButtonWrapper style={{ background: theme.colors.secondary }}>
-              <Button
-                style={{ background: theme.colors.secondary }}
-                onClick={() =>
-                  index !== 0
-                    ? setOpen(true)
-                    : window.open(plan.button.link, '_blank')
-                }
-              >
+              <Button style={{ background: theme.colors.secondary }} onClick={() => (index !== 0 ? setOpen(true) : window.open(plan.button.link, '_blank'))}>
                 <UnderlineText>{plan.button.text}</UnderlineText>
               </Button>
             </ButtonWrapper>
@@ -211,18 +196,8 @@ const PricingComponent: React.FC = () => {
         </PricingCard>
       ))}
       {open && (
-        <Modal
-          title={success ? '' : 'We’d love to hear from you!'}
-          description={
-            'Whether you have questions, feedback, or need assistance, our team is here to help. '
-          }
-          onClose={() => setOpen(false)}
-        >
-          <ContactForm
-            success={success}
-            setSuccess={setSuccess}
-            onClose={() => setOpen(false)}
-          />
+        <Modal title={success ? '' : 'We’d love to hear from you!'} description={'Whether you have questions, feedback, or need assistance, our team is here to help. '} onClose={() => setOpen(false)}>
+          <ContactForm success={success} setSuccess={setSuccess} onClose={() => setOpen(false)} />
         </Modal>
       )}
     </PricingContainer>

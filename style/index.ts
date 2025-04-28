@@ -9,7 +9,7 @@ export const FlexContainer = styled.div<{
   display: flex;
   gap: ${({ gap }) => gap || 24}px;
   align-items: ${({ alignments }) => alignments || 'center'};
-
+  justify-content: ${({ justify }) => justify || 'unset'};
   @media (max-width: 600px) {
     gap: 16px;
   }
