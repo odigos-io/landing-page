@@ -92,8 +92,8 @@ const SectionRow = styled.tr`
   }
 `;
 
-const CheckMark = () => <Image src='/icons/common/v.svg' alt='check' width={16} height={16} style={{ opacity: 0.4, margin: '0 auto' }} />;
-const CrossMark = () => <Image src='/icons/common/close2.svg' alt='cross' width={16} height={16} style={{ margin: '0 auto' }} />;
+const CheckMark = () => <Image src='/icons/common/v.svg' alt='check' width={16} height={16} style={{ margin: '0 auto' }} />;
+const CrossMark = () => <Image src='/icons/common/close2.svg' alt='cross' width={16} height={16} style={{ margin: '0 auto', opacity: 0.4 }} />;
 
 const PricingTable: React.FC = () => {
   const [open, setOpen] = useState(false);

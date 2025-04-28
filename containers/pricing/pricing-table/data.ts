@@ -59,13 +59,18 @@ export const pricingPlan = [
     premium: true,
   },
   {
-    feature: 'Odigos Instrumentation Actions',
+    feature: 'Odigos Attribute Actions',
     community: true,
     premium: true,
   },
   {
     feature: 'Multi Cluster Distributed Tracing',
     community: true,
+    premium: true,
+  },
+  {
+    feature: 'Odigos Instrumentation Rules',
+    community: false,
     premium: true,
   },
   {
@@ -88,11 +93,21 @@ export const pricingPlan = [
   },
   {
     feature: 'Go',
-    community: true,
+    community: 'Go Only',
     premium: true,
   },
   {
-    feature: 'Java, Python, NodeJS',
+    feature: 'Java',
+    community: 'OTEL Based',
+    premium: true,
+  },
+  {
+    feature: 'Python',
+    community: 'OTEL Based',
+    premium: true,
+  },
+  {
+    feature: 'NodeJs',
     community: 'OTEL Based',
     premium: true,
   },
@@ -102,7 +117,7 @@ export const pricingPlan = [
     premium: 'Coming Soon',
   },
   {
-    feature: 'Custom instrumentation',
+    feature: 'Custom Instrumentation',
     community: 'DIY',
     premium: 'Coming Soon',
   },
@@ -125,14 +140,23 @@ export const pricingPlan = [
     premium: 'Coming Soon',
   },
   {
-    feature: 'Multi Cluster Administration',
-    community: false,
-    premium: 'Coming Soon',
+    section: 'Multi Cluster Administration',
   },
   {
-    feature: 'Supported OTEL instrumentation',
+    feature: 'Multi Cluster Administration',
+    community: false,
+    premium: true,
+  },
+  {
+    section: 'Supported OTEL Instrumentation',
+  },
+  {
+    feature: 'Supported OTEL Instrumentation',
     community: 'DIY',
     premium: '24/7 Premium',
+  },
+  {
+    section: 'Support',
   },
   {
     feature: 'Support',
