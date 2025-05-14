@@ -3,7 +3,6 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { BlogFooter } from '../blog-footer';
-import Image from 'next/image';
 import { BLOGS_COVERS } from '@/public/images/blogs-cover';
 
 const BlogItemContainer = styled.div`
@@ -49,8 +48,17 @@ const BlogDescription = styled.p`
   text-overflow: ellipsis;
 `;
 
+const BlogImage = styled.img`
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+  border-top-left-radius: 48px;
+  border-top-tight-tadius: 48px;
+`;
+
 export const BlogItem = ({ blog }: { blog: any }) => {
   const [isHydrationComplete, setIsHydrationComplete] = useState(false);
+  const [imageInvalid, setImageInvalid] = useState(false);
 
   useEffect(() => {
     if (!isHydrationComplete) {
@@ -63,8 +71,7 @@ export const BlogItem = ({ blog }: { blog: any }) => {
   }
 
   const { image, title, description, slug, tags } = blog;
-  const blogCover =
-    BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
+  const blogCover = (!imageInvalid && image) || BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
 
   function saveCurrentBlogImageInLocalStorage(img: string) {
     localStorage.setItem(slug, img);
@@ -73,25 +80,8 @@ export const BlogItem = ({ blog }: { blog: any }) => {
   return (
     <>
       <Link href={`/blog/${slug}`}>
-        <BlogItemContainer
-          onClick={() => saveCurrentBlogImageInLocalStorage(blogCover)}
-        >
-          {image ? (
-            <img
-              style={{
-                objectFit: 'cover',
-                height: 200,
-                width: '100%',
-                borderTopLeftRadius: 48,
-                borderTopRightRadius: 48,
-              }}
-              src={blogCover}
-              alt={title}
-            />
-          ) : (
-            'No image'
-          )}
-
+        <BlogItemContainer onClick={() => saveCurrentBlogImageInLocalStorage(blogCover)}>
+          <BlogImage src={blogCover} alt={title} onError={() => setImageInvalid(true)} />
           <TextContainer>
             <BlogTitle>
               <Link href={`/blog/${slug}`}>{title}</Link>

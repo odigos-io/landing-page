@@ -92,6 +92,7 @@ const BlogCoverImage = styled.img`
 
 export const BlogCover = ({ blog }: { blog: any }) => {
   const [isHydrationComplete, setIsHydrationComplete] = useState(false);
+  const [imageInvalid, setImageInvalid] = useState(false);
 
   useEffect(() => {
     if (!isHydrationComplete) {
@@ -104,9 +105,7 @@ export const BlogCover = ({ blog }: { blog: any }) => {
   }
 
   const { image, title, description, slug } = blog;
-
-  const blogCover =
-    BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
+  const blogCover = (!imageInvalid && image) || BLOGS_COVERS[Math.floor(Math.random() * BLOGS_COVERS.length)];
 
   function saveCurrentBlogImageInLocalStorage(img: string) {
     localStorage.setItem(slug, img);
@@ -114,9 +113,7 @@ export const BlogCover = ({ blog }: { blog: any }) => {
 
   return (
     <MaxWidthContainer>
-      <BlogCoverContainer
-        onClick={() => saveCurrentBlogImageInLocalStorage(blogCover)}
-      >
+      <BlogCoverContainer onClick={() => saveCurrentBlogImageInLocalStorage(blogCover)}>
         <Link href={`/blog/${slug}`}>
           <BlogItemContainer>
             <TextContainer>
@@ -126,11 +123,7 @@ export const BlogCover = ({ blog }: { blog: any }) => {
               <BlogDescription>{description}</BlogDescription>
               <BlogFooter blog={blog} />
             </TextContainer>
-            {image ? (
-              <BlogCoverImage src={blogCover} alt={title} />
-            ) : (
-              'No image'
-            )}
+            <BlogCoverImage src={blogCover} alt={title} />
           </BlogItemContainer>
         </Link>
       </BlogCoverContainer>
