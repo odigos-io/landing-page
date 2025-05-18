@@ -53,7 +53,7 @@ const BlogImage = styled.img`
   width: 100%;
   height: 200px;
   border-top-left-radius: 48px;
-  border-top-tight-tadius: 48px;
+  border-top-right-radius: 48px;
 `;
 
 export const BlogItem = ({ blog }: { blog: any }) => {
