@@ -8,6 +8,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className='no-scrollbar'>
         {children}
         <Script id='hs-script-loader' strategy='afterInteractive' src='//js-eu1.hs-scripts.com/144171524.js' />
+        <Script id='redodev-integration' strategy='afterInteractive'>
+          {`
+           !function(){var e,t,n;e="756aafdccc100e4",t=function(){Reo.init({clientID:"756aafdccc100e4"})},(n=document.createElement("script")).src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();
+           `}
+        </Script>
         <Script id='zoominfo-integration' strategy='afterInteractive'>
           {`
             window[(function(_yFM, _tT) {
