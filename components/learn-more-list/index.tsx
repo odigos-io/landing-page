@@ -22,7 +22,7 @@ const BlogGridItem = styled.div`
   }
 `;
 
-const LearnMoreList = async () => {
+const LearnMoreList = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
