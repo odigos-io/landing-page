@@ -75,17 +75,14 @@ const RightsText = styled.span`
 `;
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <MaxWidthContainer style={{ background: theme.colors.primary }}>
       <FooterContainer>
         <Header>
           <MenuItemWrapper>
-            <LazyImage
-              src="/icons/brand/icon.svg"
-              alt="logo"
-              width={40}
-              height={32}
-            />
+            <LazyImage src='/icons/brand/icon.svg' alt='logo' width={40} height={32} />
             <FooterItemList />
           </MenuItemWrapper>
           <InputWrapper>
@@ -94,26 +91,15 @@ const Footer = () => {
         </Header>
         <Divider />
         <FooterWrapper>
-          <FooterText>
-            Enterprise-Grade OpenTelemetry for Superior Application Performance
-            Monitoring
-          </FooterText>
-          <Link href={URL.PRIVACY_POLICY} target="_blank">
-            <UnderlineText
-              weight={300}
-              uppercase={false}
-              font={theme.font_family.primary}
-            >
+          <FooterText>Enterprise-Grade OpenTelemetry for Superior Application Performance Monitoring</FooterText>
+          <Link href={URL.PRIVACY_POLICY} target='_blank'>
+            <UnderlineText weight={300} uppercase={false} font={theme.font_family.primary}>
               Privacy policy
             </UnderlineText>
           </Link>
         </FooterWrapper>
         <Divider />
-
-        <RightsText>
-          © 2024 Odigos, 100 Causeway St. Boston, MA 02114 USA. All rights
-          reserved.
-        </RightsText>
+        <RightsText>© {currentYear} Odigos, 100 Causeway St. Boston, MA 02114 USA. All rights reserved.</RightsText>
       </FooterContainer>
     </MaxWidthContainer>
   );
