@@ -1,4 +1,4 @@
 export const URL = {
-  PRIVACY_POLICY:
-    'https://odigos-privacy-policy.s3.us-east-2.amazonaws.com/Odigos+-+Privacy+Policy.pdf',
+  PRIVACY_POLICY: 'https://odigos-privacy-policy.s3.us-east-2.amazonaws.com/Odigos+-+Privacy+Policy.pdf',
+  TRUST_CENTER: 'https://trust.odigos.io',
 };

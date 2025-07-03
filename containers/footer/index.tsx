@@ -92,11 +92,18 @@ const Footer = () => {
         <Divider />
         <FooterWrapper>
           <FooterText>Enterprise-Grade OpenTelemetry for Superior Application Performance Monitoring</FooterText>
-          <Link href={URL.PRIVACY_POLICY} target='_blank'>
-            <UnderlineText weight={300} uppercase={false} font={theme.font_family.primary}>
-              Privacy policy
-            </UnderlineText>
-          </Link>
+          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+            <Link href={URL.PRIVACY_POLICY} target='_blank'>
+              <UnderlineText weight={300} uppercase={false} font={theme.font_family.primary}>
+                Privacy policy
+              </UnderlineText>
+            </Link>
+            <Link href={URL.TRUST_CENTER} target='_blank'>
+              <UnderlineText weight={300} uppercase={false} font={theme.font_family.primary}>
+                Trust Center
+              </UnderlineText>
+            </Link>
+          </div>
         </FooterWrapper>
         <Divider />
         <RightsText>© {currentYear} Odigos, 100 Causeway St. Boston, MA 02114 USA. All rights reserved.</RightsText>
