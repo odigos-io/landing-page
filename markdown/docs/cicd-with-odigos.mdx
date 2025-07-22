@@ -12,14 +12,15 @@ webCoverImage: '/images/blog/cicd-with-odigos/cicdcover.png'
 mobileCoverImage: '/images/blog/cicdblogpost.png'
 ---
 
-## Observability as Code - Controlling your Odigos pipeline with CI/CD ##
+## Observability as Code - Controlling your Odigos pipeline with CI/CD
 
-Over the past few months, I’ve spoken with many developers and platform engineers who are adopting Odigos to deliver better observability in their Kubernetes environments. A recurring theme in these conversations is that users want full control over their observability pipelines through CI/CD.  Rather than configuring Odigos’s pipelines within the UI, teams increasingly want to define everything (from instrumentation rules to destinations) declaratively in Git and deploy it via pipelines. This not only aligns observability with infrastructure-as-code principles, but also enables consistent, auditable, and scalable Odigos pipelines across environments.
+Over the past few months, I’ve spoken with many developers and platform engineers who are adopting Odigos to deliver better observability in their Kubernetes environments. A recurring theme in these conversations is that users want full control over their observability pipelines through CI/CD.  Rather than configuring Odigos’s pipelines within the UI, teams increasingly want to define everything (from instrumentation rules to destinations) declaratively in Git and deploy it via pipelines. This not only aligns observability with infrastructure-as-code principles, but also enables consistent, auditable, and scalable Odigos pipelines across environments.  
+
 This blog aims to answer the most common questions I’ve received from these teams. I will walk through a practical example of how to create an observability pipeline using Odigos’s CRDs and CI/CD workflows.  I will show examples on how to define your sources, destinations, sampling actions, and instrumentation rules all from YAML config. Whether you're a platform engineer building a paved path or a developer looking to better understand how Odigos fits into your CI/CD strategy, this post will give you a solid, production-ready foundation.
 
 ### Install Odigos ###
 
-Before we dive into building the pipeline, make sure you have Odigos already deployed and running in your Kubernetes cluster. This post assumes you're starting from an empty pipeline.  In other words, Odigos is installed, the CRDs are registered, but no sources, destinations, sampling rules, or instrumentation rules have been configured yet.
+Before we dive into building the pipeline, make sure you have Odigos already deployed and running in your Kubernetes cluster. This post assumes you're starting from an empty pipeline.  In other words, Odigos is installed, which registers the relevant CRDs we will be using, but no sources, destinations, sampling rules, or instrumentation rules have been configured yet.
 
 You can install Odigos using Helm with:
 
@@ -36,7 +37,7 @@ Once all odigos pods are up and running, port forward the UI service and you can
 kubectl port-forward -n odigos-system svc/ui 3000:3000
 ````
 
-You should have an empty pipeline in the UI, meaning there are no Instrumentation Rules, Sources, Actions, nor Destinations.  Let's change that - but through code!
+You should have an empty pipeline in the UI, meaning there are no Instrumentation Rules, Sources, Actions, nor Destinations.  Let's change that - but through YAML config!
 
 ![][image1]
 
@@ -51,7 +52,9 @@ Each CRD serves a unique purpose in the pipeline and fits cleanly into a CI/CD w
 
 ### Source - What Odigos Instruments ###
 
-Sources are custom resource objects that reference a workload (such as a k8s deployment) or a namespace. These objects act as declarative instructions for how Odigos should configure instrumentation for the referenced entity. When you create or modify a Source, Odigos reacts to those changes and applies instrumentation automatically, without requiring you to modify the target workload itself. This decoupled design allows you to manage observability independently from application deployments. To identify a workload or namespace, a Source must set spec.workload.name, spec.workload.namespace, and spec.workload.kind, and it must exist in the same namespace as its target. Beyond these minimal requirements, Sources should be treated as their own objects.  For example, stored in separate YAML files (like sources.yaml) and maintained apart from workload manifests. This separation of concerns enables clean, GitOps-friendly workflows where observability can evolve independently. Additionally, you can apply fine-grained RBAC to limit who can modify Sources, allowing observability teams to instrument services without needing access to the workloads themselves.
+Sources are custom resource objects that reference a workload (such as a k8s deployment) or a namespace. These objects act as declarative instructions for how Odigos should configure instrumentation for the referenced entity. When you create or modify a Source, Odigos reacts to those changes and applies instrumentation automatically, without requiring you to modify the target workload itself. This decoupled design allows you to manage observability independently from application deployments. To identify a workload or namespace, a Source must set spec.workload.name, spec.workload.namespace, and spec.workload.kind, and it must exist in the same namespace as its target.  
+
+Beyond these minimal requirements, Sources should be treated as their own objects.  For example, stored in separate YAML files (like sources.yaml) and maintained apart from workload manifests. This separation of concerns enables clean, GitOps-friendly workflows where observability can evolve independently. Additionally, you can apply fine-grained RBAC to limit who can modify Sources, allowing observability teams to instrument services without needing access to the workloads themselves.
 
 Here is an example source object we will use to create sources for all deployments in the kv-mall and kv-mall-infra namespace:
 ````
@@ -154,7 +157,7 @@ This enables deep code-level visibility for all instrumented services in the kv-
 
 ### Time to Deploy ###
 
-By now, we have created four Odigos resources: Sources, Destination, Instrumentation Rule, and Action.  These should be created and stored within a GitHub repository, since we are using a GitOps pipeline to deploy these resources.  You can take a look at my [GitHub repository](https://github.com/wesearle/OdigosPipeline/tree/main) to create these exact resources.  You will notice in my `odigos-pipeline-deploy/odigos` folder that I have a single concatenated YAML called `DeployAll.yaml` to create all four objects from a single command.  
+By now, we have created four Odigos resources: Sources, Destination, Instrumentation Rule, and Action.  These should be created and stored within a GitHub repository, since we are using a GitOps pipeline to deploy these resources.  You can take a look at our [GitHub repository](https://github.com/odigos-io/OdigosPipelineExample) to create these exact resources.  You will notice in the `odigos-pipeline-deploy/odigos` folder that we have a single concatenated YAML called `DeployAll.yaml` to create all four objects from a single command.  
 
 So from here we can either create an actions workflow, or clone the repo locally and push our changes from the cloned repository.  If I clone my repository and run the command:
 ````
@@ -167,7 +170,9 @@ This should create all resources and build my pipeline instantly within Odigos!
 
 ### Observability, Declaratively Done ### 
 
-In this post, we walked through how to declaratively build an Odigos observability pipeline using CRDs and how to manage that pipeline through CI/CD. Starting from a blank-slate Odigos installation, we defined a telemetry destination (Jaeger), configured namespace-wide auto-instrumentation, applied intelligent sampling based on latency, and enriched traces with valuable code-level metadata. By defining everything as YAML and storing it in version control system like GitHub, we not only gained full visibility into our systems, but also made observability a repeatable, auditable, and automation-friendly part of the software delivery process. Whether you're managing one cluster or many, this approach scales cleanly and keeps your telemetry pipeline consistent across environments. Thanks to Odigos, observability as code is not just possible... it is now practical. 
+In this post, we walked through how to declaratively build an Odigos observability pipeline using CRDs and how to manage that pipeline through CI/CD. Starting from a blank-slate Odigos installation, we defined a telemetry destination (Jaeger), configured namespace-wide auto-instrumentation, applied intelligent sampling based on latency, and enriched traces with valuable code-level metadata.  
+
+By defining everything as YAML and storing it in version control system like GitHub, we not only gained full visibility into our systems, but also made observability a repeatable, auditable, and automation-friendly part of the software delivery process. Whether you're managing one cluster or many, this approach scales cleanly and keeps your telemetry pipeline consistent across environments. Thanks to Odigos, observability as code is not just possible... it is now practical. 
 
 
 
