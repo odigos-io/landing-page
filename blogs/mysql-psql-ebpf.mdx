@@ -1,0 +1,122 @@
+---
+pubDate: 'Mar 15 2025'
+author: Eden Federman
+authorImage: '/assets/team/eden_federman.jpg'
+image: '/assets/blogs/mysql-psql-ebpf/cover.png'
+title: 'Zero Blind Spots: PostgreSQL & MySQL Observability with eBPF'
+description: 'Learn how to use eBPF to monitor MySQL and PostgreSQL databases'
+metadata: database internals
+category: 'Odigos'
+tags: [odigos, opentelemetry, instrumentation, ebpf, databases]
+---
+
+## The Visibility Gap in Database Observability
+
+Most database monitoring tools were built for simpler three-tier architectures, where a monolithic application interacted with a single database. These tools rely on metrics and logs, which offer some visibility but fail to capture how queries behave in complex, distributed environments.
+
+### Why Traditional Methods Fall Short
+
+- Metrics provide an overview but lack detail – High CPU or slow query counts don’t explain why performance is degrading.
+- Logs are fragmented – Query logs can show what ran but don’t correlate it with the broader transaction flow.
+- Lack of Context Propagation – In distributed systems, a single database serves multiple services, making it impossible to connect queries to the broader transaction lifecycle.
+
+So, how do we get more context about database platforms? It starts with tracing.
+
+## Why Distributed Tracing Changes the Game
+
+Distributed tracing adds missing context by tracking queries across services instead of treating the database as a black box. Tools like OpenTelemetry (OTel) provide a way to follow a transaction end-to-end, but they still require manual instrumentation for database queries.
+
+### How eBPF Enhances Database Observability
+
+This is where eBPF (Extended Berkeley Packet Filter) fills the gap. It allows engineers to:
+
+- Trace queries in real time without modifying application code.
+- Capture transaction-level context at the kernel level.
+- Automatically extract query execution metrics without enabling slow query logs.
+
+Odigos is able to leverage eBPF to perform context propagation and fully trace database transactions without requiring intrusive logging or code modifications.
+
+![](/assets/blogs/mysql-psql-ebpf/t3-query.png)
+
+## Example: Tracing a Slow Checkout Transaction
+
+### The Problem: Where Is the Latency?
+
+A distributed e-commerce application uses PostgreSQL for order management and MySQL for inventory tracking. Customers report slow checkouts, but:
+
+- CPU and memory usage are stable—no resource exhaustion.
+- Slow query logs aren’t enabled, so no direct query insights are available.
+- APM tools show high response times but can’t pinpoint where in the chain the delay occurs.
+
+### Step 1: Capturing the Full Transaction Trace
+
+Using eBPF and OpenTelemetry, we trace a single checkout transaction:
+
+1. User places an order → The frontend sends a request to the checkout service.
+2. Checkout service calls the payment API → Response in 10ms.
+3. Checkout service queries PostgreSQL → Delay: over 250ms before the query returns.
+4. Inventory service updates MySQL → Executes in 5ms, ruling out inventory DB as the bottleneck.
+
+![](/assets/blogs/mysql-psql-ebpf/t1-checkout.png)
+
+### Step 2: Identifying the Slow Query
+
+eBPF captures the **exact PostgreSQL query** causing the slowdown:
+
+```sql
+SELECT * FROM orders WHERE user_id = ?;
+```
+
+Expected execution time: **10-20ms**  
+Observed execution time: **250ms under load**
+
+### Step 3: Finding the Root Cause
+
+eBPF reveals that:
+
+- **Row locks are blocking the query** due to a long-running reporting job.
+- **Connection pool saturation** is causing new queries to wait for connections.
+- **A missing index** forces a full table scan instead of using an efficient lookup.
+
+![](/assets/blogs/mysql-psql-ebpf/t2-slow-query.png)
+
+### Step 4: Fixing the Issue
+
+- **Move reports to read replicas** to prevent blocking transactions.
+- **Increase the connection pool size** to handle more concurrent queries.
+- **Add a B-tree index on `user_id`** to eliminate full table scans.
+
+Result: **Checkout latency drops from 250ms to 20ms.**
+
+## Why Odigos Changes the Approach to Database Observability
+
+Odigos solves the manual instrumentation problem by extending OpenTelemetry to automatically trace PostgreSQL and MySQL queries using eBPF.
+
+### **Key Differences: Traditional APM vs. Odigos**
+
+| Feature                  | Traditional APMs (Logs/Metrics) |      Odigos (eBPF \+ OTel)       |
+| ------------------------ | :-----------------------------: | :------------------------------: |
+| **Query Visibility**     |    Requires slow query logs     | Automatically traces all queries |
+| **Performance Overhead** |        High (log-based)         |  Minimal (kernel-level tracing)  |
+| **Distributed Tracing**  |         Limited context         |     Full context propagation     |
+| **Setup Complexity**     | Manual instrumentation required |       Zero-code deployment       |
+
+## Shifting From Metrics to Contextual Tracing
+
+In distributed systems, databases no longer serve a single flow—they interact with multiple services in unpredictable ways. Traditional monitoring tools struggle because they weren't built for this complexity.
+
+By combining eBPF and OpenTelemetry, Odigos brings full query-level visibility without code changes—enabling teams to trace performance issues across services instead of guessing.
+
+## Bringing Full Observability to PostgreSQL and MySQL
+
+Without query-level visibility, database slowdowns remain a mystery. Traditional monitoring solutions fall short because they lack deep query insights.
+
+By combining Odigos with the capabilities of eBPF, and OpenTelemetry, developers can:
+
+- Trace transactions end-to-end across microservices.
+- Identify slow queries and database bottlenecks in real time.
+- Fix database performance issues proactively, without modifying production code.
+
+### Learn More
+
+[Try Odigos Today](https://odigos.io/) and see how real-time query observability can transform how you debug PostgreSQL and MySQL.

@@ -1,0 +1,396 @@
+---
+pubDate: 'Aug 25 2023'
+author: Amir Blum
+authorImage: ''
+image: ''
+title: 'How Keyval Automates the Deployment of Go Microservices with ko build'
+description: 'In this article, we will describe how we use the ko build tool to build and deploy keyval backend microservices.'
+metadata: Learn how Keyval utilizes the ko build tool to effortlessly build and deploy Go microservices in Kubernetes, streamlining the development process.
+category: 'Tools'
+tags: [ko, ko-build, golang, microservices, k8s]
+---
+
+- [Prerequisites](#prerequisites)
+- [Why `ko`?](#why-`ko`?)
+- [Useful Tips](#useful-tips)
+  - [Links](#links)
+  - [Sanity - Verify Installation](#sanity---verify-installation)
+  - [Search Online](#search-online)
+  - [CLI Help](#cli-help)
+  - [Autocompletion](#autocompletion)
+- [How we use `ko`](#how-we-use-ko)
+  - [Build the Image Locally](#build-the-image-locally)
+    - [importpath](#importpath)
+    - [--push=false](#--pushfalse)
+  - [Makefile](#makefile)
+  - [Publishing to ECR](#publishing-to-ecr)
+    - [Create ECR Repository](#create-ecr-repository)
+    - [Login to ECR](#login-to-ecr)
+    - [Build and Publish to ECR](#build-and-publish-to-ecr)
+      - [KO_DOCKER_REPO](#ko_docker_repo)
+      - [--bare](#--bare)
+    - [Test published image](#test-published-image)
+  - [Deploy to Kubernetes](#deploy-to-kubernetes)
+    - [`ko apply`](#ko-apply)
+    - [-f](#-f)
+- [ko in our CI/CD](#ko-in-our-cicd)
+  - [Verify Build](#verify-build)
+  - [Deploy to Production](#deploy-to-production)
+  - [Conclusion](#conclusion)
+- [Adding Distributed Tracing to your Go Microservices](#adding-distributed-tracing-to-your-go-microservices)
+
+In this blog post, we will describe how and why we setup the `ko` build tool to deploy our Go microservices in our Kubernetes cluster.
+
+# Prerequisites
+
+- `ko` is a tool for golang applications.
+- `ko` is relevant if you are using docker containers to run your code.
+- `ko` is especially handy if you are using kubernetes to deploy your containers.
+
+I will not explain ko from the begining, there are plenty of resources online for that.
+I assume you are already familiar with the basics of `docker`, `ko`, and deploying to your environments.
+This blog post is not a tutorial, but rather a description of how we use `ko` in our stack as reference for others who might want to do the same.
+
+# Why `ko`?
+
+At Keyval, the company behind [Odigos](https://odigos.io/) we deploy our cloud service using the following stack:
+
+- microservices written in golang.
+- `Kubernetes` in `EKS` - Amazon Elastic Kubernetes Service.
+
+`ko` gives us the following benefits:
+
+- No need to write and maintain Dockerfiles
+- Images following best practices, more secure, smaller in size and contains minimal dependencies.
+- Integrates well with our kubernetess workflow - just one simple command to:
+
+  - **Build** images
+  - **Push** them to our private repository in ECR
+  - **Update** the relevant "image:" values in our k8s manifest `.yaml` files
+  - **Apply** them to our cluster
+
+These requirements and workflow is very common, allowing us to simplify our CI/CD pipeline and reduce the amount of code we need to maintain.
+
+# Useful Tips
+
+## Links
+
+- [Install `ko` CLI](https://ko.build/install/)
+- [Docs](https://ko.build/)
+- [Github repo](https://github.com/ko-build/ko)
+- [Github action for CI](https://github.com/ko-build/setup-ko)
+- [Recommended Getting Started blog post](https://snyk.io/blog/container-images-simplified-with-google-ko/) by snyk
+
+## Sanity - Verify Installation
+
+```sh
+$ ko version
+```
+
+Should produce an output, signaling `ko` cli is installed and working, plus a chance to make sure the version is not too old.
+
+## Search Online
+
+As `ko` means a lot of things online, I always google or chat-gpt `ko build` (instead of just `ko`).
+
+For example, use "`ko build getting started`" instead of just `ko getting started`.
+
+## CLI Help
+
+Like most prefetional cli tools, you can find a lot of information in the CLI help without switching context to the browser or touching your mouse.
+
+```
+$ ko version
+0.14.1
+$ ko
+Rapidly iterate with Go, Containers, and Kubernetes.
+
+Usage:
+  ko [flags]
+  ko [command]
+
+Available Commands:
+  apply       Use resolved references in input files for image digest application.
+  build       Build and publish container images from the given import paths.
+  completion  Generate the autocompletion script for the specified shell
+  create      Generate input files with resolved image references.
+  delete      See "kubectl help delete" for detailed usage.
+  help        Help about any command
+  login       Log in to a registry
+  resolve     Print files with resolved image references to digests.
+  run         A variant of `kubectl run` that containerizes IMPORTPATH first.
+  version     Print ko version.
+
+Flags:
+  -h, --help      help for ko
+  -v, --verbose   Enable debug logs
+
+Use "ko [command] --help" for more information about a command.
+```
+
+From here you can use `ko build --help` or `ko apply --help` to get more information about the subcommands.
+
+## Autocompletion
+
+Setup auto completion for your shell in few seconds: `ko completion --help` and follow instructions for your shell and os.
+
+I use zsh on macOS so my flow was:
+
+```sh
+$ ko completion --help
+$ ko completion zsh --help
+$ echo "autoload -U compinit; compinit" >> ~/.zshrc
+$ source <(ko completion zsh)
+$ ko completion zsh > $(brew --prefix)/share/zsh/site-functions/_ko
+```
+
+A few seconds of setup to gain better productivity and less typos.
+
+# How we use `ko`?
+
+## Build the Image Locally
+
+I start with a simple sanity check to make sure `ko` is able to build the image locally and the code compiles.
+
+```sh
+$ ko build ./cmd/app --push=false
+...
+ko.local/app-2cb05dc2132b0f81c2982cca8f717157:f1cd233a86cc3173e8b94f8a144
+a4423abf369f9944406349e72acf103099a38
+```
+
+We also use it in the CI to verify build on each PR push.
+
+Let's break down the command:
+
+### importpath
+
+The `./cmd/app` part is the "importpath".
+
+This is how instruct `ko` where it can find the go package with the `func main()`. We have a mono repo with multiple apps and multiple main functions, so we specify which one we want ko to build.
+
+If your `func main()` is in the project root (next to `go.mod`), you can omit the importpath and just run `ko build --push=false`.
+
+The import path should be relative, so `./cmd/app` and NOT `cmd/app`
+
+### --push=false
+
+`ko build` is like `docker build` + `docker push`. Confusing, I know.
+
+We use `--push=false` so `ko` build the image, but skip pushing it to a docker registry. `ko` is not bothered with figuring out which repository to use and attempting to push there.
+
+## Makefile
+
+```Makefile
+build:
+    ko build ./cmd/app --push=false
+```
+
+This is a replacement for `go build` command, which also verifies `ko` integration + keep you filesystem clean.
+
+If the code doesn't compile, `make build` will fail without needing to setup or publishing anything.
+
+## Publishing to ECR
+
+Keyval's cluster runs on EKS which is an AWS managed k8s service.
+
+We chose to use ECR - Amazon Elastic Container Registry to store our docker images.
+
+This section describes how to use `ko` with `ECR`, but the same principles apply to other registries and can be easily adapted.
+
+### Create ECR Repository
+
+```sh
+$ aws ecr create-repository --repository-name my-app
+```
+
+You should get back a json response with the repository details, and `repositoryUri` which looks like this: `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app`. You can also find it in the ECR console.
+
+### Login to ECR
+
+```sh
+$ aws ecr get-login-password --region YOUR_REGION | docker login --username AWS --password-stdin YOUR_REPOSITORY_URI
+```
+
+This works if `aws cli` is setup and you have the right permissions.
+
+### Build and Publish to ECR
+
+```sh
+$ KO_DOCKER_REPO=012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app ko build --bare ./cmd/app
+```
+
+Lets break down the command:
+
+### KO_DOCKER_REPO
+
+`KO_DOCKER_REPO` is how you tell `ko build` where to push the image after it was built.
+
+For ECR, you can find it in ECR web console, or get it with cli: `aws ecr describe-repositories` or just construct it based on the pattern.
+
+### --bare
+
+Without this flag, `ko` will attempt to push the image as `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app/app-2cb05dc2132b0f81c2982cca8f717157:latest` which includes the package name and hash (`app-{hash}` part), and is not supported by ECR.
+
+ECR, dockerhub and possibly other registries only support images with the format `{registry}/{repository}:{tag}` where the repository is not nested (no `/` in the name).
+
+The --bare flag tells `ko` to push the image as `012345678901.dkr.ecr.us-east-1.amazonaws.com/my-app:latest` which is what we want.
+
+I also find this long name not very user friendly and prefer to use `--bare` and control the name myself.
+
+For other registries, explore the `--bare`, `--base-import-paths` and `--preserve-import-paths` flag.
+
+### Test published image
+
+Useful command to test image build + publish + pull + run locally:
+
+```sh
+$ docker run -p 8080:80 $(KO_DOCKER_REPO=012345678901.dkr.ecr
+.us-east-1.amazonaws.com/my-app ko build --bare ./cmd/app)
+```
+
+## Deploy to Kubernetes
+
+In our k8s Deployment `.yaml` files, we populate the `image:` field with a `ko://` url, and then use `ko apply -f k8s --bare`.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  ...
+  template:
+    spec:
+      containers:
+        - name: my-service
+          image: ko://github.com/odigos-io/my-app/cmd/app
+```
+
+- The `ko://` scheme is a special url that `ko` will recognize and replace with the resolved image name and tag.
+- The `github.com/odigos-io/my-app` part is identical to the `module` field in our `go.mod` file.
+- The `cmd/app` part is the import path to the package with `func main()`.
+
+You can have multiple `ko://` urls in the same file, and `ko apply` will build push and replace all of them.
+
+### `ko apply`
+
+This is the same as running `kubectl apply` but with some extra magic.
+
+Before the resources are applied to the cluster, `ko` will search for import paths starting with `ko://` build the images, push them to the registry, and update the `image:` field in the resource `.yaml` files with the resolved image name and tag.
+
+### -f
+
+This is the directory we want to apply to our cluster, the same directory we would use with `kubectl apply -f`.
+
+# `ko` in our CI/CD
+
+We use github actions for our CI/CD.
+
+### Verify Build
+
+We run `ko build` on pull requests push to verify we can build the project (no compile errors or missing dependencies).
+
+This is our workflow file in `.github/workflows/build.yml`:
+
+```yaml
+name: 'build service'
+on:
+  pull_request:
+
+jobs:
+  build-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.x'
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Setup ko
+        uses: ko-build/setup-ko@v0.6
+
+      - name: ko build
+        run: ko build ./cmd/app --local --push=false
+```
+
+### Deploy to Production
+
+We run `ko apply` on each merge to main to branch to push and apply the k8s Deployment with the new artifacts.
+
+This is our workflow file in `.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy
+
+on:
+  push:
+    branches: ['main']
+
+env:
+  AWS_REGION: 'us-east-2'
+  ECR_REGISTRY: '012345678901.dkr.ecr.us-east-2.amazonaws.com'
+  ECR_REPOSITORY: 'YOUR_REPOSITORY_NAME'
+  CLUSTER_NAME: 'YOUR_CLUSTER_NAME'
+
+# AWS authentication is required to push to ECR and update the cluster
+# https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deply-service:
+    name: Deploy Service
+    runs-on: ubuntu-latest
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::012345678901:role/github-actions-deploy-service
+          role-session-name: my-service-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      # The following command will update the kube config file with our cluster information.
+      # It will use the credentials exported by the previous action.
+      - name: Update KubeConfig
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region=${{ env.AWS_REGION }}
+
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.x'
+
+      - uses: ko-build/setup-ko@v0.6
+        env:
+          KO_DOCKER_REPO: ${{ format('{0}/{1}', env.ECR_REGISTRY, env.ECR_REPOSITORY) }}
+
+      # ko uses https://github.com/awslabs/amazon-ecr-credential-helper
+      # to automatically login to ECR. no need to `ko login` or `docker login`
+
+      - run: ko apply -f k8s --bare
+```
+
+In the above example, we used OpenID Connect to get temporary credentials for our github workflow to run specific commands in aws. [more info here](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services).
+For this to work we added the `permissions:` part and the `role-to-assume` and `role-session-name` in the `configure-aws-credentials` step.
+
+## Conclusion
+
+I hope this blog post can help in clarifying how to use `ko` in your project. If you have any questions, feel free to reach out to us on [Odigos Slack](https://join.slack.com/t/odigos/shared_invite/zt-220qxzhpe-dG6o7Jkb3FmfwlBIldXOmA)
+
+## Adding Distributed Tracing to your Go Microservices
+
+After you learned how to deploy your golang microservices with `ko` into your k8s cluster, you might want to add observability to your service with the popular OpenTelemetry framework.
+
+Check out [Odigos](https://odigos.io/) for a quick and easy way to add distributed tracing, metrics and logs to your golang microservices, without needing to change your code. Odigos is open-source and free to use 🤙
