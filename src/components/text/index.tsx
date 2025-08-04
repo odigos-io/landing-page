@@ -1,10 +1,10 @@
 'use client';
 
-import React, { forwardRef, type CSSProperties, Fragment } from 'react';
+import React, { forwardRef, type CSSProperties, Fragment, type HTMLAttributes, type ReactNode, useMemo } from 'react';
 import styled from 'styled-components';
 
-export interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
-  children: React.ReactNode;
+export interface TextProps extends HTMLAttributes<HTMLParagraphElement> {
+  children: ReactNode;
   color?: string;
   noWrap?: boolean;
   fontSize?: CSSProperties['fontSize'];
@@ -38,15 +38,17 @@ const Container = styled.p<{
 `;
 
 const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noWrap, fontSize = 16, fontWeight, lineHeight, letterSpacing, textAlign, textDecoration, ...props }, ref) => {
-  const text =
-    typeof children === 'string'
-      ? children
-      : Array.isArray(children)
-      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (children as any[]).filter((x) => x && typeof x === 'string').join(' ')
-      : '';
+  const textArray = useMemo(() => {
+    const str =
+      typeof children === 'string'
+        ? children
+        : Array.isArray(children)
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (children as any[]).filter((x) => x && typeof x === 'string').join(' ')
+        : '';
 
-  const arr = text.split('\n') as string[];
+    return str.split('\n') as string[];
+  }, [children]);
 
   return (
     <Container
@@ -61,10 +63,10 @@ const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noW
       $textDecoration={textDecoration}
       {...props}
     >
-      {arr.map((str, i) => (
+      {textArray.map((str, i) => (
         <Fragment key={`text-${i}-${str}`}>
           {str}
-          {i !== arr.length - 1 ? <br /> : null}
+          {i !== textArray.length - 1 ? <br /> : null}
         </Fragment>
       ))}
     </Container>

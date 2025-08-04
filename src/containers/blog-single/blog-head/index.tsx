@@ -5,8 +5,8 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import type { BlogPost } from '@/types';
-import { Button, Tags, Text } from '@/components';
 import { FlexColumn, FlexRow } from '@/styles';
+import { Button, Tags, Text } from '@/components';
 import { calculateReadingTime, getPlaceholderImage } from '@/functions';
 
 interface BlogHeadProps {
