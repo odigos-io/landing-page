@@ -43,14 +43,14 @@ const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noW
       ? children
       : Array.isArray(children)
       ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (children as any[]).find((x) => x && typeof x === 'string')
+        (children as any[]).filter((x) => x && typeof x === 'string').join(' ')
       : '';
 
   const arr = text.split('\n') as string[];
 
   return (
     <Container
-      ref={ref || undefined}
+      ref={ref}
       $color={color}
       $noWrap={noWrap}
       $fontSize={fontSize}
