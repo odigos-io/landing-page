@@ -11,7 +11,6 @@ const Scripts = () => {
           !function(){var e,t,n;e="756aafdccc100e4",t=function(){Reo.init({clientID:"756aafdccc100e4"})},(n=document.createElement("script")).src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();
         `}
       </Script>
-      <Script id='warmly-script-loader' src='https://opps-widget.getwarmly.com/warmly.js?clientId=d489c3e0d2e249beff731f679e626fa0' strategy='afterInteractive' defer />
       <Script id='zoominfo-integration' strategy='afterInteractive'>
         {`
           window[(function(_yFM, _tT) {
