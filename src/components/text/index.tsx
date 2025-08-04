@@ -12,6 +12,7 @@ export interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   lineHeight?: CSSProperties['lineHeight'];
   letterSpacing?: CSSProperties['letterSpacing'];
   textAlign?: CSSProperties['textAlign'];
+  textDecoration?: CSSProperties['textDecoration'];
 }
 
 const Container = styled.p<{
@@ -22,6 +23,7 @@ const Container = styled.p<{
   $lineHeight: TextProps['lineHeight'];
   $letterSpacing: TextProps['letterSpacing'];
   $textAlign: TextProps['textAlign'];
+  $textDecoration: TextProps['textDecoration'];
 }>`
   margin: 0;
   padding: 0;
@@ -32,9 +34,10 @@ const Container = styled.p<{
   ${({ $lineHeight }) => `line-height: ${$lineHeight};`}
   ${({ $letterSpacing }) => `letter-spacing: ${$letterSpacing};`}
   ${({ $textAlign }) => `text-align: ${$textAlign};`}
+  ${({ $textDecoration }) => `text-decoration: ${$textDecoration};`}
 `;
 
-const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noWrap, fontSize = 16, fontWeight, lineHeight, letterSpacing, textAlign, ...props }, ref) => {
+const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noWrap, fontSize = 16, fontWeight, lineHeight, letterSpacing, textAlign, textDecoration, ...props }, ref) => {
   const text =
     typeof children === 'string'
       ? children
@@ -55,6 +58,7 @@ const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noW
       $lineHeight={lineHeight}
       $letterSpacing={letterSpacing}
       $textAlign={textAlign}
+      $textDecoration={textDecoration}
       {...props}
     >
       {arr.map((str, i) => (
