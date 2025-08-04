@@ -25,23 +25,21 @@ export const BlogSingle = ({ blog }: BlogSingleProps) => {
 
   return (
     <ConstrainedWrapper $isMobile={isMobile}>
-      <FlexColumn $gap={isMobile ? 64 : 128}>
+      <FlexColumn $gap={isMobile ? 32 : 64}>
         <BlogHead blog={blog} />
 
-        <FlexColumn $gap={isMobile ? 32 : 64}>
-          <div>
-            <MarkdownPreview
-              source={blog.content}
-              style={{
-                background: theme.colors.black,
-                color: theme.colors.off_white,
-              }}
-            />
-          </div>
-          <Divider />
+        <div>
+          <MarkdownPreview
+            source={blog.content}
+            style={{
+              background: theme.colors.black,
+              color: theme.colors.off_white,
+            }}
+          />
+        </div>
 
-          <SocialButtons slug={blog.slug} />
-        </FlexColumn>
+        <Divider />
+        <SocialButtons slug={blog.slug} />
       </FlexColumn>
     </ConstrainedWrapper>
   );

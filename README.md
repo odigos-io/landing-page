@@ -24,3 +24,12 @@ yarn dev
 ```bash
 /assets/blogs/{BLOG_NAME}/{IMAGE_NAME}.png
 ```
+
+### Want to add an author image?
+
+1. Drop a jpg/png in `/public/assets/team`
+2. Reference your image in the blog post with:
+
+```bash
+/assets/team/{AUTHOR_NAME}.jpg
+```

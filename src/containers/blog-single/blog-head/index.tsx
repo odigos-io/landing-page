@@ -5,7 +5,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import type { BlogPost } from '@/types';
-import { Button, Tags } from '@/components';
+import { Button, Tags, Text } from '@/components';
 import { FlexColumn, FlexRow } from '@/styles';
 import { calculateReadingTime, getPlaceholderImage } from '@/functions';
 
@@ -32,21 +32,36 @@ const Title = styled.h1<{ $isMobile: boolean }>`
   font-size: ${({ $isMobile }) => ($isMobile ? '40px' : '64px')};
   font-weight: 600;
   line-height: 110%;
+  margin: 0;
 `;
+
+const DEFAULT_AUTHOR_IMAGE = '/assets/odigos/logo_white_filled.svg';
+const DEFAULT_BLOG_IMAGE = getPlaceholderImage();
 
 export const BlogHead = ({ blog }: BlogHeadProps) => {
   const { isMobile } = useMobile();
 
-  const [image, setImage] = useState(blog.image || '');
-  const [imageInvalid, setImageInvalid] = useState(false);
+  const [authorImage, setAuthorImage] = useState(blog.authorImage || DEFAULT_AUTHOR_IMAGE);
+  const [authorImageInvalid, setAuthorImageInvalid] = useState(false);
 
   useEffect(() => {
-    if (imageInvalid) {
-      setImage(getPlaceholderImage());
+    if (authorImageInvalid) {
+      setAuthorImage(DEFAULT_AUTHOR_IMAGE);
     } else {
-      setImage(blog.image || '');
+      setAuthorImage(blog.authorImage || DEFAULT_AUTHOR_IMAGE);
     }
-  }, [imageInvalid, blog.image]);
+  }, [authorImageInvalid, blog.authorImage]);
+
+  const [blogImage, setBlogImage] = useState(blog.image || DEFAULT_BLOG_IMAGE);
+  const [blogImageInvalid, setBlogImageInvalid] = useState(false);
+
+  useEffect(() => {
+    if (blogImageInvalid) {
+      setBlogImage(DEFAULT_BLOG_IMAGE);
+    } else {
+      setBlogImage(blog.image || DEFAULT_BLOG_IMAGE);
+    }
+  }, [blogImageInvalid, blog.image]);
 
   const [tags, setTags] = useState<string[]>([]);
   const [indexesOfBoldTags, setIndexesOfBoldTags] = useState<number[]>([]);
@@ -54,24 +69,39 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
   useEffect(() => {
     const arr = [];
 
-    if (blog.content) arr.push(calculateReadingTime(blog.content));
-    if (blog.pubDate) arr.push(new Date(blog.pubDate).toDateString());
     if (blog.boldTag) {
       arr.push(blog.boldTag);
       setIndexesOfBoldTags([arr.length - 1]);
     }
+
     arr.push(...(blog.tags || []));
+
+    if (!arr.length) {
+      arr.push('odigos');
+    }
 
     setTags(arr);
   }, [blog.content, blog.pubDate, blog.boldTag, blog.tags]);
 
   return (
-    <FlexColumn $gap={32}>
+    <FlexColumn $gap={isMobile ? 24 : 32}>
       <WrapImage $isMobile={isMobile}>
-        <Image suppressHydrationWarning src={image} alt={blog.title} fill objectFit='cover' objectPosition='center' onError={() => setImageInvalid(true)} />
+        <Image suppressHydrationWarning src={blogImage} alt={blog.title} fill objectFit='cover' objectPosition='center' onError={() => setBlogImageInvalid(true)} />
       </WrapImage>
 
       <Title $isMobile={isMobile}>{blog.title}</Title>
+
+      <FlexRow $gap={12} $align='center'>
+        <Image src={authorImage} alt={blog.author || 'Odigos'} width={42} height={42} onError={() => setAuthorImageInvalid(true)} style={{ borderRadius: '100%' }} />
+        <FlexColumn $gap={4}>
+          <Text>{blog.author || 'Odigos'}</Text>
+          <FlexRow $gap={6} $align='center'>
+            <Text fontSize={12}>{new Date(blog.pubDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</Text>
+            <Text fontSize={12}>|</Text>
+            <Text fontSize={12}>{calculateReadingTime(blog.content || '')}</Text>
+          </FlexRow>
+        </FlexColumn>
+      </FlexRow>
 
       <FlexRow $gap={32} $align='center'>
         <Tags tags={tags} indexesOfBoldTags={indexesOfBoldTags} fontSize={isMobile ? 12 : 16} doNotPushToBottom />
