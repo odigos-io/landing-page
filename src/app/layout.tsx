@@ -72,9 +72,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </MobileProvider>
           </ThemeProvider>
         </PlausibleProvider>
-
-        <Scripts />
       </body>
+
+      <Scripts />
     </html>
   );
 }
