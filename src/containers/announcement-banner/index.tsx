@@ -43,11 +43,23 @@ const Icon = styled((props) => <Image width={24} height={24} {...props} />)`
   filter: invert(100%);
 `;
 
+const SESSION_STORAGE_KEY = 'ANNOUNCEMENT_BANNER_CLOSED';
+
+const initState = () => {
+  const stored = sessionStorage.getItem(SESSION_STORAGE_KEY);
+  return stored === 'true' || false;
+};
+
 export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) => {
   const { isMobile } = useMobile();
-  const [hide, setHide] = useState(false);
+  const [isClosed, setIsClosed] = useState(initState());
 
-  if (hide || !title) {
+  const onClose = () => {
+    setIsClosed(true);
+    sessionStorage.setItem(SESSION_STORAGE_KEY, 'true');
+  };
+
+  if (isClosed || !title) {
     return null;
   }
 
@@ -66,7 +78,7 @@ export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBanner
         </Button>
       </FlexRow>
 
-      <Button variant='transparent' padding='0' onClick={() => setHide(true)}>
+      <Button variant='transparent' padding='0' onClick={onClose}>
         <Icon src='/assets/icons/close.svg' alt='close' />
       </Button>
     </Container>
