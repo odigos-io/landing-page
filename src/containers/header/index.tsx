@@ -19,7 +19,7 @@ const Container = styled.header<{ $isMobile: boolean }>`
 const ContainMobileButtons = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 `;
 
 export const Header = () => {
@@ -56,7 +56,7 @@ const Logo = ({ isMobile }: { isMobile: boolean }) => (
 );
 
 const MenuIcon = ({ toggleMenu }: { toggleMenu: () => void }) => (
-  <Button variant='transparent' onClick={toggleMenu}>
+  <Button variant='transparent' padding='0' onClick={toggleMenu}>
     <Image src='/assets/icons/menu.svg' alt='menu' width={24} height={24} priority />
   </Button>
 );

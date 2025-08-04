@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMobile } from '@/contexts';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { QuickstartButton, TextLayers, WatchDemoButton } from '@/components';
 
 const Container = styled.div<{ $isMobile: boolean }>`
@@ -13,16 +13,25 @@ const Container = styled.div<{ $isMobile: boolean }>`
   gap: ${({ $isMobile }) => ($isMobile ? '32px' : '40px')};
 `;
 
-const ContainButtons = styled.div<{ $isMobile: boolean }>`
+const ContainButtons = styled.div<{ $isMobile: boolean; $isSmallestScreen: boolean }>`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: ${({ $isMobile }) => ($isMobile ? 'center' : 'flex-start')};
   gap: ${({ $isMobile }) => ($isMobile ? '12px' : '32px')};
+
+  ${({ $isSmallestScreen }) =>
+    $isSmallestScreen &&
+    css`
+      & button {
+        width: calc(100vw - 32px);
+      }
+    `}
 `;
 
 export const TextAndButtons = () => {
-  const { isMobile } = useMobile();
+  const { isMobile, screenWidth } = useMobile();
 
   return (
     <Container $isMobile={isMobile}>
@@ -36,7 +45,7 @@ export const TextAndButtons = () => {
         descriptions={['Accelerate OpenTelemetry implementation with Odigos, an eBPF-based solution providing zero-code, zero-performance overhead for deeper tracing']}
       />
 
-      <ContainButtons $isMobile={isMobile}>
+      <ContainButtons $isMobile={isMobile} $isSmallestScreen={screenWidth < 420}>
         <QuickstartButton />
         <WatchDemoButton />
       </ContainButtons>
