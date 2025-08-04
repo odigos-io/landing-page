@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { Footer, Header } from '@/containers';
+import { CAREERS_LINK } from '@/constants';
 import { getAllBlogs } from '@/libs/markdown';
 import PlausibleProvider from 'next-plausible';
+import { AnnouncementBanner, Footer, Header } from '@/containers';
 
 const ThemeProvider = dynamic(() => import('@/styles/theme-provider'));
 const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider>
             <MobileProvider>
               <BlogsProvider blogs={blogs}>
+                <AnnouncementBanner title='Odigos is hiring!' link={CAREERS_LINK} linkText='Learn more' />
                 <Header />
                 {children}
                 <Footer />

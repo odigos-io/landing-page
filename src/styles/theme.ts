@@ -10,6 +10,7 @@ const colors = {
   grey_darker: '#454545',
   grey_darkest: '#2A2A2A',
   grey_cold: '#242023',
+  tonik_blue: '#444AD9',
   green: '#33DCA7',
   cyan: '#50F6E8',
   purple: '#8B55FF',

@@ -12,6 +12,7 @@ declare module 'styled-components' {
       grey_darker: string;
       grey_darkest: string;
       grey_cold: string;
+      tonik_blue: string;
       green: string;
       cyan: string;
       purple: string;
