@@ -28,7 +28,7 @@ const Container = styled.div<{ $width: number; $height: number }>`
 export const Render3D = ({ scene, width, height }: Render3DProps) => {
   return (
     <Container $width={width} $height={height}>
-      <Spline scene={scene} />
+      <Spline scene={scene} renderOnDemand />
     </Container>
   );
 };
