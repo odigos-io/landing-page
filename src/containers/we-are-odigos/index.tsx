@@ -8,6 +8,8 @@ import { Text, TextLayers } from '@/components';
 import styled, { css } from 'styled-components';
 
 const Container = styled.div<{ $isMobile: boolean }>`
+  max-width: 1440px;
+  margin: 0 auto;
   padding: ${({ $isMobile }) => ($isMobile ? '32px 16px' : '45px 64px')};
   display: flex;
   flex-direction: ${({ $isMobile }) => ($isMobile ? 'column-reverse' : 'row')};
