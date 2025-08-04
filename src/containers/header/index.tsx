@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
@@ -28,13 +28,6 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const headerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (headerRef.current) setHeaderHeight(headerRef.current.clientHeight);
-  }, []);
-
   // if mobile and menu is open, disable body scroll
   useEffect(() => {
     if (isMobile && isMenuOpen) {
@@ -45,9 +38,9 @@ export const Header = () => {
   }, [isMobile, isMenuOpen]);
 
   return (
-    <Container ref={headerRef} $isMobile={isMobile}>
+    <Container $isMobile={isMobile}>
       <Logo isMobile={isMobile} />
-      <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} heightToRemoveForMenu={headerHeight} />
+      <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
       <ContainMobileButtons>
         <ContactUsButton />
         {isMobile && <MenuIcon toggleMenu={toggleMenu} />}
