@@ -22,7 +22,7 @@ const ContainMobileButtons = styled.div`
   gap: 12px;
 `;
 
-export const Header = () => {
+const Header = () => {
   const { isMobile } = useMobile();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,3 +60,6 @@ const MenuIcon = ({ toggleMenu }: { toggleMenu: () => void }) => (
     <Image src='/assets/icons/menu.svg' alt='menu' width={24} height={24} priority />
   </Button>
 );
+
+// as default, so we can use dynamic import in app/layout.tsx
+export default Header;

@@ -39,10 +39,6 @@ const Typography = styled(Text)`
   color: ${({ theme }) => theme.colors.black};
 `;
 
-const Icon = styled((props) => <Image width={24} height={24} {...props} />)`
-  filter: invert(100%);
-`;
-
 const SESSION_STORAGE_KEY = 'ANNOUNCEMENT_BANNER_CLOSED';
 
 const initState = () => {
@@ -50,7 +46,7 @@ const initState = () => {
   return stored === 'true' || false;
 };
 
-export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) => {
+const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) => {
   const { isMobile } = useMobile();
   const [isClosed, setIsClosed] = useState(initState());
 
@@ -69,7 +65,7 @@ export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBanner
 
       <FlexRow $gap={isMobile ? 12 : 24} $align='center'>
         <FlexRow $gap={4} $align='center'>
-          <Icon src='/assets/icons/flame.svg' alt='flame' />
+          <Image src='/assets/icons/flame.svg' alt='flame' width={24} height={24} style={{ filter: 'invert(100%)' }} />
           <Typography>{title}</Typography>
         </FlexRow>
         <Divider />
@@ -79,8 +75,11 @@ export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBanner
       </FlexRow>
 
       <Button variant='transparent' padding='0' onClick={onClose}>
-        <Icon src='/assets/icons/close.svg' alt='close' />
+        <Image src='/assets/icons/close.svg' alt='close' width={24} height={24} style={{ filter: 'invert(100%)' }} />
       </Button>
     </Container>
   );
 };
+
+// as default, so we can use dynamic import in app/layout.tsx
+export default AnnouncementBanner;

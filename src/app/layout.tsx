@@ -3,11 +3,15 @@ import dynamic from 'next/dynamic';
 import { CAREERS_LINK } from '@/constants';
 import { getAllBlogs } from '@/libs/markdown';
 import PlausibleProvider from 'next-plausible';
-import { AnnouncementBanner, Footer, Header } from '@/containers';
 
 const ThemeProvider = dynamic(() => import('@/styles/theme-provider'));
 const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
 const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
+
+const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
+const Header = dynamic(() => import('@/containers/header'));
+const Footer = dynamic(() => import('@/containers/footer'));
+
 const Scripts = dynamic(() => import('@/libs/scripts'));
 
 const URI = 'https://odigos.io',

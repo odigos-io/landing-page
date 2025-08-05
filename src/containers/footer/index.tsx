@@ -60,7 +60,7 @@ const RightsReserved = styled(Text)<{ $isMobile: boolean }>`
 const YEAR = new Date().getFullYear();
 const COPYRIGHT_TEXT = `© ${YEAR} Odigos. All rights reserved.`;
 
-export const Footer = () => {
+const Footer = () => {
   const { isMobile } = useMobile();
 
   return (
@@ -98,3 +98,6 @@ export const Footer = () => {
     </Container>
   );
 };
+
+// as default, so we can use dynamic import in app/layout.tsx
+export default Footer;
