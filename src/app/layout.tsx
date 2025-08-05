@@ -11,6 +11,7 @@ const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
 const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
 const Header = dynamic(() => import('@/containers/header'));
 const Footer = dynamic(() => import('@/containers/footer'));
+const Modals = dynamic(() => import('@/containers/modals'));
 
 const Scripts = dynamic(() => import('@/libs/scripts'));
 
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <Header />
                 {children}
                 <Footer />
+                <Modals />
               </BlogsProvider>
             </MobileProvider>
           </ThemeProvider>

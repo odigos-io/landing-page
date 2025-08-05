@@ -1,8 +1,6 @@
 export * from './announcement-banner';
 export * from './blog-single';
 export * from './blogs-all';
-export * from './contact-us-modal';
-export * from './demo-modal';
 export * from './faq';
 export * from './footer';
 export * from './header';
@@ -13,6 +11,7 @@ export * from './how-it-works';
 export * from './how-to-start';
 export * from './investors';
 export * from './learn-more-blogs';
+export * from './modals';
 export * from './navigation';
 export * from './plans';
 export * from './principles';

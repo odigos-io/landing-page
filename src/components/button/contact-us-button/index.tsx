@@ -1,18 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, type ButtonProps } from '..';
-import { ContactUsModal } from '@/containers';
+import { ModalType, useModalStore } from '@/store';
 
 export const ContactUsButton = (props: ButtonProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setModal } = useModalStore();
 
   return (
-    <>
-      <Button onClick={() => setIsModalOpen(true)} {...props}>
-        Contact Us
-      </Button>
-      <ContactUsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </>
+    <Button onClick={() => setModal(ModalType.CONTACT_US)} {...props}>
+      Contact Us
+    </Button>
   );
 };

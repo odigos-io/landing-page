@@ -1,18 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
-import { DemoModal } from '@/containers';
+import React from 'react';
 import { Button, type ButtonProps } from '..';
+import { ModalType, useModalStore } from '@/store';
 
 export const WatchDemoButton = (props: ButtonProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setModal } = useModalStore();
 
   return (
-    <>
-      <Button variant='secondary' leftIconSrc='/assets/icons/play_media.svg' onClick={() => setIsModalOpen(true)} {...props}>
-        Watch Demo
-      </Button>
-      <DemoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </>
+    <Button variant='secondary' leftIconSrc='/assets/icons/play_media.svg' onClick={() => setModal(ModalType.DEMO)} {...props}>
+      Watch Demo
+    </Button>
   );
 };
