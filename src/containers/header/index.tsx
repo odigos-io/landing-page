@@ -5,8 +5,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
+import { CAREERS_LINK } from '@/constants';
 import { Navigation } from '../navigation';
 import { Button, ContactUsButton } from '@/components';
+import { AnnouncementBanner } from '../announcement-banner';
+
+const Sticky = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
 
 const Container = styled.header<{ $isMobile: boolean }>`
   display: flex;
@@ -38,14 +46,18 @@ const Header = () => {
   }, [isMobile, isMenuOpen]);
 
   return (
-    <Container $isMobile={isMobile}>
-      <Logo isMobile={isMobile} />
-      <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
-      <ContainMobileButtons>
-        <ContactUsButton />
-        {isMobile && <MenuIcon toggleMenu={toggleMenu} />}
-      </ContainMobileButtons>
-    </Container>
+    <Sticky>
+      <AnnouncementBanner title='Odigos is hiring!' link={CAREERS_LINK} linkText='Learn more' />
+
+      <Container $isMobile={isMobile}>
+        <Logo isMobile={isMobile} />
+        <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
+        <ContainMobileButtons>
+          <ContactUsButton />
+          {isMobile && <MenuIcon toggleMenu={toggleMenu} />}
+        </ContainMobileButtons>
+      </Container>
+    </Sticky>
   );
 };
 

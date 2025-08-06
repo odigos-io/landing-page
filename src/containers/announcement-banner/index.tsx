@@ -46,7 +46,7 @@ const initState = () => {
   return stored === 'true' || false;
 };
 
-const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) => {
+export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) => {
   const { isMobile } = useMobile();
   const [isClosed, setIsClosed] = useState(initState());
 
@@ -80,6 +80,3 @@ const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) 
     </Container>
   );
 };
-
-// as default, so we can use dynamic import in app/layout.tsx
-export default AnnouncementBanner;
