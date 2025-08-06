@@ -35,6 +35,9 @@ export const BlogSingle = ({ blog }: BlogSingleProps) => {
               background: theme.colors.black,
               color: theme.colors.off_white,
             }}
+            wrapperElement={{
+              'data-color-mode': 'dark',
+            }}
           />
         </div>
 
