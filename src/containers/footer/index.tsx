@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
-import { Subscribe } from './subscribe';
+// import { Subscribe } from './subscribe';
 import { Navigation } from '../navigation';
 import { Button, Text } from '@/components';
 import { ConstrainedWrapper, FlexColumn, FlexRow } from '@/styles';
@@ -74,7 +74,7 @@ const Footer = () => {
               </Link>
               <Navigation flexDirection={isMobile ? 'column' : 'row'} gap={12} />
             </FlexColumn>
-            <Subscribe />
+            {/* <Subscribe /> */}
           </TopHalf>
 
           <FlexColumn $gap={4}>
