@@ -79,7 +79,7 @@ export const FaqCard = ({ title, description }: (typeof FAQ)[number]) => {
         <Text ref={titleRef} fontSize={isMobile ? '18px' : '28px'}>
           {title}
         </Text>
-        <Text ref={descriptionRef} fontSize={isMobile ? '16px' : '18px'} color={theme.colors.off_white + hexOpacity['080']} lineHeight='150%'>
+        <Text ref={descriptionRef} fontSize={isMobile ? '16px' : '18px'} color={theme.colors.off_white + hexOpacity['080']} lineHeight='160%'>
           {description}
         </Text>
       </ContainTexts>

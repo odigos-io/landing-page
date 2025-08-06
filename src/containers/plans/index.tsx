@@ -24,7 +24,7 @@ const Title = styled(Text)<{ $isMobile: boolean }>`
 
 const ContainTables = styled(FlexColumn)<{ $isMobile: boolean }>`
   padding: ${({ $isMobile }) => ($isMobile ? '32px 16px' : '52px 64px')};
-  gap: 32px;
+  gap: 12px;
 `;
 
 const Table = styled(FlexColumn)`
@@ -32,6 +32,7 @@ const Table = styled(FlexColumn)`
 `;
 
 const SubTitle = styled(Text)<{ $isMobile: boolean }>`
+  margin-top: 24px;
   font-size: ${({ $isMobile }) => ($isMobile ? '20px' : '32px')};
   font-weight: 700;
   line-height: 115%;

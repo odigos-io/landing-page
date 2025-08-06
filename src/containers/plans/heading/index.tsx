@@ -8,7 +8,7 @@ import { FlexColumn, FlexRow } from '@/styles';
 import styled, { useTheme } from 'styled-components';
 import { Button, ContactUsButton, Text } from '@/components';
 
-const Container = styled(FlexRow)<{ $isMobile: boolean }>`
+const Container = styled(FlexRow)<{ $isMobile: boolean; $isSticky: boolean }>`
   position: sticky;
   top: 0;
   z-index: 1;
@@ -16,7 +16,7 @@ const Container = styled(FlexRow)<{ $isMobile: boolean }>`
   gap: ${({ $isMobile }) => ($isMobile ? 12 : 16)}px;
   padding: ${({ $isMobile }) => ($isMobile ? '12px' : '24px 32px')};
   background-color: ${({ theme }) => theme.colors.black_lighter};
-  border-radius: 24px;
+  border-radius: ${({ $isSticky }) => ($isSticky ? '0 0 12px 12px' : '24px')};
   box-shadow: 0px 8px 13.3px 0px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(2.35px);
 `;
@@ -65,7 +65,7 @@ export const Heading = () => {
   }, [isSticky, clientHeightBeforeSticky]);
 
   return (
-    <Container ref={containerRef} $isMobile={isMobile}>
+    <Container ref={containerRef} $isMobile={isMobile} $isSticky={isSticky}>
       {!isMobile && (
         <FlexRow $gap={12} $align='center'>
           <Image src='/assets/icons/swap.svg' alt='arrows' width={48} height={48} />

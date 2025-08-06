@@ -34,7 +34,7 @@ const RowTag = styled(Text)<{ $isMobile: boolean; $isOss: boolean }>`
   align-items: center;
   justify-content: center;
 
-  height: 24px;
+  min-height: 24px;
   padding: 0 12px;
   border-radius: 12px;
   border: 1px solid ${({ $isOss, theme }) => ($isOss ? 'transparent' : theme.colors.purple_darker)};
@@ -42,7 +42,7 @@ const RowTag = styled(Text)<{ $isMobile: boolean; $isOss: boolean }>`
   color: ${({ theme }) => theme.colors.off_white};
   font-size: 14px;
   font-weight: 500;
-  text-wrap: nowrap;
+  text-wrap: ${({ $isMobile }) => ($isMobile ? 'wrap' : 'nowrap')};
 `;
 
 const RowBoolean = ({ isMobile, value }: { isMobile: boolean; value: boolean }) => {
