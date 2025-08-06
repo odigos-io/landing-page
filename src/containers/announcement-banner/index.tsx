@@ -17,6 +17,7 @@ const Container = styled.div<{ $isMobile: boolean }>`
   position: sticky;
   top: 0;
   z-index: 10;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,7 +47,7 @@ const initState = () => {
   return stored === 'true' || false;
 };
 
-export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) => {
+const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) => {
   const { isMobile } = useMobile();
   const [isClosed, setIsClosed] = useState(initState());
 
@@ -80,3 +81,6 @@ export const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBanner
     </Container>
   );
 };
+
+// as default, so we can use dynamic import in app/layout.tsx
+export default AnnouncementBanner;
