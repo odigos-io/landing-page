@@ -22,13 +22,15 @@ const VideoWrapper = styled.div<{
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.black_lighter};
+  border: 1px solid ${({ theme }) => theme.colors.grey_darker};
   background: ${({ theme }) => `linear-gradient(90deg, ${theme.colors.cyan} 0.48%, ${theme.colors.purple} 47.12%, ${theme.colors.pink} 100%)`};
   overflow: hidden;
 `;
 
 const Video = styled.video<{ $isLoaded: boolean }>`
   opacity: ${({ $isLoaded }) => ($isLoaded ? 1 : 0)};
+  border: 1px solid ${({ theme }) => theme.colors.grey_darker};
+  border-radius: 12px;
 `;
 
 const BottomWrapper = styled.div<{ $isMobile: boolean }>`

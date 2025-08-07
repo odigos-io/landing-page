@@ -34,6 +34,7 @@ const ModalContainer = styled.div<{ $isMobile: boolean }>`
   z-index: 1001;
   transform: translate(-50%, -50%);
   background-color: ${({ theme }) => theme.colors.black_lighter};
+  border: 1px solid ${({ theme }) => theme.colors.grey_darker};
   border-radius: 32px;
   max-height: 85vh;
   max-width: 85vw;
