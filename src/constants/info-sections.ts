@@ -1,4 +1,4 @@
-export const HOW_IT_WORKS = [
+export const INFO_SECTIONS_1 = [
   {
     title: 'Eliminate Blind Spots Everywhere',
     descriptions: [

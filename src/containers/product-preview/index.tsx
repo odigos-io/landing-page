@@ -11,12 +11,12 @@ const Container = styled.div<{ $isMobile: boolean }>`
 export const ProductPreview = () => {
   const { isMobile, screenWidth } = useMobile();
 
-  const imageWidth = screenWidth * (isMobile ? 0.8 : 0.6);
+  const imageWidth = screenWidth * (isMobile ? 0.95 : 0.6);
   const imageHeight = imageWidth / (1440 / 900);
 
   return (
     <Container $isMobile={isMobile}>
-      <Image src='/assets/renders/product_preview.png' alt='product preview' width={imageWidth} height={imageHeight} objectFit='contain' />
+      <Image src='/assets/renders/product_preview.png' alt='product' width={imageWidth} height={imageHeight} objectFit='contain' />
     </Container>
   );
 };

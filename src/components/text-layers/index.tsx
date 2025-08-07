@@ -11,6 +11,8 @@ interface TitleSettingProps {
   largeTitle?: boolean;
   extraLargeTitle?: boolean;
   minWidth?: string;
+  maxWidth?: string;
+  center?: boolean;
 }
 
 interface TextLayersProps {
@@ -34,12 +36,13 @@ const Container = styled.div`
   gap: 24px;
 `;
 
-const Titles = styled.div<{ $isMobile: boolean; $minWidth?: string }>`
+const Titles = styled.div<{ $isMobile: boolean; $minWidth?: string; $maxWidth?: string; $center?: boolean }>`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: ${({ $center }) => ($center ? 'center' : 'flex-start')};
   gap: 10px;
   min-width: ${({ $minWidth }) => $minWidth || 'unset'};
+  max-width: ${({ $maxWidth }) => $maxWidth || 'unset'};
 `;
 
 const MiniTitle = styled(Text)<{ $isMobile: boolean }>`
@@ -54,11 +57,13 @@ const Title = styled(Text)<{
   $isSmall?: boolean;
   $isLarge?: boolean;
   $isExtraLarge?: boolean;
+  $center?: boolean;
 }>`
   font-weight: 600;
   font-size: ${({ $isMobile, $isSmall, $isLarge, $isExtraLarge }) => getTitleFontSize($isMobile, $isSmall, $isLarge, $isExtraLarge)};
   line-height: 110%;
   letter-spacing: ${({ $isMobile }) => ($isMobile ? '-0.8px' : '-1.72px')};
+  text-align: ${({ $center }) => ($center ? 'center' : 'start')};
 `;
 
 const DescriptionsWrapper = styled.div<{
@@ -87,10 +92,10 @@ export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, desc
   return (
     <Container>
       {miniTitle || title ? (
-        <Titles $isMobile={isMobile} $minWidth={titleSettings?.minWidth}>
+        <Titles $isMobile={isMobile} $minWidth={titleSettings?.minWidth} $maxWidth={titleSettings?.maxWidth} $center={titleSettings?.center}>
           {miniTitle && <MiniTitle $isMobile={isMobile}>{miniTitle}</MiniTitle>}
           {title && (
-            <Title $isMobile={isMobile} $isSmall={titleSettings?.smallTitle} $isLarge={titleSettings?.largeTitle} $isExtraLarge={titleSettings?.extraLargeTitle}>
+            <Title $isMobile={isMobile} $isSmall={titleSettings?.smallTitle} $isLarge={titleSettings?.largeTitle} $isExtraLarge={titleSettings?.extraLargeTitle} $center={titleSettings?.center}>
               {title}
             </Title>
           )}
@@ -108,6 +113,7 @@ export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, desc
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                textAlign: titleSettings?.center ? 'center' : 'start',
               }}
             />
           ) : null}

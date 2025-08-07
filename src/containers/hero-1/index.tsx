@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import { Render3D } from '@/components';
-import { ProductPreview } from './product-preview';
+import { ProductPreview } from '../product-preview';
 import { TextAndButtons } from './text-and-buttons';
 
 const Relative = styled.div`
@@ -21,13 +21,13 @@ const Absolute = styled.div`
 `;
 
 const DesktopContent = styled.div`
-  height: 85%;
-  width: calc(100% - 64px);
-  padding: 0 0 0 64px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 82px;
+  height: 85%;
+  width: calc(100% - 64px);
+  padding: 0 0 0 64px;
 `;
 
 const MobileContent = styled.div`
