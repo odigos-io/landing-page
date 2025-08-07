@@ -98,6 +98,7 @@ export const Card = ({ image, imageWidth, imageHeight, onImageError, title, larg
           width={imageWidth}
           height={imageHeight}
           fill={!imageWidth || !imageHeight}
+          sizes='(max-width: 992px) 100vw, 350px'
           onError={() => onImageError?.()}
           style={{
             objectFit: 'cover',

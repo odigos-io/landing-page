@@ -30,16 +30,7 @@ export const TrustedBy = () => {
         <FlexRow $gap={24} $wrap='wrap' $align='center' $justify='center'>
           {CUSTOMERS.map(({ src, alt, href, width, height }) => (
             <Button key={alt} href={href} variant='transparent' padding='0'>
-              <Image
-                src={src}
-                alt={alt}
-                width={width}
-                height={height}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
-              />
+              <Image src={src} alt={alt} width={width} height={height} />
             </Button>
           ))}
         </FlexRow>

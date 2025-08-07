@@ -139,31 +139,9 @@ export const Button = ({
     <Container $hide={hide}>
       {tag && <Tag>{tag}</Tag>}
       <Btn type={type} $isMobile={isMobile} $variant={variant} $fontSize={fontSize} $padding={padding} $fullWidth={fullWidth} onClick={type === 'button' ? handleClick : undefined} {...props}>
-        {leftIconSrc && (
-          <Image
-            src={leftIconSrc}
-            alt='left-icon'
-            width={iconSize}
-            height={iconSize}
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-            }}
-          />
-        )}
+        {leftIconSrc && <Image src={leftIconSrc} alt='left-icon' width={iconSize} height={iconSize} />}
         {label || children}
-        {rightIconSrc && (
-          <Image
-            src={rightIconSrc}
-            alt='right-icon'
-            width={iconSize}
-            height={iconSize}
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-            }}
-          />
-        )}
+        {rightIconSrc && <Image src={rightIconSrc} alt='right-icon' width={iconSize} height={iconSize} />}
       </Btn>
     </Container>
   );

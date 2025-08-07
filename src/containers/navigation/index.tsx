@@ -58,18 +58,7 @@ export const Navigation = ({ isMenu, isMenuOpen, closeMenu, flexDirection, gap =
     <NavigationItems $isMenu={isMenu} $isMenuOpen={isMenuOpen} $flexDirection={flexDirection} $gap={gap} onClick={closeMenu}>
       {NAVIGATION.map(({ label, iconSrc, href }) => (
         <NavigationItem key={label} variant='transparent' href={href} $isMenu={isMenu} padding='0'>
-          {iconSrc && (
-            <Image
-              src={iconSrc}
-              alt={label}
-              width={24}
-              height={24}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-          )}
+          {iconSrc && <Image src={iconSrc} alt={label} width={24} height={24} />}
           {label}
         </NavigationItem>
       ))}

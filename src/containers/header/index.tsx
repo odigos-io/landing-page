@@ -51,33 +51,13 @@ const Header = () => {
 
 const Logo = ({ isMobile }: { isMobile: boolean }) => (
   <Link href='/'>
-    <Image
-      src='/assets/odigos/logo_text_white.svg'
-      alt='logo'
-      width={isMobile ? 107 : 143}
-      height={isMobile ? 24 : 32}
-      priority
-      style={{
-        maxWidth: '100%',
-        height: 'auto',
-      }}
-    />
+    <Image src='/assets/odigos/logo_text_white.svg' alt='logo' width={isMobile ? 107 : 143} height={isMobile ? 24 : 32} priority />
   </Link>
 );
 
 const MenuIcon = ({ toggleMenu }: { toggleMenu: () => void }) => (
   <Button variant='transparent' padding='0' onClick={toggleMenu}>
-    <Image
-      src='/assets/icons/menu.svg'
-      alt='menu'
-      width={24}
-      height={24}
-      priority
-      style={{
-        maxWidth: '100%',
-        height: 'auto',
-      }}
-    />
+    <Image src='/assets/icons/menu.svg' alt='menu' width={24} height={24} />
   </Button>
 );
 

@@ -42,8 +42,6 @@ export const TeamCard = ({ image, name, title, description, linkedin }: (typeof 
           height={64}
           style={{
             borderRadius: '100%',
-            maxWidth: '100%',
-            height: 'auto',
           }}
         />
         <FlexColumn $gap={8}>

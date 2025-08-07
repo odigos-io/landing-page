@@ -72,8 +72,6 @@ const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) 
             height={24}
             style={{
               filter: 'invert(100%)',
-              maxWidth: '100%',
-              height: 'auto',
             }}
           />
           <Typography>{title}</Typography>
@@ -91,8 +89,6 @@ const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) 
           height={24}
           style={{
             filter: 'invert(100%)',
-            maxWidth: '100%',
-            height: 'auto',
           }}
         />
       </Button>

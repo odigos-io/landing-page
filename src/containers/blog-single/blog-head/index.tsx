@@ -90,7 +90,9 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
           suppressHydrationWarning
           src={blogImage}
           alt={blog.title}
+          priority
           fill
+          sizes='(max-width: 992px) 100vw, 1080px'
           onError={() => setBlogImageInvalid(true)}
           style={{
             objectFit: 'cover',
@@ -108,8 +110,6 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
           onError={() => setAuthorImageInvalid(true)}
           style={{
             borderRadius: '100%',
-            maxWidth: '100%',
-            height: 'auto',
             objectFit: 'cover',
             objectPosition: 'center',
           }}

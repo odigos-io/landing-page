@@ -30,18 +30,7 @@ export const Team = () => {
         <FlexColumn $gap={isMobile ? 24 : 32}>
           <MiniTitle $isMobile={isMobile}>THE TEAM</MiniTitle>
           <FlexRow $gap={32}>
-            {!isMobile && (
-              <Image
-                src='/assets/odigos/logo_white_filled.svg'
-                alt='logo'
-                width={142}
-                height={142}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
-              />
-            )}
+            {!isMobile && <Image src='/assets/odigos/logo_white_filled.svg' alt='logo' width={142} height={142} />}
             <Title $isMobile={isMobile}>From the minds shaping OpenTelemetry and eBPF, the Odigos team makes your entire system observable in minutes.</Title>
           </FlexRow>
         </FlexColumn>

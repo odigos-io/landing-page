@@ -83,16 +83,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         <ModalContent $isMobile={isMobile}>
           {title && (
             <FlexRow $gap={isMobile ? 12 : 24} $align='center'>
-              <Image
-                src='/assets/odigos/logo_white.svg'
-                alt='logo'
-                width={isMobile ? 28 : 42}
-                height={isMobile ? 28 : 42}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
-              />
+              <Image src='/assets/odigos/logo_white.svg' alt='logo' width={isMobile ? 28 : 42} height={isMobile ? 28 : 42} />
               <Text fontSize={isMobile ? 32 : 40} fontWeight={600} noWrap>
                 {title}
               </Text>

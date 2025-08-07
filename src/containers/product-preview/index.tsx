@@ -19,6 +19,7 @@ export const ProductPreview = () => {
       <Image
         src='/assets/renders/product_preview.png'
         alt='product'
+        priority
         width={imageWidth}
         height={imageHeight}
         style={{

@@ -68,16 +68,7 @@ export const Heading = () => {
     <Container ref={containerRef} $isMobile={isMobile} $isSticky={isSticky}>
       {!isMobile && (
         <FlexRow $gap={12} $align='center'>
-          <Image
-            src='/assets/icons/swap.svg'
-            alt='arrows'
-            width={48}
-            height={48}
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-            }}
-          />
+          <Image src='/assets/icons/swap.svg' alt='arrows' width={48} height={48} />
           <Text fontSize={42} fontWeight={600} lineHeight='130%'>
             Compare Plans
           </Text>
@@ -98,16 +89,7 @@ const Plan = ({ isOss, isSticky }: { isOss: boolean; isSticky: boolean }) => {
   return (
     <ContainPlan $isMobile={isMobile}>
       <FlexRow $gap={12} $align='center'>
-        <Image
-          src={isOss ? '/assets/github.svg' : '/assets/icons/enterprise.svg'}
-          alt=''
-          width={36}
-          height={36}
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-          }}
-        />
+        <Image src={isOss ? '/assets/github.svg' : '/assets/icons/enterprise.svg'} alt='' width={36} height={36} />
         <Text fontSize={isMobile ? 16 : 24} fontWeight={600} lineHeight='120%'>
           {isOss ? 'OPEN SOURCE' : 'ENTERPRISE'}
         </Text>
