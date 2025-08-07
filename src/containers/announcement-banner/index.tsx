@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { FlexRow } from '@/styles';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';

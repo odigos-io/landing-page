@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { TEAM } from '@/constants';
 import { Button, Text } from '@/components';
 import styled, { useTheme } from 'styled-components';

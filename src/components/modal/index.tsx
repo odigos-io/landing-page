@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { Text } from '../text';
 import { Button } from '../button';
 import { useMobile } from '@/contexts';

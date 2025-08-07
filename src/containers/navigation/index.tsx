@@ -1,7 +1,7 @@
 'use client';
 
 import React, { CSSProperties } from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { hexOpacity } from '@/styles';
 import { Button } from '@/components';
 import { NAVIGATION } from '@/constants';

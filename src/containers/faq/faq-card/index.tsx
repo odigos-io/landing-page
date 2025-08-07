@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { FAQ } from '@/constants';
 import { Text } from '@/components';
 import { useMobile } from '@/contexts';

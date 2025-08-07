@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useMobile } from '@/contexts';
 import { CUSTOMERS } from '@/constants';
 import { Button, Text } from '@/components';

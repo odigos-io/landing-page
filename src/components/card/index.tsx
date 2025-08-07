@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { Tags } from '../tags';
 import { Text } from '../text';
 import styled from 'styled-components';
