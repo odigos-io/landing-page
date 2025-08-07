@@ -40,6 +40,7 @@ export const FilterByTag = ({ blogs }: { blogs: BlogPost[] }) => {
 
   useEffect(() => {
     return () => setFilterByTag(ALL_TAG);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
