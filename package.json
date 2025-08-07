@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",
-    "@splinetool/runtime": "^1.10.39",
+    "@splinetool/runtime": "^1.10.42",
     "@uiw/react-markdown-preview": "^5.1.5",
     "gray-matter": "^4.0.3",
-    "next": "15.4.5",
+    "next": "15.4.6",
     "next-plausible": "^3.12.4",
     "react": "19.1.1",
     "react-dom": "19.1.1",
@@ -27,7 +27,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.4.5",
+    "eslint-config-next": "15.4.6",
     "typescript": "^5"
   }
 }
