@@ -37,6 +37,43 @@ const Container = styled.p<{
   ${({ $textDecoration }) => `text-decoration: ${$textDecoration};`}
 `;
 
+const getStrongsFromText = (text: string) => {
+  const strongs = text.match(/<strong[^>]*>(.*?)<\/strong>/g);
+  return strongs?.map((strong) => {
+    const label = strong.replace(/<strong[^>]*>/, '').replace(/<\/strong>/, '');
+
+    return {
+      original: strong,
+      label,
+    };
+  });
+};
+
+const renderText = (text: string): { mappedText: ReactNode; hasStrongs: boolean } => {
+  const strongs = getStrongsFromText(text);
+  strongs?.forEach((strong, i) => {
+    text = text.replace(strong.original, `STRONG-${i}###`);
+  });
+
+  const mappedText = text.split(' ').map((word) => {
+    if (word.includes('STRONG-')) {
+      const [strongId, postLabel] = word.split('###');
+      const entry = strongs?.[parseInt(strongId.replace('STRONG-', ''))];
+
+      return (
+        <Fragment key={word}>
+          <strong style={{ fontWeight: 600 }}>{entry?.label}</strong>
+          {postLabel ? `${postLabel} ` : ' '}
+        </Fragment>
+      );
+    }
+
+    return word + ' ';
+  });
+
+  return { mappedText, hasStrongs: !!strongs?.length };
+};
+
 const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noWrap, fontSize = 16, fontWeight, lineHeight, letterSpacing, textAlign, textDecoration, ...props }, ref) => {
   const textArray = useMemo(() => {
     const str =
@@ -63,12 +100,15 @@ const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noW
       $textDecoration={textDecoration}
       {...props}
     >
-      {textArray.map((str, i) => (
-        <Fragment key={`text-${i}-${str}`}>
-          {str}
-          {i !== textArray.length - 1 ? <br /> : null}
-        </Fragment>
-      ))}
+      {textArray.map((str, i) => {
+        const { mappedText } = renderText(str);
+        return (
+          <Fragment key={`text-${i}-${str}`}>
+            {mappedText}
+            {i !== textArray.length - 1 ? <br /> : null}
+          </Fragment>
+        );
+      })}
     </Container>
   );
 });

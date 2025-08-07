@@ -3,9 +3,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
-import { INFO_SECTIONS_1 } from '@/constants';
+import { INFO_SECTIONS_2 } from '@/constants';
+import { Render3D, TextLayers } from '@/components';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
-import { Button, Render3D, TextLayers } from '@/components';
 
 const Section = styled.section<{ $isMobile: boolean; $inverted: boolean }>`
   width: 100%;
@@ -29,14 +29,9 @@ export const InfoSections2 = () => {
   return (
     <ConstrainedWrapper $isMobile={isMobile}>
       <FlexColumn $gap={isMobile ? 32 : 64}>
-        {INFO_SECTIONS_1.map(({ title, descriptions, threeDAsset, buttonText, buttonHref }, i) => (
+        {INFO_SECTIONS_2.map(({ title, descriptions, bullets, threeDAsset }, i) => (
           <Section key={`section-${title}`} $isMobile={isMobile} $inverted={i % 2 === 1}>
-            <FlexColumn $gap={24}>
-              <TextLayers title={title} descriptions={descriptions} />
-              <Button rightIconSrc='/assets/icons/arrow.svg' href={buttonHref}>
-                {buttonText}
-              </Button>
-            </FlexColumn>
+            <TextLayers title={title} descriptions={descriptions} bullets={bullets} />
 
             <Wrap3D $isMobile={isMobile}>
               <Render3D scene={threeDAsset} width={isMobile ? 300 : 580} height={isMobile ? 300 : 580} />

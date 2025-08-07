@@ -32,7 +32,7 @@ export const Render3D = ({ scene, width, height }: Render3DProps) => {
         !! renderOnDemand={false} is important to prevent WebGL errors, for example:
         "WebGL: INVALID_FRAMEBUFFER_OPERATION: Framebuffer is incomplete: Attachment has zero size."
       */}
-      <Spline scene={scene} renderOnDemand={false} />
+      {scene && <Spline scene={scene} renderOnDemand={false} />}
     </Container>
   );
 };

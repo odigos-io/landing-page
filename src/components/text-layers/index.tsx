@@ -21,6 +21,7 @@ interface TextLayersProps {
   typistTitles?: string[];
   titleSettings?: TitleSettingProps;
   descriptions?: string[];
+  bullets?: string[];
 }
 
 const getTitleFontSize = (isMobile: boolean, isSmall?: boolean, isLarge?: boolean, isExtraLarge?: boolean) => {
@@ -66,9 +67,7 @@ const Title = styled(Text)<{
   text-align: ${({ $center }) => ($center ? 'center' : 'start')};
 `;
 
-const DescriptionsWrapper = styled.div<{
-  $isMobile: boolean;
-}>`
+const DescriptionsWrapper = styled.div<{ $isMobile: boolean }>`
   max-width: ${({ $isMobile }) => ($isMobile ? 'unset' : '50vw')};
   display: flex;
   flex-direction: column;
@@ -79,13 +78,22 @@ const DescriptionsWrapper = styled.div<{
 
 const Description = styled(Text)<{ $isMobile: boolean }>`
   color: ${({ theme }) => theme.colors.off_white};
-  font-weight: 400;
   font-size: ${({ $isMobile }) => ($isMobile ? '16px' : '18px')};
   line-height: ${({ $isMobile }) => ($isMobile ? '28px' : '32px')};
   letter-spacing: ${({ $isMobile }) => ($isMobile ? '0.3px' : '0.4px')};
 `;
 
-export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, descriptions }: TextLayersProps) => {
+const BulletsWrapper = styled.ul`
+  list-style: disc;
+  list-style-position: outside;
+  margin: 0;
+  padding-left: 24px;
+  color: ${({ theme }) => theme.colors.off_white};
+`;
+
+const Bullet = styled.li``;
+
+export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, descriptions, bullets }: TextLayersProps) => {
   const theme = useTheme();
   const { isMobile } = useMobile();
 
@@ -128,6 +136,18 @@ export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, desc
             </Description>
           ))}
         </DescriptionsWrapper>
+      ) : null}
+
+      {bullets?.length ? (
+        <BulletsWrapper>
+          {bullets.map((bullet) => (
+            <Bullet key={`bullet-${bullet}`}>
+              <Description $isMobile={isMobile} fontWeight={200}>
+                {bullet}
+              </Description>
+            </Bullet>
+          ))}
+        </BulletsWrapper>
       ) : null}
     </Container>
   );
