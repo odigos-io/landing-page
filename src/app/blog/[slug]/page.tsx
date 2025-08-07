@@ -20,7 +20,7 @@ const Blog = () => {
 
   return (
     <>
-      <BlogSingle blog={blog} />
+      {blog && <BlogSingle blog={blog} />}
       <LearnMoreBlogs title='Related Articles' />
       <Hero3 />
     </>
