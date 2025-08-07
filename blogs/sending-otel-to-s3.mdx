@@ -1,0 +1,100 @@
+---
+pubDate: 'Mar 26 2023'
+author: Eden Federman
+authorImage: '/assets/team/eden_federman.jpg'
+image: '/assets/blogs/sending-otel-to-s3/cover.png'
+title: 'Sending OpenTelemetry data to AWS S3'
+description: 'This blog post will show you how to send OpenTelemetry data to Amazon Web Services S3'
+metadata: Learn how to generate and send OpenTelemetry data to Amazon Web Services S3 using Odigos, improving your data storage and analysis capabilities.
+category: 'Odigos'
+tags: [odigos, open-source, s3, aws, opentelemetry]
+---
+
+In this blog post, we will show you how to generate and send OpenTelemetry data to Amazon Web Services S3 using Odigos.
+
+Since version v0.1.46, Odigos supports sending OpenTelemetry data to AWS S3. For the first time, you can use S3 to store your OpenTelemetry data, and build custom solutions on top of it.
+
+## Creating an S3 bucket
+
+First, you need to create an S3 bucket. You can do it using the [AWS Console](https://console.aws.amazon.com/s3) or using the [aws](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) command line tool. For example, to create a bucket named **otel-data** in the **us-east-1** region, run the following command:
+
+```console
+aws s3api create-bucket \
+--bucket otel-data \
+--region us-east-1
+```
+
+## Creating an EKS cluster
+
+Next, you need to create an EKS cluster. You can do it using the [AWS Console](https://console.aws.amazon.com/eks) or using the [eksctl](https://eksctl.io/) command line tool. For example, to create a cluster named **otel-cluster** in the **us-east-1** region, run the following command:
+
+```console
+eksctl create cluster \
+--name otel-cluster \
+--region us-east-1 \
+--version 1.24 \
+--nodegroup-name standard-workers \
+--node-type t3.medium \
+--nodes 3 \
+--nodes-min 1 \
+--nodes-max 4 \
+--managed
+
+eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=otel-cluster --approve
+```
+
+## Installing demo application
+
+For this demo, we will use the [emojivoto](https://github.com/BuoyantIO/emojivoto) application. You can install it by running the following command:
+
+```console
+kubectl apply -k github.com/odigos-io/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
+```
+
+## Installing Odigos
+
+After installing the demo application, you need to install Odigos to send data to S3.
+The simplest way to install Odigos is via the helm chart by executing the following commands:
+
+```console
+helm repo add odigos https://odigos-io.github.io/odigos-charts/
+helm install my-odigos odigos/odigos --namespace odigos-system --create-namespace
+```
+
+## Configuring IAM and RBAC
+
+In order to send data to S3, Odigos needs to have the right permissions. Create a new IAM policy named **odigos-s3** with the following content:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:PutObjectAcl", "s3:GetObject", "s3:GetObjectAcl", "s3:DeleteObject"],
+      "Resource": ["arn:aws:s3:::otel-data", "arn:aws:s3:::otel-data/*"]
+    }
+  ]
+}
+```
+
+Next, you need to configure the IAM role to be used by Odigos. You can do it by creating a service account and attaching the IAM role to it (replace the account ID with your own):
+
+```console
+eksctl create iamserviceaccount \
+--name default \
+--namespace odigos-system \
+--cluster otel-cluster \
+--attach-policy-arn arn:aws:iam::123456789012:policy/odigos-s3 \
+--override-existing-serviceaccounts \
+--region=us-east-1 \
+--approve
+```
+
+## Sending data to S3
+
+The last step is to configure Odigos to send data to S3. This can be done easily by accessing the Odigos UI and creating a new AWS S3 destination. Make sure to specify the bucket name you created earlier.
+
+## Summary
+
+In this blog post, we showed you how to send OpenTelemetry data to AWS S3 using Odigos, an open-source observability control plane. Odigos supports more that 20 different destinations, including cloud providers like Azure and Google Cloud, as well as open-source solutions like Loki, Elasticsearch, and Prometheus.

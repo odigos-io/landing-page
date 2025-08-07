@@ -1,0 +1,208 @@
+---
+pubDate: 'Oct 1 2024'
+author: Daria Dovzhikova
+authorImage: ''
+image: ''
+title: 'Odigos VM Agent: Simplified Distributed Tracing for Virtual Machines'
+description: 'Odigos VM Agent is a powerful tool that brings automatic, code-free distributed tracing to Linux virtual machines, simplifying observability for systemd-managed services across multiple programming languages.'
+metadata: 'Odigos VM Agent: Simplified Distributed Tracing for Virtual Machines'
+category: 'Observability'
+tags: [odigos, observability]
+---
+
+Odigos VM Agent brings powerful distributed tracing to Linux virtual machines, eliminating the need to install, manage, and maintain OpenTelemetry in each specific service. Designed specifically for VMs, this agent supports seamless integration with systemd-managed services.
+
+With this solution, developers can trace VM-based applications across multiple languages (Go, Python, Java, etc.) without modifying the code. Its lightweight nature ensures minimal overhead, making it ideal for teams running workloads in environments with systemd-managed services.
+
+## Key Features:
+
+- **Enterprise Support:** Backed by OpenTelemetry maintainers.
+- **Automatic Instrumentation:** No need to modify your application's code. Odigos VM Agent automatically instruments services running on your VM.
+- **Systemd Integration:** The agent monitors systemd services, ensuring comprehensive tracing of applications managed by systemd.
+- **Multi-Language Support:** Supports a variety of programming languages including Go, Java, and Python.
+- **Easy Configuration:** Manage settings through simple YAML configuration files, making it easy to specify which services to monitor and where to export traces.
+- **User-Friendly:** No need to be an expert in observability or OpenTelemetry.
+- **eBPF-Based Tracing:** Utilizes eBPF for efficient and low-overhead tracing of applications.
+- **Seamless Export:** Easily send traces to popular backends like Jaeger, Tempo, DataDog, Chronosphere, and more for visualization and analysis.
+
+## Getting Started with Odigos VM Agent:
+
+### 1. Preparation:
+
+a. Ensure you have a Linux VM running systemd-managed services.
+
+b. Obtain an Odigos Pro license:
+
+- [Contact us to acquire a license key](https://odigos.slack.com/).
+
+c. Add the Odigos repository to your package manager:
+
+For Debian-based systems (Ubuntu, Debian):
+
+```bash
+curl -fsSL <https://packages.odigos.io/odigos.gpg> | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/odigos.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/odigos.gpg] <https://packages.odigos.io/deb> stable main" | sudo tee /etc/apt/sources.list.d/odigos.list > /dev/null
+sudo apt update
+
+```
+
+For RPM-based systems (CentOS, RHEL, Fedora):
+
+```bash
+sudo rpm --import <https://packages.odigos.io/odigos.gpg>
+sudo tee /etc/yum.repos.d/odigos.repo << EOF
+[odigos]
+name=Odigos Repository
+baseurl=https://packages.odigos.io/rpm
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.odigos.io/odigos.gpg
+EOF
+sudo dnf check-update
+
+```
+
+### 2. Installation:
+
+a. Install the Odigos VM Agent package:
+
+For Debian-based systems:
+
+```bash
+sudo apt install odigos-vm-agent
+
+```
+
+For RPM-based systems:
+
+```bash
+sudo dnf install odigos-vm-agent
+
+```
+
+b. Enable and start the Odigos VM Agent service:
+
+```bash
+sudo systemctl enable odigos-vm-agent
+sudo systemctl start odigos-vm-agent
+
+```
+
+### 3. Configuration:
+
+a. Open the configuration file:
+
+```bash
+sudo nano /etc/odigos/vm-agent.yaml
+
+```
+
+b. Add your Odigos Pro license key:
+
+```yaml
+license:
+  key: 'your-license-key-here'
+```
+
+c. Specify the services you want to instrument:
+
+```yaml
+sources:
+  systemd:
+    services:
+      - service_name: <my-service>
+        instrumentation_disabled: false
+    ignored_service_names:
+      - rsyslog
+      - ssh
+      - networkd-dispatcher
+```
+
+d. Add the destination:
+
+```yaml
+destinations:
+  - name: jaeger
+    type: jaeger
+    config:
+      JAEGER_URL: <jaeger-collector-otlp-grpc-endpoint>
+    signals:
+      - TRACES
+```
+
+For the full list of destinations please see [the list of supported backends](https://docs.odigos.io/backends-overview) and how to configure them.
+
+e. Save and close the file (in nano, press Ctrl+X, then Y, then Enter).
+
+### 4. Activating the Pipeline:
+
+a. Reload the VM Agent to apply the new configuration:
+
+```bash
+sudo systemctl reload odigos-vm-agent
+
+```
+
+b. Verify the agent is running correctly:
+
+```bash
+sudo systemctl status odigos-vm-agent
+
+```
+
+### 5. Generating and Viewing Data:
+
+a. Run your applications and generate some traffic.
+
+b. Check the Odigos VM Agent logs for any issues:
+
+```bash
+sudo journalctl -u odigos-vm-agent
+
+```
+
+c. Access your chosen observability tool (e.g., Jaeger, Tempo) to view the collected traces:
+
+- Open your observability tool's UI (typically accessible via a web browser).
+- Search for traces related to your instrumented services.
+- Analyze the traces to gain insights into your application's performance and behavior.
+
+### 6. Troubleshooting:
+
+If you encounter any issues:
+
+a. Check the Odigos VM Agent logs:
+
+```bash
+sudo journalctl -u odigos-vm-agent -f
+
+```
+
+b. Ensure your license key is correct and not expired.
+
+c. Verify that the configured services are running and managed by systemd.
+
+d. Check network connectivity to your specified exporter endpoint.
+
+e. For further assistance, [contact us](https://odigos.slack.com/).
+
+Remember to regularly update the Odigos VM Agent to benefit from the latest features and improvements:
+
+For Debian-based systems:
+
+```bash
+sudo apt update
+sudo apt upgrade odigos-vm-agent
+
+```
+
+For RPM-based systems:
+
+```bash
+sudo dnf upgrade odigos-vm-agent
+
+```
+
+By following these detailed steps, you should have the Odigos VM Agent up and running, automatically collecting and exporting traces from your specified services. This setup provides you with powerful observability capabilities for your virtual machine environment, allowing you to monitor and optimize your applications effectively.
+
+Odigos VM Agent removes the barriers to effective observability in virtual machine environments. By automating the instrumentation process and integrating seamlessly with your existing tools, it allows you to focus on what matters most—delivering reliable and high-performing applications.

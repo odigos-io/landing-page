@@ -1,0 +1,53 @@
+---
+pubDate: 'Feb 13 2023'
+author: Eden Federman
+authorImage: '/assets/team/eden_federman.jpg'
+image: ''
+title: 'Odigos Version v0.1.4'
+description: 'This blog will introduce Odigos version v0.1.4'
+metadata: Explore the latest features, improvements, and additions in Odigos version v0.1.4, including ARM support and new destinations.
+category: 'Odigos Versions'
+tags: [observability, odigos, ebpf, opentelemetry, arm]
+---
+
+Today we are excited to announce version **v0.1.4** of Odigos, an open-source project that automatically generates distributed traces for all applications within minutes without code changes.
+
+This version focuses on ARM Support, new destinations and stability improvements.
+
+## ARM Support
+
+ARM processors are becoming more and more popular and are now supported by Odigos. You can now run Odigos on the latest Macbooks, AWS Graviton, and other ARM based processors. This is a big step forward for Odigos that now supports applications written in Java, Go, Python, NodeJS and .NET on both x86-64 and ARM.
+
+## New Destinations
+
+Odigos now supports the following new destinations:
+
+- **[Google Cloud Storage](https://docs.odigos.io/backends/gcs) (managed)** - Supported signals: Traces and Logs
+- **[Azure Blob Storage](https://docs.odigos.io/backends/azureblob) (managed)** - Supported signals: Traces and Logs
+- **[Sentry](https://docs.odigos.io/backends/sentry) (managed)** - Supported signals: Traces
+- **[Elasticsearch](https://docs.odigos.io/backends/elasticsearch) (Open source)** - Supported signals: Traces and Logs
+
+## Stability Improvements
+
+We worked hard on improving the stability of Odigos. We listened to feedback from our community and made a lot of improvements to the stability of Odigos. Improvements include: supporting older linux kernels, avoiding windows-based nodes, better memory allocation, and more.
+
+## How to install
+
+The easiest way to install Odigos is to use the [Odigos Helm Chart](https://github.com/odigos-io/odigos-charts):
+
+```bash
+helm repo add odigos https://odigos-io.github.io/odigos-charts/
+helm install my-odigos odigos/odigos --namespace odigos-system --create-namespace
+```
+
+For users upgrading from previous versions, make sure to run the following command before upgrading:
+
+```bash
+helm repo update
+```
+
+## Community feedback & contributions
+
+We are always looking for feedback and contributions from the community. If you have any feedback or would like to contribute, please join our [Slack](https://join.slack.com/t/odigos/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A) or check out our [GitHub repository](https://github.com/odigos-io/odigos).
+
+We recently added more issues labeled with [good first issue](https://github.com/odigos-io/odigos/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) which are great for new contributors to get started.

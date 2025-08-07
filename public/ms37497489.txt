@@ -1,5 +1,0 @@
-{
-  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
-  "Domain": "odigos.io",
-  "Id": "b549d56c-b790-4903-97be-0a58b8e45bac"
-}

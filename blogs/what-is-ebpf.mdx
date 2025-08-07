@@ -1,0 +1,166 @@
+---
+pubDate: 'May 7 2025'
+author: Eden Federman
+authorImage: '/assets/team/eden_federman.jpg'
+image: '/assets/blogs/what-is-ebpf/cover.png'
+title: 'What is eBPF?'
+description: 'How Odigos Uses It for Zero-Instrumentation Tracing'
+metadata: ebpf
+category: 'Odigos'
+tags: [odigos, ebpf]
+---
+
+If you’ve ever tried to get distributed tracing working across a microservices setup, you know the pain. You’ve wrestled with SDKs, fought through language-specific quirks, and managed sidecar agents that were supposed to “just work”—but didn’t. Most teams either give up halfway or settle for a patchy, high-overhead solution.
+
+The ask is simple: **“Can I get high-fidelity traces from every service—without touching the code?”**
+
+**Yes, you can. And the answer is eBPF.**
+
+Odigos packages the power of eBPF into a production-ready platform that skips the mess and delivers results out of the box. You deploy it once into your Kubernetes cluster—and it starts tracing immediately.
+
+And the results go beyond convenience:
+
+- **Cut your MTTR** by surfacing the root cause of issues across services—no manual stitching required
+- **Boost developer velocity** by removing the need to maintain tracing libraries across codebases
+- **Increase observability coverage** across your stack without slowing down your workloads
+- **Lower your overhead**—both compute and cognitive—by tracing directly in the kernel with zero agents or sidecars
+
+Let’s break down how Odigos uses eBPF to deliver full-fidelity, zero-instrumentation tracing at scale.
+
+## **eBPF: Observability at the OS Layer**
+
+eBPF (extended Berkeley Packet Filter) is a programmable execution engine embedded in the Linux kernel. It lets you run verified, sandboxed programs on specific kernel or user-space events—without loading new kernel modules or modifying the kernel source.
+
+This means you can trace syscalls, network traffic, file I/O, and even user-space function calls in real time, directly from the OS. And you can do it without modifying or recompiling your applications.
+
+![](/assets/blogs/what-is-ebpf/whatisebpf_image1.png)
+
+Image Source: https://ebpf.io/what-is-ebpf/
+
+You’ve probably heard of eBPF in the context of networking tools like Cilium or profiling tools like BPFTrace. But the same foundation enables full-fidelity observability—with significantly less friction than traditional methods.
+
+## **Where Does eBPF Hook In?**
+
+To collect meaningful telemetry, you need to hook into the right events. eBPF gives you several entry points depending on what you’re trying to capture.
+
+| Hook Type        | Description                               | Use Case                           |
+| :--------------- | :---------------------------------------- | :--------------------------------- |
+| `kprobes`        | Hooks into kernel function calls          | Monitor syscalls like `accept()`   |
+| `uprobes`        | Hooks into user-space function calls      | Trace runtime libs like `net/http` |
+| `tracepoints`    | Predefined static hooks inside the kernel | Observe process scheduling, I/O    |
+| `XDP / tc`       | Attach to network packet ingress/egress   | Low-latency packet inspection      |
+| `socket filters` | Intercept raw packets on sockets          | Capture DNS or TCP flow metadata   |
+
+If you've worked with `strace`, imagine having that kind of syscall visibility—but without breaking anything, and with the ability to ship metrics and traces from it.
+
+## **A First Look at a Real eBPF Tracing Program**
+
+Here's a simple example that uses the syscall execve to start a new process:
+
+| C/C++ SEC("kprobe/sys_enter_execve")int trace_exec(struct pt_regs \*ctx) { char comm\[256\]; bpf_get_current_comm(\&comm, sizeof(comm)); bpf_printk("Process executed: %s\\n", comm); return 0;} |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+
+You can attach this to a running system and start capturing command execution in real time. The advantage of using this method is there are no agents, and nearly zero overhead to run. eBPF programs like this are safe (thanks to kernel verification), fast (JIT-compiled), and incredibly powerful when paired with the right user-space tools.
+
+![](/assets/blogs/what-is-ebpf/whatisebpf_image2.png)
+
+Image source: https://ebpf.io/static/1a1bb6f1e64b1ad5597f57dc17cf1350/6515f/go.png
+
+## **Why Observability with eBPF Works So Well**
+
+Traditional observability stacks have three big problems:
+
+1. They rely on SDKs you need to embed
+2. They often require agents you need to manage,
+3. OTel and other configurations that rarely stay in sync.
+
+eBPF solves all three problems, and does so in a way that is both secure and efficient.
+
+Let’s look at this in the context of the goals we have for an ideal observability stack.
+
+|        Observability Goal         | How Odigos \+ eBPF Delivers                                                                                                                                   |
+| :-------------------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     **Zero instrumentation**      | No SDKs. No code changes. Odigos uses eBPF to hook into syscalls and language runtimes directly—your app stays untouched.                                     |
+|       **Minimal overhead**        | eBPF probes run only when needed, execute in kernel space, and skip expensive context switches. Odigos keeps the performance hit near zero.                   |
+|      **Full context access**      | Odigos captures rich trace data at the kernel level—arguments, PIDs, thread IDs, latency. It stitches these into complete, end-to-end traces across services. |
+| **Language and runtime agnostic** | Whether it’s Go, Python, Node.js, or a legacy binary, Odigos traces it all without needing app-level hooks or runtime-specific agents.                        |
+|       **Secure by design**        | eBPF programs pass through the Linux kernel verifier. That means bounded loops, safe memory access, and built-in sandboxing—Odigos stays safe, even in prod.  |
+
+You’ve probably added an OpenTelemetry SDK to a service before. It worked—until the version drifted or you forgot to propagate headers. With eBPF, you capture everything from outside the app, making it more reliable across polyglot environments.
+
+## **How Odigos Uses eBPF to Power Distributed Tracing**
+
+This is where things get interesting. Odigos takes raw eBPF tracing power and packages it into a production-grade system that just works.
+
+You don’t write probes, build BPF loaders, or debug syscall maps. You deploy Odigos into your Kubernetes cluster, and it starts collecting distributed traces—automatically.
+
+### **Here’s how the flow works**
+
+![](/assets/blogs/what-is-ebpf/whatisebpf_image3.png)
+
+Odigos ensures that you get complete context propagation and additional capabilities to help cut down on the amount of trace data needed to hit your performance and reliability goals.
+
+## **Example: HTTP Tracing in Go Without Code**
+
+Let’s say you’ve got a Go service using the standard `net/http` package. With Odigos, the uprobe is attached to `ServeHTTP`. The eBPF probe:
+
+1. Captures the function start timestamp.
+2. Extracts request metadata (method, path).
+3. Observes response flush or `WriteHeader`.
+4. Computes latency.
+5. Sends a fully structured OpenTelemetry span to your backend.
+
+Result:
+
+| JSON{ "name": "HTTP GET /users", "attributes": { "http.method": "GET", "http.url": "/users", "http.status_code": 200 }, "duration_ms": 23.2} |
+| :------------------------------------------------------------------------------------------------------------------------------------------- |
+
+No changes to your Go code. No config files. No redeployments.
+
+## **Why This Scales Better Than SDKs or Agents**
+
+SDKs fall short in multi-language environments. You can’t expect every team to implement tracing the same way. Agents often struggle with context propagation and don’t give syscall-level visibility.
+
+Here’s how Odigos solves the problem using eBPF:
+
+| Feature                        | SDKs / Agents           | Odigos \+ eBPF     |
+| :----------------------------- | ----------------------- | ------------------ |
+| Code changes required          | Yes                     | None               |
+| Per-language setup             | Yes                     | One setup fits all |
+| Cross-service span correlation | Manual context handling | Automatic          |
+| Runtime coverage (Go, Python…) | Varies                  | Built-in           |
+| Performance impact             | Medium                  | Low                |
+
+You simply have to deploy Odigos once in Kubernetes. It auto-detects languages, hooks the right probes, and routes spans to any OpenTelemetry-compatible backend.
+
+## **The Future of eBPF-Powered Observability**
+
+This space is moving fast—and Odigos is keeping pace.
+
+### **CO-RE Support**
+
+eBPF programs now use BTF (BPF Type Format) and CO-RE (Compile Once, Run Everywhere). Odigos builds probes that run across kernel versions without recompilation.
+
+### **Ecosystem Maturity**
+
+If you’ve explored eBPF before, you’ve likely run into tools like:
+
+- **Pixie** – live in-cluster observability
+- **Cilium** – service mesh and network security
+- **BPFTrace** – ad hoc kernel-level tracing
+
+Odigos complements these by focusing on distributed tracing, exporting OpenTelemetry-compliant data with runtime enrichment.
+
+### **Kubernetes-Native by Default**
+
+Odigos understands workloads, not just processes. It knows how to correlate traces across pods, containers, and services—out of the box. That means fewer manual configurations and faster insight.
+
+## **The Bottom Line: Observability Without the Pain**
+
+You’ve probably been there—chasing down broken traces, patching SDKs, managing sidecars that promised simplicity but delivered overhead. It’s frustrating. And it pulls you away from what matters: understanding and fixing real issues in production.
+
+eBPF flips that script. It gives you deep, reliable observability without touching your code. Odigos takes that raw power and makes it frictionless—auto-detecting, auto-tracing, and exporting clean OpenTelemetry data that just works.
+
+No agents. No instrumentation. No more compromises.
+
+If you're done struggling with your tooling, [try Odigos](https://docs.odigos.io/quickstart/introduction). Let the kernel trace it for you.

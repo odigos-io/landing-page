@@ -1,0 +1,35 @@
+---
+pubDate: 'Sep 26 2024'
+author: Daria Dovzhikova
+authorImage: ''
+image: ''
+title: 'Deprecation Announcement: Odigos Helm Charts Repository'
+description: 'Announcing the deprecation of the Odigos Helm Charts repository. Learn how to switch to the new Helm repository. Follow our easy migration steps to ensure your observability setup stays updated with the latest features and support.'
+metadata: Announcing the deprecation of the Odigos Helm Charts repository. Learn how to switch to the new Helm repository. Follow our easy migration steps to ensure your observability setup stays updated with the latest features and support.
+category: 'Odigos'
+tags: [odigos, helm]
+---
+
+We are announcing the deprecation of the **Odigos Helm Charts** repository in favor of our new Helm repository URL. As of November, 2024, the previous repository (`odigos-charts`) will no longer receive updates or maintenance. To ensure continued support and access to the latest features, please update your configurations to use the new Helm repository at:
+
+🔗 **New Repository URL**: https://odigos-io.github.io/odigos
+
+### What Does This Mean for You?
+
+If you are currently using the old repository, please make sure to switch to the new one by following these steps:
+
+```bash
+helm repo add odigos https://odigos-io.github.io/odigos/ --force-update
+```
+
+This deprecation affects all users who rely on `odigos-charts`. Moving forward, we will focus all new development and updates on the new repository.
+
+### Why the Change?
+
+This update helps streamline our development efforts and ensures a more sustainable and secure environment for the Helm charts. The new repository also benefits from improved infrastructure and better maintenance tools.
+
+### Next Steps
+
+We encourage all users to make the switch as soon as possible to avoid disruptions in updates, bug fixes, and new feature releases. For any assistance or questions during the migration process, please reach out to our community or check out the documentation at [Odigos Docs](https://docs.odigos.io/overview).
+
+Thank you for your understanding and continued support.
