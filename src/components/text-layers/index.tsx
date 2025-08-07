@@ -28,11 +28,11 @@ const getTitleFontSize = (isMobile: boolean, isSmall?: boolean, isLarge?: boolea
   return isMobile ? (isSmall ? '20px' : isExtraLarge ? '40px' : '32px') : isSmall ? '32px' : isExtraLarge ? '60px' : isLarge ? '56px' : '48px';
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $center?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: ${({ $center }) => ($center ? 'center' : 'flex-start')};
   align-self: stretch;
   gap: 24px;
 `;
@@ -98,7 +98,7 @@ export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, desc
   const { isMobile } = useMobile();
 
   return (
-    <Container>
+    <Container $center={titleSettings?.center}>
       {miniTitle || title ? (
         <Titles $isMobile={isMobile} $minWidth={titleSettings?.minWidth} $maxWidth={titleSettings?.maxWidth} $center={titleSettings?.center}>
           {miniTitle && <MiniTitle $isMobile={isMobile}>{miniTitle}</MiniTitle>}
