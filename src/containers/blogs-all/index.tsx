@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { BlogCard, Text } from '@/components';
+import { FilterByTag } from './filter-by-tag';
 import { useBlogs, useMobile } from '@/contexts';
+import { ALL_TAG, useFilterStore } from '@/store';
 import { ConstrainedWrapper, FlexRow } from '@/styles';
-import { ALL_TAG, FilterByTag } from './filter-by-tag';
 
 const Title = styled(Text)<{ $isMobile: boolean }>`
   max-width: ${({ $isMobile }) => ($isMobile ? 'unset' : '50vw')};
@@ -18,9 +19,8 @@ const Title = styled(Text)<{ $isMobile: boolean }>`
 export const BlogsAll = () => {
   const { blogs } = useBlogs();
   const { isMobile } = useMobile();
-  const [selectedTag, setSelectedTag] = useState(ALL_TAG);
-
-  const filteredBlogs = useMemo(() => blogs.filter((blog) => selectedTag === ALL_TAG || blog.tags?.includes(selectedTag)), [blogs, selectedTag]);
+  const { filterByTag } = useFilterStore();
+  const filteredBlogs = blogs.filter((blog) => filterByTag === ALL_TAG || blog.tags?.includes(filterByTag));
 
   return (
     <div>
@@ -28,7 +28,7 @@ export const BlogsAll = () => {
         <Title $isMobile={isMobile}>Discover our latest articles and insights.</Title>
       </ConstrainedWrapper>
 
-      <FilterByTag selectedTag={selectedTag} setSelectedTag={setSelectedTag} />
+      <FilterByTag blogs={blogs} />
 
       <ConstrainedWrapper $isMobile={isMobile}>
         <FlexRow $gap={12} $wrap='wrap' $justify='center'>

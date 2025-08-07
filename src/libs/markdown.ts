@@ -18,7 +18,7 @@ const getFile = (slug: string): string => {
   return file;
 };
 
-const getBlogBySlug = (slug: string): BlogPost => {
+export const getBlogBySlug = (slug: string): BlogPost => {
   const fileContents = getFile(slug);
   const { data, content } = matter(fileContents);
 
