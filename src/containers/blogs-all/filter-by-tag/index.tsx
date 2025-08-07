@@ -45,10 +45,10 @@ export const FilterByTag = ({ selectedTag, setSelectedTag }: FilterByTagProps) =
 
   return (
     <Container $isMobile={isMobile}>
-      <ConstrainedWrapper $isMobile={isMobile}>
-        <FlexColumn $gap={isMobile ? 24 : 42}>
+      <ConstrainedWrapper $isMobile={isMobile} $paddingTop={24} $paddingBottom={24}>
+        <FlexColumn $gap={12}>
           <FlexRow $gap={isMobile ? 12 : 24} $wrap='wrap' $justify='center'>
-            {[{ tag: ALL_TAG, count: blogs.length }].concat(showMore ? aggregatedTags : aggregatedTags.slice(0, isMobile ? 7 : 11)).map(({ tag, count }) => (
+            {[{ tag: ALL_TAG, count: blogs.length }].concat(showMore ? aggregatedTags : aggregatedTags.slice(0, isMobile ? 3 : 4)).map(({ tag, count }) => (
               <FlexRow key={tag} $gap={isMobile ? 4 : 12} $align='center' onClick={() => setSelectedTag((prev) => (prev === tag ? ALL_TAG : tag))}>
                 <Tag $isMobile={isMobile} $isSelected={selectedTag === tag}>
                   {tag}
@@ -58,10 +58,8 @@ export const FilterByTag = ({ selectedTag, setSelectedTag }: FilterByTagProps) =
                 </Count>
               </FlexRow>
             ))}
-          </FlexRow>
 
-          <FlexRow $justify='flex-end'>
-            <Button variant='transparent' rightIconSrc={`/assets/icons/${showMore ? 'minus' : 'plus'}.svg`} onClick={() => setShowMore((prev) => !prev)}>
+            <Button variant='transparent' rightIconSrc={`/assets/icons/${showMore ? 'minus' : 'plus'}.svg`} padding='0' onClick={() => setShowMore((prev) => !prev)}>
               Show {showMore ? 'Less' : 'More'}
             </Button>
           </FlexRow>
