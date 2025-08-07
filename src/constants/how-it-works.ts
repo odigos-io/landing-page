@@ -1,47 +1,42 @@
 export const HOW_IT_WORKS = [
   {
-    title: 'Instant implementation',
+    title: 'Eliminate Blind Spots Everywhere',
     descriptions: [
-      'Odigos first scans and recognizes running applications using eBPF,',
-      'Odigos auto-instruments any application written in Java, Python, NodeJS, .NET, Go, PHP & Ruby.',
-      'Odigos continuously instruments new code ensuring end-to-end tracing for all new deployments.',
+      'Odigos captures traces from every service automatically. No code, no coverage gaps. Even hard-to-instrument environments like Go, Rust, C++, and databases are fully visible from day one.',
     ],
     threeDAsset: 'https://prod.spline.design/uyAqwZ1i4V9GHgps/scene.splinecode',
     buttonText: 'Deploy Instantly',
     buttonHref: '',
   },
   {
-    title: 'Unprecedented Telemetry',
+    title: 'Blazing Fast, Zero Overhead',
     descriptions: [
-      'Deeper Observability — Odigos generates distributed traces across your entire architecture, including database internals and message queues.',
-      'Dynamic Instrumentation — Enables the addition of new attributes to traces at runtime, such as SQL queries, HTTP payloads and Kafka messages.',
+      'Using eBPF, Odigos instruments every service with <1% CPU impact with no latency penalties. Built for scale, it runs safely in production without slowing apps down, even in the most demanding, high-throughput environments.',
     ],
     threeDAsset: 'https://prod.spline.design/uyAqwZ1i4V9GHgps/scene.splinecode',
     buttonText: 'Explore Insights',
     buttonHref: '',
   },
   {
-    title: 'Superior Performance',
-    descriptions: [
-      'Traditional auto-instrumentation solutions add significant performance overhead. Using eBPF, Odigos instruments applications with less then 1% performance impact.',
-      'eBPF-based auto-instrumentation is over 20x faster than manual code instrumentation.',
-    ],
+    title: 'Zero-Code, Full-Stack Observability in Minutes',
+    descriptions: ['Leverages eBPF technology to automatically instrument applications without modifying codebases or redeploying services.'],
     threeDAsset: 'https://prod.spline.design/uyAqwZ1i4V9GHgps/scene.splinecode',
     buttonText: 'See Benchmark',
     buttonHref: '',
   },
   {
-    title: 'Collectors Management',
-    descriptions: ['Odigos configures, deploys and auto-scales OpenTelemetry collectors, simplifying telemetry data aggregation and processing.'],
+    title: 'Multi-Cluster Visibility & Centralized Management',
+    descriptions: [
+      'Managing observability across multiple Kubernetes clusters shouldn’t be painful. Odigos Enterprise includes first-class multi-cluster support, allowing centralized policy management,global observability rollouts, and real-time instrumentation visibility across environments.',
+    ],
     threeDAsset: 'https://prod.spline.design/uyAqwZ1i4V9GHgps/scene.splinecode',
     buttonText: 'Automate Setup',
     buttonHref: '',
   },
   {
-    title: 'Avoid Vendor Lock-in',
+    title: 'Flexible Telemetry Pipelines with Odigos Actions',
     descriptions: [
-      'Odigos generates traces in OpenTelemetry format, ensuring compatibility with all major monitoring backends and preventing vendor lock-in.',
-      'Odigos works alongside existing monitoring tools, supporting over 30 managed and open-source solutions.',
+      'Odigos Actions let you enrich, route, and transform telemetry on the fly—without code. Customize pipelines, apply filters, and fan out OTLP data to multiple destinations instantly, all through declarative YAML policies.',
     ],
     threeDAsset: 'https://prod.spline.design/uyAqwZ1i4V9GHgps/scene.splinecode',
     buttonText: 'Choose Freely',

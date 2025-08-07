@@ -7,11 +7,12 @@ import { HOW_IT_WORKS } from '@/constants';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
 import { Button, Render3D, TextLayers } from '@/components';
 
-const Section = styled.section<{ $isMobile: boolean }>`
+const Section = styled.section<{ $isMobile: boolean; $inverted: boolean }>`
   width: 100%;
   display: flex;
-  flex-direction: ${({ $isMobile }) => ($isMobile ? 'column-reverse' : 'row')};
+  flex-direction: ${({ $isMobile, $inverted }) => ($isMobile ? 'column-reverse' : $inverted ? 'row-reverse' : 'row')};
   align-items: ${({ $isMobile }) => ($isMobile ? 'flex-start' : 'center')};
+  justify-content: space-between;
   gap: 12px;
 `;
 
@@ -36,8 +37,8 @@ export const HowItWorks = () => {
           }}
         />
 
-        {HOW_IT_WORKS.map(({ title, descriptions, threeDAsset, buttonText, buttonHref }) => (
-          <Section key={`section-${title}`} $isMobile={isMobile}>
+        {HOW_IT_WORKS.map(({ title, descriptions, threeDAsset, buttonText, buttonHref }, i) => (
+          <Section key={`section-${title}`} $isMobile={isMobile} $inverted={i % 2 === 1}>
             <FlexColumn $gap={24}>
               <TextLayers title={title} descriptions={descriptions} />
               <Button rightIconSrc='/assets/icons/arrow.svg' href={buttonHref}>
