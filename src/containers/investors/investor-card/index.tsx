@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { Text } from '@/components';
 import { useMobile } from '@/contexts';
 import { INVESTORS } from '@/constants';
@@ -36,7 +36,16 @@ export const InvestorCard = ({ image, imageWidth, imageHeight, name, description
     <Container $isMobile={isMobile} onClick={() => handleHrefClick(url, router)} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <FlexRow $gap={isMobile ? 24 : 32} $align='flex-start'>
         <WrapImage $isMobile={isMobile} $isHovered={isHovered}>
-          <Image src={image} alt={name} width={(imageWidth || 80) / (isMobile ? 1.5 : 1)} height={(imageHeight || 80) / (isMobile ? 1.5 : 1)} />
+          <Image
+            src={image}
+            alt={name}
+            width={(imageWidth || 80) / (isMobile ? 1.5 : 1)}
+            height={(imageHeight || 80) / (isMobile ? 1.5 : 1)}
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
         </WrapImage>
 
         <FlexColumn $gap={8}>

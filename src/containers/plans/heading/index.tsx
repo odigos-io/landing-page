@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { useMobile } from '@/contexts';
 import { GITHUB_LINK } from '@/constants';
 import { FlexColumn, FlexRow } from '@/styles';
@@ -68,13 +68,21 @@ export const Heading = () => {
     <Container ref={containerRef} $isMobile={isMobile} $isSticky={isSticky}>
       {!isMobile && (
         <FlexRow $gap={12} $align='center'>
-          <Image src='/assets/icons/swap.svg' alt='arrows' width={48} height={48} />
+          <Image
+            src='/assets/icons/swap.svg'
+            alt='arrows'
+            width={48}
+            height={48}
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
           <Text fontSize={42} fontWeight={600} lineHeight='130%'>
             Compare Plans
           </Text>
         </FlexRow>
       )}
-
       <ContainPlans $isMobile={isMobile}>
         <Plan isOss={true} isSticky={isSticky} />
         <Plan isOss={false} isSticky={isSticky} />
@@ -90,14 +98,21 @@ const Plan = ({ isOss, isSticky }: { isOss: boolean; isSticky: boolean }) => {
   return (
     <ContainPlan $isMobile={isMobile}>
       <FlexRow $gap={12} $align='center'>
-        <Image src={isOss ? '/assets/github.svg' : '/assets/icons/enterprise.svg'} alt='' width={36} height={36} />
+        <Image
+          src={isOss ? '/assets/github.svg' : '/assets/icons/enterprise.svg'}
+          alt=''
+          width={36}
+          height={36}
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
         <Text fontSize={isMobile ? 16 : 24} fontWeight={600} lineHeight='120%'>
           {isOss ? 'OPEN SOURCE' : 'ENTERPRISE'}
         </Text>
       </FlexRow>
-
       {!isSticky && <Text color={theme.colors.off_white}>{isOss ? 'Zero-code distributed tracing.' : 'Mission critical distributed tracing.'}</Text>}
-
       {isOss ? (
         <PlanButton variant='secondary' href={GITHUB_LINK}>
           Go to GitHub

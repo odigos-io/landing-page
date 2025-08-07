@@ -1,6 +1,6 @@
 'use client';
 
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { useMobile } from '@/contexts';
 import styled from 'styled-components';
 
@@ -16,7 +16,17 @@ export const ProductPreview = () => {
 
   return (
     <Container $isMobile={isMobile}>
-      <Image src='/assets/renders/product_preview.png' alt='product' width={imageWidth} height={imageHeight} objectFit='contain' />
+      <Image
+        src='/assets/renders/product_preview.png'
+        alt='product'
+        width={imageWidth}
+        height={imageHeight}
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+          objectFit: 'contain',
+        }}
+      />
     </Container>
   );
 };

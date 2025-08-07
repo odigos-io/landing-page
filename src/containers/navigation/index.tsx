@@ -1,7 +1,7 @@
 'use client';
 
 import React, { CSSProperties } from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { hexOpacity } from '@/styles';
 import { Button } from '@/components';
 import { NAVIGATION } from '@/constants';
@@ -58,7 +58,18 @@ export const Navigation = ({ isMenu, isMenuOpen, closeMenu, flexDirection, gap =
     <NavigationItems $isMenu={isMenu} $isMenuOpen={isMenuOpen} $flexDirection={flexDirection} $gap={gap} onClick={closeMenu}>
       {NAVIGATION.map(({ label, iconSrc, href }) => (
         <NavigationItem key={label} variant='transparent' href={href} $isMenu={isMenu} padding='0'>
-          {iconSrc && <Image src={iconSrc} alt={label} width={24} height={24} />}
+          {iconSrc && (
+            <Image
+              src={iconSrc}
+              alt={label}
+              width={24}
+              height={24}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
+          )}
           {label}
         </NavigationItem>
       ))}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { Tags } from '../tags';
 import { Text } from '../text';
 import styled from 'styled-components';
@@ -98,12 +98,15 @@ export const Card = ({ image, imageWidth, imageHeight, onImageError, title, larg
           width={imageWidth}
           height={imageHeight}
           fill={!imageWidth && !imageHeight}
-          objectFit='cover'
-          objectPosition='center'
           onError={() => onImageError?.()}
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
         />
       </TopHalf>
-
       <BottomHalf $isMobile={isMobile} $gap={isMobile ? 24 : 32} $justify='space-between'>
         <FlexColumn $gap={isMobile ? 8 : 16}>
           <Title $isMobile={isMobile} $isHovered={isHovered} $isLarge={largeTitle}>

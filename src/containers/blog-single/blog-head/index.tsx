@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import type { BlogPost } from '@/types';
@@ -86,13 +86,36 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
   return (
     <FlexColumn $gap={isMobile ? 24 : 32}>
       <WrapImage $isMobile={isMobile}>
-        <Image suppressHydrationWarning src={blogImage} alt={blog.title} fill objectFit='cover' objectPosition='center' onError={() => setBlogImageInvalid(true)} />
+        <Image
+          suppressHydrationWarning
+          src={blogImage}
+          alt={blog.title}
+          fill
+          onError={() => setBlogImageInvalid(true)}
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+        />
       </WrapImage>
-
       <Title $isMobile={isMobile}>{blog.title}</Title>
-
       <FlexRow $gap={12} $align='center'>
-        <Image src={authorImage} alt={blog.author || 'Odigos'} width={42} height={42} onError={() => setAuthorImageInvalid(true)} style={{ borderRadius: '100%' }} />
+        <Image
+          src={authorImage}
+          alt={blog.author || 'Odigos'}
+          width={42}
+          height={42}
+          onError={() => setAuthorImageInvalid(true)}
+          style={{
+            borderRadius: '100%',
+            maxWidth: '100%',
+            height: 'auto',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+        />
         <FlexColumn $gap={4}>
           <Text>{blog.author || 'Odigos'}</Text>
           <FlexRow $gap={6} $align='center'>
@@ -102,7 +125,6 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
           </FlexRow>
         </FlexColumn>
       </FlexRow>
-
       <FlexRow $gap={32} $align='center'>
         <Tags tags={tags} indexesOfBoldTags={indexesOfBoldTags} fontSize={isMobile ? 12 : 16} doNotPushToBottom />
         {blog.buttonText && blog.buttonLink && <Button href={blog.buttonLink}>{blog.buttonText}</Button>}

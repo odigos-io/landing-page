@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { useMobile } from '@/contexts';
 import { CUSTOMERS } from '@/constants';
 import { Button, Text } from '@/components';
@@ -30,7 +30,16 @@ export const TrustedBy = () => {
         <FlexRow $gap={24} $wrap='wrap' $align='center' $justify='center'>
           {CUSTOMERS.map(({ src, alt, href, width, height }) => (
             <Button key={alt} href={href} variant='transparent' padding='0'>
-              <Image src={src} alt={alt} width={width} height={height} />
+              <Image
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
+              />
             </Button>
           ))}
         </FlexRow>

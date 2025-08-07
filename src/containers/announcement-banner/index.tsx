@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { FlexRow } from '@/styles';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
@@ -63,10 +63,19 @@ const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) 
   return (
     <Container $isMobile={isMobile}>
       <div />
-
       <FlexRow $gap={isMobile ? 12 : 24} $align='center'>
         <FlexRow $gap={4} $align='center'>
-          <Image src='/assets/icons/flame.svg' alt='flame' width={24} height={24} style={{ filter: 'invert(100%)' }} />
+          <Image
+            src='/assets/icons/flame.svg'
+            alt='flame'
+            width={24}
+            height={24}
+            style={{
+              filter: 'invert(100%)',
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
           <Typography>{title}</Typography>
         </FlexRow>
         <Divider />
@@ -74,9 +83,18 @@ const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) 
           <Typography textDecoration='underline'>{linkText}</Typography>
         </Button>
       </FlexRow>
-
       <Button variant='transparent' padding='0' onClick={onClose}>
-        <Image src='/assets/icons/close.svg' alt='close' width={24} height={24} style={{ filter: 'invert(100%)' }} />
+        <Image
+          src='/assets/icons/close.svg'
+          alt='close'
+          width={24}
+          height={24}
+          style={{
+            filter: 'invert(100%)',
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
       </Button>
     </Container>
   );
