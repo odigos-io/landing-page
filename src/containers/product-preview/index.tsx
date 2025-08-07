@@ -11,7 +11,7 @@ const Container = styled.div<{ $isMobile: boolean }>`
 export const ProductPreview = () => {
   const { isMobile, screenWidth } = useMobile();
 
-  const imageWidth = screenWidth * (isMobile ? 0.95 : 0.6);
+  const imageWidth = screenWidth * (isMobile ? 0.85 : 0.6);
   const imageHeight = imageWidth / (1440 / 900);
 
   return (
@@ -22,8 +22,6 @@ export const ProductPreview = () => {
         width={imageWidth}
         height={imageHeight}
         style={{
-          maxWidth: '100%',
-          height: 'auto',
           objectFit: 'contain',
         }}
       />
