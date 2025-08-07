@@ -93,8 +93,6 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
           fill
           onError={() => setBlogImageInvalid(true)}
           style={{
-            maxWidth: '100%',
-            height: 'auto',
             objectFit: 'cover',
             objectPosition: 'center',
           }}

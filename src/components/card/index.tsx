@@ -97,11 +97,9 @@ export const Card = ({ image, imageWidth, imageHeight, onImageError, title, larg
           alt={title}
           width={imageWidth}
           height={imageHeight}
-          fill={!imageWidth && !imageHeight}
+          fill={!imageWidth || !imageHeight}
           onError={() => onImageError?.()}
           style={{
-            maxWidth: '100%',
-            height: 'auto',
             objectFit: 'cover',
             objectPosition: 'center',
           }}
