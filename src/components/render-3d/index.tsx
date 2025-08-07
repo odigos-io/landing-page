@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useOnScreen } from '@/hooks';
 import styled from 'styled-components';
 import Spline from '@splinetool/react-spline';
 
@@ -26,13 +27,15 @@ const Container = styled.div<{ $width: number; $height: number }>`
 `;
 
 export const Render3D = ({ scene, width, height }: Render3DProps) => {
+  const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>();
+
   return (
-    <Container $width={width} $height={height}>
+    <Container ref={visibleRef} $width={width} $height={height}>
       {/*
         !! renderOnDemand={false} is important to prevent WebGL errors, for example:
         "WebGL: INVALID_FRAMEBUFFER_OPERATION: Framebuffer is incomplete: Attachment has zero size."
       */}
-      {scene && <Spline scene={scene} renderOnDemand={false} />}
+      {scene && isVisible && <Spline scene={scene} renderOnDemand={false} />}
     </Container>
   );
 };
