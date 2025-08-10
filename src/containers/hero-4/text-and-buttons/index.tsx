@@ -36,7 +36,7 @@ export const TextAndButtons = () => {
   return (
     <Container $isMobile={isMobile}>
       <TextLayers
-        title={"You can't fix\nwhat you can't see"}
+        title={"You can't fix,\nwhat you can't see."}
         titleSettings={{
           largeTitle: true,
           center: true,
