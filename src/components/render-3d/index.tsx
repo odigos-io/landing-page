@@ -31,11 +31,7 @@ export const Render3D = ({ scene, width, height }: Render3DProps) => {
 
   return (
     <Container ref={visibleRef} $width={width} $height={height}>
-      {/*
-        !! renderOnDemand={false} is important to prevent WebGL errors, for example:
-        "WebGL: INVALID_FRAMEBUFFER_OPERATION: Framebuffer is incomplete: Attachment has zero size."
-      */}
-      {scene && isVisible && <Spline scene={scene} renderOnDemand={false} />}
+      {scene && isVisible && <Spline scene={scene} renderOnDemand />}
     </Container>
   );
 };
