@@ -20,7 +20,7 @@ export const INFO_SECTIONS_1 = [
   {
     title: 'Zero-Code, Full-Stack Observability in Minutes',
     descriptions: ['Leverages eBPF technology to automatically instrument applications without modifying codebases or redeploying services.'],
-    threeDAsset: '',
+    threeDAsset: 'https://prod.spline.design/eoXyfifhvBJKgWKf/scene.splinecode',
     buttonText: 'See Benchmark',
     buttonHref: '',
   },
