@@ -27,7 +27,7 @@ const Container = styled.div<{ $width: number; $height: number }>`
 `;
 
 export const Render3D = ({ scene, width, height }: Render3DProps) => {
-  const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>(undefined, '512px');
+  const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>(undefined, '256px');
 
   return (
     <Container ref={visibleRef} $width={width} $height={height}>
