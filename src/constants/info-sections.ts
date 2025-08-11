@@ -20,7 +20,7 @@ export const INFO_SECTIONS_1 = [
   {
     title: 'Zero-Code, Full-Stack Observability in Minutes',
     descriptions: ['Leverages eBPF technology to automatically instrument applications without modifying codebases or redeploying services.'],
-    threeDAsset: 'https://prod.spline.design/eoXyfifhvBJKgWKf/scene.splinecode',
+    threeDAsset: 'https://prod.spline.design/SqXWN3hHsZO4jX5f/scene.splinecode',
     buttonText: 'See Benchmark',
     buttonHref: '',
   },
@@ -29,7 +29,7 @@ export const INFO_SECTIONS_1 = [
     descriptions: [
       'Managing observability across multiple Kubernetes clusters shouldn’t be painful. Odigos Enterprise includes first-class multi-cluster support, allowing centralized policy management,global observability rollouts, and real-time instrumentation visibility across environments.',
     ],
-    threeDAsset: '',
+    threeDAsset: 'https://prod.spline.design/jTFjyYgXvk1UplHI/scene.splinecode',
     buttonText: 'Automate Setup',
     buttonHref: '',
   },
