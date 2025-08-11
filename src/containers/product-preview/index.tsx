@@ -2,17 +2,18 @@
 
 import Image from 'next/image';
 import { useMobile } from '@/contexts';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 const Container = styled.div<{ $isMobile: boolean }>`
   overflow: ${({ $isMobile }) => ($isMobile ? 'unset' : 'hidden')};
 `;
 
 export const ProductPreview = () => {
+  const theme = useTheme();
   const { isMobile, screenWidth } = useMobile();
 
-  const imageWidth = screenWidth * (isMobile ? 0.85 : 0.6);
-  const imageHeight = imageWidth / (1440 / 900);
+  const imageWidth = screenWidth * (isMobile ? 0.85 : 0.55);
+  const imageHeight = imageWidth / (3840 / 2160);
 
   return (
     <Container $isMobile={isMobile}>
@@ -24,6 +25,8 @@ export const ProductPreview = () => {
         height={imageHeight}
         style={{
           objectFit: 'contain',
+          borderRadius: '16px',
+          border: `1px solid ${theme.colors.grey_darker}`,
         }}
       />
     </Container>
