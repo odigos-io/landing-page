@@ -38,7 +38,7 @@ export const INFO_SECTIONS_1 = [
     descriptions: [
       'Odigos Actions let you enrich, route, and transform telemetry on the fly—without code. Customize pipelines, apply filters, and fan out OTLP data to multiple destinations instantly, all through declarative YAML policies.',
     ],
-    threeDAsset: '',
+    threeDAsset: 'https://prod.spline.design/C-LbCsM9zsBwo-oQ/scene.splinecode',
     buttonText: 'Choose Freely',
     buttonHref: '',
   },
