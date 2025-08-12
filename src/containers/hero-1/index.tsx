@@ -38,7 +38,7 @@ const MobileContent = styled.div`
 `;
 
 const SCENE = 'https://prod.spline.design/6CWMZMloAJo3I3Z3/scene.splinecode';
-const ASPECT_RATIO = 1440 / 800;
+const ASPECT_RATIO = 1440 / 710;
 
 export const Hero1 = () => {
   const { isMobile, screenWidth } = useMobile();
