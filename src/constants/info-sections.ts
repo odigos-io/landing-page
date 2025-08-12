@@ -1,3 +1,5 @@
+import { ACTIONS_LINK, BENCHMARKS_LINK, INSTALL_LINK, MULTI_CLUSTER_LINK, SYSTEM_REQUIREMENTS_LINK } from './links';
+
 export const INFO_SECTIONS_1 = [
   {
     title: 'Eliminate Blind Spots Everywhere',
@@ -6,7 +8,7 @@ export const INFO_SECTIONS_1 = [
     ],
     threeDAsset: 'https://prod.spline.design/bU2f1E3Zm6bLcJpF/scene.splinecode',
     buttonText: 'Deploy Instantly',
-    buttonHref: '',
+    buttonHref: INSTALL_LINK,
   },
   {
     title: 'Blazing Fast, Zero Overhead',
@@ -14,24 +16,24 @@ export const INFO_SECTIONS_1 = [
       'Using eBPF, Odigos instruments every service with <1% CPU impact with no latency penalties. Built for scale, it runs safely in production without slowing apps down, even in the most demanding, high-throughput environments.',
     ],
     threeDAsset: 'https://prod.spline.design/nqKNxeSS9qMxOg66/scene.splinecode',
-    buttonText: 'Explore Insights',
-    buttonHref: '',
+    buttonText: 'See Benchmarks',
+    buttonHref: BENCHMARKS_LINK,
   },
   {
     title: 'Zero-Code, Full-Stack Observability in Minutes',
     descriptions: ['Leverages eBPF technology to automatically instrument applications without modifying codebases or redeploying services.'],
     threeDAsset: 'https://prod.spline.design/SqXWN3hHsZO4jX5f/scene.splinecode',
-    buttonText: 'See Benchmark',
-    buttonHref: '',
+    buttonText: 'Explore Insights',
+    buttonHref: SYSTEM_REQUIREMENTS_LINK,
   },
   {
     title: 'Multi-Cluster Visibility & Centralized Management',
     descriptions: [
-      'Managing observability across multiple Kubernetes clusters shouldn’t be painful. Odigos Enterprise includes first-class multi-cluster support, allowing centralized policy management,global observability rollouts, and real-time instrumentation visibility across environments.',
+      "Managing observability across multiple Kubernetes clusters shouldn't be painful. Odigos Enterprise includes first-class multi-cluster support, allowing centralized policy management, global observability rollouts, and real-time instrumentation visibility across environments.",
     ],
     threeDAsset: 'https://prod.spline.design/jTFjyYgXvk1UplHI/scene.splinecode',
     buttonText: 'Automate Setup',
-    buttonHref: '',
+    buttonHref: MULTI_CLUSTER_LINK,
   },
   {
     title: 'Flexible Telemetry Pipelines with Odigos Actions',
@@ -40,7 +42,7 @@ export const INFO_SECTIONS_1 = [
     ],
     threeDAsset: 'https://prod.spline.design/C-LbCsM9zsBwo-oQ/scene.splinecode',
     buttonText: 'Choose Freely',
-    buttonHref: '',
+    buttonHref: ACTIONS_LINK,
   },
 ];
 
