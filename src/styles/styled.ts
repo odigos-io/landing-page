@@ -7,8 +7,9 @@ export const ConstrainedWrapper = styled.div<{
   $paddingBottom?: number;
   $paddingLeft?: number;
   $paddingRight?: number;
+  $overrideMaxWidth?: number;
 }>`
-  max-width: ${({ theme }) => theme.sizes.innerContentMaxWidth};
+  max-width: ${({ $overrideMaxWidth, theme }) => ($overrideMaxWidth ? `${$overrideMaxWidth}px` : theme.sizes.innerContentMaxWidth)};
   margin: 0 auto;
   padding-top: ${({ $paddingTop: p, $isMobile }) => (typeof p === 'number' ? p : $isMobile ? 32 : 64)}px;
   padding-bottom: ${({ $paddingBottom: p, $isMobile }) => (typeof p === 'number' ? p : $isMobile ? 32 : 64)}px;

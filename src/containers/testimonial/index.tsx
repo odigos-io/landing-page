@@ -8,10 +8,8 @@ import { ConstrainedWrapper, FlexColumn } from '@/styles';
 import { TESTIMONIAL_AUTHOR_NAME, TESTIMONIAL_AUTHOR_POSITION, TESTIMONIAL_QUOTE } from '@/constants';
 
 const Quote = styled(Text)<{ $isMobile: boolean }>`
-  max-width: ${({ $isMobile }) => ($isMobile ? '350px' : '920px')};
   text-align: center;
-  font-size: ${({ $isMobile }) => ($isMobile ? '18px' : '52px')};
-  font-weight: 500;
+  font-size: ${({ $isMobile }) => ($isMobile ? '18px' : '36px')};
   line-height: 140%;
 `;
 
@@ -34,7 +32,7 @@ export const Testimonial = () => {
   const { isMobile } = useMobile();
 
   return (
-    <ConstrainedWrapper $isMobile={isMobile}>
+    <ConstrainedWrapper $isMobile={isMobile} $overrideMaxWidth={1440}>
       <FlexColumn $gap={isMobile ? 32 : 64} $align='center'>
         <Quote $isMobile={isMobile}>{TESTIMONIAL_QUOTE}</Quote>
         <FlexColumn>
