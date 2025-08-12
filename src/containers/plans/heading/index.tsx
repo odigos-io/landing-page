@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useMobile } from '@/contexts';
 import { GITHUB_LINK } from '@/constants';
 import { FlexColumn, FlexRow } from '@/styles';
-import styled, { useTheme } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
 import { Button, ContactUsButton, Text } from '@/components';
 
 const Container = styled(FlexRow)<{ $isMobile: boolean; $isSticky: boolean }>`
@@ -22,17 +22,26 @@ const Container = styled(FlexRow)<{ $isMobile: boolean; $isSticky: boolean }>`
 `;
 
 const ContainPlans = styled(FlexRow)<{ $isMobile: boolean }>`
+  width: ${({ $isMobile }) => ($isMobile ? '100%' : 'unset')};
   margin-left: ${({ $isMobile }) => ($isMobile ? 'unset' : 'auto')};
   gap: ${({ $isMobile }) => ($isMobile ? 12 : 16)}px;
 `;
 
 const ContainPlan = styled(FlexColumn)<{ $isMobile: boolean }>`
-  width: ${({ $isMobile }) => ($isMobile ? 'calc(50vw - 84px)' : 'calc(350px - 48px)')};
-  padding: 16px 24px;
-  gap: 18px;
-  border-radius: 24px;
+  width: ${({ $isMobile }) => ($isMobile ? 'calc(100% - 24px)' : 'calc(350px - 48px)')};
+  padding: ${({ $isMobile }) => ($isMobile ? '12px' : '24px')};
+  gap: ${({ $isMobile }) => ($isMobile ? 8 : 18)}px;
+  border-radius: ${({ $isMobile }) => ($isMobile ? 12 : 24)}px;
   background: ${({ theme }) => theme.colors.grey_darkest};
   box-shadow: 0px 2px 12.3px 0px rgba(0, 0, 0, 0.25);
+
+  ${({ $isMobile }) =>
+    $isMobile &&
+    css`
+      & button {
+        font-size: 12px;
+      }
+    `}
 `;
 
 const PlanButton = styled(Button)`
@@ -88,16 +97,16 @@ const Plan = ({ isOss, isSticky }: { isOss: boolean; isSticky: boolean }) => {
 
   return (
     <ContainPlan $isMobile={isMobile}>
-      <FlexRow $gap={12} $align='center'>
-        <Image src={isOss ? '/assets/github.svg' : '/assets/icons/enterprise.svg'} alt='' width={36} height={36} />
-        <Text fontSize={isMobile ? 16 : 24} fontWeight={600} lineHeight='120%'>
+      <FlexRow $gap={isMobile ? 8 : 12} $align='center'>
+        <Image src={isOss ? '/assets/github.svg' : '/assets/icons/enterprise.svg'} alt='' width={isMobile ? 16 : 36} height={isMobile ? 16 : 36} />
+        <Text fontSize={isMobile ? 12 : 24} fontWeight={600} lineHeight='120%'>
           {isOss ? 'OPEN SOURCE' : 'ENTERPRISE'}
         </Text>
       </FlexRow>
-      {!isSticky && <Text color={theme.colors.off_white}>{isOss ? 'Zero-code distributed tracing.' : 'Mission critical distributed tracing.'}</Text>}
+      {!isSticky && !isMobile && <Text color={theme.colors.off_white}>{isOss ? 'Zero-code distributed tracing.' : 'Mission critical distributed tracing.'}</Text>}
       {isOss ? (
         <PlanButton variant='secondary' href={GITHUB_LINK}>
-          Go to GitHub
+          GitHub
         </PlanButton>
       ) : (
         <ContactUsButton variant='primary' fullWidth />
