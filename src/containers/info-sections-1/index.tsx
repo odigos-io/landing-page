@@ -13,7 +13,7 @@ const Section = styled.section<{ $isMobile: boolean; $inverted: boolean }>`
   flex-direction: ${({ $isMobile, $inverted }) => ($isMobile ? 'column-reverse' : $inverted ? 'row-reverse' : 'row')};
   align-items: ${({ $isMobile }) => ($isMobile ? 'flex-start' : 'center')};
   justify-content: space-between;
-  gap: 12px;
+  gap: ${({ $isMobile }) => ($isMobile ? 12 : 48)}px;
 `;
 
 const Wrap3D = styled.div<{ $isMobile: boolean }>`
@@ -39,7 +39,7 @@ export const InfoSections1 = () => {
             </FlexColumn>
 
             <Wrap3D $isMobile={isMobile}>
-              <Render3D scene={threeDAsset} width={isMobile ? 300 : 580} height={isMobile ? 300 : 580} />
+              <Render3D scene={threeDAsset} width={isMobile ? 300 : 550} height={isMobile ? 300 : 550} />
             </Wrap3D>
           </Section>
         ))}

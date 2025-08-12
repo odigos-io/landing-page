@@ -5,12 +5,13 @@ import { useMobile } from '@/contexts';
 import styled, { css } from 'styled-components';
 import { QuickstartButton, TextLayers, WatchDemoButton } from '@/components';
 
-const Container = styled.div<{ $isMobile: boolean }>`
+const Container = styled.div<{ $isMobile: boolean; $width?: number }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: ${({ $isMobile }) => ($isMobile ? '32px' : '40px')};
+  width: ${({ $width }) => ($width ? `${$width}px` : 'unset')};
 `;
 
 const ContainButtons = styled.div<{ $isMobile: boolean; $isSmallestScreen: boolean }>`
@@ -30,17 +31,17 @@ const ContainButtons = styled.div<{ $isMobile: boolean; $isSmallestScreen: boole
     `}
 `;
 
-export const TextAndButtons = () => {
+export const TextAndButtons = ({ width }: { width?: number }) => {
   const { isMobile, screenWidth } = useMobile();
 
   return (
-    <Container $isMobile={isMobile}>
+    <Container $isMobile={isMobile} $width={width}>
       <TextLayers
-        title='Full Observability without'
-        typistTitles={['Performance Overhead', 'Blind Spots', 'Code Changes', 'Vendor Lock-in']}
+        title='Deeper Observability to'
+        typistTitles={['see more', 'fix faster', 'spend less', 'ship safely']}
         titleSettings={{
           extraLargeTitle: true,
-          minWidth: isMobile ? 'unset' : '700px',
+          minWidth: isMobile ? 'unset' : `${width}px`,
         }}
         descriptions={['Accelerate OpenTelemetry implementation with Odigos, an eBPF-based solution providing zero-code, zero-performance overhead for deeper tracing']}
       />

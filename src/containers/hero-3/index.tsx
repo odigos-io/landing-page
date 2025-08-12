@@ -20,13 +20,14 @@ const Absolute = styled.div`
   pointer-events: none;
 `;
 
-const ContainText = styled.div<{ $isMobile: boolean }>`
-  max-width: ${({ $isMobile }) => ($isMobile ? '400px' : '700px')};
+const ContainText = styled(FlexColumn)<{ $isMobile: boolean }>`
+  max-width: ${({ $isMobile }) => ($isMobile ? '400px' : '500px')};
+  gap: ${({ $isMobile }) => ($isMobile ? 12 : 24)}px;
 `;
 
 const Title = styled(Text)<{ $isMobile: boolean }>`
   text-align: center;
-  font-size: ${({ $isMobile }) => ($isMobile ? '32px' : '88px')};
+  font-size: ${({ $isMobile }) => ($isMobile ? '32px' : '58px')};
   font-weight: 600;
   line-height: ${({ $isMobile }) => ($isMobile ? '140%' : '110%')};
 `;
@@ -34,7 +35,7 @@ const Title = styled(Text)<{ $isMobile: boolean }>`
 const SubTitle = styled(Text)<{ $isMobile: boolean }>`
   color: ${({ theme }) => theme.colors.grey};
   text-align: center;
-  font-size: ${({ $isMobile }) => ($isMobile ? '18px' : '30px')};
+  font-size: ${({ $isMobile }) => ($isMobile ? '16px' : '20px')};
   line-height: 130%;
 `;
 
@@ -46,10 +47,10 @@ export const Hero3 = () => {
 
   return (
     <Relative>
-      <Render3D scene={SCENE} width={screenWidth} height={screenWidth / ASPECT_RATIO} />
+      <Render3D scene={SCENE} width={screenWidth} height={screenWidth / ASPECT_RATIO / (isMobile ? 1.2 : 1.5)} />
 
       <Absolute>
-        <FlexColumn $gap={32} $align='center' $justify='center' $fullHeight>
+        <FlexColumn $gap={isMobile ? 24 : 48} $align='center' $justify='center' $fullHeight>
           <ContainText $isMobile={isMobile}>
             <Title $isMobile={isMobile}>Unlock Deeper Observability</Title>
             <SubTitle $isMobile={isMobile}>Enterprise-Grade OpenTelemetry for Superior Application Performance Monitoring</SubTitle>

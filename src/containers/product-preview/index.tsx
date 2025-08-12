@@ -2,11 +2,7 @@
 
 import Image from 'next/image';
 import { useMobile } from '@/contexts';
-import styled, { useTheme } from 'styled-components';
-
-const Container = styled.div<{ $isMobile: boolean }>`
-  overflow: ${({ $isMobile }) => ($isMobile ? 'unset' : 'hidden')};
-`;
+import { useTheme } from 'styled-components';
 
 export const ProductPreview = () => {
   const theme = useTheme();
@@ -16,19 +12,17 @@ export const ProductPreview = () => {
   const imageHeight = imageWidth / (3840 / 2160);
 
   return (
-    <Container $isMobile={isMobile}>
-      <Image
-        src='/assets/renders/product_preview.png'
-        alt='product'
-        priority
-        width={imageWidth}
-        height={imageHeight}
-        style={{
-          objectFit: 'contain',
-          borderRadius: '16px',
-          border: `1px solid ${theme.colors.grey_darker}`,
-        }}
-      />
-    </Container>
+    <Image
+      src='/assets/renders/product_preview.png'
+      alt='product'
+      priority
+      width={imageWidth}
+      height={imageHeight}
+      style={{
+        objectFit: 'contain',
+        borderRadius: '16px',
+        border: `1px solid ${theme.colors.grey_darker}`,
+      }}
+    />
   );
 };

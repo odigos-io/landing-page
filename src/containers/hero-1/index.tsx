@@ -6,9 +6,11 @@ import { useMobile } from '@/contexts';
 import { Render3D } from '@/components';
 import { ProductPreview } from '../product-preview';
 import { TextAndButtons } from './text-and-buttons';
+import { ConstrainedWrapper } from '@/styles';
 
 const Relative = styled.div`
   position: relative;
+  overflow: hidden;
 `;
 
 const Absolute = styled.div`
@@ -24,10 +26,9 @@ const DesktopContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 82px;
+  gap: 200px;
   height: 85%;
-  width: calc(100% - 64px);
-  padding: 0 0 0 64px;
+  width: 100%;
 `;
 
 const MobileContent = styled.div`
@@ -50,10 +51,12 @@ export const Hero1 = () => {
 
         <Absolute>
           {!isMobile ? (
-            <DesktopContent>
-              <TextAndButtons />
-              <ProductPreview />
-            </DesktopContent>
+            <ConstrainedWrapper $isMobile={isMobile}>
+              <DesktopContent>
+                <TextAndButtons width={500} />
+                <ProductPreview />
+              </DesktopContent>
+            </ConstrainedWrapper>
           ) : (
             <MobileContent>
               <ProductPreview />

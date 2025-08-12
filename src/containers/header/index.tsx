@@ -7,13 +7,14 @@ import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import { Navigation } from '../navigation';
 import { Button, ContactUsButton } from '@/components';
+import { ConstrainedWrapper } from '@/styles';
 
 const Container = styled.header<{ $isMobile: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.black};
-  padding: ${({ $isMobile }) => ($isMobile ? '20px' : '24px 64px')};
+  padding: ${({ $isMobile }) => ($isMobile ? '16px' : '24px 0')};
 `;
 
 const ContainMobileButtons = styled.div`
@@ -38,14 +39,16 @@ const Header = () => {
   }, [isMobile, isMenuOpen]);
 
   return (
-    <Container $isMobile={isMobile}>
-      <Logo isMobile={isMobile} />
-      <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
-      <ContainMobileButtons>
-        <ContactUsButton />
-        {isMobile && <MenuIcon toggleMenu={toggleMenu} />}
-      </ContainMobileButtons>
-    </Container>
+    <ConstrainedWrapper $isMobile={isMobile} $paddingTop={0} $paddingBottom={0} $paddingLeft={0} $paddingRight={0}>
+      <Container $isMobile={isMobile}>
+        <Logo isMobile={isMobile} />
+        <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
+        <ContainMobileButtons>
+          <ContactUsButton />
+          {isMobile && <MenuIcon toggleMenu={toggleMenu} />}
+        </ContainMobileButtons>
+      </Container>
+    </ConstrainedWrapper>
   );
 };
 

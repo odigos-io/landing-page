@@ -11,7 +11,7 @@ export const TEAM = [
     name: 'Eden Federman',
     title: 'Co-Founder & CTO',
     description:
-      "Eden Federman is a seasoned Co-Founder & CTO of Odigos, leading the company's technical vision with deep expertise as an OpenTelemetry maintainer and eBPF innovator.\n\nWith a background spanning major engineering roles, including contributions at Verizon Media, Taboola, and OpenTelemetry, Eden leads development of Odigos's fully automated, code-free distributed tracing platform.",
+      "Eden is a seasoned Co-Founder & CTO of Odigos, leading the company's technical vision with deep expertise as an OpenTelemetry maintainer and eBPF innovator.\n\nWith a background spanning major engineering roles, including contributions at Verizon Media, Taboola, and OpenTelemetry, Eden leads development of Odigos's fully automated, code-free distributed tracing platform.",
     image: '/assets/team/eden_federman.jpg',
     linkedin: 'https://www.linkedin.com/in/edenfed',
   },
@@ -19,7 +19,7 @@ export const TEAM = [
     name: 'Eric Horsman',
     title: 'VP Solutions Engineering',
     description:
-      'Eric Horsman brings over 20+ years of leadership in solutions engineering, sales engineering, product management, and support, specializing in performance, observability, automation, capacity, and security.\n\nAs VP Solutions Engineering at Odigos, Eric empowers customers with high-fidelity tracing strategies powered by eBPF and OpenTelemetry to turn “data rich” systems into truly insightful observability pipelines.',
+      'Eric brings over 20+ years of leadership in solutions engineering, sales engineering, product management, and support, specializing in performance, observability, automation, capacity, and security.\n\nAs VP Solutions Engineering at Odigos, Eric empowers customers with high-fidelity tracing strategies powered by eBPF and OpenTelemetry to turn “data rich” systems into truly insightful observability pipelines.',
     image: '/assets/team/eric_horsman.jpg',
     linkedin: 'https://www.linkedin.com/in/eric-horsman-147aa1',
   },
@@ -27,7 +27,7 @@ export const TEAM = [
     name: 'Gerry Sengendo',
     title: 'VP Sales',
     description:
-      "Gerry Sengendo is a seasoned sales executive with extensive experience leading GTM, enterprise, and channel sales across performance, observability, and software domains including leadership roles at Turbonomic, Elastio, Dynatrace, and OPNET.\n\nAs VP Sales at Odigos, Gerry drives customer adoption and strategic growth by aligning Odigos's eBPF and OpenTelemetry-powered observability platform with enterprise needs and modern infrastructure.",
+      "Gerry is a seasoned sales executive with extensive experience leading GTM, enterprise, and channel sales across performance, observability, and software domains including leadership roles at Turbonomic, Elastio, Dynatrace, and OPNET.\n\nAs VP Sales at Odigos, Gerry drives customer adoption and strategic growth by aligning Odigos's eBPF and OpenTelemetry-powered observability platform with enterprise needs and modern infrastructure.",
     image: '/assets/team/gerry_sengendo.jpg',
     linkedin: 'https://www.linkedin.com/in/gerry-sengendo-b6829a9',
   },
@@ -43,7 +43,7 @@ export const TEAM = [
     name: 'Dan Sela',
     title: 'Backend Lead',
     description:
-      'Dan Sela is Backend Lead at Odigos, where he architects and scales the core systems that power seamless, zero-code distributed tracing.\n\nWith previous engineering leadership roles at Dynatrace and Rookout, he brings deep expertise in observability, distributed systems, and backend performance at scale.',
+      'Dan is Backend Lead at Odigos, where he architects and scales the core systems that power seamless, zero-code distributed tracing.\n\nWith previous engineering leadership roles at Dynatrace and Rookout, he brings deep expertise in observability, distributed systems, and backend performance at scale.',
     image: '/assets/team/dan_sela.jpg',
     linkedin: 'https://www.linkedin.com/in/dan-sela',
   },
@@ -51,15 +51,15 @@ export const TEAM = [
     name: 'Alon Braymok',
     title: 'Frontend Lead',
     description:
-      "Alon Braymok leads frontend development at Odigos, crafting user-centric interfaces that make distributed tracing via eBPF and OpenTelemetry intuitive and accessible.\n\nWith a strong background in full-stack web engineering and a passion for React and modern JavaScript frameworks, he enhances user experience by blending performance, clarity, and elegance in Odigos's UI.",
+      "Alon leads frontend development at Odigos, crafting user-centric interfaces that make distributed tracing via eBPF and OpenTelemetry intuitive and accessible.\n\nWith a strong background in full-stack web engineering and a passion for React and modern JavaScript frameworks, he enhances user experience by blending performance, clarity, and elegance in Odigos's UI.",
     image: '/assets/team/alon_braymok.jpg',
     linkedin: 'https://www.linkedin.com/in/alon-braymok',
   },
   {
     name: 'Saar Jacob',
-    title: 'Product Design Lead',
+    title: 'Design Lead',
     description:
-      "Saar Jacob is the Product Design & Marketing Lead at Odigos, shaping both product vision and go-to-market strategy with design-first thinking.\n\nWith 10+ years of experience as a team lead in product design and marketing at companies like Rapyd and Vee, and visual communication training from Shenkar College, Saar blends intuitive UX design with impactful branding to elevate Odigos's observability experiences.",
+      "Saar is the Product & Marketing Design Lead at Odigos, shaping both product vision and go-to-market strategy with design-first thinking.\n\nWith 10+ years of experience as a team lead in product & marketing design departments, and visual communication training from Shenkar College, Saar blends intuitive UX design with impactful branding to elevate Odigos's observability experiences.",
     image: '/assets/team/saar_jacob.jpg',
     linkedin: 'https://www.linkedin.com/in/saar-jacob-0a5079151',
   },

@@ -25,7 +25,7 @@ interface TextLayersProps {
 }
 
 const getTitleFontSize = (isMobile: boolean, isSmall?: boolean, isLarge?: boolean, isExtraLarge?: boolean) => {
-  return isMobile ? (isSmall ? '20px' : isExtraLarge ? '40px' : '32px') : isSmall ? '32px' : isExtraLarge ? '60px' : isLarge ? '56px' : '48px';
+  return isMobile ? (isSmall ? '20px' : isExtraLarge ? '40px' : '32px') : isSmall ? '32px' : isExtraLarge ? '68px' : isLarge ? '56px' : '48px';
 };
 
 const Container = styled.div<{ $center?: boolean }>`
@@ -41,7 +41,6 @@ const Titles = styled.div<{ $isMobile: boolean; $minWidth?: string; $maxWidth?: 
   display: flex;
   flex-direction: column;
   align-items: ${({ $center }) => ($center ? 'center' : 'flex-start')};
-  gap: 10px;
   min-width: ${({ $minWidth }) => $minWidth || 'unset'};
   max-width: ${({ $maxWidth }) => $maxWidth || 'unset'};
 `;

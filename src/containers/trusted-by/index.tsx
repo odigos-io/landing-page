@@ -27,7 +27,7 @@ export const TrustedBy = () => {
           TRUSTED BY
         </Text>
 
-        <FlexRow $gap={24} $wrap='wrap' $align='center' $justify='center'>
+        <FlexRow $gap={isMobile ? 24 : 36} $wrap='wrap' $align='center' $justify='center'>
           {CUSTOMERS.map(({ src, alt, href, width, height }) => (
             <Button key={alt} href={href} variant='transparent' padding='0'>
               <Image src={src} alt={alt} width={width} height={height} />

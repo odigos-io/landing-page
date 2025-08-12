@@ -9,7 +9,7 @@ import { TESTIMONIAL_AUTHOR_NAME, TESTIMONIAL_AUTHOR_POSITION, TESTIMONIAL_QUOTE
 
 const Quote = styled(Text)<{ $isMobile: boolean }>`
   text-align: center;
-  font-size: ${({ $isMobile }) => ($isMobile ? '18px' : '36px')};
+  font-size: ${({ $isMobile }) => ($isMobile ? '18px' : '28px')};
   line-height: 140%;
 `;
 
@@ -32,7 +32,7 @@ export const Testimonial = () => {
   const { isMobile } = useMobile();
 
   return (
-    <ConstrainedWrapper $isMobile={isMobile} $overrideMaxWidth={1440}>
+    <ConstrainedWrapper $isMobile={isMobile}>
       <FlexColumn $gap={isMobile ? 32 : 64} $align='center'>
         <Quote $isMobile={isMobile}>{TESTIMONIAL_QUOTE}</Quote>
         <FlexColumn>
