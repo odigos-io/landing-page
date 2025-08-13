@@ -6,7 +6,7 @@ export const INFO_SECTIONS_1 = [
     descriptions: [
       'Odigos captures traces from every service automatically. No code, no coverage gaps. Even hard-to-instrument environments like Go, Rust, C++, and databases are fully visible from day one.',
     ],
-    threeDAsset: 'https://prod.spline.design/bU2f1E3Zm6bLcJpF/scene.splinecode',
+    threeDAsset: 'https://prod.spline.design/HxLeZ864BgWEnGgs/scene.splinecode',
     buttonText: 'Deploy Instantly',
     buttonHref: INSTALL_LINK,
   },
