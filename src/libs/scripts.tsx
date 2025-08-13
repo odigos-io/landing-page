@@ -5,6 +5,7 @@ import Script from 'next/script';
 const Scripts = () => {
   return (
     <>
+      <Script id='cookieyes-banner' strategy='beforeInteractive' src='https://cdn-cookieyes.com/client_data/b873ab43d440c7e433a75c19/script.js' />
       <Script id='hs-script-loader' strategy='afterInteractive' src='//js-eu1.hs-scripts.com/144171524.js' />
       <Script id='redodev-integration' strategy='afterInteractive'>
         {`
