@@ -3,13 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useMobile } from '@/contexts';
-import { GITHUB_LINK } from '@/constants';
 import { FlexColumn, FlexRow } from '@/styles';
 import styled, { css, useTheme } from 'styled-components';
 import { Button, ContactUsButton, Text } from '@/components';
-
-const HEADER_HEIGHT_MOBILE = 75;
-const HEADER_HEIGHT_DESKTOP = 91;
+import { GITHUB_LINK, HEADER_HEIGHT_DESKTOP, HEADER_HEIGHT_MOBILE } from '@/constants';
 
 const Container = styled(FlexRow)<{ $isMobile: boolean; $isSticky: boolean }>`
   position: sticky;

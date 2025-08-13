@@ -1,5 +1,8 @@
 import { CAREERS_LINK, DOCS_LINK, GITHUB_LINK } from './links';
 
+export const HEADER_HEIGHT_MOBILE = 75;
+export const HEADER_HEIGHT_DESKTOP = 91;
+
 export const NAVIGATION = [
   {
     label: 'Product',
