@@ -8,9 +8,12 @@ import { FlexColumn, FlexRow } from '@/styles';
 import styled, { css, useTheme } from 'styled-components';
 import { Button, ContactUsButton, Text } from '@/components';
 
+const HEADER_HEIGHT_MOBILE = 75;
+const HEADER_HEIGHT_DESKTOP = 91;
+
 const Container = styled(FlexRow)<{ $isMobile: boolean; $isSticky: boolean }>`
   position: sticky;
-  top: 0;
+  top: ${({ $isMobile }) => ($isMobile ? HEADER_HEIGHT_MOBILE : HEADER_HEIGHT_DESKTOP)}px;
   z-index: 1;
   flex-wrap: wrap;
   gap: ${({ $isMobile }) => ($isMobile ? 12 : 16)}px;
@@ -63,7 +66,7 @@ export const Heading = () => {
           const rect = container.getBoundingClientRect();
           const nowSticky = rect.bottom <= clientHeightBeforeSticky;
 
-          if (!isSticky) setClientHeightBeforeSticky(container.clientHeight);
+          if (!isSticky) setClientHeightBeforeSticky(container.clientHeight + (isMobile ? HEADER_HEIGHT_MOBILE : HEADER_HEIGHT_DESKTOP));
           if (isSticky !== nowSticky) setIsSticky(nowSticky);
         }
       });
@@ -71,7 +74,7 @@ export const Heading = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isSticky, clientHeightBeforeSticky]);
+  }, [isSticky, isMobile, clientHeightBeforeSticky]);
 
   return (
     <Container ref={containerRef} $isMobile={isMobile} $isSticky={isSticky}>
