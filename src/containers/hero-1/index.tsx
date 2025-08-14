@@ -4,9 +4,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import { Render3D } from '@/components';
+import { ConstrainedWrapper } from '@/styles';
 import { ProductPreview } from '../product-preview';
 import { TextAndButtons } from './text-and-buttons';
-import { ConstrainedWrapper } from '@/styles';
 
 const Relative = styled.div`
   position: relative;
@@ -26,9 +26,10 @@ const DesktopContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 200px;
+  gap: 128px;
   height: 85%;
   width: 100%;
+  margin-top: 50px;
 `;
 
 const MobileContent = styled.div`
@@ -43,11 +44,12 @@ const ASPECT_RATIO = 1440 / 710;
 
 export const Hero1 = () => {
   const { isMobile, screenWidth } = useMobile();
+  const divider = isMobile ? 0.75 : 1.2;
 
   return (
     <>
       <Relative>
-        <Render3D scene={SCENE} width={screenWidth} height={screenWidth / ASPECT_RATIO} />
+        <Render3D scene={SCENE} width={screenWidth / divider} height={screenWidth / ASPECT_RATIO / divider} />
 
         <Absolute>
           {!isMobile ? (

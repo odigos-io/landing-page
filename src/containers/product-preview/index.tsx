@@ -8,7 +8,7 @@ export const ProductPreview = () => {
   const theme = useTheme();
   const { isMobile, screenWidth } = useMobile();
 
-  const imageWidth = screenWidth * (isMobile ? 0.85 : 0.55);
+  const imageWidth = screenWidth * (isMobile ? 0.85 : 0.45);
   const imageHeight = imageWidth / (1440 / 900);
 
   return (

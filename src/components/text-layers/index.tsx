@@ -15,12 +15,17 @@ interface TitleSettingProps {
   center?: boolean;
 }
 
+interface DescriptionSettingProps {
+  center?: boolean;
+}
+
 interface TextLayersProps {
   miniTitle?: string;
   title?: string;
   typistTitles?: string[];
   titleSettings?: TitleSettingProps;
   descriptions?: string[];
+  descriptionSettings?: DescriptionSettingProps;
   bullets?: string[];
 }
 
@@ -75,11 +80,12 @@ const DescriptionsWrapper = styled.div<{ $isMobile: boolean }>`
   gap: ${({ $isMobile }) => ($isMobile ? '12px' : '16px')};
 `;
 
-const Description = styled(Text)<{ $isMobile: boolean }>`
+const Description = styled(Text)<{ $isMobile: boolean; $center?: boolean }>`
   color: ${({ theme }) => theme.colors.off_white};
   font-size: ${({ $isMobile }) => ($isMobile ? '16px' : '18px')};
   line-height: ${({ $isMobile }) => ($isMobile ? '28px' : '32px')};
   letter-spacing: ${({ $isMobile }) => ($isMobile ? '0.3px' : '0.4px')};
+  text-align: ${({ $center }) => ($center ? 'center' : 'start')};
 `;
 
 const BulletsWrapper = styled.ul`
@@ -92,7 +98,7 @@ const BulletsWrapper = styled.ul`
 
 const Bullet = styled.li``;
 
-export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, descriptions, bullets }: TextLayersProps) => {
+export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, descriptions, descriptionSettings, bullets }: TextLayersProps) => {
   const theme = useTheme();
   const { isMobile } = useMobile();
 
@@ -130,7 +136,7 @@ export const TextLayers = ({ miniTitle, title, typistTitles, titleSettings, desc
       {descriptions?.length ? (
         <DescriptionsWrapper $isMobile={isMobile}>
           {descriptions.map((text) => (
-            <Description key={`desc-${text}`} $isMobile={isMobile}>
+            <Description key={`desc-${text}`} $isMobile={isMobile} $center={descriptionSettings?.center}>
               {text}
             </Description>
           ))}

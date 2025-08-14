@@ -42,8 +42,12 @@ export const TextAndButtons = ({ width }: { width?: number }) => {
         titleSettings={{
           extraLargeTitle: true,
           minWidth: isMobile ? 'unset' : `${width}px`,
+          center: isMobile,
         }}
         descriptions={['Accelerate OpenTelemetry implementation with Odigos, an eBPF-based solution providing zero-code, zero-performance overhead for deeper tracing']}
+        descriptionSettings={{
+          center: isMobile,
+        }}
       />
 
       <ContainButtons $isMobile={isMobile} $isSmallestScreen={screenWidth < 420}>
