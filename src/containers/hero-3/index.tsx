@@ -39,7 +39,7 @@ const SubTitle = styled(Text)<{ $isMobile: boolean }>`
   line-height: 130%;
 `;
 
-const SCENE = 'https://prod.spline.design/IVsY-AXOlkJHHIh3/scene.splinecode';
+const SCENE = 'https://prod.spline.design/eXz-TypCngvWmWW1/scene.splinecode';
 const ASPECT_RATIO = 1440 / 600;
 
 export const Hero3 = () => {

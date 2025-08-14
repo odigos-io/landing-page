@@ -27,9 +27,9 @@ const MainContent = styled.div<{ $isMobile: boolean }>`
   align-items: center;
   justify-content: center;
   gap: 64px;
-  height: calc(100% - ${({ $isMobile }) => ($isMobile ? '12px' : '15vh')});
+  height: calc(100% - ${({ $isMobile }) => ($isMobile ? '12px' : '64px')});
   width: 100%;
-  padding: ${({ $isMobile }) => ($isMobile ? '12px' : '15vh')} 0 0 0;
+  padding: ${({ $isMobile }) => ($isMobile ? '12px' : '64px')} 0 0 0;
 `;
 
 const MobileContentPushedDown = styled.div`
@@ -39,7 +39,7 @@ const MobileContentPushedDown = styled.div`
   justify-content: center;
 `;
 
-const SCENE = 'https://prod.spline.design/IVsY-AXOlkJHHIh3/scene.splinecode';
+const SCENE = 'https://prod.spline.design/F6y0lrsCMuCH9jCH/scene.splinecode';
 const ASPECT_RATIO = 1440 / 800;
 
 export const Hero4 = () => {
