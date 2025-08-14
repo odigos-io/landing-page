@@ -377,10 +377,10 @@
     react-merge-refs "2.1.1"
     thumbhash "0.1.1"
 
-"@splinetool/runtime@^1.10.44":
-  version "1.10.44"
-  resolved "https://registry.yarnpkg.com/@splinetool/runtime/-/runtime-1.10.44.tgz#2ae7d3af0a9abb266e1ca83b4e9a5c039d77d49f"
-  integrity sha512-iBGno1IbnMaXyRBZIeVoBGwoc6oJxRXwVmTIvu2whbZSs+nhRvVXD1cWjYBm6GepbjZHBqL7pgXWlNIXELCuMw==
+"@splinetool/runtime@^1.10.45":
+  version "1.10.45"
+  resolved "https://registry.yarnpkg.com/@splinetool/runtime/-/runtime-1.10.45.tgz#12a5540c2ca2fb3ebe7b0d875b40d1ff86ecd1dd"
+  integrity sha512-g89YnF1kUzG6gB1qE0dOKhpxJddrq0naEmLnCut007wU0SfeTSjLNPdMiJZUYEw4kp7lnCs/M7cegoHeicp+DQ==
   dependencies:
     on-change "^4.0.0"
     semver-compare "^1.0.0"
