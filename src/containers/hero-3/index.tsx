@@ -11,9 +11,9 @@ const Relative = styled.div`
   position: relative;
 `;
 
-const Absolute = styled.div`
+const Absolute = styled.div<{ $isMobile: boolean }>`
   position: absolute;
-  top: 0;
+  top: ${({ $isMobile }) => ($isMobile ? '0' : '-15%')};
   left: 0;
   width: 100%;
   height: 100%;
@@ -40,16 +40,16 @@ const SubTitle = styled(Text)<{ $isMobile: boolean }>`
 `;
 
 const SCENE = 'https://prod.spline.design/IVsY-AXOlkJHHIh3/scene.splinecode';
-const ASPECT_RATIO = 1440 / 800;
+const ASPECT_RATIO = 1440 / 600;
 
 export const Hero3 = () => {
   const { isMobile, screenWidth } = useMobile();
 
   return (
     <Relative>
-      <Render3D scene={SCENE} width={screenWidth} height={screenWidth / ASPECT_RATIO / (isMobile ? 1.2 : 1.5)} />
+      <Render3D scene={SCENE} width={screenWidth} height={screenWidth / ASPECT_RATIO} />
 
-      <Absolute>
+      <Absolute $isMobile={isMobile}>
         <FlexColumn $gap={isMobile ? 24 : 48} $align='center' $justify='center' $fullHeight>
           <ContainText $isMobile={isMobile}>
             <Title $isMobile={isMobile}>Unlock Deeper Observability</Title>
