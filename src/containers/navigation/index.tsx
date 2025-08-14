@@ -49,6 +49,7 @@ const NavigationItems = styled.div<{
 
 const NavigationItem = styled(Button)<{ $isMenu: NavigationProps['isMenu'] }>`
   font-size: ${({ $isMenu }) => ($isMenu ? '22px' : '16px')};
+  font-weight: 300;
 `;
 
 export const Navigation = ({ isMenu, isMenuOpen, closeMenu, flexDirection }: NavigationProps) => {
