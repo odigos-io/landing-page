@@ -1,0 +1,103 @@
+---
+pubDate: 'Jul 20 25'
+author: 'Ben Elferink'
+authorImage: '/assets/team/ben_elferink.jpg'
+image: '/assets/blogs/ruby-instrumentation/cover.png'
+title: 'Announcing Ruby Instrumentation in Odigos'
+description: 'Announcing Ruby Instrumentation in Odigos'
+metadata: 'Announcing Ruby Instrumentation in Odigos'
+category: 'Odigos'
+tags: [odigos, opentelemetry, instrumentation, ruby]
+---
+
+## 📣 Announcing Ruby Zero-Code Auto-Instrumentation in Odigos
+
+We're thrilled to announce that **Odigos now supports zero-code auto-instrumentation for Ruby**, bringing seamless observability to one of the world’s most popular web programming languages! This feature is available in **both our community and enterprise versions**, making it easier than ever to understand what’s happening inside your Ruby applications—without writing a single line of instrumentation code.
+
+### 🚀 Why This Matters
+
+If you’ve ever tried adding OpenTelemetry to a production Rails app, you know it’s... a process.
+
+Manual instrumentation means threading context, wrapping HTTP clients, patching jobs, and wiring config files. It’s powerful—but painful. We wanted something better. Something that “just works” out of the box.
+
+With this new release, Odigos automatically instruments your Ruby workloads at runtime using the native OpenTelemetry SDK and its ecosystem of instrumentation gems. You don’t need to touch your codebase or write custom logic—just turn it on and go.
+
+### 🛠️ What’s Supported?
+
+A lot. Here’s what Odigos can auto-instrument in your Ruby apps:
+
+#### ✅ Web & APIs
+
+- `rails`, `rack`, `sinatra`, `grape`
+- gRPC servers via `gruf`
+
+#### ☎️ HTTP Clients
+
+- `net-http`, `http`, `httpclient`, `restclient`, `faraday`, `excon`, `ethon`
+
+#### 🧠 Background Jobs & Messaging
+
+- `sidekiq`, `resque`, `delayed_job`, `que`
+- Kafka (`ruby-kafka`, `rdkafka`) and RabbitMQ (`bunny`)
+
+#### 🧰 Tasks & Threads
+
+- `rake`, `concurrent-ruby`
+
+#### 📦 Data Stores
+
+- `pg`, `mysql2`, `trilogy`, `mongo`, `redis`, `dalli`, `lmdb`
+
+#### 🔎 GraphQL & APIs
+
+- `graphql`, `koala` (Facebook API)
+
+#### ☁️ Cloud SDKs
+
+- `aws-sdk`, `aws-sdk-lambda`
+
+#### 🧵 Serialization
+
+- `active_model_serializers`
+
+Basically, if it’s moving data, handling requests, or managing background work in your Ruby app—we’re on it.
+
+This is built for modern Ruby:
+
+- ✅ **Ruby 3.1.0 to 3.5.x**
+- 🚀 Rails 6, 7, and beyond
+
+We'll continue to track the latest versions as the Ruby ecosystem evolves.
+
+### 🌐 70+ Supported Destinations
+
+Odigos integrates seamlessly with **70+ observability vendors and open source tools**, giving you the freedom to choose where your telemetry data goes. Send traces, metrics, and logs to popular destinations like:
+
+- **Grafana, Prometheus, and Tempo**
+- **Datadog, New Relic, and Dynatrace**
+- **Jaeger, OpenSearch, and more**
+
+All it takes is a few clicks to connect your instrumentation pipeline to your existing observability stack—no complex configuration or vendor lock-in.
+
+### 🧠 Built on OpenTelemetry
+
+At the heart of Odigos’ instrumentation engine is **OpenTelemetry**, the industry standard for observability. By leveraging OpenTelemetry’s Ruby instrumentation libraries and enhancing them with automatic context propagation and runtime configuration, we give you full visibility with minimal effort.
+
+### 🧪 Try It Out Today
+
+If you're already using Odigos, enabling Ruby support is as simple as selecting your workload and turning on instrumentation. No extra gems, no boilerplate, no risk of missing traces. Just data where you need it.
+
+Haven’t tried Odigos yet? Now’s the perfect time, getting started is simple:
+
+1. [Install Odigos](https://docs.odigos.io/setup/installation)
+2. Deploy your Ruby service
+3. Choose your observability backend
+4. Let Odigos handle the rest
+
+Whether you're debugging a monolith or scaling microservices, observability should never be a blocker—and with this release, it isn’t.
+
+### 🙌 Join the Community
+
+This Ruby support is the result of community feedback and real-world need. If you’ve been waiting for a lightweight, powerful, zero-code observability solution for Ruby, now’s the time to dive in.
+
+Join our [community Slack](https://join.slack.com/t/odigos/shared_invite/zt-24u91yknm-0fLXu6qnqYfNHS_GSUgTJw), star us on [GitHub](https://github.com/odigos-io/odigos), and share your feedback. We’d love to hear how Odigos helps you see more, understand more, and ship faster.

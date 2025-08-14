@@ -1,0 +1,47 @@
+---
+pubDate: 'May 16 2023'
+author: Eden Federman
+authorImage: '/assets/team/eden_federman.jpg'
+image: ''
+title: 'Better application discovery with Kubernetes labels'
+description: 'Introducing a new way to discover applications in Odigos using Kubernetes labels.'
+metadata: Discover how Odigos simplifies application discovery using Kubernetes labels and provides more flexible instrumentation options.
+category: 'Odigos'
+tags: [odigos, kubernetes, labels, instrumentation]
+---
+
+## New way to discover applications
+
+We are excited to release version v0.1.5 of Odigos today. This release introduces a new way to discover applications in Odigos using Kubernetes labels.
+Instrumenting all the applications in a specific namespace is now as easy as:
+
+```bash
+kubectl label ns my-namespace odigos-instrumentation=enabled
+```
+
+This will automatically instrument all the applications in the namespace **my-namespace** and any new applications that are deployed to the namespace.
+This label can be added to any namespace, deployment, stateful set, or daemon set.
+
+## Why change the discovery method?
+
+### Flexability
+
+In previous versions of Odigos, discovering applications was done by choosing one of the following methods:
+
+- **Opt In**: Instrument only the applications that are explicitly configured to be instrumented.
+- **Opt Out**: Instrument all the applications in all the namespaces.
+
+We listened to your feedback and decided to add a new discovery method that is more flexible and allows you to better control which applications are instrumented.
+With the new discovery method, you can choose to instrument all the applications in a specific namespace, or only the applications that are explicitly configured to be instrumented. You can even choose to instrument all the applications in a namespace, except for a few applications that you don't want to instrument by labeling them with **odigos-instrumentation=disabled**.
+
+### Remove UI dependency
+
+As platform engineering teams, we understand that you want to automate as much as possible. This is why we are working on making Odigos as configurable as possible using YAML files. The new discovery method is the first step towards this goal. In the future, we will add more configuration options to Odigos, and we will make sure that all the configuration options are available in YAML files, or as CLI flags.
+
+### Better integration with Kubernetes
+
+Kubernetes labels are a great way to add metadata to Kubernetes objects. They are used by many Kubernetes tools, and they are a great way to integrate Odigos with other tools. For example, you can use labels to integrate Odigos with your CI/CD pipeline and automatically instrument all the applications that are deployed to a specific namespace.
+
+## Feedback
+
+As always, we would love to hear your feedback. Please reach out to us on [Odigos Slack](https://join.slack.com/t/odigos/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A) or [GitHub](https://github.com/odigos-io/odigos/issues) if you have any questions or suggestions.

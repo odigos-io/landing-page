@@ -1,0 +1,62 @@
+---
+pubDate: 'Jul 31 2023'
+author: Eden Federman
+authorImage: '/assets/team/eden_federman.jpg'
+image: ''
+title: 'Distributed Traces: Unlocking Performance with Organizational Effort'
+description: 'In this article, we will discuss the organizational effort required to unlock the value of distributed traces.'
+metadata: This article delves into the organizational effort required to unlock the full value of distributed traces in observability.
+category: 'Odigos'
+tags: [odigos, opentelemetry, organizational-effort, instrumentation, ebpf]
+---
+
+## Introduction
+
+Distributed tracing has been hailed as a revolutionary solution since its emergence over a decade ago. It provides a holistic view of an application's behavior and performance across multiple systems, which is particularly useful in complex distributed systems. However, implementing and maintaining a distributed tracing system can be a daunting task. It requires technical expertise and collaboration between multiple teams within the organization. This blog will discuss the organizational support needed for successful implementation and why few companies actually achieve it.
+
+## Collaboration Across Teams
+
+Distributed tracing has the potential to transform the way we monitor and debug complex systems. Unlike metrics or logs that capture a data point in time in a single application, a distributed trace follows a request as it propagates through a distributed environment by tagging it with a unique ID. This allows developers to understand the context of each request and how their distributed applications work.
+
+The downside is that it is difficult to implement. Unlike metrics or logs, the value of distributed tracing is gained only after implementing it across multiple applications. If even one of your applications does not produce distributed tracing, the context propagation is broken and the value of the traces drops significantly. This is because the traces will not be able to show the complete path of the request. This can make it difficult to identify the source of the problem (in contrast, metrics and logs can often be generated automatically by leveraging existing infrastructure or logging frameworks).
+
+![Distributed Tracing Effort Graph](/assets/blogs/organizational-effort/traces_values.png)
+
+Successfully implementing distributed tracing requires **collaboration across multiple development & operations teams** in an organization. Each has an important role:
+
+**Development Teams** - Each development team across the organization needs to collaborate and simultaneously apply the necessary code changes needed to instrument and export telemetry signals. This instrumentation involves adding code snippets or using specialized libraries to record trace information and propagate trace information. Developers also need to maintain and manage the relevant libraries and make sure that all new code is instrumented.
+
+**Platform Engineering Team** - Need to build the necessary infrastructure to scale and manage the telemetry data They are the main users of the telemetry data, and are in charge of configuring alerts, incident response and resolution.
+
+For example, if a developer makes a change to a service that results in increased latency, the operations team can use distributed tracing to pinpoint the issue and work with the developer to resolve it. Similarly, the product team can use distributed tracing to identify bottlenecks in the system that are impacting user experience.
+
+Effective distributed tracing requires clear communication and collaboration among the parties involved. In other words, it needs to be an organizational effort.
+
+## OpenTelemetry Standard
+
+To be effective, distributed tracing must be implemented consistently across an organization. This means establishing standards and best practices for tracing, such as which libraries to use, how to instrument code, and what data to collect. Without standardization, tracing data may become inconsistent, increasing the mental load on human users and decreasing usability.. Fortunately, a standard now exists.
+
+[OpenTelemetry](https://github.com/open-telemetry) is an open-source project that has become the standard for collecting and exporting telemetry data (traces, metrics, and logs). It is a vendor-neutral standard, which means that it can be used with a variety of observability tools. It is the second largest project after Kubernetes in the [Cloud Native Computing Foundation](https://www.cncf.io/) and has been adopted by all the major observability vendors.
+
+The challenge with OpenTelemetry is in its implementation, as it requires a number of steps and configurations when done manually:
+
+1. Installing the OpenTelemetry SDK for your language of choice (for each service)
+2. Instrumenting application code to collect telemetry data (for each service)
+3. Configuring collectors to collect and export the telemetry data.
+4. Configure an observability tool to ingest and visualize the telemetry data
+
+OpenTelemetry is constantly improving, and the OpenTelemetry community is working hard to make the implementation process simpler and more efficient for developers.
+
+Moreover, [Odigos](https://github.com/odigos-io/odigos) is an open-source tool that enables the automation of this entire process. This allows developers to [instantly generate distributed traces](https://odigos.io/) and send them to the vendor of their choice, without any code changes.
+
+## Data Collection and management
+
+Distributed tracing generates a large amount of data that must be collected, processed, indexed, exported and recorded. This requires resources and expertise that may not be readily available within an organization. Deciding what data to collect and how to store it can also be a challenging task.
+
+Effective data collection and management requires collaboration between teams and a shared understanding of the organization's goals and priorities. It may also require investing in additional resources or partnering with third-party providers to ensure that the organization has the necessary infrastructure and expertise to manage tracing data effectively.
+
+## Conclusion
+
+Distributed tracing is a valuable tool for understanding the behavior and performance of complex distributed systems. However, implementing and maintaining a distributed tracing system requires more than just technical expertise. It requires collaboration across teams, standardization of tracing practices, and effective data collection and management. By approaching distributed tracing as an organizational effort, organizations can ensure that they are getting the most value from their tracing data and improving the overall performance of their applications.
+
+Another solution is to **automate the process**. Tools like [Odigos](https://github.com/odigos-io/odigos), an open-source project, implement and generate distributed tracing, manage and scale the collectors, while allowing you to continue using your existing monitoring vendor to display and analyze the telemetry data. This means that you can get started with distributed tracing without having to manually instrument your applications. Odigos supports a wide range of languages and frameworks, and it can be deployed on Kubernetes.

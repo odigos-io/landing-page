@@ -1,0 +1,27 @@
+---
+pubDate: 'Mar 3 2025'
+author: Mike Dame
+authorImage: '/assets/team/mike_dame.jpg'
+image: '/assets/blogs/openshift-operator/operator-cover.png'
+title: 'Introducing the OpenShift Operator'
+description: 'The Odigos Operator is now available for Red Hat OpenShift'
+metadata: application management
+category: 'Odigos'
+tags: [odigos]
+---
+
+We are happy to announce the new Odigos Operator for Red Hat OpenShift!
+
+You can now use the operator as an alternative installation and upgrade method for Odigos. The current modes via Helm chart and CLI are still available as well.
+
+To install Odigos via the Operator, navigate to **OperatorHub** and search for **Odigos**.
+
+![operatorhub](/assets/blogs/openshift-operator/operator-install.png)
+
+Once you have installed the Operator in your cluster, create an **Odigos** instance, making sure to fill in any options you need (such as **On Prem Token** for enterprise and check **openshiftEnabled** to use [Red Hat certified images](/blog/openshift-certified) and enable [additional settings](https://docs.odigos.io/setup/installation-options#openshift-installation) required for OpenShift.).
+
+[Check out our documentation on installing with the operator for more details.](https://docs.odigos.io/setup/installation-options#openshift-installation)
+
+![docs](/assets/blogs/openshift-operator/operator-docs.png)
+
+While this operator currently only handles basic installation and upgrades for Odigos, we plan to continue developing and evolving it with richer functionality. Stay tuned for more updates!
