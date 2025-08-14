@@ -1,5 +1,7 @@
 # Odigos - Landing Page
 
+![Product Preview](/public/assets/renders/product_preview.svg)
+
 ### How to add a blog post?
 
 1. Install dependencies:
