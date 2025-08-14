@@ -72,7 +72,7 @@ const Footer = () => {
               <Link href='/'>
                 <Image src='/assets/odigos/logo_white.svg' alt='logo' width={45} height={45} />
               </Link>
-              <Navigation flexDirection={isMobile ? 'column' : 'row'} gap={12} />
+              <Navigation flexDirection={isMobile ? 'column' : 'row'} />
             </FlexColumn>
             {/* <Subscribe /> */}
           </TopHalf>

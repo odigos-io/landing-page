@@ -18,7 +18,7 @@ export * from './slack-invite-button';
 export * from './watch-demo-button';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'transparent';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'transparent';
   children?: React.ReactNode;
   label?: string;
   tag?: string;
@@ -89,6 +89,17 @@ const Btn = styled.button<{
           background: ${theme.colors.black};
           &:hover {
             background: ${theme.colors.grey_darkest};
+          }
+        `
+      : $variant === 'tertiary'
+      ? css`
+          border: none;
+          background: transparent;
+          &:hover {
+            background: ${theme.colors.purple_darkest + hexOpacity['050']};
+          }
+          &:active {
+            background: ${theme.colors.purple_darkest + hexOpacity['080']};
           }
         `
       : css`
