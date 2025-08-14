@@ -44,7 +44,7 @@ const ASPECT_RATIO = 1440 / 710;
 
 export const Hero1 = () => {
   const { isMobile, screenWidth } = useMobile();
-  const divider = isMobile ? 0.75 : 1.2;
+  const divider = isMobile ? 0.75 : 1;
 
   return (
     <>
