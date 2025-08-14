@@ -12,19 +12,17 @@ interface NavigationProps {
   isMenuOpen?: boolean;
   closeMenu?: () => void;
   flexDirection?: CSSProperties['flexDirection'];
-  gap?: number;
 }
 
 const NavigationItems = styled.div<{
   $isMenu: NavigationProps['isMenu'];
   $isMenuOpen: NavigationProps['isMenuOpen'];
   $flexDirection: NavigationProps['flexDirection'];
-  $gap: NavigationProps['gap'];
 }>`
-  ${({ $isMenu, $isMenuOpen, $flexDirection, $gap, theme }) =>
+  ${({ $isMenu, $isMenuOpen, $flexDirection, theme }) =>
     $isMenu
       ? css`
-          position: absolute;
+          position: fixed;
           top: 0;
           left: 0;
           z-index: 100;
@@ -45,7 +43,7 @@ const NavigationItems = styled.div<{
           align-items: ${$flexDirection === 'column' ? 'flex-start' : 'center'};
           justify-content: center;
           flex-wrap: wrap;
-          gap: ${$gap}px;
+          gap: 0;
         `}
 `;
 
@@ -53,11 +51,11 @@ const NavigationItem = styled(Button)<{ $isMenu: NavigationProps['isMenu'] }>`
   font-size: ${({ $isMenu }) => ($isMenu ? '22px' : '16px')};
 `;
 
-export const Navigation = ({ isMenu, isMenuOpen, closeMenu, flexDirection, gap = 42 }: NavigationProps) => {
+export const Navigation = ({ isMenu, isMenuOpen, closeMenu, flexDirection }: NavigationProps) => {
   return (
-    <NavigationItems $isMenu={isMenu} $isMenuOpen={isMenuOpen} $flexDirection={flexDirection} $gap={gap} onClick={closeMenu}>
+    <NavigationItems $isMenu={isMenu} $isMenuOpen={isMenuOpen} $flexDirection={flexDirection} onClick={closeMenu}>
       {NAVIGATION.map(({ label, iconSrc, href }) => (
-        <NavigationItem key={label} variant='transparent' href={href} $isMenu={isMenu} padding='0'>
+        <NavigationItem key={label} variant='tertiary' href={href} $isMenu={isMenu}>
           {iconSrc && <Image src={iconSrc} alt={label} width={24} height={24} />}
           {label}
         </NavigationItem>
