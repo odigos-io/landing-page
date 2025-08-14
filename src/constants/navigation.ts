@@ -4,10 +4,10 @@ export const HEADER_HEIGHT_MOBILE = 75;
 export const HEADER_HEIGHT_DESKTOP = 91;
 
 export const NAVIGATION = [
-  {
-    label: 'Product',
-    href: '/product',
-  },
+  // {
+  //   label: 'Product',
+  //   href: '/product',
+  // },
   {
     label: 'About',
     href: '/about',
