@@ -85,6 +85,20 @@ export const EventForm = ({ eventName }: { eventName: string }) => {
       </Text>
 
       <FlexColumn $gap={24}>
+        <FlexRow $gap={24}>
+          <Input
+            name='firstName'
+            label='First Name'
+            placeholder='John'
+            value={formData.firstName}
+            onChange={onChange}
+            disabled={isLoading || isDone}
+            errorMessage={formErrors.firstName}
+            stretch
+            required
+          />
+          <Input name='lastName' label='Last Name' placeholder='Doe' value={formData.lastName} onChange={onChange} disabled={isLoading || isDone} errorMessage={formErrors.lastName} stretch required />
+        </FlexRow>
         <Input
           name='email'
           label='Business Email'
@@ -106,31 +120,7 @@ export const EventForm = ({ eventName }: { eventName: string }) => {
           errorMessage={formErrors.phoneNumber}
           stretch
         />
-        <FlexRow $gap={24}>
-          <Input
-            name='firstName'
-            label='First Name'
-            placeholder='John'
-            value={formData.firstName}
-            onChange={onChange}
-            disabled={isLoading || isDone}
-            errorMessage={formErrors.firstName}
-            stretch
-            required
-          />
-          <Input name='lastName' label='Last Name' placeholder='Doe' value={formData.lastName} onChange={onChange} disabled={isLoading || isDone} errorMessage={formErrors.lastName} stretch required />
-        </FlexRow>
-        <Input
-          name='company'
-          label='Organization'
-          placeholder='Google'
-          value={formData.company}
-          onChange={onChange}
-          disabled={isLoading || isDone}
-          errorMessage={formErrors.company}
-          stretch
-          required
-        />
+        <Input name='company' label='Organization' placeholder='Google' value={formData.company} onChange={onChange} disabled={isLoading || isDone} errorMessage={formErrors.company} stretch />
       </FlexColumn>
 
       <Button type='submit' fullWidth disabled={isLoading || isDone}>
