@@ -46,7 +46,7 @@ export const EventSingle = ({ event }: EventSingleProps) => {
           </FlexColumn>
 
           <FlexColumn $gap={isMobile ? 32 : 48}>
-            <EventForm />
+            <EventForm eventName={event.title} />
             <EventMap location={event.location} />
           </FlexColumn>
         </WrapContent>

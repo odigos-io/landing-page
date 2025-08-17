@@ -17,4 +17,3 @@ export const CAREERS_LINK = 'https://www.comeet.com/jobs/odigos/5A.001';
 
 export const CONTACT_API_URL = 'https://0w1e28hzsj.execute-api.us-east-2.amazonaws.com/default/putContactFormItem';
 export const SLACK_CONTACT_API_URL = 'https://zogs1txbee.execute-api.us-east-2.amazonaws.com/default/contact-form-post-slack-channel-message';
-export const HUBSPOT_CONTACT_API_URL = 'https://gf4yl5rodi.execute-api.us-east-2.amazonaws.com/default/landing-page-form-submission';

@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import { useMobile } from '@/contexts';
 import { useContactForm } from '@/hooks';
-import { validateEmail } from '@/functions';
 import { FlexColumn, FlexRow } from '@/styles';
 import { Button, Input, Text } from '@/components';
 import styled, { useTheme } from 'styled-components';
+import { isFreeEmail, validateEmail } from '@/functions';
 
 const Form = styled.form<{ $isMobile: boolean }>`
   background: ${({ theme }) => theme.colors.grey_cold};
@@ -18,7 +18,7 @@ const Form = styled.form<{ $isMobile: boolean }>`
   gap: 32px;
 `;
 
-export const EventForm = () => {
+export const EventForm = ({ eventName }: { eventName: string }) => {
   const theme = useTheme();
   const { isMobile } = useMobile();
   const { formData, handleFormDataChange, formErrors, handleFormErrorChange, resetFormErrors, submitToContactService } = useContactForm();
@@ -45,9 +45,6 @@ export const EventForm = () => {
     if (!formData.lastName) {
       errors['lastName'] = 'Please enter a last name';
     }
-    if (!formData.phoneNumber) {
-      errors['phoneNumber'] = 'Please enter a phone number';
-    }
     if (!formData.email) {
       errors['email'] = 'Please enter an email address';
     }
@@ -58,6 +55,9 @@ export const EventForm = () => {
     if (!validateEmail(formData.email)) {
       errors['email'] = 'Please enter a valid email address';
     }
+    if (isFreeEmail(formData.email)) {
+      errors['email'] = 'Please enter a business email address';
+    }
     if (Object.keys(errors).length > 0) {
       handleFormErrorChange(undefined, undefined, errors);
       return;
@@ -66,14 +66,13 @@ export const EventForm = () => {
     resetFormErrors();
     setIsLoading(true);
 
-    // TODO: handle actual submission
-    // const resError = await submitTo...();
+    const resError = await submitToContactService(eventName);
 
-    // if (resError) {
-    //   setApiError(resError);
-    //   setIsLoading(false);
-    //   return;
-    // }
+    if (resError) {
+      setApiError(resError);
+      setIsLoading(false);
+      return;
+    }
 
     setIsLoading(false);
     setIsDone(true);
@@ -88,13 +87,14 @@ export const EventForm = () => {
       <FlexColumn $gap={24}>
         <Input
           name='email'
-          label='Email Address'
+          label='Business Email'
           placeholder='john.doe@example.com'
           value={formData.email}
           onChange={onChange}
           disabled={isLoading || isDone}
           errorMessage={formErrors.email}
           stretch
+          required
         />
         <Input
           name='phoneNumber'
@@ -107,10 +107,30 @@ export const EventForm = () => {
           stretch
         />
         <FlexRow $gap={24}>
-          <Input name='firstName' label='First Name' placeholder='John' value={formData.firstName} onChange={onChange} disabled={isLoading || isDone} errorMessage={formErrors.firstName} stretch />
-          <Input name='lastName' label='Last Name' placeholder='Doe' value={formData.lastName} onChange={onChange} disabled={isLoading || isDone} errorMessage={formErrors.lastName} stretch />
+          <Input
+            name='firstName'
+            label='First Name'
+            placeholder='John'
+            value={formData.firstName}
+            onChange={onChange}
+            disabled={isLoading || isDone}
+            errorMessage={formErrors.firstName}
+            stretch
+            required
+          />
+          <Input name='lastName' label='Last Name' placeholder='Doe' value={formData.lastName} onChange={onChange} disabled={isLoading || isDone} errorMessage={formErrors.lastName} stretch required />
         </FlexRow>
-        <Input name='company' label='Organization' placeholder='Google' value={formData.firstName} onChange={onChange} disabled={isLoading || isDone} errorMessage={formErrors.firstName} stretch />
+        <Input
+          name='company'
+          label='Organization'
+          placeholder='Google'
+          value={formData.company}
+          onChange={onChange}
+          disabled={isLoading || isDone}
+          errorMessage={formErrors.company}
+          stretch
+          required
+        />
       </FlexColumn>
 
       <Button type='submit' fullWidth disabled={isLoading || isDone}>
