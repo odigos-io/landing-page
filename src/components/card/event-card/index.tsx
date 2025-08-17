@@ -5,7 +5,7 @@ import { Card } from '..';
 import type { EventPost } from '@/types';
 import { formatEventDateRange, getPlaceholderImage } from '@/functions';
 
-export const EventCard = ({ slug, image, title, content = '', eventStartDate, eventEndDate }: EventPost) => {
+export const EventCard = ({ slug, image, title, eventStartDate, eventEndDate, location, booth }: EventPost) => {
   const [imageInvalid, setImageInvalid] = useState(false);
   const eventCover = (!imageInvalid && image) || getPlaceholderImage();
 
@@ -22,7 +22,7 @@ export const EventCard = ({ slug, image, title, content = '', eventStartDate, ev
       image={eventCover}
       onImageError={() => setImageInvalid(true)}
       title={title}
-      description={content.substring(0, 200) + (content.length > 200 ? '...' : '')}
+      description={`${location ? `<strong>Location:</strong>\n${location}` : ''}\n\n${booth ? `<strong>Booth:</strong>\n${booth}` : ''}`}
       tags={eventTags}
       href={`/event/${slug}`}
     />
