@@ -9,8 +9,11 @@ enum ContactFormEvent {
   ContactFormSubmitted = 'ContactFormSubmitted',
 }
 
+// TODO: do something with the phoneNumber
+
 interface ContactForm {
   email: string;
+  phoneNumber: string;
   firstName: string;
   lastName: string;
   company: string;
@@ -19,6 +22,7 @@ interface ContactForm {
 
 const INITIAL_FORM_DATA: ContactForm = {
   email: '',
+  phoneNumber: '',
   firstName: '',
   lastName: '',
   company: '',

@@ -2,6 +2,7 @@ export * from './banner-image';
 export * from './button';
 export * from './card';
 export * from './input';
+export * from './mardown-preview';
 export * from './modal';
 export * from './render-3d';
 export * from './tags';
