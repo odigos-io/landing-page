@@ -8,6 +8,7 @@ interface EventMapProps {
   location?: string;
 }
 
+// TODO: test this after obtaining an API KEY
 const fetchCoordinates = async (location?: string) => {
   if (!GOOGLE_MAPS_API_KEY || !location) return { lat: 0, lng: 0 };
 
