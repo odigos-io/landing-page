@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { getAllBlogs } from '@/libs/markdown';
 import PlausibleProvider from 'next-plausible';
+import { getAllBlogs, getAllEvents } from '@/libs/markdown';
 
 const ThemeProvider = dynamic(() => import('@/styles/theme-provider'));
 const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
 const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
+const EventsProvider = dynamic(() => import('@/contexts/useEvents'));
 
 // const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
 const Header = dynamic(() => import('@/containers/header'));
@@ -43,6 +44,7 @@ type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const blogs = getAllBlogs();
+  const events = getAllEvents();
 
   return (
     <html lang='en'>
@@ -68,12 +70,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider>
             <MobileProvider>
               <BlogsProvider blogs={blogs}>
-                {/* TODO: when we add the announcement banner, we have to change it's sticky-behaviour, because it overlaps with the header and breaks the pricing page */}
-                {/* <AnnouncementBanner title='Odigos is hiring!' link={CAREERS_LINK} linkText='Learn more' /> */}
-                <Header />
-                {children}
-                <Footer />
-                <Modals />
+                <EventsProvider events={events}>
+                  {/* TODO: when we add the announcement banner, we have to change it's sticky-behaviour, because it overlaps with the header and breaks the pricing page */}
+                  {/* <AnnouncementBanner title='Odigos is hiring!' link={CAREERS_LINK} linkText='Learn more' /> */}
+                  <Header />
+                  {children}
+                  <Footer />
+                  <Modals />
+                </EventsProvider>
               </BlogsProvider>
             </MobileProvider>
           </ThemeProvider>

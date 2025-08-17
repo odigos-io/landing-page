@@ -9,6 +9,7 @@ import { handleHrefClick } from '@/functions';
 import { FlexColumn, hexOpacity } from '@/styles';
 
 export * from './blog-card';
+export * from './event-card';
 
 interface CardProps {
   image: string;
