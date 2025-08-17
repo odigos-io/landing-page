@@ -34,7 +34,7 @@ const Form = styled.form<{ $isMobile: boolean }>`
 
 export const Subscribe = () => {
   const { isMobile } = useMobile();
-  const { formData, handleFormDataChange, formErrors, handleFormErrorChange, resetFormErrors, submitToHubspot } = useContactForm();
+  const { formData, handleFormDataChange, formErrors, handleFormErrorChange, resetFormErrors } = useContactForm();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -61,13 +61,13 @@ export const Subscribe = () => {
     resetFormErrors();
     setIsLoading(true);
 
-    const resError = await submitToHubspot();
-
-    if (resError) {
-      handleFormErrorChange('email', resError);
-      setIsLoading(false);
-      return;
-    }
+    // TODO: handle the actual submission
+    // const resError = await submitToHubspot();
+    // if (resError) {
+    //   handleFormErrorChange('email', resError);
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     setIsLoading(false);
     setIsSubscribed(true);
