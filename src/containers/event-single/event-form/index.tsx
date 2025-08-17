@@ -11,7 +11,7 @@ import { isFreeEmail, validateEmail } from '@/functions';
 const Form = styled.form<{ $isMobile: boolean }>`
   background: ${({ theme }) => theme.colors.grey_cold};
   border-radius: 32px;
-  border: 1px solid ${({ theme }) => theme.colors.grey};
+  border: 1px solid ${({ theme }) => theme.colors.grey_darker};
   padding: ${({ $isMobile }) => ($isMobile ? 32 : 64)}px;
   display: flex;
   flex-direction: column;
