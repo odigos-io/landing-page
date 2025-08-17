@@ -1,6 +1,7 @@
 export * from './faq';
 export * from './how-to-start';
 export * from './info-sections';
+export * from './keys';
 export * from './links';
 export * from './navigation';
 export * from './partners';

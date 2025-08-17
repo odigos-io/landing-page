@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { usePlausible } from './usePlausible';
-import { CONTACT_API_URL, HUBSPOT_CONTACT_API_URL, SLACK_CONTACT_API_URL } from '@/constants';
+import { CONTACT_API_URL, SLACK_CONTACT_API_URL } from '@/constants';
 
 enum ContactFormEvent {
   NewsletterSignup = 'NewsletterSignup',
@@ -11,6 +11,7 @@ enum ContactFormEvent {
 
 interface ContactForm {
   email: string;
+  phoneNumber: string;
   firstName: string;
   lastName: string;
   company: string;
@@ -19,6 +20,7 @@ interface ContactForm {
 
 const INITIAL_FORM_DATA: ContactForm = {
   email: '',
+  phoneNumber: '',
   firstName: '',
   lastName: '',
   company: '',
@@ -70,48 +72,33 @@ export const useContactForm = () => {
     setFormErrors({});
   };
 
-  const submitToHubspot = async (cancelTrackEvent: boolean = false): Promise<string> => {
-    if (!cancelTrackEvent) {
-      trackEvent(ContactFormEvent.NewsletterSignup, {
-        props: {
-          email: formData.email,
-        },
-      });
-    }
-
-    return await sendToService(HUBSPOT_CONTACT_API_URL, formData);
-  };
-
-  const submitToSlack = async (): Promise<string> => {
-    return await sendToService(SLACK_CONTACT_API_URL, {
-      name: `${formData.firstName} ${formData.lastName}`,
-      email: formData.email,
-      organization: formData.company,
-    });
-  };
-
-  const submitToContactService = async (): Promise<string> => {
+  const submitToContactService = async (eventName?: string): Promise<string> => {
     trackEvent(ContactFormEvent.ContactFormSubmitted, {
       props: {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
+        phone: formData.phoneNumber,
         organization: formData.company,
-        message: formData.message,
+        message: eventName || formData.message,
       },
     });
 
     const contactError = await sendToService(CONTACT_API_URL, {
       fullName: `${formData.firstName} ${formData.lastName}`,
       businessEmail: formData.email,
+      phoneNumber: formData.phoneNumber,
       organizationName: formData.company,
-      message: formData.message,
+      message: eventName || formData.message,
     });
     if (contactError) return contactError;
 
-    // const hubspotError = await submitToHubspot(true);
-    // if (hubspotError) return hubspotError;
-
-    const slackError = await submitToSlack();
+    const slackError = await sendToService(SLACK_CONTACT_API_URL, {
+      name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      phone: formData.phoneNumber,
+      organization: formData.company,
+      message: eventName || formData.message,
+    });
     if (slackError) return slackError;
 
     return '';
@@ -124,8 +111,6 @@ export const useContactForm = () => {
     formErrors,
     handleFormErrorChange,
     resetFormErrors,
-    submitToHubspot,
-    submitToSlack,
     submitToContactService,
   };
 };

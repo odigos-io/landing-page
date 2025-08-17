@@ -34,7 +34,7 @@ const Form = styled.form<{ $isMobile: boolean }>`
 
 export const Subscribe = () => {
   const { isMobile } = useMobile();
-  const { formData, handleFormDataChange, resetFormData, formErrors, handleFormErrorChange, resetFormErrors, submitToHubspot } = useContactForm();
+  const { formData, handleFormDataChange, formErrors, handleFormErrorChange, resetFormErrors } = useContactForm();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -61,17 +61,16 @@ export const Subscribe = () => {
     resetFormErrors();
     setIsLoading(true);
 
-    const resError = await submitToHubspot();
+    // TODO: handle the actual submission
+    // const resError = await submitToHubspot();
+    // if (resError) {
+    //   handleFormErrorChange('email', resError);
+    //   setIsLoading(false);
+    //   return;
+    // }
 
-    if (resError) {
-      handleFormErrorChange('email', resError);
-      setIsLoading(false);
-      return;
-    }
-
-    resetFormData();
-    setIsSubscribed(true);
     setIsLoading(false);
+    setIsSubscribed(true);
   };
 
   return (
@@ -81,7 +80,6 @@ export const Subscribe = () => {
       <Form $isMobile={isMobile} onSubmit={onSubmit}>
         <FlexColumn>
           <Input
-            // type="email"
             name='email'
             placeholder='Email address'
             value={formData.email}

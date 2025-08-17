@@ -16,3 +16,15 @@ export interface BlogPost {
   buttonLink?: string;
   content?: string;
 }
+
+export interface EventPost {
+  slug: string;
+  pubDate: string;
+  image?: string;
+  title: string;
+  eventStartDate?: string;
+  eventEndDate?: string;
+  location?: string;
+  booth?: string;
+  content?: string;
+}

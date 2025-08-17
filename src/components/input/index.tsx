@@ -36,6 +36,7 @@ const StyledInput = styled.input<{
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background: ${({ theme }) => theme.colors.grey_darker};
   }
 `;
 

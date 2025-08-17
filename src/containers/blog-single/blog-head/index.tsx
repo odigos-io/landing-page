@@ -6,26 +6,12 @@ import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import type { BlogPost } from '@/types';
 import { FlexColumn, FlexRow } from '@/styles';
-import { Button, Tags, Text } from '@/components';
+import { BannerImage, Button, Tags, Text } from '@/components';
 import { calculateReadingTime, getPlaceholderImage } from '@/functions';
 
 interface BlogHeadProps {
   blog: BlogPost;
 }
-
-const WrapImage = styled.div<{ $isMobile: boolean }>`
-  position: relative;
-  width: 100%;
-  height: ${({ $isMobile }) => ($isMobile ? '150px' : '250px')};
-  padding: 24px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 32px;
-  border: none;
-  background-color: ${({ theme }) => theme.colors.black_lighter};
-  overflow: hidden;
-`;
 
 const Title = styled.h1<{ $isMobile: boolean }>`
   color: ${({ theme }) => theme.colors.off_white};
@@ -52,17 +38,6 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
     }
   }, [authorImageInvalid, blog.authorImage]);
 
-  const [blogImage, setBlogImage] = useState(blog.image || DEFAULT_BLOG_IMAGE);
-  const [blogImageInvalid, setBlogImageInvalid] = useState(false);
-
-  useEffect(() => {
-    if (blogImageInvalid) {
-      setBlogImage(DEFAULT_BLOG_IMAGE);
-    } else {
-      setBlogImage(blog.image || DEFAULT_BLOG_IMAGE);
-    }
-  }, [blogImageInvalid, blog.image]);
-
   const [tags, setTags] = useState<string[]>([]);
   const [indexesOfBoldTags, setIndexesOfBoldTags] = useState<number[]>([]);
 
@@ -85,21 +60,7 @@ export const BlogHead = ({ blog }: BlogHeadProps) => {
 
   return (
     <FlexColumn $gap={isMobile ? 24 : 32}>
-      <WrapImage $isMobile={isMobile}>
-        <Image
-          suppressHydrationWarning
-          src={blogImage}
-          alt={blog.title}
-          priority
-          fill
-          sizes='(max-width: 992px) 100vw, 1080px'
-          onError={() => setBlogImageInvalid(true)}
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-        />
-      </WrapImage>
+      <BannerImage src={blog.image || ''} alt={blog.title} fallbackImage={DEFAULT_BLOG_IMAGE} />
       <Title $isMobile={isMobile}>{blog.title}</Title>
       <FlexRow $gap={12} $align='center'>
         <Image

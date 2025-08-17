@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",
-    "@splinetool/runtime": "^1.10.44",
+    "@splinetool/runtime": "^1.10.48",
     "@uiw/react-markdown-preview": "^5.1.5",
+    "@vis.gl/react-google-maps": "^1.5.5",
     "gray-matter": "^4.0.3",
     "next": "15.4.6",
     "next-plausible": "^3.12.4",
