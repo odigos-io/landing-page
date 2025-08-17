@@ -8,7 +8,7 @@ const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
 const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
 const EventsProvider = dynamic(() => import('@/contexts/useEvents'));
 
-// const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
+const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
 const Header = dynamic(() => import('@/containers/header'));
 const Footer = dynamic(() => import('@/containers/footer'));
 const Modals = dynamic(() => import('@/containers/modals'));
@@ -71,8 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <MobileProvider>
               <BlogsProvider blogs={blogs}>
                 <EventsProvider events={events}>
-                  {/* TODO: when we add the announcement banner, we have to change it's sticky-behaviour, because it overlaps with the header and breaks the pricing page */}
-                  {/* <AnnouncementBanner title='Odigos is hiring!' link={CAREERS_LINK} linkText='Learn more' /> */}
+                  <AnnouncementBanner title='Meet Odigos at a conference!' link='/event' linkText='Events' />
                   <Header />
                   {children}
                   <Footer />
