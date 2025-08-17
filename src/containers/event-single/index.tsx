@@ -3,9 +3,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
-import type { EventPost } from '@/types';
+import { EventMap } from './event-map';
 import { EventForm } from './event-form';
 import { EventTable } from './event-table';
+import type { EventPost } from '@/types';
 import { getPlaceholderImage } from '@/functions';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
 import { BannerImage, MarkdownPreview, Text } from '@/components';
@@ -46,6 +47,7 @@ export const EventSingle = ({ event }: EventSingleProps) => {
 
           <FlexColumn $gap={isMobile ? 32 : 48}>
             <EventForm />
+            <EventMap location={event.location} />
           </FlexColumn>
         </WrapContent>
       </FlexColumn>
