@@ -6,10 +6,10 @@ import { useMobile } from '@/contexts';
 import { EventMap } from './event-map';
 import { EventForm } from './event-form';
 import { EventTable } from './event-table';
+import { EventHeader } from './event-header';
 import type { EventPost } from '@/types';
-import { getPlaceholderImage } from '@/functions';
+import { MarkdownPreview, Text } from '@/components';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
-import { BannerImage, MarkdownPreview, Text } from '@/components';
 
 interface EventSingleProps {
   event: EventPost;
@@ -26,15 +26,13 @@ const WrapContent = styled.div<{ $isMobile: boolean }>`
   }
 `;
 
-const DEFAULT_EVENT_IMAGE = getPlaceholderImage();
-
 export const EventSingle = ({ event }: EventSingleProps) => {
   const { isMobile } = useMobile();
 
   return (
     <ConstrainedWrapper $isMobile={isMobile}>
       <FlexColumn $gap={isMobile ? 48 : 64}>
-        <BannerImage src={event.image || ''} alt={event.title} fallbackImage={DEFAULT_EVENT_IMAGE} />
+        <EventHeader event={event} />
 
         <WrapContent $isMobile={isMobile}>
           <FlexColumn $gap={isMobile ? 32 : 48}>
