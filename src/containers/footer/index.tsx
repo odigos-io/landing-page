@@ -28,7 +28,7 @@ const BottomHalf = styled.div<{ $isMobile: boolean }>`
   flex-direction: ${({ $isMobile }) => ($isMobile ? 'column' : 'row')};
   align-items: ${({ $isMobile }) => ($isMobile ? 'flex-start' : 'center')};
   justify-content: space-between;
-  gap: ${({ $isMobile }) => ($isMobile ? '8px' : '24px')};
+  gap: ${({ $isMobile }) => ($isMobile ? '12px' : '24px')};
 `;
 
 const Description = styled(Text)<{ $isMobile: boolean }>`
@@ -38,9 +38,11 @@ const Description = styled(Text)<{ $isMobile: boolean }>`
   line-height: 150%;
 `;
 
-const ContainPolicies = styled(FlexRow)<{ $isMobile: boolean }>`
-  gap: 24px;
-  align-items: center;
+const ContainPolicies = styled.div<{ $isMobile: boolean }>`
+  display: flex;
+  flex-direction: ${({ $isMobile }) => ($isMobile ? 'column' : 'row')};
+  align-items: ${({ $isMobile }) => ($isMobile ? 'flex-start' : 'center')};
+  gap: ${({ $isMobile }) => ($isMobile ? 8 : 12)}px;
 `;
 
 const PolicyLink = styled(Button)`
@@ -77,14 +79,22 @@ const Footer = () => {
             {/* <Subscribe /> */}
           </TopHalf>
 
-          <FlexColumn $gap={4}>
+          <FlexColumn $gap={isMobile ? 12 : 4}>
             <BottomHalf $isMobile={isMobile}>
               <Description $isMobile={isMobile}>Enterprise-Grade OpenTelemetry for Superior Application Performance Monitoring</Description>
+
               <ContainPolicies $isMobile={isMobile}>
+                <FlexRow $gap={6} $align='center'>
+                  <Image src='/assets/soc2.png' alt='soc2' width={28} height={28} />
+                  <Text fontSize={16} noWrap>
+                    SOC 2 Certified
+                  </Text>
+                </FlexRow>
+                {!isMobile && <Text>|</Text>}
                 <PolicyLink variant='transparent' href={PRIVACY_POLICY_LINK}>
                   Privacy Policy
                 </PolicyLink>
-                <Text>|</Text>
+                {!isMobile && <Text>|</Text>}
                 <PolicyLink variant='transparent' href={TRUST_CENTER_LINK}>
                   Trust Center
                 </PolicyLink>
