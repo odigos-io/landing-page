@@ -15,6 +15,7 @@ export * from './info-sections-1';
 export * from './info-sections-2';
 export * from './investors';
 export * from './learn-more-blogs';
+export * from './learn-more-events';
 export * from './modals';
 export * from './navigation';
 export * from './plans';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { EventSingle } from '@/containers';
 import { getEventBySlug } from '@/libs/markdown';
+import { EventSingle, Hero3, LearnMoreEvents } from '@/containers';
 
 interface EventPageProps {
   params: Promise<{
@@ -19,6 +19,8 @@ const Event = async ({ params }: EventPageProps) => {
     return (
       <>
         <EventSingle event={event} />
+        <LearnMoreEvents title='Related Events' />
+        <Hero3 />
       </>
     );
   } catch {
