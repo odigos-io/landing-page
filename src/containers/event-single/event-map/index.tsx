@@ -9,14 +9,14 @@ interface EventMapProps {
 }
 
 // TODO: test this after obtaining an API KEY
-const fetchCoordinates = async (location?: string) => {
-  if (!GOOGLE_MAPS_API_KEY || !location) return { lat: 0, lng: 0 };
+const fetchCoordinates = async (location: string) => {
+  if (!GOOGLE_MAPS_API_KEY) return { lat: 0, lng: 0 };
 
-  const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${GOOGLE_MAPS_API_KEY}`);
+  const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location)}&key=${GOOGLE_MAPS_API_KEY}`);
   const data = await response.json();
   const coordinates = data.results[0].geometry.location;
 
-  console.log(data, coordinates);
+  // console.log(data, coordinates);
   return coordinates;
 };
 
@@ -24,7 +24,7 @@ export const EventMap = ({ location }: EventMapProps) => {
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 });
 
   useEffect(() => {
-    fetchCoordinates(location).then(setCoordinates).catch(console.error);
+    if (location) fetchCoordinates(location).then(setCoordinates).catch(console.error);
   }, [location]);
 
   if (!GOOGLE_MAPS_API_KEY) return null;
