@@ -12,8 +12,9 @@ export const DEMO_VIDEO_LINK = 'https://odigos-videos.s3.us-east-2.amazonaws.com
 export const SLACK_INVITE_LINK = 'https://join.slack.com/t/odigos/shared_invite/zt-1d7egaz29-Rwv2T8kyzc3mWP8qKobz~A';
 
 export const PRIVACY_POLICY_LINK = 'https://odigos-privacy-policy.s3.us-east-2.amazonaws.com/Odigos+-+Privacy+Policy.pdf';
+export const SOC_LINK = 'http://aicpa.org/soc4so';
 export const TRUST_CENTER_LINK = 'https://trust.odigos.io';
-export const CAREERS_LINK = 'https://www.comeet.com/jobs/odigos/5A.001';
+export const CAREERS_LINK = 'https://comeet.com/jobs/odigos/5A.001';
 
 export const CONTACT_API_URL = 'https://0w1e28hzsj.execute-api.us-east-2.amazonaws.com/default/putContactFormItem';
 export const SLACK_CONTACT_API_URL = 'https://zogs1txbee.execute-api.us-east-2.amazonaws.com/default/contact-form-post-slack-channel-message';
