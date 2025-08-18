@@ -9,7 +9,7 @@ import { useMobile } from '@/contexts';
 import { Navigation } from '../navigation';
 import { Button, Text } from '@/components';
 import { ConstrainedWrapper, FlexColumn, FlexRow } from '@/styles';
-import { PRIVACY_POLICY_LINK, TRUST_CENTER_LINK } from '@/constants';
+import { PRIVACY_POLICY_LINK, SOC_LINK, TRUST_CENTER_LINK } from '@/constants';
 
 const Container = styled.div<{ $isMobile: boolean }>`
   background-color: ${({ theme }) => theme.colors.black_light};
@@ -84,19 +84,17 @@ const Footer = () => {
               <Description $isMobile={isMobile}>Enterprise-Grade OpenTelemetry for Superior Application Performance Monitoring</Description>
 
               <ContainPolicies $isMobile={isMobile}>
-                <FlexRow $gap={6} $align='center'>
-                  <Image src='/assets/soc2.png' alt='soc2' width={28} height={28} />
-                  <Text fontSize={16} noWrap>
-                    SOC 2 Certified
-                  </Text>
-                </FlexRow>
-                {!isMobile && <Text>|</Text>}
-                <PolicyLink variant='transparent' href={PRIVACY_POLICY_LINK}>
-                  Privacy Policy
+                <PolicyLink variant='transparent' href={SOC_LINK}>
+                  <Image src='/assets/SOC_NonCPA_Blk.png' alt='soc2' width={28} height={28} />
+                  SOC 2 Certified
                 </PolicyLink>
                 {!isMobile && <Text>|</Text>}
                 <PolicyLink variant='transparent' href={TRUST_CENTER_LINK}>
                   Trust Center
+                </PolicyLink>
+                {!isMobile && <Text>|</Text>}
+                <PolicyLink variant='transparent' href={PRIVACY_POLICY_LINK}>
+                  Privacy Policy
                 </PolicyLink>
               </ContainPolicies>
             </BottomHalf>
