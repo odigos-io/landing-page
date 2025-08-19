@@ -71,7 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <MobileProvider>
               <BlogsProvider blogs={blogs}>
                 <EventsProvider events={events}>
-                  <AnnouncementBanner title='Meet Odigos at the conference!' link='/event?latest' linkText='Events' />
+                  <AnnouncementBanner title='Meet Odigos at Kubecon Atlanta!' link='/event?latest' linkText='Event' />
                   <Header />
                   {children}
                   <Footer />
