@@ -8,7 +8,7 @@ const Product = () => {
   // TODO: remove this once we have a proper product page
   const router = useRouter();
   const searchParams = useSearchParams();
-  const shouldStay = searchParams.get('stay') != null;
+  const shouldStay = searchParams?.get('stay') != null;
 
   useEffect(() => {
     if (!shouldStay) router.push('/');

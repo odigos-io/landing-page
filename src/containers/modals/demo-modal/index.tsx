@@ -50,7 +50,7 @@ export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
   const pathname = usePathname();
   const { isMobile } = useMobile();
   const searchParams = useSearchParams();
-  const isDemoOpenViaQuery = searchParams.get(QUERY_KEY) != null; // do not strict compare (!==) because we need to check for null and undefined
+  const isDemoOpenViaQuery = searchParams?.get(QUERY_KEY) != null; // do not strict compare (!==) because we need to check for null and undefined
 
   const videoWidth = isMobile ? '100%' : 800;
   const videoHeight = isMobile ? 'unset' : `${800 / ASPECT_RATIO}px`;
@@ -58,12 +58,12 @@ export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const removeDemoQueryParam = () => {
-    const newSearchParams = new URLSearchParams(searchParams.toString());
+    const newSearchParams = new URLSearchParams(searchParams?.toString() || '');
     newSearchParams.delete(QUERY_KEY);
 
     const newUrl = newSearchParams.toString() ? `${pathname}?${newSearchParams.toString()}` : pathname;
 
-    router.replace(newUrl);
+    router.replace(newUrl || '/');
   };
 
   return (
