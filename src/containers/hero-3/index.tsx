@@ -2,13 +2,22 @@
 
 import React from 'react';
 import { useMobile } from '@/contexts';
-import styled from 'styled-components';
 import { GITHUB_LINK } from '@/constants';
 import { FlexColumn, FlexRow } from '@/styles';
+import styled, { css } from 'styled-components';
 import { Button, ContactUsButton, Render3D, Text } from '@/components';
 
-const Relative = styled.div`
+const Relative = styled.div<{ $isMobile: boolean }>`
   position: relative;
+
+  ${({ $isMobile }) =>
+    $isMobile &&
+    css`
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    `}
 `;
 
 const Absolute = styled.div<{ $isMobile: boolean }>`
@@ -46,7 +55,7 @@ export const Hero3 = () => {
   const { isMobile, screenWidth } = useMobile();
 
   return (
-    <Relative>
+    <Relative $isMobile={isMobile}>
       <Render3D scene={SCENE} width={screenWidth} height={screenWidth / ASPECT_RATIO} />
 
       <Absolute $isMobile={isMobile}>
