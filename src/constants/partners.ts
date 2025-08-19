@@ -20,13 +20,13 @@ export const CUSTOMERS = [
     width: 100,
     height: 32,
   },
-  {
-    src: '/assets/partners/kyndryl.svg',
-    alt: 'kyndryl',
-    href: 'https://kyndryl.com',
-    width: 100,
-    height: 32,
-  },
+  // {
+  //   src: '/assets/partners/kyndryl.svg',
+  //   alt: 'kyndryl',
+  //   href: 'https://kyndryl.com',
+  //   width: 100,
+  //   height: 32,
+  // },
   {
     src: '/assets/partners/avodaq.svg',
     alt: 'avodaq',
