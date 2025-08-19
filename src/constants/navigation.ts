@@ -21,6 +21,10 @@ export const NAVIGATION = [
     href: '/blog',
   },
   {
+    label: 'Events',
+    href: '/event',
+  },
+  {
     label: 'Careers',
     href: CAREERS_LINK,
   },
