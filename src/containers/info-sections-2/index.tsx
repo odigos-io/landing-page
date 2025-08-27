@@ -14,7 +14,7 @@ const Section = styled.section<{ $isMobile: boolean; $inverted: boolean }>`
   flex-direction: ${({ $isMobile, $inverted }) => ($isMobile ? 'column-reverse' : $inverted ? 'row-reverse' : 'row')};
   align-items: ${({ $isMobile }) => ($isMobile ? 'flex-start' : 'center')};
   justify-content: space-between;
-  gap: 12px;
+  gap: ${({ $isMobile }) => ($isMobile ? 12 : 80)}px;
 `;
 
 const WrapImage = styled.div<{ $isMobile: boolean }>`
@@ -35,7 +35,7 @@ export const InfoSections2 = () => {
             <TextLayers title={title} descriptions={descriptions} bullets={bullets} />
 
             <WrapImage $isMobile={isMobile}>
-              <Image src={imageSrc} alt={title} width={isMobile ? 300 : 580} height={isMobile ? 300 : 580} />
+              <Image src={imageSrc} alt={title} width={isMobile ? 300 : 550} height={isMobile ? 300 : 550} />
             </WrapImage>
           </Section>
         ))}

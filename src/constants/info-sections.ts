@@ -55,7 +55,7 @@ export const INFO_SECTIONS_2 = [
       '<strong>Full Context Propagation:</strong> End-to-end traces across services, protocols, and infrastructure — even without headers',
       '<strong>Deep Coverage, Any Stack:</strong> Support for modern and legacy environments across all major languages and runtimes',
     ],
-    threeDAsset: '',
+    imageSrc: '/assets/renders/product_section_1.png',
   },
   {
     title: 'Automatic Tracing Across All Runtimes',
@@ -65,7 +65,7 @@ export const INFO_SECTIONS_2 = [
       'Full-stack visibility - Native support <strong>Kubernetes, Virtual Machines & Bare Metal</strong>',
       'eBPF powered tracing for <strong>microservices, monoliths, and databases</strong>',
     ],
-    threeDAsset: 'https://prod.spline.design/uyAqwZ1i4V9GHgps/scene.splinecode',
+    imageSrc: '/assets/renders/product_section_2.png',
   },
   {
     title: 'High-Performance Observability, Powered by eBPF',
@@ -75,13 +75,13 @@ export const INFO_SECTIONS_2 = [
       '<strong>Scales effortlessly</strong> in Kubernetes and bare-metal deployments',
       '<strong>Safe for production usage</strong> without compromising performance',
     ],
-    threeDAsset: '',
+    imageSrc: '/assets/renders/product_section_3.png',
   },
   {
     title: 'Odigos Tower: Centralized Control Over Your Fleets',
     descriptions: ['Centrally manage, scale, and govern your entire OpenTelemetry pipeline, without touching your application code.'],
     bullets: ['Apply Instrumentation Policies across organization', 'Centralized Control across all environments (Kubernetes, Virtual Machines, Bare Metal)', 'Centralized authentication and RBAC'],
-    threeDAsset: '',
+    imageSrc: '/assets/renders/product_section_4.png',
   },
   {
     title: 'Odigos Data Streams: Take Control of Your Observability',
@@ -92,7 +92,7 @@ export const INFO_SECTIONS_2 = [
       '<strong>Send Anywhere:</strong> Route to any OpenTelemetry-compatible backend, no vendor lock-in',
       '<strong>No Hassle Setup</strong> Configuration via GitOps-friendly YAML or UI',
     ],
-    threeDAsset: '',
+    imageSrc: '/assets/renders/product_section_5.png',
   },
   {
     title: 'Odigos Dynamic Rules: Trace the Code That Matters - Dynamically',
@@ -102,6 +102,6 @@ export const INFO_SECTIONS_2 = [
       '<strong>Zero Downtime:</strong> Implement changes without service interruptions',
       '<strong>Effortless Management:</strong> Manage configurations centrally via UI or files',
     ],
-    threeDAsset: '',
+    imageSrc: '/assets/renders/product_section_6.png',
   },
 ];
