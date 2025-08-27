@@ -35,7 +35,7 @@ export const InfoSections2 = () => {
             <TextLayers title={title} descriptions={descriptions} bullets={bullets} />
 
             <WrapImage $isMobile={isMobile}>
-              <Image src={imageSrc} alt={title} width={isMobile ? 300 : 550} height={isMobile ? 300 : 550} />
+              <Image unoptimized src={imageSrc} alt={title} width={isMobile ? 300 : 550} height={isMobile ? 300 : 550} />
             </WrapImage>
           </Section>
         ))}
