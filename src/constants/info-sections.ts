@@ -38,7 +38,7 @@ export const INFO_SECTIONS_1 = [
   {
     title: 'Flexible Telemetry Pipelines with Odigos Actions',
     descriptions: [
-      'Odigos Actions let you enrich, route, and transform telemetry on the fly—without code. Customize pipelines, apply filters, and fan out OTLP data to multiple destinations instantly, all through declarative YAML policies.',
+      'Odigos Actions let you enrich, route, and transform telemetry on the fly-without code. Customize pipelines, apply filters, and fan out OTLP data to multiple destinations instantly, all through declarative YAML policies.',
     ],
     threeDAsset: 'https://prod.spline.design/C-LbCsM9zsBwo-oQ/scene.splinecode',
     buttonText: 'Choose Freely',
@@ -52,7 +52,7 @@ export const INFO_SECTIONS_2 = [
     descriptions: ['No source code modification, no redeployment, and no restart.'],
     bullets: [
       '<strong>Metrics, Traces, and Logs:</strong> Get real-time health, performance, and holistic incident analysis',
-      '<strong>Full Context Propagation:</strong> End-to-end traces across services, protocols, and infrastructure — even without headers',
+      '<strong>Full Context Propagation:</strong> End-to-end traces across services, protocols, and infrastructure - even without headers',
       '<strong>Deep Coverage, Any Stack:</strong> Support for modern and legacy environments across all major languages and runtimes',
     ],
     imageSrc: '/assets/renders/product_section_1.png',

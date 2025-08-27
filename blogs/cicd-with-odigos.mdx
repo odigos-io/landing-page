@@ -116,7 +116,7 @@ Odigos supports a growing set of pipeline actions that give you fine-grained con
 - Attach team ownership or service metadata
 - Apply PII masking rules to sanitize sensitive payloads
 - Route signals conditionally based on context
-  This makes it easy to enforce observability policy across teams, services, and environments — all declaratively through a CI/CD pipeline.
+  This makes it easy to enforce observability policy across teams, services, and environments - all declaratively through a CI/CD pipeline.
 
 Lets create a Latency Sampler in our pipeline to filter out all my junk traces like `keepalives`. We can define the **Threshold**, **HTTP Route**, **Fallback**, and **Service Name** in the Latency Sampler. This significantly helps reduce the telemetry volume by only keeping high-latency traces, the ones that matter most for debugging.
 

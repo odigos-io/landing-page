@@ -16,15 +16,15 @@ In this blog post, you will learn how to build a complete open-source solution f
 
 If you are new to observability, or just interested in the difference between monitoring and observability we recommend watching [this short video](https://www.youtube.com/watch?v=_OXYCzwFd1Y) by the creator of OpenTelemetry. In short, distributed traces, metrics, and logs, with the ability to correlate between one signal to another, are the best practice for debugging production issues when working with microservices-based applications. This is exactly what we are going to achieve for our demo application.
 
-There is no need to learn any new technologies in order to implement and enjoy observability. With some basic Kubernetes commands — you are ready to get started.
+There is no need to learn any new technologies in order to implement and enjoy observability. With some basic Kubernetes commands - you are ready to get started.
 
 ## Solution Overview
 
 We are going to deploy 3 different systems on our Kubernetes cluster:
 
-- **Target application** — we will use a microservices-based application written in Java and Python. (for example applications with more programming languages and more complex architecture, use the example from the Odigos [getting started guide](https://docs.odigos.io/intro))
-- **Observability backend** — we are going to use the following applications to store and analyze our observability data: - Grafana: for dashboards and visualization of the data - Prometheus: for storage of metrics data - Loki: for storage of logs data - Tempo: for storage of distributed tracing data
-- **Observability control plane** — we will use Odigos for automatic instrumentation of our applications (automatic extraction of traces, metrics, and logs), collectors deployment, and configuration.
+- **Target application** - we will use a microservices-based application written in Java and Python. (for example applications with more programming languages and more complex architecture, use the example from the Odigos [getting started guide](https://docs.odigos.io/intro))
+- **Observability backend** - we are going to use the following applications to store and analyze our observability data: - Grafana: for dashboards and visualization of the data - Prometheus: for storage of metrics data - Loki: for storage of logs data - Tempo: for storage of distributed tracing data
+- **Observability control plane** - we will use Odigos for automatic instrumentation of our applications (automatic extraction of traces, metrics, and logs), collectors deployment, and configuration.
 
 ![open source solution](/assets/blogs/open-source-stack/overview.png)
 

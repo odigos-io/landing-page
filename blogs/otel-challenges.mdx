@@ -12,11 +12,11 @@ tags: [odigos, opentelemetry]
 
 ## **The Reality of OpenTelemetry in Microservices**
 
-Getting observability right in a microservices world isn’t optional—it’s table stakes. OpenTelemetry (OTel) has become the standard for capturing traces, metrics, and logs, but actually implementing it? That’s where teams hit roadblocks.
+Getting observability right in a microservices world isn’t optional-it’s table stakes. OpenTelemetry (OTel) has become the standard for capturing traces, metrics, and logs, but actually implementing it? That’s where teams hit roadblocks.
 
 Instrumentation overhead, performance trade-offs, and managing huge volumes of telemetry data are some of the biggest friction points. Too much data slows everything down. Too little, and you’re flying blind. Finding the right balance is the challenge.
 
-This guide covers the real-world obstacles developers face when rolling out OpenTelemetry in microservices and the solutions that make it easier—including zero-code instrumentation, eBPF-based tracing, and smarter data collection strategies.
+This guide covers the real-world obstacles developers face when rolling out OpenTelemetry in microservices and the solutions that make it easier-including zero-code instrumentation, eBPF-based tracing, and smarter data collection strategies.
 
 ## **Why is OpenTelemetry Harder in Microservices?**
 
@@ -98,9 +98,9 @@ Instead of tracing at the application level, eBPF (Extended Berkeley Packet Filt
 
 Here’s why eBPF-based tracing provides a significant advantage:
 
-- **No application modifications**—traces without injecting SDKs.
-- **Low latency**—traces syscalls directly, minimizing performance impact.
-- **Deep insights**—captures system-level data without disrupting application code.
+- **No application modifications**-traces without injecting SDKs.
+- **Low latency**-traces syscalls directly, minimizing performance impact.
+- **Deep insights**-captures system-level data without disrupting application code.
 
 ### **Quick View of How eBPF Tracing Works**
 
@@ -126,6 +126,6 @@ Rolling out OpenTelemetry in a microservices environment isn’t always smooth, 
 | **Overwhelming Data Volume** | Tail-Based & Dynamic Sampling (capture only critical traces)             |
 | **Performance Overhead**     | eBPF Tracing (low-latency kernel-level tracing)                          |
 
-With zero-code instrumentation, smart sampling, and eBPF-based tracing, teams can implement OpenTelemetry without the usual struggles—getting the visibility they need while keeping applications fast and scalable.
+With zero-code instrumentation, smart sampling, and eBPF-based tracing, teams can implement OpenTelemetry without the usual struggles-getting the visibility they need while keeping applications fast and scalable.
 
 For more hands-on OpenTelemetry insights, check out [Odigos' blog](https://odigos.io/blog) or dive into the [OpenTelemetry documentation](https://opentelemetry.io/docs/).
