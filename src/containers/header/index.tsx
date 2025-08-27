@@ -6,8 +6,8 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import { Navigation } from '../navigation';
+import { FlexRow, hexOpacity } from '@/styles';
 import { Button, ContactUsButton } from '@/components';
-import { ConstrainedWrapper, FlexRow, hexOpacity } from '@/styles';
 
 const Sticky = styled.div`
   position: sticky;
@@ -16,7 +16,7 @@ const Sticky = styled.div`
 `;
 
 const Container = styled.header<{ $isMobile: boolean }>`
-  padding: ${({ $isMobile }) => ($isMobile ? '16px' : '24px 0')};
+  padding: ${({ $isMobile }) => ($isMobile ? '16px' : '24px 48px')};
   background-color: ${({ theme }) => theme.colors.black};
   box-shadow: ${({ theme }) => `0px 4px 10px 0px ${theme.colors.black + hexOpacity['030']}`};
 `;
@@ -45,16 +45,14 @@ const Header = () => {
   return (
     <Sticky>
       <Container $isMobile={isMobile}>
-        <ConstrainedWrapper $isMobile={isMobile} $paddingTop={0} $paddingBottom={0} $paddingLeft={0} $paddingRight={0}>
-          <FlexRow $align='center' $justify='space-between'>
-            <Logo isMobile={isMobile} />
-            <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
-            <ContainMobileButtons>
-              <ContactUsButton />
-              {isMobile && <MenuIcon toggleMenu={toggleMenu} />}
-            </ContainMobileButtons>
-          </FlexRow>
-        </ConstrainedWrapper>
+        <FlexRow $align='center' $justify='space-between'>
+          <Logo isMobile={isMobile} />
+          <Navigation isMenu={isMobile} isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
+          <ContainMobileButtons>
+            <ContactUsButton />
+            {isMobile && <MenuIcon toggleMenu={toggleMenu} />}
+          </ContainMobileButtons>
+        </FlexRow>
       </Container>
     </Sticky>
   );
