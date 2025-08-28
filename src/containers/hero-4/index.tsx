@@ -52,15 +52,15 @@ export const Hero4 = () => {
 
         <Absolute>
           <MainContent $isMobile={isMobile}>
-            <TextAndButtons />
-            {!isMobile && <ProductPreview />}
+            {!isMobile && <TextAndButtons />}
+            <ProductPreview />
           </MainContent>
         </Absolute>
       </Relative>
 
       {isMobile && (
         <MobileContentPushedDown>
-          <ProductPreview />
+          <TextAndButtons />
         </MobileContentPushedDown>
       )}
     </>
