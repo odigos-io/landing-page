@@ -10,17 +10,17 @@
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",
-    "@splinetool/runtime": "^1.10.48",
+    "@splinetool/runtime": "^1.10.52",
     "@uiw/react-markdown-preview": "^5.1.5",
     "@vis.gl/react-google-maps": "^1.5.5",
     "gray-matter": "^4.0.3",
-    "next": "15.4.6",
+    "next": "15.5.2",
     "next-plausible": "^3.12.4",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-type-animation": "^3.2.0",
     "styled-components": "^6.1.19",
-    "zustand": "^5.0.7"
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -28,7 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.4.6",
+    "eslint-config-next": "15.5.2",
     "typescript": "^5"
   }
 }
