@@ -1,0 +1,94 @@
+---
+pubDate: 'Sep 11 2025'
+author: Mike Dame
+authorImage: '/assets/team/mike_dame.jpg'
+image: ''
+title: 'New Actions CRD in Odigos (What you need to know)'
+description: 'Actions are moving to a new, centralized Kubernetes resource.'
+metadata: application management
+category: 'Odigos'
+tags: [odigos]
+---
+
+If you currently use [Actions](https://docs.odigos.io/pipeline/actions/introduction) directly with Kubernetes manifests
+(i.e., YAML files), then this change affects you!
+
+Starting in v1.4.0, Odigos will no longer use individual Custom Resources (CRDs) for each type of Action. Instead,
+all types of Actions can now be defined through a single, generic object, simply called `Action`
+
+This object will live under the `odigos.io` API (migrated from the legacy `actions.odigos.io`).
+
+For example, if you previously defined an `AddClusterInfo` action with the following:
+
+```yaml
+apiVersion: actions.odigos.io/v1alpha1
+kind: AddClusterInfo
+metadata:
+  name: insert-cluster-name
+  namespace: odigos-system
+spec:
+  actionName: insert-cluster-name
+  clusterAttributes:
+    - attributeName: k8s.cluster.name
+      attributeStringValue: my-cluster
+  signals:
+    - TRACES
+    - METRICS
+    - LOGS
+```
+
+The equivalent resource will now be:
+
+```yaml
+apiVersion: odigos.io/v1alpha1
+kind: Action
+metadata:
+  name: insert-cluster-name
+  namespace: odigos-system
+spec:
+  actionName: insert-cluster-name
+  signals:
+    - TRACES
+    - METRICS
+    - LOGS
+  addClusterInfo:
+    clusterAttributes:
+      - attributeName: k8s.cluster.name
+        attributeStringValue: my-cluster
+```
+
+See our [docs on Actions](https://docs.odigos.io/pipeline/actions/introduction) for examples of all types.
+
+## Action you do not need to take
+
+If you do not deploy or modify any Actions through YAML manifests or the Kubernetes client, then there is nothing that you need to do.
+Odigos will automatically migrate any Actions created through the UI to the new resource type and begin using it as if nothing changed.
+
+## Action you need to take
+
+If you are deploying YAML manifests for your Actions (such as through CI/CD, Helm, GitOps, etc), or modify Actions through Kubernetes clients,
+you should migrate your manifests to the new structure.
+
+Odigos will automatically perform a one-way migration of any legacy Actions to the new format. The migrated objects
+will have the same name as the detected legacy object with a `migrated-legacy-` prefix. For example, the
+`insert-cluster-name` object above will be turned into a generic Action called `migrated-legacy-insert-cluster-name`.
+
+Importantly, **changes to the legacy object will not have any effect after this migration**. This means you must update
+any scripts or tools you have developed to make changes via the new object. All Odigos components will automatically
+use the new object.
+
+In addition, the migrated object will be added as an OwnerReference on the legacy object as part of the migration.
+This allows the migrated object to be deleted via the Odigos UI (which will also delete the legacy object, and prevent
+a hot loop of migration).
+
+You can confirm that the migration has taken place on your legacy objects by verifying:
+
+1. The presence of a matching `migrated-legacy-*` Action in the Odigos system namespace.
+2. The presence of an OwnerReference in the legacy object.
+3. The Autoscaler logs confirming which objects have been migrated.
+
+## Future removal
+
+Currently, Odigos will not remove any existing legacy Action objects. However, in a future version these objects
+will be removed and the Custom Resource Definition associated with them will no longer be supported. It is therefore
+critical to migrate any manifests or tools that rely on the legacy API immediately.
