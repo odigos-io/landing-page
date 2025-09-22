@@ -151,6 +151,55 @@ Odigos conveniently supports the same amount of automatic configuration with our
 in the Odigos UI and provide the required auth details (token and project ID), and everything else,
 including the auth extension, will be configured for you.
 
+## Walkthrough: Configuring GCP Service Account with Odigos
+
+This guide offers a brief example of configuring a Service Account key to run Odigos outside of GCP. While using a Service
+Account key is not always recommended, similar approaches can be taken for other GCP credentials providers.
+
+First, create a Service Account in the GCP console by going to **Service Accounts** and clicking **Create Service Account**:
+
+![][image1]
+
+Next, give the Service Account a name and click **Create and Continue**:
+
+![][image2]
+
+Grant the Service Account the required permissions for the GCP Observability API you're using, such as
+**Cloud Telemetry Traces Writer** for the Telemetry (OTLP) API or **Cloud Trace Admin** for the Cloud Trace API:
+
+![][image3]
+
+Once the Service Account is created, expand the menu to the right of the Service Account and click **Manage Keys**:
+
+![][image4]
+
+Click **Add Key** and **Create new key**:
+
+![][image5]
+
+Choose the default **JSON** and click **Create**:
+
+![][image6]
+
+Take note of the saved JSON file on your device. Copy the contents of the file to provide them to Odigos.
+
+![][image7]
+
+In Odigos, find the GCP destination you wish to configure:
+
+![][image8]
+
+Fill out the **Project ID** and provide the JSON credentials in the **Application Credentials** field:
+
+![][image9]
+
+Note that at this point, you can also provide other settings such as [**Quota Project**](https://cloud.google.com/docs/quotas/quota-project)
+or **Request Timeout**.
+
+Click **Done** and verify that the destination was configured:
+
+![][image10]
+
 ## Auto-Instrumentation and Auto-Config with Odigos
 
 Odigos works with all of these standard open source components and abstracts the complexity of configuring them
@@ -166,3 +215,14 @@ to authenticating and exporting data to your backend. In the case of Google Clou
 It's no question that observability backends like Google Cloud build great products for ingesting and analyzing data.
 Odigos makes it simple to get your data into Google Cloud Observability securely and without extra complexity. On that note,
 GCP is just one of the dozens of backends currently supported by Odigos, with more always being added and improved.
+
+[image1]: /assets/blogs/gcp-destination/images/1.png
+[image2]: /assets/blogs/gcp-destination/images/2.png
+[image3]: /assets/blogs/gcp-destination/images/3.png
+[image4]: /assets/blogs/gcp-destination/images/4.png
+[image5]: /assets/blogs/gcp-destination/images/5.png
+[image6]: /assets/blogs/gcp-destination/images/6.png
+[image7]: /assets/blogs/gcp-destination/images/7.png
+[image8]: /assets/blogs/gcp-destination/images/8.png
+[image9]: /assets/blogs/gcp-destination/images/9.png
+[image10]: /assets/blogs/gcp-destination/images/10.png
