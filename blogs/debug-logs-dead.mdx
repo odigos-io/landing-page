@@ -1,0 +1,37 @@
+---
+pubDate: 'Oct 30 2025'
+author: Dan Sela
+authorImage: '/assets/team/dan_sela.jpg'
+image: ''
+title: 'The Death of the Debug Log? How Observability is Replacing Old Habits'
+description: 'Why debug logs are no longer our goto'
+metadata: debug logs, observability replacing debug logs, OpenTelemetry
+category: 'Odigos'
+tags: [distributed tracing, odigos, opentelemetry, logs, debug]
+---
+
+## TL;DR
+We’ve all learned to rely on debug logs like a safety blanket. In modern, distributed systems, they sometimes become more noise than signal. This blog covers why debug logs are losing their relevance, and what “modern observability” looks like when you stop looking at one line, and start connecting all the dots.
+
+## The Problem: We’re Drowning in Logs
+If you’ve ever tailed 10,000 lines of logs hoping to find a clue, you know the pain.
+Logs used to be enough, but then we started adding microservices, clusters, autoscalers, load-balancers, and some other modern “must-have” tech.
+But, for some reason, we still seem to reach for the logger.debug like it’s 2013.
+
+If we managed to leave “Harlem Shake”, “What Does the Fox Say”, and “Vine” in the past, why can’t we do the same with debug logs?
+We have all the tooling we need, but maybe the problem wasn’t tooling. Maybe the problem was the habit.
+
+## Old Habits: The Comfort of the Debug Logs
+We log because it’s easy.
+Because it’s muscle memory.
+Because grep feels like control in the chaos.
+
+But we found out the hard way that a local view can’t really get you the full picture.
+Recently, we’ve had an OOM issue in one of our components. As with most OpenTelemetry pipelines, we have a few collectors, each in charge of their respective parts.
+Looking at the logs, we couldn’t see anything special.
+We added more and more logs, until we finally hit something new. The retry mechanism was working overtime. Retry is a part of the happy flow, so we don’t log any errors. Only when we got to debug we could see how many spans were stuck in there.
+
+It’s About the Destination, Not the Journey
+
+// TODO: Write about how we found that the destination was the issue
+
