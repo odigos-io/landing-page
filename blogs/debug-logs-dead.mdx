@@ -2,7 +2,7 @@
 pubDate: 'Oct 30 2025'
 author: Dan Sela
 authorImage: '/assets/team/dan_sela.jpg'
-image: ''
+image: '/assets/blogs/debug-logs-dead/cover-image.png'
 title: 'The Death of the Debug Log? How Observability is Replacing Old Habits'
 description: 'Why debug logs are no longer our go-to'
 metadata: debug logs, observability replacing debug logs, OpenTelemetry
@@ -11,60 +11,67 @@ tags: [distributed tracing, odigos, opentelemetry, logs, debug]
 ---
 
 ## TL;DR
+
 We’ve all learned to rely on debug logs like a safety blanket.  
-But in modern, distributed systems, they’ve become more noise than signal.  
+But in modern, distributed systems, they’ve become more **noise than signal**.  
 
-This post breaks down why debug logs are losing their relevance — and what “modern observability” looks like when you stop staring at one line and start connecting all the dots.
-
----
+This post breaks down why debug logs are losing relevance — and what “modern observability” looks like when you stop staring at one line and start connecting all the dots.
 
 ## The Problem: We’re Drowning in Logs
-If you’ve ever tailed 10,000 lines of logs hoping to find a clue, you know the pain.
 
-Logs *used* to be enough. But then came microservices, clusters, autoscalers, load balancers, and all the other “must-have” cloud-native magic.
+If you’ve ever tailed **10,000 lines of logs** hoping to find a clue, you know the pain.
+
+Logs *used* to be enough.  
+Then came microservices, clusters, autoscalers, load balancers — and all the other “must-have” cloud-native magic.
 
 Yet somehow… we still reach for `logger.debug()` like it’s 2013.
 
-If we’ve managed to leave *Harlem Shake*, *What Does the Fox Say*, and *Vine* behind — why can’t we do the same with debug logs?
+> If we managed to leave *Harlem Shake*, *What Does the Fox Say*, and *Vine* behind — why can’t we do the same with debug logs?
 
 Maybe the problem isn’t the tooling.  
 Maybe the problem is the **habit**.
 
----
-
 ## Old Habits: The Comfort of Debug Logs
+
 We log because it’s easy.  
 Because it’s muscle memory.  
 Because `grep` feels like control in the chaos.
 
 But in distributed systems, a **local view** can’t give you the **full picture**.
 
-Recently, we hit an out-of-memory issue in one of our components. Like most OpenTelemetry pipelines, we have several collectors, each responsible for its part of the flow. Looking at the logs, nothing seemed out of the ordinary.
+Recently, we hit an out-of-memory issue in one of our components.  
+Like most OpenTelemetry pipelines, we have several collectors, each handling a piece of the flow.
 
-So we added more logs. And then more.  
-Eventually, we noticed something interesting — the retry mechanism was working overtime. Retries are part of the “happy path,” so we weren’t logging any errors. Only when we dove deep into debug level could we see how many spans were getting stuck in retry loops.
+Looking at the logs, nothing seemed off.  
+So we added more logs.  
+And then more.
 
----
+Eventually, we noticed something: the retry mechanism was working overtime. Retries are part of the “happy path,” so we weren’t logging any errors.  
+Only when we cranked up the verbosity to debug did we see just how many spans were stuck retrying.
 
 ## It’s About the Destination, Not the Journey
-After hopping from one collector to another, we eventually found the issue:  
-The **destination** we were sending data to had high latency, causing repeated retries and backpressure throughout the pipeline.
 
-It took hours — and several redeploys — to add enough logs, collect them, and piece together the pattern.
+After hopping from one collector to another, we finally found it — the **destination** was slow.  
+High latency caused retries and backpressure all the way up the chain.
 
-Now imagine solving this with traces instead.
+It took hours, and several redeploys - to add enough logs, collect them, and piece the story together.
 
----
+Now imagine solving this with **traces** instead.
 
-### What Are Traces?
-Traces (or distributed traces) are like a map of your request’s journey.  
-Each span shows a stop along the way — how long it took, and key details like queries, HTTP headers, or retry counts.
+## What Are Traces?
+
+Traces (or *distributed traces*) are like a **map** of your request’s journey.  
+Each span is a stop along the way — showing **how long** it took and **what happened** at each hop.
 
 > One look at a trace, and you can see what a thousand log lines are trying to tell you.
 
-*(Insert trace screenshot here)*
-
----
+```text
+Trace ID: 45ac3f…
+ ├── collector-a → 12ms
+ ├── collector-b → 10ms
+ ├── collector-c (3 retries) → 2100ms ⚠️
+ └── destination (latency: 1.8s)
+```
 
 ### A Different Route
 If we’d had tracing in place, the story would’ve been clear immediately:  
@@ -72,9 +79,8 @@ A few retries here, a few there, and one final destination taking much longer th
 
 That’s the power of observability. It’s not about reading logs — it’s about *seeing behavior.*
 
-*(Insert trace screenshot showing retries and slow final destination)*
+![Trace From Collectors](/assets/blogs/debug-logs-dead/trace-from-collectors.png "The trace from the collectors")
 
----
 
 ## Conclusion
 Next time you’re debugging a problem in your distributed, multi-cluster, load-balanced, cloud-native system — try adding some **traces**.
@@ -86,5 +92,3 @@ If you want to start small, check out [OpenTelemetry](https://opentelemetry.io/)
 Or, if you’d like a quick way to bootstrap traces with zero code changes, give [Odigos](https://github.com/odigos-io/odigos) a try.
 
 Your future self (and your on-call rotation) will thank you.
-
----
