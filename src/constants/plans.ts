@@ -60,12 +60,12 @@ export const PLANS: {
     {
       label: '.NET, PHP, Ruby',
       oss: 'OTEL Based',
-      enterprise: 'Coming Soon',
+      enterprise: true,
     },
     {
       label: 'Custom Instrumentation',
       oss: 'DIY',
-      enterprise: 'Coming Soon',
+      enterprise: true,
     },
   ],
   databases: [
@@ -87,7 +87,7 @@ export const PLANS: {
     {
       label: 'Multi Cluster Administration',
       oss: false,
-      enterprise: 'Coming Soon',
+      enterprise: true,
     },
     {
       label: 'Supported OTEL Instrumentation',
