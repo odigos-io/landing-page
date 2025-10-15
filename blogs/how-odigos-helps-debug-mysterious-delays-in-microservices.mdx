@@ -46,11 +46,11 @@ This is where distributed tracing becomes invaluable. With Odigos set up for dis
 
 *Normal flow: Each POST /buy request completes in ~1 second with 37 spans across various services*
 
-**Problematic scenario:** Here's the same request when a database lock occurs. Notice how one request takes over 10 seconds instead of the normal 1 second:
+**Problematic scenario:** Here's the same request when a database lock occurs. Notice how one request takes over 5 seconds instead of the normal up to 1 second:
 
 ![Problematic Flow in Jaeger](/assets/blogs/how-odigos-helps-debug-mysterious-delays-in-microservices/problematic-flow.png)
 
-*Problematic flow: One POST /buy request takes 10.07 seconds instead of the normal ~1 second*
+*Problematic flow: One POST /buy request takes more than 5 seconds instead of the up to ~1 second*
 
 ### The Cascade Effect Revealed
 
@@ -58,13 +58,13 @@ The real impact becomes clear when you see how this affects other services. Here
 
 ![Cascade Effect in Jaeger](/assets/blogs/how-odigos-helps-debug-mysterious-delays-in-microservices/cascade-effect.png)
 
-*The frontend service gets a SocketTimeoutException when trying to fetch products, waiting 3.36 seconds for the ads service to respond*
+*The frontend service gets a SocketTimeoutException when trying to fetch products, with the entire trace taking 5.18 seconds instead of the normal ~1 second*
 
 ## The Root Cause Analysis
 
 **Odigos' MySQL instrumentation provides valuable insights:** You can see exactly what's happening at the database level. The trace shows you the `mysql COM_QUERY` and `mysql_execute_command` operations, and you can see that the database is taking much longer to respond than normal.
 
-Looking at the trace details, you can see the error is a `SocketTimeoutException` and the URL being called is hitting your ads service. The trace reveals that the frontend service waits for 3.36 seconds for the ads service to respond, which is way beyond the normal response time.
+Looking at the trace details, you can see the error is a `SocketTimeoutException` and the URL being called is hitting your ads service. The trace reveals that the entire request takes 5.18 seconds, with the frontend service's GET operation taking 2.01 seconds, which is way beyond the normal ~1 second response time.
 
 ## The Multi-Service Impact Revealed
 
