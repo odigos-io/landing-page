@@ -13,13 +13,13 @@ export const CUSTOMERS = [
     width: 32,
     height: 32,
   },
-  {
-    src: '/assets/partners/merck.svg',
-    alt: 'merck',
-    href: 'https://merck.com',
-    width: 100,
-    height: 32,
-  },
+  // {
+  //   src: '/assets/partners/merck.svg',
+  //   alt: 'merck',
+  //   href: 'https://merck.com',
+  //   width: 100,
+  //   height: 32,
+  // },
   // {
   //   src: '/assets/partners/kyndryl.svg',
   //   alt: 'kyndryl',
