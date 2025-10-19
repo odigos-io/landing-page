@@ -60,7 +60,7 @@ export const Testimonial = () => {
   }, [activeIndex]);
 
   const Transition = useTransition({
-    container: styled.div``,
+    container: FlexColumn,
     animateIn: fadeIn,
     animateOut: fadeOut,
     duration: 1000,
@@ -68,26 +68,25 @@ export const Testimonial = () => {
 
   return (
     <ConstrainedWrapper $isMobile={isMobile}>
-      {TESTIMONIALS.map(
-        ({ quote, authorName, authorPosition }, idx) =>
-          activeIndex === idx && (
-            <FlexRow key={authorName} $align='center' $gap={isMobile ? 12 : 24}>
-              <Button leftIconSrc='/assets/icons/arrow.svg' variant='secondary' iconSize={20} padding='8px' style={{ transform: 'rotate(180deg)' }} onClick={handlePrev} />
-
-              <Transition enter>
-                <FlexColumn $gap={isMobile ? 32 : 64} $align='center'>
-                  <Quote $isMobile={isMobile}>{quote}</Quote>
-                  <FlexColumn>
-                    <AuthorName $isMobile={isMobile}>{authorName}</AuthorName>
-                    <AuthorPosition $isMobile={isMobile}>{authorPosition}</AuthorPosition>
-                  </FlexColumn>
+      <FlexColumn $gap={32}>
+        {TESTIMONIALS.map(
+          ({ quote, authorName, authorPosition }, idx) =>
+            activeIndex === idx && (
+              <Transition key={authorName} enter $gap={isMobile ? 32 : 64} $align='center'>
+                <Quote $isMobile={isMobile}>{quote}</Quote>
+                <FlexColumn>
+                  <AuthorName $isMobile={isMobile}>{authorName}</AuthorName>
+                  <AuthorPosition $isMobile={isMobile}>{authorPosition}</AuthorPosition>
                 </FlexColumn>
               </Transition>
+            ),
+        )}
 
-              <Button rightIconSrc='/assets/icons/arrow.svg' variant='secondary' iconSize={20} padding='8px' onClick={handleNext} />
-            </FlexRow>
-          ),
-      )}
+        <FlexRow $align='center' $justify='center' $gap={32}>
+          <Button leftIconSrc='/assets/icons/arrow.svg' variant='secondary' iconSize={20} padding='8px' style={{ transform: 'rotate(180deg)' }} onClick={handlePrev} />
+          <Button rightIconSrc='/assets/icons/arrow.svg' variant='secondary' iconSize={20} padding='8px' onClick={handleNext} />
+        </FlexRow>
+      </FlexColumn>
     </ConstrainedWrapper>
   );
 };
