@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
-import { Text } from '@/components';
+import React, { useEffect, useState } from 'react';
+import { Button, Text } from '@/components';
 import { useMobile } from '@/contexts';
-import styled from 'styled-components';
-import { ConstrainedWrapper, FlexColumn } from '@/styles';
-import { TESTIMONIAL_AUTHOR_NAME, TESTIMONIAL_AUTHOR_POSITION, TESTIMONIAL_QUOTE } from '@/constants';
+import { TESTIMONIALS } from '@/constants';
+import { useTransition } from '@odigos/ui-kit/hooks';
+import styled, { keyframes } from 'styled-components';
+import { ConstrainedWrapper, FlexColumn, FlexRow } from '@/styles';
 
 const Quote = styled(Text)<{ $isMobile: boolean }>`
   text-align: center;
@@ -28,18 +29,65 @@ const AuthorPosition = styled(Text)<{ $isMobile: boolean }>`
   text-transform: uppercase;
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
 export const Testimonial = () => {
   const { isMobile } = useMobile();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handlePrev = () => setActiveIndex((prev) => prev - 1);
+  const handleNext = () => setActiveIndex((prev) => (prev === TESTIMONIALS.length - 1 ? 0 : prev + 1));
+
+  useEffect(() => {
+    const interval = setInterval(() => handleNext(), 5000);
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
+  const Transition = useTransition({
+    container: styled.div``,
+    animateIn: fadeIn,
+    animateOut: fadeOut,
+    duration: 1000,
+  });
 
   return (
     <ConstrainedWrapper $isMobile={isMobile}>
-      <FlexColumn $gap={isMobile ? 32 : 64} $align='center'>
-        <Quote $isMobile={isMobile}>{TESTIMONIAL_QUOTE}</Quote>
-        <FlexColumn>
-          <AuthorName $isMobile={isMobile}>{TESTIMONIAL_AUTHOR_NAME}</AuthorName>
-          <AuthorPosition $isMobile={isMobile}>{TESTIMONIAL_AUTHOR_POSITION}</AuthorPosition>
-        </FlexColumn>
-      </FlexColumn>
+      {TESTIMONIALS.map(
+        ({ quote, authorName, authorPosition }, idx) =>
+          activeIndex === idx && (
+            <FlexRow key={authorName} $align='center' $gap={isMobile ? 12 : 24}>
+              <Button leftIconSrc='/assets/icons/arrow.svg' variant='secondary' iconSize={20} padding='8px' style={{ transform: 'rotate(180deg)' }} onClick={handlePrev} />
+
+              <Transition enter>
+                <FlexColumn $gap={isMobile ? 32 : 64} $align='center'>
+                  <Quote $isMobile={isMobile}>{quote}</Quote>
+                  <FlexColumn>
+                    <AuthorName $isMobile={isMobile}>{authorName}</AuthorName>
+                    <AuthorPosition $isMobile={isMobile}>{authorPosition}</AuthorPosition>
+                  </FlexColumn>
+                </FlexColumn>
+              </Transition>
+
+              <Button rightIconSrc='/assets/icons/arrow.svg' variant='secondary' iconSize={20} padding='8px' onClick={handleNext} />
+            </FlexRow>
+          ),
+      )}
     </ConstrainedWrapper>
   );
 };
