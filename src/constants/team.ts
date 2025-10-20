@@ -16,14 +16,6 @@ export const TEAM = [
     linkedin: 'https://www.linkedin.com/in/edenfed',
   },
   {
-    name: 'Eric Horsman',
-    title: 'VP Solutions Engineering',
-    description:
-      'Eric brings over 20+ years of leadership in solutions engineering, sales engineering, product management, and support, specializing in performance, observability, automation, capacity, and security.\n\nAs VP Solutions Engineering at Odigos, Eric empowers customers with high-fidelity tracing strategies powered by eBPF and OpenTelemetry to turn “data rich” systems into truly insightful observability pipelines.',
-    image: '/assets/team/eric_horsman.jpg',
-    linkedin: 'https://www.linkedin.com/in/eric-horsman-147aa1',
-  },
-  {
     name: 'Gerry Sengendo',
     title: 'VP Sales',
     description:
