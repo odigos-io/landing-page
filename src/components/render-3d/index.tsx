@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useOnScreen } from '@/hooks';
 import styled from 'styled-components';
 import Spline from '@splinetool/react-spline';
@@ -29,9 +29,15 @@ const Container = styled.div<{ $width: number; $height: number }>`
 export const Render3D = ({ scene, width, height }: Render3DProps) => {
   const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>(undefined, '512px');
 
+  const [shouldRender, setShouldRender] = useState(false);
+  useEffect(() => {
+    // NEVER UNDO THE RENDER
+    if (isVisible) setShouldRender(true);
+  }, [isVisible]);
+
   return (
     <Container ref={visibleRef} $width={width} $height={height}>
-      {scene && isVisible && <Spline scene={scene} renderOnDemand={false} />}
+      {scene && shouldRender && <Spline scene={scene} renderOnDemand={true} />}
     </Container>
   );
 };

@@ -22,14 +22,13 @@ const Absolute = styled.div`
   pointer-events: none;
 `;
 
-const DesktopContent = styled.div`
+const DesktopContent = styled.div<{ $isMobile: boolean }>`
   display: flex;
-  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 128px;
-  height: 85%;
   width: 100%;
-  margin-top: 50px;
+  margin-top: ${({ $isMobile }) => ($isMobile ? 0 : 50)}px;
 `;
 
 const MobileContent = styled.div`
@@ -52,18 +51,12 @@ export const Hero1 = () => {
         <Render3D scene={SCENE} width={screenWidth / divider} height={screenWidth / ASPECT_RATIO / divider} />
 
         <Absolute>
-          {!isMobile ? (
-            <ConstrainedWrapper $isMobile={isMobile}>
-              <DesktopContent>
-                <TextAndButtons width={500} />
-                <ProductPreview />
-              </DesktopContent>
-            </ConstrainedWrapper>
-          ) : (
-            <MobileContent>
+          <ConstrainedWrapper $isMobile={isMobile}>
+            <DesktopContent $isMobile={isMobile}>
+              {!isMobile && <TextAndButtons width={500} />}
               <ProductPreview />
-            </MobileContent>
-          )}
+            </DesktopContent>
+          </ConstrainedWrapper>
         </Absolute>
       </Relative>
 
