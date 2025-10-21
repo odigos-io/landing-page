@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useOnScreen } from '@/hooks';
 import styled from 'styled-components';
 import Spline from '@splinetool/react-spline';
 
@@ -27,11 +26,9 @@ const Container = styled.div<{ $width: number; $height: number }>`
 `;
 
 export const Render3D = ({ scene, width, height }: Render3DProps) => {
-  const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>(undefined, '512px');
-
   return (
-    <Container ref={visibleRef} $width={width} $height={height}>
-      {scene && isVisible && <Spline scene={scene} renderOnDemand={false} />}
+    <Container $width={width} $height={height}>
+      {scene && <Spline scene={scene} renderOnDemand={false} />}
     </Container>
   );
 };
