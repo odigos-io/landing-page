@@ -63,6 +63,7 @@ const nextConfig: NextConfig = {
     // Optimize imports for better tree shaking
     config.resolve.alias = {
       ...config.resolve.alias,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       '@': require('path').resolve(__dirname, 'src'),
     };
 
