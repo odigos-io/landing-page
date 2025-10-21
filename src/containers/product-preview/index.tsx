@@ -13,9 +13,10 @@ export const ProductPreview = () => {
 
   return (
     <Image
-      src='/assets/renders/product_preview.svg'
+      src='/assets/renders/product_preview.png'
       alt='product'
       priority
+      fetchPriority='high'
       width={imageWidth}
       height={imageHeight}
       style={{
