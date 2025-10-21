@@ -5,7 +5,7 @@ import Script from 'next/script';
 const Scripts = () => {
   return (
     <>
-      <Script id='cookieyes-banner' strategy='beforeInteractive' src='https://cdn-cookieyes.com/client_data/b873ab43d440c7e433a75c19/script.js' />
+      <Script id='cookieyes-banner' strategy='afterInteractive' src='https://cdn-cookieyes.com/client_data/b873ab43d440c7e433a75c19/script.js' />
       <Script id='redodev-integration' strategy='afterInteractive'>
         {`
           !function(){var e,t,n;e="756aafdccc100e4",t=function(){Reo.init({clientID:"756aafdccc100e4"})},(n=document.createElement("script")).src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();
