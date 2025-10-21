@@ -38,7 +38,7 @@ const MobileContent = styled.div`
   justify-content: center;
 `;
 
-const SCENE = 'https://prod.spline.design/6CWMZMloAJo3I3Z3/scene.splinecode';
+const SCENE = 'https://prod.spline.design/NM0xpAU8t09KHPuW/scene.splinecode';
 const ASPECT_RATIO = 1440 / 710;
 
 export const Hero1 = () => {
