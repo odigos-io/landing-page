@@ -1,0 +1,135 @@
+---
+pubDate: 'Oct 29 2025'
+author: Odigos Team
+authorImage: ''
+image: ''
+title: 'Building Dynamic Data Streams with OpenTelemetry: Smarter Telemetry Routing with a Custom Connector'
+description: 'Why and how we built a custom OpenTelemetry connector and a three-layer pipeline to enable flexible, O(1) telemetry routing with Odigos Data Streams.'
+metadata: 'Odigos Data Streams, OpenTelemetry connector, O(1) routing, multi-destination telemetry'
+category: 'Odigos'
+tags: [odigos, opentelemetry, data streams, routing, connector]
+---
+
+## Introduction – Why We Developed the Ability for Users to Create More Than One Data Stream
+
+Before we introduced the **Data Streams** concept, Odigos supported a fairly standard observability setup — all telemetry data (traces, metrics, and logs) from every source was sent to one or more destinations. Each new destination you added simply received the same full stream of data.
+
+For example, if you configured both **Datadog** and **ClickHouse** as destinations, Odigos would duplicate all telemetry and send it to both.
+
+This approach worked, but it lacked flexibility. Many of our users wanted finer control — for instance, sending telemetry from one set of services (what we call _sources_ in Odigos) to Datadog, while routing another set to ClickHouse.
+
+Without native support for this, customers were forced to implement **complex, manual routing logic** to filter data before it reached the backend. These setups were difficult to maintain and inefficient, as filtering happened very late in the pipeline.
+
+Our users clearly needed a simpler, configuration-based way to **group sources and control where each group’s telemetry goes**. That’s how the idea of **Data Streams** was born — a dynamic, human-readable solution that allows users to define routing at a high level without writing custom logic.
+
+When exploring how to implement this, we looked into the **OpenTelemetry Collector** for a built-in solution. The `routingconnector` seemed like the perfect fit at first — but it quickly became clear that it wasn’t.
+
+Building dynamic OTTL (OpenTelemetry Transformation Language) condition tables for large numbers of services turned out to be painful. The conditions needed to identify a service — such as its name, namespace, or workload kind — became unreadable and hard to maintain.
+
+In some cases, the same service even needed to send data to **multiple destinations**, which made the configuration nearly impossible to express cleanly. Debugging these setups was a nightmare.
+
+Performance was another problem. For every span, the `routingconnector` had to iterate through all condition sets — and in large customer environments, this could mean hundreds or thousands of checks per signal. Clearly, this approach wouldn’t scale.
+
+We realized we needed a **custom OpenTelemetry connector** purpose-built for Odigos — one that could:
+
+- Understand Odigos’s configuration model directly
+- Route telemetry to the correct data stream in **O(1) time**
+- Produce configurations that were **human-readable and easy to debug**
+
+This decision completely changed how Odigos manages telemetry pipelines and led us to design a **three-layer data stream architecture**, which I’ll describe in the next section.
+
+## The 3-Layer Pipeline Architecture
+
+Why did Odigos even need multiple pipeline layers?
+
+We wanted a design where each layer has a **clear responsibility** — routing, processing, and exporting — isolated from the others.
+
+This separation allows every layer to be reused independently in different scenarios.
+
+For example, the **destination pipeline** is responsible for holding the configuration for a given backend.
+
+Multiple data streams can forward telemetry to the same destination pipeline, which means we can **reuse configurations** instead of duplicating them for each stream.
+
+Similarly, processors can be placed at any level — globally in the root layer, specifically per data stream, or at the destination — depending on whether we want them to affect all telemetry or just a subset.
+
+In practice, the architecture is made up of **three layers**:
+
+1. **Root Signal Pipeline** (e.g., `traces/in`)
+
+   This is the entry point for all incoming telemetry. Every trace first lands here.
+
+   Its exporter is the **OdigosRouterConnector**, which decides which data stream pipeline to forward each trace to, based on user configuration defined in the Odigos UI or via CRDs.
+
+2. **Datastream Layer** (e.g., `datastream/teamB`)
+
+   This is a dynamically generated pipeline created for each data stream.
+
+   Here, the **router connector** acts as a receiver and forwards telemetry to the appropriate **destination pipeline** using the built-in **forwardconnector**, a simple OpenTelemetry connector responsible only for sending data from one pipeline (exporter) to another (receiver).
+
+3. **Destination Layer**
+
+   The final step before telemetry leaves the Odigos system.
+
+   Each destination pipeline contains backend-specific configuration (Odigos currently supports more than **80 destinations**) and any additional processors needed before export.
+
+**How the O(1) Lookup Works**
+
+To make routing both **fast and scalable**, we built a **Signal Routing Map** — an in-memory structure that indexes all sources and namespaces by a unique `SourceKey` and provides routing information per signal type.
+
+For each incoming telemetry item — for example, a trace — we construct the key from its attributes (namespace, workload kind, service name, etc.).
+
+The connector then performs a **direct key lookup**, instantly finding the relevant data stream pipelines in **O(1) time**, regardless of how many streams or sources are configured.
+
+## Challenges and Lessons Learned
+
+Building the connector from scratch was far from trivial.
+
+The OpenTelemetry Collector’s internal design is powerful but complex, and the lack of detailed documentation made it difficult to make our connector behave exactly like a native one.
+
+Although we already had experience developing custom processors, receivers, and exporters, this was the **first time we built a custom connector** — and it came with a unique set of challenges.
+
+We needed to balance **user flexibility** with **runtime performance**.
+
+To achieve that, we decided to **build the routing maps during connector initialization**, before any spans were processed.
+
+At runtime, the connector simply uses these maps for constant-time lookups, avoiding any heavy computation or configuration parsing while data is flowing.
+
+Earlier designs involved more complex data structures and re-parsing configurations — which we quickly realized would hurt performance.
+
+Debugging the system during development was another tough part.
+
+It wasn’t always clear where a specific span was being routed, so we added **debug logging** directly into the connector and built a **debug exporter** to help trace what was happening internally.
+
+We also exposed **routing metrics in the Odigos UI**, allowing both users and our team to easily see how much data flowed through each destination pipeline — making it clear if data wasn’t being routed as expected.
+
+**Configuration management** was also challenging.
+
+When users add or remove data streams, we need to handle these changes dynamically without losing telemetry.
+
+We spent significant effort minimizing pipeline reloads and adding **retry logic** to ensure no data is lost if the collector temporarily becomes unavailable during reconfiguration.
+
+In the process, we learned several important lessons:
+
+1. **Keep configuration human-readable** — no one wants to debug 200-line OTTL conditions.
+2. **Sometimes building your own component is the right choice** when existing tools can’t scale to your needs.
+
+## What We Achieved and Where We’re Heading
+
+After introducing the **Data Streams** feature, users can now route telemetry with **complete flexibility** — different sources, different destinations, and no manual filters required.
+
+This capability unlocks a variety of powerful use cases:
+
+1. **Cost optimization** – Route lower-priority services (like internal or back-office apps) to more cost-effective destinations such as Parquet files in S3.
+2. **Targeted processing** – Apply custom processors (e.g., sampling, enrichment) to only a subset of services.
+3. **Gradual migration** – Test new destinations on specific services before committing to a full rollout.
+4. **Organizational segmentation** – Split telemetry based on teams, products, or environments for better control and visibility.
+
+Looking ahead, there’s still more to refine based on user feedback.
+
+Some existing **Odigos Actions** — another feature that allows users to perform transformations on telemetry in an abstracted way — still operate on the older global model, meaning each action is currently applied across all data streams.
+
+We’re working on updating this so that actions can be applied **per data stream**, along with improving pipeline reload behavior to make configuration changes **seamless and non-disruptive**.
+
+In the end, this journey of building the Data Streams feature taught us how far thoughtful architecture can take flexibility and performance together.
+
+It’s exciting to see how something that started as a limitation in the OpenTelemetry routing connector evolved into a core capability that makes observability simpler, faster, and smarter for Odigos users.
