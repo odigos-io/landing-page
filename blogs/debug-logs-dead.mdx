@@ -14,18 +14,18 @@ tags: [distributed tracing, odigos, opentelemetry, logs, debug]
 We’ve all learned to rely on debug logs like a safety blanket.  
 But in modern, distributed systems, they’ve become more **noise than signal**.
 
-This post breaks down why debug logs are losing relevance — and what “modern observability” looks like when you stop staring at one line and start connecting all the dots.
+This post breaks down why debug logs are losing relevance, and what “modern observability” looks like when you stop staring at one line and start connecting all the dots.
 
 ## The Problem: We’re Drowning in Logs
 
 If you’ve ever tailed **10,000 lines of logs** hoping to find a clue, you know the pain.
 
 Logs _used_ to be enough.  
-Then came microservices, clusters, autoscalers, load balancers — and all the other “must-have” cloud-native magic.
+Then came microservices, clusters, autoscalers, load balancers, and all the other “must-have” cloud-native magic.
 
 Yet somehow… we still reach for `logger.debug()` like it’s 2013.
 
-> If we managed to leave _Harlem Shake_, _What Does the Fox Say_, and _Vine_ behind — why can’t we do the same with debug logs?
+> If we managed to leave _Harlem Shake_, _What Does the Fox Say_, and _Vine_ behind, why can’t we do the same with debug logs?
 
 Maybe the problem isn’t the tooling.  
 Maybe the problem is the **habit**.
@@ -50,17 +50,17 @@ Only when we cranked up the verbosity to debug did we see just how many spans we
 
 ## It’s About the Destination, Not the Journey
 
-After hopping from one collector to another, we finally found it — the **destination** was slow.  
+After hopping from one collector to another, we finally found it, the **destination** was slow.  
 High latency caused retries and backpressure all the way up the chain.
 
-It took hours, and several redeploys - to add enough logs, collect them, and piece the story together.
+It took hours, and several redeploys, to add enough logs, collect them, and piece the story together.
 
 Now imagine solving this with **traces** instead.
 
 ## What Are Traces?
 
 Traces (or _distributed traces_) are like a **map** of your request’s journey.  
-Each span is a stop along the way — showing **how long** it took and **what happened** at each hop.
+Each span is a stop along the way, showing **how long** it took and **what happened** at each hop.
 
 > One look at a trace, and you can see what a thousand log lines are trying to tell you.
 
@@ -77,13 +77,13 @@ Trace ID: 45ac3f…
 If we’d had tracing in place, the story would’ve been clear immediately:  
 A few retries here, a few there, and one final destination taking much longer than expected.
 
-That’s the power of observability. It’s not about reading logs — it’s about _seeing behavior._
+That’s the power of observability. It’s not about reading logs, it’s about _seeing behavior._
 
 ![Trace From Collectors](/assets/blogs/debug-logs-dead/trace-from-collectors.png 'The trace from the collectors')
 
 ## Conclusion
 
-Next time you’re debugging a problem in your distributed, multi-cluster, load-balanced, cloud-native system — try adding some **traces**.
+Next time you’re debugging a problem in your distributed, multi-cluster, load-balanced, cloud-native system, try adding some **traces**.
 
 Logs are great for what’s happening _inside_ a single component.  
 Traces tell you the story of the **entire request**, end to end.
