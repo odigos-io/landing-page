@@ -21,8 +21,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run ESLint
-        run: yarn eslint . --ext .js,.jsx,.ts,.tsx
-        # TODO: once we want to make this stricter, add the "--max-warnings 0" flag
+        run: yarn lint
 
       - name: Failed
         if: ${{ failure() }}
