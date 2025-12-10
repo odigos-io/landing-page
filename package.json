@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start --turbopack",
-    "lint": "next lint"
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 0"
   },
   "dependencies": {
     "@odigos/ui-kit": "^0.0.137",
@@ -28,8 +28,12 @@
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "typescript": "^5"
   }
 }
