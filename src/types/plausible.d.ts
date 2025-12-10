@@ -2,14 +2,12 @@
 
 interface Plausible {
   (eventName: string, options?: PlausibleOptions): void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  q?: any[];
+  q?: unknown[];
 }
 
 interface PlausibleOptions {
   props?: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
+    [key: string]: unknown;
   };
   callback?: () => void;
 }

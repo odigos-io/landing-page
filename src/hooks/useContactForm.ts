@@ -27,8 +27,7 @@ const INITIAL_FORM_DATA: ContactForm = {
   message: '',
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sendToService = async (url: string, body: any): Promise<string> => {
+const sendToService = async (url: string, body: unknown): Promise<string> => {
   try {
     const res = await fetch(url, {
       method: 'POST',

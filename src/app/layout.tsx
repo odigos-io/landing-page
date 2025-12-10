@@ -8,7 +8,7 @@ const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
 const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
 const EventsProvider = dynamic(() => import('@/contexts/useEvents'));
 
-const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
+// const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
 const Header = dynamic(() => import('@/containers/header'));
 const Footer = dynamic(() => import('@/containers/footer'));
 const Modals = dynamic(() => import('@/containers/modals'));
@@ -71,7 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <MobileProvider>
               <BlogsProvider blogs={blogs}>
                 <EventsProvider events={events}>
-                  <AnnouncementBanner title='Meet Odigos at Kubecon Atlanta!' link='/event?latest' linkText='Event' />
+                  {/* <AnnouncementBanner title='Meet Odigos at <EVENT_NAME_HERE>!' link='/event?latest' linkText='Event' /> */}
                   <Header />
                   {children}
                   <Footer />
