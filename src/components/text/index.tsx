@@ -76,13 +76,7 @@ const renderText = (text: string): { mappedText: ReactNode; hasStrongs: boolean 
 
 const Text = forwardRef<HTMLParagraphElement, TextProps>(({ children, color, noWrap, fontSize = 16, fontWeight, lineHeight, letterSpacing, textAlign, textDecoration, ...props }, ref) => {
   const textArray = useMemo(() => {
-    const str =
-      typeof children === 'string'
-        ? children
-        : Array.isArray(children)
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (children as any[]).filter((x) => x && typeof x === 'string').join(' ')
-        : '';
+    const str = typeof children === 'string' ? children : Array.isArray(children) ? (children as unknown[]).filter((x) => x && typeof x === 'string').join(' ') : '';
 
     return str.split('\n') as string[];
   }, [children]);
