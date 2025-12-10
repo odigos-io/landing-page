@@ -1,3 +1,4 @@
+export * from './common';
 export * from './faq';
 export * from './how-to-start';
 export * from './info-sections';

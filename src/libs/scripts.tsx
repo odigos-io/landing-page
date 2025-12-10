@@ -1,8 +1,11 @@
 'use client';
 
 import Script from 'next/script';
+import { IS_DEV } from '@/constants';
 
 const Scripts = () => {
+  if (IS_DEV) return null;
+
   return (
     <>
       <Script id='cookieyes-banner' strategy='afterInteractive' src='https://cdn-cookieyes.com/client_data/b873ab43d440c7e433a75c19/script.js' />
