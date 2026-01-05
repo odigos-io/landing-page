@@ -1,5 +1,5 @@
 ---
-pubDate: 'Dec 29 25'
+pubDate: 'Jan 5 26'
 title: 'Deploy a Production Grade Grafana Trace Facility in Minutes Supercharged by Odigos'
 description: 'Use an OSS Grafana Stack with Tempo and Prometheus to store and visualize Odigos traces'
 metadata: 'Use an OSS Grafana Stack with Tempo and Prometheus to store and visualize Odigos traces'
@@ -64,7 +64,7 @@ Now that your Grafana UI is up and running its time to setup Prometheus and Temp
 This Prometheus deployment provides a lightweight, self-contained monitoring setup for Kubernetes. It runs without Alertmanager or Pushgateway, using persistent storage (50 Gi) and a 24-hour data retention window.  I configured this to use the gp2 storage class since I am deploying on EKS and my default is gp2, but you can easily swap this out for another storage class like gp3, etc.  It scrapes `node-exporter`, `kube-state-metrics`, and itself every 15-seconds too.  This configuration enables the remote-write receiver feature at at `/api/v1/write`, accepting telemetry from Tempo’s metrics generator.  It provides a solid foundation for integrating distributed tracing metrics from Tempo at a later step.
 
 Values File
-````yaml
+```yaml
 alertmanager:
   enabled: false
 
@@ -141,22 +141,22 @@ serverFiles:
           - source_labels: [__meta_kubernetes_endpoint_port_name]
             regex: http-metrics
             action: keep
-````
+```
 
 Using the configuration from the values file above, we can deploy prometheus directly to our Kubernetes cluster.
 
 Add the helm repo and update
-````
+```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-````
+```
 Deploy prometheus (make sure to replace the values file with what you named your file)
-````
+```
 helm upgrade --install prometheus prometheus-community/prometheus \
   --namespace monitoring \
   --create-namespace \
   -f prometheus-values.yaml
-````
+```
 Once all the pods are up, we can move on to deploy tempo!
 
 ### **Tempo**
@@ -166,7 +166,7 @@ and store traces in s3.  The following steps assume you have the AWS CLI install
 that you would like to use.  
 
 Create a minimal, least-privilege S3 policy JSON.  Replace `<your-s3-bucket>` with the name of your bucket.
-````
+```
 cat > tempo-s3-policy.json <<'JSON'
 {
   "Version": "2012-10-17",
@@ -176,19 +176,19 @@ cat > tempo-s3-policy.json <<'JSON'
   ]
 }
 JSON
-````
+```
 
 Now apply this through the AWS CLI
 
-````
+```
 aws iam create-policy --policy-name TempoS3Policy \
   --policy-document file://tempo-s3-policy.json
-````
+```
 
 Enable IRSA and bind the role to a Service Account (the commands below create a Service Account but feel free to use your own) 
 Replace $CLUSTER_NAME, $AWS_REGION, $NAMESPACE, and $POLICY_ARN with your own values.
 
-````
+```
 eksctl utils associate-iam-oidc-provider \
   --cluster "$CLUSTER_NAME" \
   --region  "$AWS_REGION" \
@@ -202,18 +202,20 @@ eksctl create iamserviceaccount \
   --attach-policy-arn "$POLICY_ARN" \
   --role-name eks-irsa-tempo \
   --approve
-````
+```
 
 Now we can create a values file to use when we deploy Tempo.  A few things to note here that you can customize.
-First, in the you can set the `tempo.structuredConfig.query_frontend.search.max_duration` to any value you wish.  
+First, in the values you can set the `tempo.structuredConfig.query_frontend.search.max_duration` to any value you wish.  
 This value defines how far back to can query traces when everything is hooked up to Grafana.  The current value of 12h
 means that I can query Tempo for Traces up to 12 hours ago.  Traces over 12 hours old, will still exist in S3, but you cannot query them.
-This help to save on I/O costs with S3, but can be tuned to your liking.  Secondly, you will need to modify the 
+
+
+This helps to save on I/O costs with S3, but can be tuned to your liking.  Secondly, you will need to modify the 
 `tempo.structuredConfig.storage.trace.s3` block with your bucket, region and endpoint.  Finally, just make sure the
 `metrics_generator.storage.remote_write` URL is correct.  If you follow the instructions above exactly, you can leave
 what I have in there as is.
 
-````yaml
+```yaml
 serviceAccount:
   create: false
   name: tempo
@@ -284,17 +286,17 @@ queryFrontend:
 distributor:
   service:
     type: ClusterIP
-````
+```
 
 > Note that this deploys the query frontend service with a LoadBalancer.  This service will be the URL for the Tempo datasource in Grafana, so if Grafana runs in another cluster or envornment you will need a loadBalancer to allow communication between Grafana and the Tempo-query-frontend service.  
 
 With the values file saved, you can install Tempo with helm using this values file.
 
-````
+```
 helm upgrade --install tempo grafana/tempo-distributed \
   -n tracing --create-namespace \
   -f values-s3.yaml
-````
+```
 
 This deploys Tempo in a distributed configuration.  Deploying Tempo this way lets you scale each component independently for better performance, reliability, and flexibility. It separates ingestion, querying, and storage so heavy workloads don’t affect each other, and enables high availability, caching, and faster queries at production scale.
 
@@ -303,6 +305,8 @@ This deploys Tempo in a distributed configuration.  Deploying Tempo this way let
 With your Grafana, Tempo, and Prometheus stack now running, it’s time to bring it to life with real telemetry. This is where Odigos completely transforms the experience. Instead of manually instrumenting microservices, 
 modifying code, or redeploying applications, Odigos automatically attaches eBPF powered OpenTelemetry instrumentation to your workloads with just a few clicks. It discovers every service in your cluster, captures traffic, 
 and begins emitting rich, end-to-end traces within minutes. Odigos captures deep insights into requests, dependencies, databases, external calls, and latency hotspots without requiring developers to touch a single line of code. 
+
+
 It does all of this transparently and safely, using eBPF and language-native hooks to generate production-grade spans. The result is full visibility across your microservices from day one, even for legacy or third-party 
 applications that were never instrumented. With Odigos in front of your stack, tracing becomes effortless, consistent, and scalable. This is the moment when your observability pipeline stops being just deployed, and starts 
 delivering value.
@@ -319,15 +323,15 @@ Access the UI
 kubectl port-forward svc/ui 3000:3000 -n odigos-system
 ```
 
-the next step is to select the sources you want to instrument. Odigos will automatically list all the workloads in your cluster, and you can simply pick the microservices you want tracing for. After selecting your sources, 
-add a new destination and choose Tempo. For the endpoint, provide the URL of your tempo query frontend service, which will receive and store all incoming traces. Within seconds, Odigos will begin streaming 
+The next step is to select the sources you want to instrument. Odigos will automatically list all the workloads in your cluster, and you can simply pick the microservices you want tracing for. After selecting your sources, 
+add a new destination and choose Tempo. For the endpoint, provide the URL of your Tempo query frontend service, which will receive and store all incoming traces. Within seconds, Odigos will begin streaming 
 data directly into your Grafana Tempo pipeline.  
 
 ![][image2]
 
 ## **Step 3: Viewing Traces in Grafana**
 
-The final step is to connect everything inside Grafana. Add Tempo as a new datasource using the endpoint of your tempo query frontend service, and Grafana will immediately begin pulling in traces. 
+The final step is to connect everything inside Grafana. Add Tempo as a new datasource using the endpoint of your Tempo query frontend service, and Grafana will immediately begin pulling in traces. 
 From here, you can explore full end to end trace flows, drill into RED metrics automatically generated by the metrics generator, and start building dashboards that combine spans, metrics, and service performance in a single 
 view. 
 
