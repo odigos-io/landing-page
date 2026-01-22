@@ -1,14 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useOnScreen } from '@/hooks';
+import React, { useEffect, useState, Component, ReactNode } from 'react';
+import { useOnScreen, useWebGLSupport } from '@/hooks';
 import styled from 'styled-components';
-import Spline from '@splinetool/react-spline';
+import dynamic from 'next/dynamic';
+
+// Dynamically import Spline with no SSR and loading disabled
+// This prevents Spline from blocking initial page load
+const SplineDynamic = dynamic(() => import('@splinetool/react-spline'), {
+  ssr: false,
+  loading: () => null,
+});
 
 interface Render3DProps {
   scene: string;
   width: number;
   height: number;
+  fallback?: ReactNode;
 }
 
 const Container = styled.div<{ $width: number; $height: number }>`
@@ -26,18 +34,54 @@ const Container = styled.div<{ $width: number; $height: number }>`
   }
 `;
 
-export const Render3D = ({ scene, width, height }: Render3DProps) => {
-  const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>(undefined, '512px');
+// Error boundary to catch any Spline runtime errors silently
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
 
+class SplineErrorBoundary extends Component<{ children: ReactNode; fallback?: ReactNode }, ErrorBoundaryState> {
+  constructor(props: { children: ReactNode; fallback?: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch() {
+    // Silently catch the error - no console logging to keep it "quiet"
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || null;
+    }
+    return this.props.children;
+  }
+}
+
+export const Render3D = ({ scene, width, height, fallback }: Render3DProps) => {
+  const webGLSupported = useWebGLSupport();
+  const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>(undefined, '512px');
   const [shouldRender, setShouldRender] = useState(false);
+
   useEffect(() => {
-    // NEVER UNDO THE RENDER
-    if (isVisible) setShouldRender(true);
-  }, [isVisible]);
+    // Only attempt to render if visible and WebGL is supported
+    if (isVisible && webGLSupported) {
+      setShouldRender(true);
+    }
+  }, [isVisible, webGLSupported]);
 
   return (
     <Container ref={visibleRef} $width={width} $height={height}>
-      {scene && shouldRender && <Spline scene={scene} renderOnDemand={true} />}
+      {scene && shouldRender ? (
+        <SplineErrorBoundary fallback={fallback}>
+          <SplineDynamic scene={scene} renderOnDemand={true} />
+        </SplineErrorBoundary>
+      ) : (
+        fallback || null
+      )}
     </Container>
   );
 };
