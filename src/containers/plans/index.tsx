@@ -64,7 +64,7 @@ export const Plans = () => {
             <TableRow key={item.label} {...item} />
           ))}
         </Table>
-        <SubTitle $isMobile={isMobile}>Database Extended Distributed Tracting</SubTitle>
+        <SubTitle $isMobile={isMobile}>Database Extended Distributed Tracing</SubTitle>
         <Table>
           {PLANS.databases.map((item) => (
             <TableRow key={item.label} {...item} />

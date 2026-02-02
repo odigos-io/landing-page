@@ -8,7 +8,7 @@ export const HOW_TO_START = [
   },
   {
     title: '2. Select Applications',
-    description: 'Select target applications: choose specificapplications, or let Odigos instrument everything automatically.',
+    description: 'Select target applications: choose specific applications, or let Odigos instrument everything automatically.',
     image: '/assets/renders/select_applications.svg',
     imageWidth: 243,
     imageHeight: 116,
