@@ -31,11 +31,6 @@ export const EventHeader = ({ event }: EventHeaderProps) => {
 
   return (
     <Relative>
-      {!isMobile && (
-        <Absolute>
-          <Render3D scene={SCENE} width={screenWidth} height={screenWidth / ASPECT_RATIO} />
-        </Absolute>
-      )}
       <BannerImage src={event.image || ''} alt={event.title} fallbackImage={DEFAULT_EVENT_IMAGE} />
     </Relative>
   );
