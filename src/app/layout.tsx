@@ -71,7 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <MobileProvider>
               <BlogsProvider blogs={blogs}>
                 <EventsProvider events={events}>
-                  {/* <AnnouncementBanner title='Meet Odigos at <EVENT_NAME_HERE>!' link='/event?latest' linkText='Event' /> */}
+                  {/* <AnnouncementBanner title='Meet Odigos at <EVENT_NAME_HERE>!' link='/events?latest' linkText='Event' /> */}
                   <Header />
                   {children}
                   <Footer />

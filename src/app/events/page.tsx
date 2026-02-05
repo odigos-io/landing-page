@@ -12,7 +12,7 @@ const Event = () => {
   const shouldGoToLatest = searchParams?.get('latest') != null && events.length > 0;
 
   useEffect(() => {
-    if (shouldGoToLatest) router.push(`/event/${events[0].slug}`);
+    if (shouldGoToLatest) router.push(`/events/${events[0].slug}`);
   }, [router, shouldGoToLatest, events]);
 
   if (shouldGoToLatest) return null;

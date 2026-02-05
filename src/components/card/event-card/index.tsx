@@ -24,7 +24,7 @@ export const EventCard = ({ slug, image, title, eventStartDate, eventEndDate, lo
       title={title}
       description={`${location ? `<strong>Location:</strong>\n${location}` : ''}\n\n${booth ? `<strong>Booth:</strong>\n${booth}` : ''}`}
       tags={eventTags}
-      href={`/event/${slug}`}
+      href={`/events/${slug}`}
     />
   );
 };

@@ -22,7 +22,7 @@ export const NAVIGATION = [
   },
   {
     label: 'Events',
-    href: '/event',
+    href: '/events',
   },
   {
     label: 'Careers',
