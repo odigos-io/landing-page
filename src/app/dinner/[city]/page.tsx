@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: DinnerPageProps): Promise<Met
   return {
     title: `${event.title} - ${event.city} | Odigos Executive Dinner`,
     description: event.subtitle,
+    robots: 'noindex, nofollow',
     openGraph: {
       title: `${event.title} - ${event.city}`,
       description: event.subtitle,

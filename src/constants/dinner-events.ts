@@ -39,7 +39,7 @@ export const DINNER_EVENTS: Record<string, DinnerEvent> = {
       },
       {
         title: 'Industry Insights',
-        description: 'Engage in candid discussions about observability trends, OpenTelemetry adoption, and strategies for managing complex distributed systems.',
+        description: 'Engage in candid discussions about observability trends, eBPF and OpenTelemetry use cases, and strategies for gaining visibility into critical services.',
         icon: 'insights',
       },
       {
