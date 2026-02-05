@@ -42,7 +42,7 @@ export const LearnMoreEvents = ({ title = 'Discover Latest Events' }: LearnMoreE
         </CardsContainer>
 
         <FlexRow $fullWidth $align='center' $justify='center'>
-          <Button rightIconSrc='/assets/icons/arrow.svg' href='/event'>
+          <Button rightIconSrc='/assets/icons/arrow.svg' href='/events'>
             Show All
           </Button>
         </FlexRow>
