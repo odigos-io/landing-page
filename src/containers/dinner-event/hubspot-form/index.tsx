@@ -2,11 +2,11 @@
 
 import React, { useEffect } from 'react';
 import Script from 'next/script';
-import styled from 'styled-components';
 import { useMobile } from '@/contexts';
+import styled, { css } from 'styled-components';
 import type { DinnerEvent } from '@/constants/dinner-events';
 
-const SectionWrapper = styled.section<{ $backgroundImage: string; $isMobile: boolean }>`
+const SectionWrapper = styled.section<{ $backgroundImage: string; $backgroundImageIsBright?: boolean; $isMobile: boolean }>`
   position: relative;
   width: 100%;
   min-height: ${({ $isMobile }) => ($isMobile ? '500px' : '600px')};
@@ -17,6 +17,23 @@ const SectionWrapper = styled.section<{ $backgroundImage: string; $isMobile: boo
   background-size: cover;
   background-position: center;
   padding: ${({ $isMobile }) => ($isMobile ? '40px 16px' : '64px 20px')};
+
+  ${({ $backgroundImageIsBright }) =>
+    $backgroundImageIsBright &&
+    css`
+      // Overlay to make white text readable when the image is too bright
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+      }
+      & > * {
+        position: relative;
+        z-index: 1;
+      }
+    `}
 `;
 
 const ContentWrapper = styled.div<{ $isMobile: boolean }>`
@@ -212,7 +229,7 @@ export const HubspotFormSection = ({ event }: HubspotFormSectionProps) => {
   const { isMobile } = useMobile();
 
   return (
-    <SectionWrapper $backgroundImage={event.formImage} $isMobile={isMobile}>
+    <SectionWrapper $backgroundImage={event.formImage} $backgroundImageIsBright={event.formImageIsBright} $isMobile={isMobile}>
       <Script src={`https://js.hsforms.net/forms/embed/developer/${event.hubspotPortalId}.js`} strategy='afterInteractive' />
 
       <ContentWrapper $isMobile={isMobile}>
