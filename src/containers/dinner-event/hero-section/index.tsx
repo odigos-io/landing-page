@@ -1,13 +1,11 @@
 'use client';
 
 import React from 'react';
-import styled from 'styled-components';
 import { useMobile } from '@/contexts';
-import { Text } from '@/components';
-import { FlexColumn, FlexRow } from '@/styles';
+import styled, { css } from 'styled-components';
 import type { DinnerEvent } from '@/constants/dinner-events';
 
-const HeroWrapper = styled.div<{ $backgroundImage: string; $isMobile: boolean }>`
+const HeroWrapper = styled.div<{ $backgroundImage: string; $backgroundImageIsBright?: boolean; $isMobile: boolean }>`
   position: relative;
   width: 100%;
   min-height: ${({ $isMobile }) => ($isMobile ? 'auto' : '500px')};
@@ -20,6 +18,23 @@ const HeroWrapper = styled.div<{ $backgroundImage: string; $isMobile: boolean }>
   padding: ${({ $isMobile }) => ($isMobile ? '80px 0 40px' : '100px 20px 64px')};
   overflow: hidden;
   box-sizing: border-box;
+
+  ${({ $backgroundImageIsBright }) =>
+    $backgroundImageIsBright &&
+    css`
+      // Overlay to make white text readable when the image is too bright
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+      }
+      & > * {
+        position: relative;
+        z-index: 1;
+      }
+    `}
 `;
 
 const ContentWrapper = styled.div<{ $isMobile: boolean }>`
@@ -94,26 +109,26 @@ const Divider = styled.span<{ $isMobile: boolean }>`
 
 // Simple SVG icons as components
 const CalendarIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-    <line x1="16" y1="2" x2="16" y2="6" />
-    <line x1="8" y1="2" x2="8" y2="6" />
-    <line x1="3" y1="10" x2="21" y2="10" />
+  <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.5'>
+    <rect x='3' y='4' width='18' height='18' rx='2' ry='2' />
+    <line x1='16' y1='2' x2='16' y2='6' />
+    <line x1='8' y1='2' x2='8' y2='6' />
+    <line x1='3' y1='10' x2='21' y2='10' />
   </svg>
 );
 
 const ClockIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
+  <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.5'>
+    <circle cx='12' cy='12' r='10' />
+    <polyline points='12 6 12 12 16 14' />
   </svg>
 );
 
 const VenueIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-    <path d="M7 2v20" />
-    <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+  <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.5'>
+    <path d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2' />
+    <path d='M7 2v20' />
+    <path d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7' />
   </svg>
 );
 
@@ -125,7 +140,7 @@ export const HeroSection = ({ event }: HeroSectionProps) => {
   const { isMobile } = useMobile();
 
   return (
-    <HeroWrapper $backgroundImage={event.heroImage} $isMobile={isMobile}>
+    <HeroWrapper $backgroundImage={event.heroImage} $backgroundImageIsBright={event.heroImageIsBright} $isMobile={isMobile}>
       <ContentWrapper $isMobile={isMobile}>
         <Label $isMobile={isMobile}>Exclusive Executive Dinner</Label>
         <Title $isMobile={isMobile}>{event.title}</Title>
