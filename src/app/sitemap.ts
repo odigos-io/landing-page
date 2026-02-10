@@ -1,38 +1,34 @@
 import { MetadataRoute } from 'next';
+import { getAllBlogs, getAllEvents } from '@/libs/markdown';
 
-const sitemap = (): MetadataRoute.Sitemap => {
-  return [
-    {
-      url: 'https://odigos.io',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1,
-    },
-    {
-      url: 'https://odigos.io/blog',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: 'https://odigos.io/product',
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://odigos.io/about',
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.7,
-    },
-    {
-      url: 'https://odigos.io/pricing',
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.6,
-    },
+const BASE_URL = 'https://odigos.io';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const blogs = getAllBlogs();
+  const events = getAllEvents();
+
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: BASE_URL, lastModified: new Date(), changeFrequency: 'monthly', priority: 1 },
+    { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/events`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${BASE_URL}/product`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.8 },
+    { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.7 },
+    { url: `${BASE_URL}/pricing`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.6 },
   ];
-};
 
-export default sitemap;
+  const blogPages: MetadataRoute.Sitemap = blogs.map((blog) => ({
+    url: `${BASE_URL}/blog/${blog.slug}`,
+    lastModified: new Date(blog.pubDate),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  const eventPages: MetadataRoute.Sitemap = events.map((event) => ({
+    url: `${BASE_URL}/events/${event.slug}`,
+    lastModified: new Date(event.pubDate),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...blogPages, ...eventPages];
+}
