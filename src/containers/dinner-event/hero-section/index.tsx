@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { useMobile } from '@/contexts';
+import { useRouter } from 'next/navigation';
+import { handleHrefClick } from '@/functions';
 import styled, { css } from 'styled-components';
 import type { DinnerEvent } from '@/constants/dinner-events';
 
@@ -85,12 +87,16 @@ const BadgesWrapper = styled.div<{ $isMobile: boolean }>`
   margin-top: ${({ $isMobile }) => ($isMobile ? 16 : 24)}px;
 `;
 
-const Badge = styled.div<{ $isMobile: boolean }>`
+const Badge = styled.div<{ $isMobile: boolean; $withClick?: boolean }>`
   display: flex;
   align-items: center;
   gap: ${({ $isMobile }) => ($isMobile ? 8 : 10)}px;
   color: ${({ theme }) => theme.colors.white};
   font-size: ${({ $isMobile }) => ($isMobile ? 14 : 16)}px;
+  cursor: ${({ $withClick }) => ($withClick ? 'pointer' : 'default')};
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const BadgeIcon = styled.span`
@@ -137,6 +143,7 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = ({ event }: HeroSectionProps) => {
+  const router = useRouter();
   const { isMobile } = useMobile();
 
   return (
@@ -161,7 +168,7 @@ export const HeroSection = ({ event }: HeroSectionProps) => {
             {event.time}
           </Badge>
           <Divider $isMobile={isMobile} />
-          <Badge $isMobile={isMobile}>
+          <Badge $isMobile={isMobile} $withClick={!!event.venueUrl} onClick={() => event.venueUrl && handleHrefClick(event.venueUrl, router)}>
             <BadgeIcon>
               <VenueIcon />
             </BadgeIcon>
