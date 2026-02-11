@@ -66,7 +66,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           backgroundColor: '#0F0F0F',
         }}
       >
-        <PlausibleProvider domain='odigos.io'>
+        <PlausibleProvider
+          domain='odigos.io'
+          scriptProps={{
+            src: 'https://plausible.io/js/pa-XwhChNEQuiNGeGzBgCvMO.js',
+          }}
+        >
           <ThemeProvider>
             <MobileProvider>
               <BlogsProvider blogs={blogs}>
