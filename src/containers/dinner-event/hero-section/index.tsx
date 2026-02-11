@@ -113,6 +113,17 @@ const Divider = styled.span<{ $isMobile: boolean }>`
   background: rgba(255, 255, 255, 0.3);
 `;
 
+const AddressLine = styled.p<{ $isMobile: boolean; $withClick?: boolean }>`
+  font-size: ${({ $isMobile }) => ($isMobile ? 13 : 15)}px;
+  line-height: 150%;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  cursor: ${({ $withClick }) => ($withClick ? 'pointer' : 'default')};
+  &:hover {
+    ${({ $withClick }) => $withClick && 'text-decoration: underline;'}
+  }
+`;
+
 // Simple SVG icons as components
 const CalendarIcon = () => (
   <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.5'>
@@ -175,6 +186,12 @@ export const HeroSection = ({ event }: HeroSectionProps) => {
             {event.venue}
           </Badge>
         </BadgesWrapper>
+
+        {event.venueAddress && (
+          <AddressLine $isMobile={isMobile} $withClick={!!event.venueUrl} onClick={() => event.venueUrl && handleHrefClick(event.venueUrl, router)}>
+            {event.venueAddress}
+          </AddressLine>
+        )}
       </ContentWrapper>
     </HeroWrapper>
   );
