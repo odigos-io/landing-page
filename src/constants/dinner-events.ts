@@ -6,6 +6,7 @@ export interface DinnerEvent {
   date: string;
   time: string;
   venue: string;
+  venueAddress?: string;
   venueUrl?: string;
   hubspotFormId: string;
   hubspotPortalId: string;
@@ -30,6 +31,7 @@ export const DINNER_EVENTS: Record<string, DinnerEvent> = {
     date: 'Thurs Mar 19',
     time: '7:00 pm',
     venue: 'Aqua NYC',
+    venueAddress: 'Aqua Roma, 902 Broadway, New York, NY 10010',
     venueUrl: 'https://maps.app.goo.gl/gjBaMMgZ2iTmr4YZ9',
     hubspotFormId: '2d41614e-0442-4545-9637-a66acffc7877',
     hubspotPortalId: '50932826',
@@ -62,6 +64,7 @@ export const DINNER_EVENTS: Record<string, DinnerEvent> = {
     date: 'Wed Mar 25',
     time: '7:00 pm',
     venue: 'Alder & Ash',
+    venueAddress: 'Alder & Ash, 629 Pike St, Seattle, WA 98101',
     venueUrl: 'https://maps.app.goo.gl/ZDc3FuBXUUg9f8ULA',
     hubspotFormId: 'b8cd8e48-77f6-4f06-a57a-95370ebcfc89',
     hubspotPortalId: '50932826',

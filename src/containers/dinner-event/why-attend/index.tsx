@@ -133,7 +133,7 @@ export const WhyAttend = ({ items }: WhyAttendProps) => {
         <ContentWrapper $isMobile={isMobile}>
           <HeaderWrapper>
             <Label>Why Attend?</Label>
-            <Title $isMobile={isMobile}>An Evening Worth your Time</Title>
+            <Title $isMobile={isMobile}>An Evening Worth Your Time</Title>
           </HeaderWrapper>
 
           <CardsGrid $isMobile={isMobile}>
