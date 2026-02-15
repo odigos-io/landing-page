@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getDinnerEvent, getAllDinnerEventSlugs } from '@/constants/dinner-events';
+import { getAllDinnerEvents, getDinnerEventBySlug } from '@/libs/sanity';
 import { DinnerEvent } from '@/containers/dinner-event';
 
 interface DinnerPageProps {
@@ -8,13 +8,13 @@ interface DinnerPageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllDinnerEventSlugs();
-  return slugs.map((city) => ({ city }));
+  const events = await getAllDinnerEvents();
+  return events.map((event) => ({ city: event.slug }));
 }
 
 export async function generateMetadata({ params }: DinnerPageProps): Promise<Metadata> {
   const { city } = await params;
-  const event = getDinnerEvent(city);
+  const event = await getDinnerEventBySlug(city);
 
   if (!event) {
     return {
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: DinnerPageProps): Promise<Met
 
 const DinnerPage = async ({ params }: DinnerPageProps) => {
   const { city } = await params;
-  const event = getDinnerEvent(city);
+  const event = await getDinnerEventBySlug(city);
 
   if (!event) {
     notFound();

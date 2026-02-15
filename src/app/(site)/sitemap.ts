@@ -3,9 +3,9 @@ import { getAllBlogs, getAllEvents } from '@/libs/markdown';
 
 const BASE_URL = 'https://odigos.io';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const blogs = getAllBlogs();
-  const events = getAllEvents();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const blogs = await getAllBlogs();
+  const events = await getAllEvents();
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'monthly', priority: 1 },

@@ -1,19 +1,4 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import PlausibleProvider from 'next-plausible';
-import { getAllBlogs, getAllEvents } from '@/libs/markdown';
-
-const ThemeProvider = dynamic(() => import('@/styles/theme-provider'));
-const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
-const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
-const EventsProvider = dynamic(() => import('@/contexts/useEvents'));
-
-// const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
-const Header = dynamic(() => import('@/containers/header'));
-const Footer = dynamic(() => import('@/containers/footer'));
-const Modals = dynamic(() => import('@/containers/modals'));
-
-const Scripts = dynamic(() => import('@/libs/scripts'));
 
 const URI = 'https://odigos.io',
   LOGO = '/favicon.ico',
@@ -43,13 +28,9 @@ export const metadata: Metadata = {
 type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const blogs = getAllBlogs();
-  const events = getAllEvents();
-
   return (
     <html lang='en'>
       <head>
-        {/* <link rel='manifest' href='/manifest.json' /> */}
         <link rel='icon' href='/favicon.ico' type='image/x-icon' />
         <meta content='width=device-width, initial-scale=1' name='viewport' />
         <meta name='description' content={metadata.description as string} />
@@ -66,27 +47,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           backgroundColor: '#0F0F0F',
         }}
       >
-        <PlausibleProvider
-          domain='odigos.io'
-          scriptProps={{
-            src: 'https://plausible.io/js/pa-XwhChNEQuiNGeGzBgCvMO.js',
-          }}
-        >
-          <ThemeProvider>
-            <MobileProvider>
-              <BlogsProvider blogs={blogs}>
-                <EventsProvider events={events}>
-                  {/* <AnnouncementBanner title='Meet Odigos at <EVENT_NAME_HERE>!' link='/events?latest' linkText='Event' /> */}
-                  <Header />
-                  {children}
-                  <Footer />
-                  <Modals />
-                </EventsProvider>
-              </BlogsProvider>
-            </MobileProvider>
-          </ThemeProvider>
-        </PlausibleProvider>
-        <Scripts />
+        {children}
       </body>
     </html>
   );
