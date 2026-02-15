@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import Script from 'next/script';
 import { useMobile } from '@/contexts';
 import styled, { css } from 'styled-components';
-import type { DinnerEvent } from '@/constants/dinner-events';
+import type { DinnerEvent } from '@/types';
 
 const SectionWrapper = styled.section<{ $backgroundImage: string; $backgroundImageIsBright?: boolean; $isMobile: boolean }>`
   position: relative;

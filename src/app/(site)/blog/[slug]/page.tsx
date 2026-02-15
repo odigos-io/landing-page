@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   const { slug } = await params;
 
   try {
-    const blog = getBlogBySlug(slug);
+    const blog = await getBlogBySlug(slug);
     if (!blog) {
       return {
         title: 'Blog Post Not Found',
@@ -73,7 +73,7 @@ const Blog = async ({ params }: BlogPageProps) => {
   const { slug } = await params;
 
   try {
-    const blog = getBlogBySlug(slug);
+    const blog = await getBlogBySlug(slug);
     if (!blog) notFound();
 
     return (

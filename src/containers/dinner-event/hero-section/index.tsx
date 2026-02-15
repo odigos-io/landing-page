@@ -5,7 +5,7 @@ import { useMobile } from '@/contexts';
 import { useRouter } from 'next/navigation';
 import { handleHrefClick } from '@/functions';
 import styled, { css } from 'styled-components';
-import type { DinnerEvent } from '@/constants/dinner-events';
+import type { DinnerEvent } from '@/types';
 
 const HeroWrapper = styled.div<{ $backgroundImage: string; $backgroundImageIsBright?: boolean; $isMobile: boolean }>`
   position: relative;

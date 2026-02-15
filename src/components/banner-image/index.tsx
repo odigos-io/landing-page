@@ -25,17 +25,24 @@ const WrapImage = styled.div<{ $isMobile: boolean }>`
   overflow: hidden;
 `;
 
+const isValidImageSrc = (value: string) => {
+  if (!value) return false;
+  return value.startsWith('/') || value.startsWith('http://') || value.startsWith('https://');
+};
+
 export const BannerImage = ({ src, alt, fallbackImage }: BannerImageProps) => {
   const { isMobile } = useMobile();
 
-  const [image, setImage] = useState(src || fallbackImage);
+  const safeSrc = isValidImageSrc(src) ? src : fallbackImage;
+  const [image, setImage] = useState(safeSrc);
   const [imageInvalid, setImageInvalid] = useState(false);
 
   useEffect(() => {
     if (imageInvalid) {
       setImage(fallbackImage);
     } else {
-      setImage(src || fallbackImage);
+      const newSrc = isValidImageSrc(src) ? src : fallbackImage;
+      setImage(newSrc);
     }
   }, [imageInvalid, src, fallbackImage]);
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import type { DinnerEvent as DinnerEventType } from '@/constants/dinner-events';
+import type { DinnerEvent as DinnerEventType } from '@/types';
 import { HeroSection } from './hero-section';
 import { WhyAttend } from './why-attend';
 import { WhoShouldAttend } from './who-should-attend';
@@ -21,8 +21,8 @@ export const DinnerEvent = ({ event }: DinnerEventProps) => {
   return (
     <PageWrapper>
       <HeroSection event={event} />
-      <WhyAttend items={event.whyAttend} />
-      <WhoShouldAttend roles={event.roles} />
+      {event.whyAttend && event.whyAttend.length > 0 && <WhyAttend items={event.whyAttend} />}
+      {event.roles && event.roles.length > 0 && <WhoShouldAttend roles={event.roles} />}
       <HubspotFormSection event={event} />
     </PageWrapper>
   );

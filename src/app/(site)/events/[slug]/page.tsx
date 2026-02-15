@@ -13,7 +13,7 @@ const Event = async ({ params }: EventPageProps) => {
   const { slug } = await params;
 
   try {
-    const event = getEventBySlug(slug);
+    const event = await getEventBySlug(slug);
     if (!event) notFound();
 
     return (

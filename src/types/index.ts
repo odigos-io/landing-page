@@ -28,3 +28,27 @@ export interface EventPost {
   booth?: string;
   content?: string;
 }
+
+export interface DinnerEvent {
+  city: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  time: string;
+  venue: string;
+  venueAddress?: string;
+  venueUrl?: string;
+  hubspotFormId: string;
+  hubspotPortalId: string;
+  heroImage: string;
+  heroImageIsBright?: boolean;
+  formImage: string;
+  formImageIsBright?: boolean;
+  whyAttend: {
+    title: string;
+    description: string;
+    icon: 'networking' | 'insights' | 'experience';
+  }[];
+  roles: string[];
+}
