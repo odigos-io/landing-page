@@ -29,6 +29,26 @@ export interface EventPost {
   content?: string;
 }
 
+export interface WebinarSpeaker {
+  name: string;
+  title: string;
+  company?: string;
+  image?: string;
+}
+
+export interface WebinarPost {
+  slug: string;
+  pubDate: string;
+  image?: string;
+  title: string;
+  eventDate?: string;
+  eventTime?: string;
+  duration?: string;
+  content?: string;
+  speakers?: WebinarSpeaker[];
+  riversideEventId: string;
+}
+
 export interface DinnerEvent {
   city: string;
   slug: string;

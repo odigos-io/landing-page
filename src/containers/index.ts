@@ -25,3 +25,4 @@ export * from './team';
 export * from './testimonial';
 export * from './trusted-by';
 export * from './we-are-odigos';
+export * from './webinar-single';

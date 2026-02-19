@@ -1,5 +1,5 @@
 import { createClient } from 'next-sanity';
-import type { BlogPost, EventPost, DinnerEvent } from '@/types';
+import type { BlogPost, EventPost, WebinarPost, DinnerEvent } from '@/types';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ulvtmsy9';
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
@@ -80,6 +80,44 @@ export const getEventBySlug = async (slug: string): Promise<EventPost | null> =>
     { next: { revalidate: 60 } }
   );
   return event;
+};
+
+// ─── Webinar Queries ────────────────────────────────────────────────────────────
+
+const WEBINAR_FIELDS = `
+  "slug": slug.current,
+  pubDate,
+  image,
+  title,
+  eventDate,
+  eventTime,
+  duration,
+  content,
+  speakers[] {
+    name,
+    title,
+    company,
+    image
+  },
+  riversideEventId
+`;
+
+export const getAllWebinars = async (): Promise<WebinarPost[]> => {
+  const webinars = await client.fetch<WebinarPost[]>(
+    `*[_type == "webinar"] | order(pubDate desc) { ${WEBINAR_FIELDS} }`,
+    {},
+    { next: { revalidate: 60 } }
+  );
+  return webinars;
+};
+
+export const getWebinarBySlug = async (slug: string): Promise<WebinarPost | null> => {
+  const webinar = await client.fetch<WebinarPost | null>(
+    `*[_type == "webinar" && slug.current == $slug][0] { ${WEBINAR_FIELDS} }`,
+    { slug },
+    { next: { revalidate: 60 } }
+  );
+  return webinar;
 };
 
 // ─── Dinner Event Queries ──────────────────────────────────────────────────────
