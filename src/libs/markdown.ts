@@ -7,6 +7,8 @@ export {
   getBlogBySlug,
   getAllEvents,
   getEventBySlug,
+  getAllWebinars,
+  getWebinarBySlug,
   getAllDinnerEvents,
   getDinnerEventBySlug,
 } from './sanity';
