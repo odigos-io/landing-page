@@ -10,7 +10,7 @@ export const CUSTOMERS = [
     src: '/assets/partners/hpe.svg',
     alt: 'hp enterprise',
     href: 'https://hpe.com',
-    width: 32,
+    width: 70,
     height: 32,
   },
   // {
