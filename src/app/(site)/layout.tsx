@@ -7,7 +7,7 @@ const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
 const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
 const EventsProvider = dynamic(() => import('@/contexts/useEvents'));
 
-// const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
+const AnnouncementBanner = dynamic(() => import('@/containers/announcement-banner'));
 const Header = dynamic(() => import('@/containers/header'));
 const Footer = dynamic(() => import('@/containers/footer'));
 const Modals = dynamic(() => import('@/containers/modals'));
@@ -31,7 +31,7 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
         <MobileProvider>
           <BlogsProvider blogs={blogs}>
             <EventsProvider events={events}>
-              {/* <AnnouncementBanner title='Meet Odigos at <EVENT_NAME_HERE>!' link='/events?latest' linkText='Event' /> */}
+              <AnnouncementBanner title='March 19 Livestream: Tracing the Kubernetes Control Plane with eBPF and OpenTelemetry.' link='https://go.odigos.io/kubernetes-control-plane-tracing-livestream' linkText='Register now →' />
               <Header />
               {children}
               <Footer />

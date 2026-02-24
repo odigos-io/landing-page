@@ -14,10 +14,6 @@ interface AnnouncementBannerProps {
 }
 
 const Container = styled.div<{ $isMobile: boolean }>`
-  position: sticky;
-  top: 0;
-  z-index: 10;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,8 +21,8 @@ const Container = styled.div<{ $isMobile: boolean }>`
 
   background-color: ${({ theme }) => theme.colors.cyan};
   border-radius: 0 0 24px 24px;
-  padding: 16px 24px;
-  width: calc(100% - 48px);
+  padding: ${({ $isMobile }) => ($isMobile ? '12px 16px' : '16px 24px')};
+  width: ${({ $isMobile }) => ($isMobile ? 'calc(100% - 32px)' : 'calc(100% - 48px)')};
 `;
 
 const Divider = styled.div`
@@ -36,8 +32,13 @@ const Divider = styled.div`
   background: ${({ theme }) => theme.colors.black};
 `;
 
-const Typography = styled(Text)`
+const Content = styled(FlexRow)<{ $isMobile: boolean }>`
+  ${({ $isMobile }) => $isMobile && 'flex-direction: column;'}
+`;
+
+const Typography = styled(Text)<{ $small?: boolean }>`
   color: ${({ theme }) => theme.colors.black};
+  ${({ $small }) => $small && 'font-size: 14px;'}
 `;
 
 const SESSION_STORAGE_KEY = 'ANNOUNCEMENT_BANNER_CLOSED';
@@ -63,24 +64,24 @@ const AnnouncementBanner = ({ title, link, linkText }: AnnouncementBannerProps) 
   return (
     <Container $isMobile={isMobile}>
       <div />
-      <FlexRow $gap={isMobile ? 12 : 24} $align='center'>
+      <Content $gap={isMobile ? 8 : 24} $align='center' $isMobile={isMobile}>
         <FlexRow $gap={4} $align='center'>
           <Image
             src='/assets/icons/flame.svg'
             alt='flame'
-            width={24}
-            height={24}
+            width={isMobile ? 20 : 24}
+            height={isMobile ? 20 : 24}
             style={{
               filter: 'invert(100%)',
             }}
           />
-          <Typography>{title}</Typography>
+          <Typography $small={isMobile}>{title}</Typography>
         </FlexRow>
-        <Divider />
+        {!isMobile && <Divider />}
         <Button variant='transparent' padding='0' href={link}>
-          <Typography textDecoration='underline'>{linkText}</Typography>
+          <Typography $small={isMobile} textDecoration='underline'>{linkText}</Typography>
         </Button>
-      </FlexRow>
+      </Content>
       <Button variant='transparent' padding='0' onClick={onClose}>
         <Image
           src='/assets/icons/close.svg'
