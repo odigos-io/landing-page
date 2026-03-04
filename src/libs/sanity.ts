@@ -70,7 +70,7 @@ export const getAllEvents = async (): Promise<EventPost[]> => {
     {},
     { next: { revalidate: 60 } }
   );
-  return events;
+  return events.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 };
 
 export const getEventBySlug = async (slug: string): Promise<EventPost | null> => {
