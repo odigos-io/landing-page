@@ -1,11 +1,10 @@
 import { MetadataRoute } from 'next';
-import { getAllBlogs, getAllEvents } from '@/libs/markdown';
+import { getAllBlogs, getAllEvents, getAllWebinars } from '@/libs/markdown';
 
 const BASE_URL = 'https://odigos.io';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const blogs = await getAllBlogs();
-  const events = await getAllEvents();
+  const [blogs, events, webinars] = await Promise.all([getAllBlogs(), getAllEvents(), getAllWebinars()]);
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'monthly', priority: 1 },
@@ -30,5 +29,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...blogPages, ...eventPages];
+  const webinarPages: MetadataRoute.Sitemap = webinars.map((webinar) => ({
+    url: `${BASE_URL}/webinars/${webinar.slug}`,
+    lastModified: new Date(webinar.pubDate),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...blogPages, ...eventPages, ...webinarPages];
 }
