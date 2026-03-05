@@ -8,7 +8,7 @@ import { EventForm } from './event-form';
 import { EventTable } from './event-table';
 import { EventHeader } from './event-header';
 import type { EventPost } from '@/types';
-import { MarkdownPreview, Text } from '@/components';
+import { HtmlEmbed, MarkdownPreview, Text } from '@/components';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
 
 interface EventSingleProps {
@@ -41,6 +41,7 @@ export const EventSingle = ({ event }: EventSingleProps) => {
             </Text>
             <EventTable event={event} />
             {event.content && <MarkdownPreview content={event.content} />}
+            {event.customHtml && <HtmlEmbed html={event.customHtml} />}
           </FlexColumn>
 
           <FlexColumn $gap={isMobile ? 32 : 48}>

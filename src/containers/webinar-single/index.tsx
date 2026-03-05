@@ -8,7 +8,7 @@ import { WebinarHeader } from './webinar-header';
 import { WebinarDetails } from './webinar-details';
 import { WebinarSpeakers } from './webinar-speakers';
 import type { WebinarPost } from '@/types';
-import { MarkdownPreview, Text } from '@/components';
+import { HtmlEmbed, MarkdownPreview, Text } from '@/components';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
 
 interface WebinarSingleProps {
@@ -41,6 +41,7 @@ export const WebinarSingle = ({ webinar }: WebinarSingleProps) => {
             </Text>
             <WebinarDetails webinar={webinar} />
             {webinar.content && <MarkdownPreview content={webinar.content} />}
+            {webinar.customHtml && <HtmlEmbed html={webinar.customHtml} />}
             {webinar.speakers && webinar.speakers.length > 0 && <WebinarSpeakers speakers={webinar.speakers} />}
           </FlexColumn>
 
