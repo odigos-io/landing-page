@@ -9,7 +9,7 @@ interface ContactUsButtonProps extends ButtonProps {
   label?: string;
 }
 
-export const ContactUsButton = ({ label = 'Contact Us', ...props }: ContactUsButtonProps) => {
+export const ContactUsButton = ({ label = 'Request a Demo', ...props }: ContactUsButtonProps) => {
   return (
     <Button href={HUBSPOT_CTA_URL} {...props}>
       {label}
