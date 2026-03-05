@@ -15,6 +15,7 @@ export interface BlogPost {
   buttonText?: string;
   buttonLink?: string;
   content?: string;
+  customHtml?: string;
 }
 
 export interface EventPost {
@@ -27,6 +28,7 @@ export interface EventPost {
   location?: string;
   booth?: string;
   content?: string;
+  customHtml?: string;
 }
 
 export interface WebinarSpeaker {
@@ -45,6 +47,7 @@ export interface WebinarPost {
   eventTime?: string;
   duration?: string;
   content?: string;
+  customHtml?: string;
   speakers?: WebinarSpeaker[];
   riversideEventId: string;
 }

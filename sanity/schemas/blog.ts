@@ -104,6 +104,13 @@ export default defineType({
       type: 'markdown',
       description: 'Blog post content in Markdown format',
     }),
+    defineField({
+      name: 'customHtml',
+      title: 'Custom HTML Embed',
+      type: 'text',
+      rows: 10,
+      description: 'Optional raw HTML to embed on the page (e.g. HubSpot CTA). Renders below the content.',
+    }),
   ],
   preview: {
     select: {

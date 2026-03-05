@@ -56,6 +56,13 @@ export default defineType({
       description: 'Webinar description content in Markdown format',
     }),
     defineField({
+      name: 'customHtml',
+      title: 'Custom HTML Embed',
+      type: 'text',
+      rows: 10,
+      description: 'Optional raw HTML to embed on the page (e.g. HubSpot CTA). Renders below the content.',
+    }),
+    defineField({
       name: 'speakers',
       title: 'Featured Speakers',
       type: 'array',

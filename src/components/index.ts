@@ -1,6 +1,7 @@
 export * from './banner-image';
 export * from './button';
 export * from './card';
+export * from './html-embed';
 export * from './input';
 export * from './mardown-preview';
 export * from './modal';

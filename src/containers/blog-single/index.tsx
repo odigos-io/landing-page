@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import { BlogHead } from './blog-head';
 import type { BlogPost } from '@/types';
-import { MarkdownPreview } from '@/components';
+import { HtmlEmbed, MarkdownPreview } from '@/components';
 import { SocialButtons } from './social-buttons';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
 
@@ -27,6 +27,7 @@ export const BlogSingle = ({ blog }: BlogSingleProps) => {
       <FlexColumn $gap={isMobile ? 32 : 64}>
         <BlogHead blog={blog} />
         <MarkdownPreview content={blog.content} />
+        {blog.customHtml && <HtmlEmbed html={blog.customHtml} />}
         <Divider />
         <SocialButtons slug={blog.slug} />
       </FlexColumn>

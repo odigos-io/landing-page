@@ -29,7 +29,8 @@ const BLOG_FIELDS = `
   boldTag,
   buttonText,
   buttonLink,
-  content
+  content,
+  customHtml
 `;
 
 export const getAllBlogs = async (): Promise<BlogPost[]> => {
@@ -61,7 +62,8 @@ const EVENT_FIELDS = `
   eventEndDate,
   location,
   booth,
-  content
+  content,
+  customHtml
 `;
 
 export const getAllEvents = async (): Promise<EventPost[]> => {
@@ -93,6 +95,7 @@ const WEBINAR_FIELDS = `
   eventTime,
   duration,
   content,
+  customHtml,
   speakers[] {
     name,
     title,
