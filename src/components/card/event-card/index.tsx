@@ -3,11 +3,11 @@
 import React, { useMemo, useState } from 'react';
 import { Card } from '..';
 import type { EventPost } from '@/types';
-import { formatEventDateRange, getPlaceholderImage } from '@/functions';
+import { formatEventDateRange, getPlaceholderImage, isValidImageSrc } from '@/functions';
 
 export const EventCard = ({ slug, image, title, eventStartDate, eventEndDate, location, booth }: EventPost) => {
   const [imageInvalid, setImageInvalid] = useState(false);
-  const eventCover = (!imageInvalid && image) || getPlaceholderImage();
+  const eventCover = (!imageInvalid && image && isValidImageSrc(image)) ? image : getPlaceholderImage();
 
   const eventTags = useMemo(() => {
     const arr = [];

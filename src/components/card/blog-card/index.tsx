@@ -3,11 +3,11 @@
 import React, { useMemo, useState } from 'react';
 import { Card } from '..';
 import type { BlogPost } from '@/types';
-import { calculateReadingTime, getPlaceholderImage } from '@/functions';
+import { calculateReadingTime, getPlaceholderImage, isValidImageSrc } from '@/functions';
 
 export const BlogCard = ({ slug, image, title, description, content, pubDate, boldTag }: BlogPost) => {
   const [imageInvalid, setImageInvalid] = useState(false);
-  const blogCover = (!imageInvalid && image) || getPlaceholderImage();
+  const blogCover = (!imageInvalid && image && isValidImageSrc(image)) ? image : getPlaceholderImage();
 
   const blogTags = useMemo(() => {
     const arr = [];
