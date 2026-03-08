@@ -1,3 +1,5 @@
+export const isValidImageSrc = (src: string) => src.startsWith('/') || src.startsWith('http://') || src.startsWith('https://');
+
 const PLACEHOLDERS = [
   '/assets/blogs/_placeholder_01.svg',
   '/assets/blogs/_placeholder_02.svg',

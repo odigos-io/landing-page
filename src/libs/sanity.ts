@@ -8,7 +8,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion: '2024-01-01',
-  useCdn: true,
+  useCdn: false,
 });
 
 // ─── Blog Queries ──────────────────────────────────────────────────────────────
@@ -34,20 +34,12 @@ const BLOG_FIELDS = `
 `;
 
 export const getAllBlogs = async (): Promise<BlogPost[]> => {
-  const blogs = await client.fetch<BlogPost[]>(
-    `*[_type == "blog"] | order(pubDate desc) { ${BLOG_FIELDS} }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
+  const blogs = await client.fetch<BlogPost[]>(`*[_type == "blog"] | order(pubDate desc) { ${BLOG_FIELDS} }`, {}, { next: { revalidate: 60 } });
   return blogs;
 };
 
 export const getBlogBySlug = async (slug: string): Promise<BlogPost | null> => {
-  const blog = await client.fetch<BlogPost | null>(
-    `*[_type == "blog" && slug.current == $slug][0] { ${BLOG_FIELDS} }`,
-    { slug },
-    { next: { revalidate: 60 } }
-  );
+  const blog = await client.fetch<BlogPost | null>(`*[_type == "blog" && slug.current == $slug][0] { ${BLOG_FIELDS} }`, { slug }, { next: { revalidate: 60 } });
   return blog;
 };
 
@@ -67,20 +59,12 @@ const EVENT_FIELDS = `
 `;
 
 export const getAllEvents = async (): Promise<EventPost[]> => {
-  const events = await client.fetch<EventPost[]>(
-    `*[_type == "event"] | order(pubDate desc) { ${EVENT_FIELDS} }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
+  const events = await client.fetch<EventPost[]>(`*[_type == "event"] | order(pubDate desc) { ${EVENT_FIELDS} }`, {}, { next: { revalidate: 60 } });
   return events.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 };
 
 export const getEventBySlug = async (slug: string): Promise<EventPost | null> => {
-  const event = await client.fetch<EventPost | null>(
-    `*[_type == "event" && slug.current == $slug][0] { ${EVENT_FIELDS} }`,
-    { slug },
-    { next: { revalidate: 60 } }
-  );
+  const event = await client.fetch<EventPost | null>(`*[_type == "event" && slug.current == $slug][0] { ${EVENT_FIELDS} }`, { slug }, { next: { revalidate: 60 } });
   return event;
 };
 
@@ -106,20 +90,12 @@ const WEBINAR_FIELDS = `
 `;
 
 export const getAllWebinars = async (): Promise<WebinarPost[]> => {
-  const webinars = await client.fetch<WebinarPost[]>(
-    `*[_type == "webinar"] | order(pubDate desc) { ${WEBINAR_FIELDS} }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
+  const webinars = await client.fetch<WebinarPost[]>(`*[_type == "webinar"] | order(pubDate desc) { ${WEBINAR_FIELDS} }`, {}, { next: { revalidate: 60 } });
   return webinars;
 };
 
 export const getWebinarBySlug = async (slug: string): Promise<WebinarPost | null> => {
-  const webinar = await client.fetch<WebinarPost | null>(
-    `*[_type == "webinar" && slug.current == $slug][0] { ${WEBINAR_FIELDS} }`,
-    { slug },
-    { next: { revalidate: 60 } }
-  );
+  const webinar = await client.fetch<WebinarPost | null>(`*[_type == "webinar" && slug.current == $slug][0] { ${WEBINAR_FIELDS} }`, { slug }, { next: { revalidate: 60 } });
   return webinar;
 };
 
@@ -150,19 +126,11 @@ const DINNER_EVENT_FIELDS = `
 `;
 
 export const getAllDinnerEvents = async (): Promise<DinnerEvent[]> => {
-  const events = await client.fetch<DinnerEvent[]>(
-    `*[_type == "dinnerEvent"] { ${DINNER_EVENT_FIELDS} }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
+  const events = await client.fetch<DinnerEvent[]>(`*[_type == "dinnerEvent"] { ${DINNER_EVENT_FIELDS} }`, {}, { next: { revalidate: 60 } });
   return events;
 };
 
 export const getDinnerEventBySlug = async (slug: string): Promise<DinnerEvent | null> => {
-  const event = await client.fetch<DinnerEvent | null>(
-    `*[_type == "dinnerEvent" && slug.current == $slug][0] { ${DINNER_EVENT_FIELDS} }`,
-    { slug },
-    { next: { revalidate: 60 } }
-  );
+  const event = await client.fetch<DinnerEvent | null>(`*[_type == "dinnerEvent" && slug.current == $slug][0] { ${DINNER_EVENT_FIELDS} }`, { slug }, { next: { revalidate: 60 } });
   return event;
 };

@@ -7,7 +7,7 @@ import { useMobile } from '@/contexts';
 import type { BlogPost } from '@/types';
 import { FlexColumn, FlexRow } from '@/styles';
 import { BannerImage, Button, Tags, Text } from '@/components';
-import { calculateReadingTime, getPlaceholderImage } from '@/functions';
+import { calculateReadingTime, getPlaceholderImage, isValidImageSrc } from '@/functions';
 
 interface BlogHeadProps {
   blog: BlogPost;
@@ -27,14 +27,16 @@ const DEFAULT_BLOG_IMAGE = getPlaceholderImage();
 export const BlogHead = ({ blog }: BlogHeadProps) => {
   const { isMobile } = useMobile();
 
-  const [authorImage, setAuthorImage] = useState(blog.authorImage || DEFAULT_AUTHOR_IMAGE);
+  const safeAuthorImage = (blog.authorImage && isValidImageSrc(blog.authorImage)) ? blog.authorImage : DEFAULT_AUTHOR_IMAGE;
+  const [authorImage, setAuthorImage] = useState(safeAuthorImage);
   const [authorImageInvalid, setAuthorImageInvalid] = useState(false);
 
   useEffect(() => {
     if (authorImageInvalid) {
       setAuthorImage(DEFAULT_AUTHOR_IMAGE);
     } else {
-      setAuthorImage(blog.authorImage || DEFAULT_AUTHOR_IMAGE);
+      const img = (blog.authorImage && isValidImageSrc(blog.authorImage)) ? blog.authorImage : DEFAULT_AUTHOR_IMAGE;
+      setAuthorImage(img);
     }
   }, [authorImageInvalid, blog.authorImage]);
 
