@@ -149,7 +149,7 @@ export const Button = ({
   return (
     <Container $hide={hide}>
       {tag && <Tag>{tag}</Tag>}
-      <Btn type={type} $isMobile={isMobile} $variant={variant} $fontSize={fontSize} $padding={padding} $fullWidth={fullWidth} onClick={type === 'button' ? handleClick : undefined} {...props}>
+      <Btn type={type} $isMobile={isMobile} $variant={variant} $fontSize={fontSize} $padding={padding} $fullWidth={fullWidth} onClick={type === 'button' ? handleClick : undefined} data-track='cta' data-track-label={label || children?.toString()} {...props}>
         {leftIconSrc && <Image src={leftIconSrc} alt='left-icon' width={iconSize} height={iconSize} />}
         {label || children}
         {rightIconSrc && <Image src={rightIconSrc} alt='right-icon' width={iconSize} height={iconSize} />}
