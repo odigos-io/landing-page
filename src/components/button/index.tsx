@@ -84,31 +84,31 @@ const Btn = styled.button<{
           }
         `
       : $variant === 'secondary'
-      ? css`
-          border: 1px solid ${theme.colors.white};
-          background: ${theme.colors.black};
-          &:hover {
-            background: ${theme.colors.grey_darkest};
-          }
-        `
-      : $variant === 'tertiary'
-      ? css`
-          border: none;
-          background: transparent;
-          &:hover {
-            background: ${theme.colors.purple_darkest + hexOpacity['050']};
-          }
-          &:active {
-            background: ${theme.colors.purple_darkest + hexOpacity['080']};
-          }
-        `
-      : css`
-          border: none;
-          background: transparent;
-          &:hover {
-            text-decoration: underline;
-          }
-        `}
+        ? css`
+            border: 1px solid ${theme.colors.white};
+            background: ${theme.colors.black};
+            &:hover {
+              background: ${theme.colors.grey_darkest};
+            }
+          `
+        : $variant === 'tertiary'
+          ? css`
+              border: none;
+              background: transparent;
+              &:hover {
+                background: ${theme.colors.purple_darkest + hexOpacity['050']};
+              }
+              &:active {
+                background: ${theme.colors.purple_darkest + hexOpacity['080']};
+              }
+            `
+          : css`
+              border: none;
+              background: transparent;
+              &:hover {
+                text-decoration: underline;
+              }
+            `}
 
   &:disabled {
     opacity: 0.5;
@@ -139,17 +139,27 @@ export const Button = ({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    trackClick(label || children?.toString() || 'Button Click');
+    trackClick(label || 'Button Click');
 
     if (href) handleHrefClick(href, router);
     else if (onClick) onClick(e);
-    else alert('TODO!');
   };
 
   return (
     <Container $hide={hide}>
       {tag && <Tag>{tag}</Tag>}
-      <Btn type={type} $isMobile={isMobile} $variant={variant} $fontSize={fontSize} $padding={padding} $fullWidth={fullWidth} onClick={type === 'button' ? handleClick : undefined} data-track='cta' data-track-label={label || children?.toString()} {...props}>
+      <Btn
+        type={type}
+        $isMobile={isMobile}
+        $variant={variant}
+        $fontSize={fontSize}
+        $padding={padding}
+        $fullWidth={fullWidth}
+        onClick={type === 'button' ? handleClick : undefined}
+        data-track='cta'
+        data-track-label={label || 'Button Click'}
+        {...props}
+      >
         {leftIconSrc && <Image src={leftIconSrc} alt='left-icon' width={iconSize} height={iconSize} />}
         {label || children}
         {rightIconSrc && <Image src={rightIconSrc} alt='right-icon' width={iconSize} height={iconSize} />}
