@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 
 const URI = 'https://odigos.io',
   LOGO = '/favicon.ico',
@@ -35,6 +36,24 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta content='width=device-width, initial-scale=1' name='viewport' />
         <meta name='description' content={metadata.description as string} />
         <title>{metadata.title as string}</title>
+
+        <Script
+          id='consent-defaults'
+          strategy='beforeInteractive'
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'analytics_storage': 'denied',
+                'wait_for_update': 500
+              });
+            `,
+          }}
+        />
       </head>
 
       <body

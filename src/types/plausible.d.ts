@@ -14,4 +14,5 @@ interface PlausibleOptions {
 
 interface Window {
   plausible: Plausible;
+  dataLayer?: Record<string, unknown>[];
 }

@@ -82,6 +82,12 @@ export const useContactForm = () => {
       },
     });
 
+    window.dataLayer?.push({
+      event: 'contact_form_submitted',
+      form_type: eventName ? 'event_registration' : 'contact_us',
+      source_page: window.location.pathname,
+    });
+
     const contactError = await sendToService(CONTACT_API_URL, {
       fullName: `${formData.firstName} ${formData.lastName}`,
       businessEmail: formData.email,
