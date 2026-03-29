@@ -20,12 +20,7 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
   const events = await getAllEvents();
 
   return (
-    <PlausibleProvider
-      domain='odigos.io'
-      scriptProps={{
-        src: 'https://plausible.io/js/pa-XwhChNEQuiNGeGzBgCvMO.js',
-      }}
-    >
+    <PlausibleProvider domain='odigos.io'>
       <ThemeProvider>
         <MobileProvider>
           <BlogsProvider blogs={blogs}>
