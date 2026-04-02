@@ -1,0 +1,142 @@
+---
+pubDate: 'Apr 3 26'
+title: 'Tracing Messaging Systems with Odigos'
+description: 'Using Odigos to capture end-to-end distributed traces in messaging frameworks to help debug application issues'
+metadata: 'Using Odigos to capture end-to-end distributed traces in messaging frameworks to help debug application issues'
+tags: [Odigos, opentelemetry, Kafka, RabbitMQ, HiveMQ, Distributed Tracing, MTTR, Grafana]
+category: 'Odigos'
+author: 'Will Searle'
+authorImage: '/assets/team/will_searle.jpg'
+image: '/assets/blogs/kafkablog/kafkacoverphoto.png'
+webCoverImage: '/assets/blogs/kafkablog/kafkacoverphoto.png'
+mobileCoverImage: '/assets/blogs/kafkablog/kafkacoverphoto.png'
+---
+
+# Why You Can't Afford to Fly Blind on Async Messages
+
+## The backbone you don't see
+
+At some point, every distributed system outgrows simple request-response.
+
+A single user action, like placing an order, doesn’t just hit one service. 
+It kicks off a chain reaction: update inventory, send a confirmation email, write analytics, trigger fulfillment, log the event, etc. And you don’t want the user waiting on all of that.
+
+So you introduce a message broker.
+
+Systems like Kafka, RabbitMQ, HiveMQ become the backbone of your application architecture. They decouple services, let them scale independently, and smooth out traffic spikes. 
+One event can fan out to many consumers, each doing its job in parallel.
+
+It works beautifully... Until it doesn’t.
+
+## The observability gap in async systems
+
+This is where things start to break down, especially at scale.
+
+Here is a common scenario I speak with many customers about every week. Pretend a user is interacting with an ecommerce site and clicks “Place Order.” 
+Your API returns a 200. Kafka accepts the message. Everything looks successful.
+
+But there is a lot more happening behind the scenes that needs to be examined. What actually happened after the "Place Order"?
+
+- Did inventory update correctly?
+- Did the email get sent?
+- Did analytics process the event?
+- Did one of those silently fail?
+
+In async systems, success at the producer doesn’t mean success overall, it just means the message was accepted.
+
+Traditional instrumentation will not catch this. Your pods are healthy. CPU and memory look fine. Consumer lag might even be normal. Meanwhile, a subset of messages could be failing quietly in the background.
+
+That’s the blind spot.
+
+Distributed tracing is supposed to solve this, but async messaging makes it harder. There’s no direct request chain. Context has to travel through the broker/topic. And without seeing the actual message, you’re guessing at why something failed.
+
+Instead of trying to manually piece this together, Odigos makes it possible to trace async flows without changing application code.
+
+**This is achieved through eBPF-based auto-instrumentation at the Kafka client library layer.** By attaching directly to producer and consumer execution paths (across libraries like kafka-go, librdkafka, and Java clients), Odigos can inject trace context into message headers on the producer side (using the W3C traceparent format) and extract it on the consumer side to create properly linked OpenTelemetry spans. Because this instrumentation operates at the library level, it can also capture message keys and payloads as span attributes, giving deeper visibility into what actually drove downstream behavior.
+
+Instrumenting Kafka in this way is particularly challenging. Kafka exposes a wide variety of user-facing APIs: synchronous, asynchronous, and even channel-based patterns (as seen in libraries like Sarama). On top of that, most Kafka clients support batching for both producers and consumers. This introduces significant complexity for eBPF-based approaches, where kernel verifier constraints make it difficult to safely track and correlate multiple messages within a single batch. Odigos handles these challenges transparently, without requiring developers to adapt their code.
+
+The result is a true end-to-end trace: starting from the originating request, flowing through the Kafka produce operation, and fanning out across all downstream consumers. Trace relationships are preserved across asynchronous boundaries, and the actual data that influenced each step is visible. This makes it far easier to understand what actually happened in a distributed system without stitching together logs or relying on assumptions.
+
+![][image1]
+
+## A Production-like Microservice App Built on Kafka
+
+To illustrate this, I built a microservices application using Kafka that takes user input and publishes messages like in an e-commerce app.
+The architecture is straightforward: a Node.js frontend sends orders to a Go producer service, which publishes them to a Kafka topic. 
+There are five independent Go consumers:  
+- an order processor 
+- inventory checker
+- notification sender
+- analytics writer
+- audit logger
+
+Each consumer reads every message from their own consumer group, validate it against a downstream gateway service, and writes the result to MySQL. 
+
+![][image2]
+
+In normal operation, orders flow through cleanly. But certain message content triggers failures in specific consumers. This illustrates how an end-to-end trace can look healthy, but without the right payload and attributes, underlying problems can easily hide.
+
+
+Why?  Because the producer always returns success. Kafka accepted the message, that's all it knows. The frontend shows "Published" with a green checkmark. If you're watching dashboards, every pod is running, every health check is passing, and Kafka consumer lag looks normal. 
+Without distributed tracing, your only option is to grep through logs across five different deployments and try to correlate timestamps to figure out which message caused which consumer to fail, and why.
+
+## Three Concrete Examples
+
+As a baseline, here is example of a trace generated from Odigos' instrumentation.  You can see the producer fanning out to all five consumers within a single trace
+
+![][image5]
+
+### The ghost SKU: A Discontinued Product Still in the Catalog
+
+A DB Admin notices a pattern in the MySQL `processed_orders` table: a handful of orders are showing up with `status: failed` and `consumer_role: inventory-checker`, 
+but nobody can figure out which orders or why. The inventory service isn't throwing any alerts. You search your trace backend (Grafana) for spans with an HTTP 404 status code and 
+immediately find a cluster of traces where the inventory-checker's call to `/check-inventory` returns a 404 with the response body: `PRODUCT_NOT_FOUND — SKU PROD-999 does not exist in inventory`. 
+
+Because Odigos captured the Kafka message body as a span attribute, you can see the full order that triggered it: 
+customer name, amount, priority, critically, and the `product_id: PROD-999` that's causing every one of these failures. 
+You search for `PROD-999` across all traces and confirm it: every single order containing that SKU fails inventory validation, while the other four consumers process it fine. 
+
+![][image3]
+
+The root cause isn't in the inventory service or the consumer code... It is in the frontend, where `PROD-999` is still listed in the product dropdown as a valid option. 
+Without payload visibility in the trace, you'd have no way to connect "inventory-checker failures" to a specific product ID without manually correlating Kafka message offsets to consumer logs.
+
+### The Phantom Timeout: Critical-priority Orders Killing the Notification Service
+
+A support ticket comes in: "Customers with critical-priority orders aren't getting confirmation emails, and the ones that do seem delayed." You check the notification-sender pod
+and verify it is running, no restarts, plus memory and CPU look normal. Consumer lag on the Kafka topic is fine too. Without tracing, you'd start tailing logs across deployments, 
+trying to `grep` for "critical" and cross-referencing timestamps. 
+
+With an Odigos trace, the problem is obvious. You open a trace for a critical-priority order and see the five consumer spans. Four of them complete in under 200 milliseconds. 
+The notification-sender's span is different. It shows an HTTP POST to the gateway's `/send-notification` endpoint that took over 2,000 milliseconds before returning an HTTP 503. 
+The span attributes contain the full payload: `{"priority": "critical", "customer_name": "Eve Martinez", ...}` and the error response: `GATEWAY_TIMEOUT — SMS gateway unreachable after 3 retries`. 
+
+![][image4]
+
+The trace tells you three things at once: the failure is isolated to the notification path, it only happens on critical-priority messages, and the root cause is a downstream SMS gateway timeout.
+not anything wrong with Kafka, the consumer, or the notification service itself. You know exactly which team to page and what they need to fix.
+
+### An Intermittent Failure with no Pattern
+
+This is the hardest kind of bug. One of the consumers, the audit-logger, is failing roughly 15% of its writes, but there's no discernible pattern in the message content. 
+The same order that succeeds on one attempt might fail if it were sent again. You can use traditional troubleshooting practices like looking for a bad product ID, 
+an invalid amount, a specific customer name and come up empty because the failure is not data-dependent. In the Odigos traces, you pull up a batch of recent orders 
+and scan the five consumer spans for each. Most traces show all five consumers completing successfully. As expected through on some, the audit-logger's span to `/write-audit` 
+lights up red: HTTP 503, with the error `CONNECTION_RESET — audit service connection reset by peer`. 
+
+![][image6]
+![][image7]
+
+This key insight comes from comparing the payloads of failing vs. succeeding traces and seeing they are identical in structure and content. The same order, the same fields, the same values, yet one succeeds and one fails. 
+
+This immediately rules out any data validation issue and points to infrastructure: the audit gateway endpoint has an intermittent connection stability problem. The trace didn't just tell you that it failed, it narrowed down the possible root causes to the something outside of the application
+
+
+[image1]: /assets/blogs/kafkablog/OdigosUI.png
+[image2]: /assets/blogs/kafkablog/AppUI.png
+[image3]: /assets/blogs/kafkablog/ex1.gif
+[image4]: /assets/blogs/kafkablog/ex2.gif
+[image5]: /assets/blogs/kafkablog/HealthyTrace.png
+[image6]: /assets/blogs/kafkablog/ex31.png
+[image7]: /assets/blogs/kafkablog/ex32.png
