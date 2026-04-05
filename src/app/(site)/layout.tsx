@@ -29,6 +29,7 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
               {children}
               <Footer />
               <Modals />
+              <Scripts />
             </EventsProvider>
           </BlogsProvider>
         </MobileProvider>
