@@ -44,13 +44,31 @@ export default function RootLayout({ children }: RootLayoutProps) {
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
+
+              // Strict denial for regions that legally require consent before tracking
+              // (EU/EEA under GDPR, UK under UK DPA, Switzerland under FADP)
               gtag('consent', 'default', {
                 'ad_storage': 'denied',
                 'ad_user_data': 'denied',
                 'ad_personalization': 'denied',
                 'analytics_storage': 'denied',
-                'wait_for_update': 500
+                'wait_for_update': 500,
+                'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IS','IE','IT','LV','LI','LT','LU','MT','NL','NO','PL','PT','RO','SK','SI','ES','SE','GB','CH']
               });
+
+              // Permissive default for all other regions: analytics granted,
+              // ads still denied until the user opts in via CookieYes
+              gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'analytics_storage': 'granted'
+              });
+
+              // Advanced Consent Mode: send cookieless pings and redact ad data
+              // for visitors who deny, so GA4 can model the missing traffic
+              gtag('set', 'url_passthrough', true);
+              gtag('set', 'ads_data_redaction', true);
             `,
           }}
         />
