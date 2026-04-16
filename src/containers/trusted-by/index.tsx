@@ -2,39 +2,53 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Text } from '@/components';
 import { useMobile } from '@/contexts';
 import { CUSTOMERS } from '@/constants';
-import { Button, Text } from '@/components';
+import Marquee from 'react-fast-marquee';
 import styled, { useTheme } from 'styled-components';
-import { ConstrainedWrapper, FlexRow } from '@/styles';
 
-const Content = styled.div<{ $isMobile: boolean }>`
+const Wrapper = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: ${({ $isMobile }) => ($isMobile ? 'column' : 'row')};
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 0;
+`;
+
+const LogoItem = styled.a<{ $gap: number }>`
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${({ $isMobile }) => ($isMobile ? 16 : 24)}px;
+  flex-shrink: 0;
+  margin-right: ${({ $gap }) => $gap}px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export const TrustedBy = () => {
   const theme = useTheme();
   const { isMobile } = useMobile();
+  const gap = isMobile ? 32 : 42;
 
   return (
-    <ConstrainedWrapper $isMobile={isMobile}>
-      <Content $isMobile={isMobile}>
-        <Text color={theme.colors.grey} fontSize={18} fontWeight={600} lineHeight='24px' noWrap>
-          TRUSTED BY
-        </Text>
+    <Wrapper>
+      <Text color={theme.colors.grey} fontSize={18} fontWeight={600} lineHeight='24px' noWrap>
+        TRUSTED BY
+      </Text>
 
-        <FlexRow $gap={isMobile ? 24 : 36} $wrap='wrap' $align='center' $justify='center'>
-          {CUSTOMERS.map(({ src, alt, href, width, height }) => (
-            <Button key={alt} href={href} variant='transparent' padding='0'>
-              <Image src={src} alt={alt} width={width} height={height} />
-            </Button>
-          ))}
-        </FlexRow>
-      </Content>
-    </ConstrainedWrapper>
+      <Marquee speed={40} pauseOnHover autoFill>
+        {CUSTOMERS.map(({ src, alt, href, width, height }) => (
+          <LogoItem key={alt} href={href} target='_blank' rel='noopener noreferrer' $gap={gap}>
+            <Image src={src} alt={alt} width={width} height={height} />
+          </LogoItem>
+        ))}
+      </Marquee>
+    </Wrapper>
   );
 };
