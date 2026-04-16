@@ -3,7 +3,7 @@
 import React from 'react';
 import { useMobile } from '@/contexts';
 import styled, { css } from 'styled-components';
-import { QuickstartButton, TextLayers, WatchDemoButton } from '@/components';
+import { ContactUsButton, TextLayers, WatchDemoButton } from '@/components';
 
 const Container = styled.div<{ $isMobile: boolean; $width?: number }>`
   display: flex;
@@ -37,21 +37,22 @@ export const TextAndButtons = ({ width }: { width?: number }) => {
   return (
     <Container $isMobile={isMobile} $width={width}>
       <TextLayers
-        title='Deeper Observability to'
-        typistTitles={['see more', 'fix faster', 'spend less', 'ship safely']}
+        title='Stop Guessing in Production'
         titleSettings={{
           extraLargeTitle: true,
           minWidth: isMobile ? 'unset' : `${width}px`,
           center: isMobile,
         }}
-        descriptions={['Accelerate OpenTelemetry implementation with Odigos, an eBPF-based solution providing zero-code, zero-performance overhead for deeper tracing']}
+        descriptions={[
+          'Outages start in the gaps others miss. See across the hardest parts of your system and capture more context when it matters most, so engineers and AI can resolve issues faster.',
+        ]}
         descriptionSettings={{
           center: isMobile,
         }}
       />
 
       <ContainButtons $isMobile={isMobile} $isSmallestScreen={screenWidth < 420}>
-        <QuickstartButton />
+        <ContactUsButton rightIconSrc='/assets/icons/arrow.svg' />
         <WatchDemoButton />
       </ContainButtons>
     </Container>

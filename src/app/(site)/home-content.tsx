@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { Hero1, Hero2, Hero3, HowToStart, InfoSections1, LearnMoreBlogs, Testimonial, TrustedBy } from '@/containers';
+import { BottomCTA, FeatureSections, Hero1, LearnMoreBlogs, StatementCard, TrustedBy } from '@/containers';
 
 const LighterBackground = styled.div`
   background-color: ${({ theme }) => theme.colors.black_light};
@@ -13,13 +13,11 @@ const HomeContent = () => {
       <LighterBackground>
         <Hero1 />
         <TrustedBy />
-        <Hero2 />
       </LighterBackground>
-      <InfoSections1 />
-      <HowToStart />
-      <Testimonial />
-      <Hero3 />
+      <StatementCard />
+      <FeatureSections />
       <LearnMoreBlogs />
+      <BottomCTA />
     </>
   );
 };
