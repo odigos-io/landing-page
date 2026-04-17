@@ -190,13 +190,13 @@ export const EventHubspotForm = ({ portalId, formId, region = 'na1' }: EventHubs
 
   return (
     <Card $isMobile={isMobile}>
-      <Script src={`https://js.hsforms.net/forms/embed/${portalId}.js`} strategy='afterInteractive' />
+      <Script src={`https://js.hsforms.net/forms/embed/developer/${portalId}.js`} strategy='afterInteractive' />
 
       <Text fontSize={isMobile ? 28 : 38} fontWeight={600} lineHeight='110%'>
         Schedule a meeting with us at the event!
       </Text>
 
-      <div className='hs-form-frame' data-region={region} data-form-id={formId} data-portal-id={portalId} />
+      <div className='hs-form-html' data-region={region} data-form-id={formId} data-portal-id={portalId} />
     </Card>
   );
 };
