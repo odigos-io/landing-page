@@ -81,7 +81,7 @@ const Card = styled.div<{ $isMobile: boolean }>`
   .hsfc-EmailInput,
   .hsfc-PhoneInput,
   .hsfc-NumberInput,
-  .hsfc-TextAreaInput,
+  .hsfc-TextareaInput,
   .hsfc-DropdownInput,
   input.hsfc-Input,
   textarea.hsfc-Input,
@@ -105,7 +105,7 @@ const Card = styled.div<{ $isMobile: boolean }>`
   .hsfc-EmailInput:focus,
   .hsfc-PhoneInput:focus,
   .hsfc-NumberInput:focus,
-  .hsfc-TextAreaInput:focus,
+  .hsfc-TextareaInput:focus,
   .hsfc-DropdownInput:focus,
   input.hsfc-Input:focus,
   textarea.hsfc-Input:focus,
@@ -116,7 +116,7 @@ const Card = styled.div<{ $isMobile: boolean }>`
   .hsfc-TextInput::placeholder,
   .hsfc-EmailInput::placeholder,
   .hsfc-PhoneInput::placeholder,
-  .hsfc-TextAreaInput::placeholder,
+  .hsfc-TextareaInput::placeholder,
   input.hsfc-Input::placeholder,
   textarea.hsfc-Input::placeholder {
     color: ${({ theme }) => theme.colors.grey} !important;
