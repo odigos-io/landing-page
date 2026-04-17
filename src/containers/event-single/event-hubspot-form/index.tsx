@@ -15,48 +15,65 @@ const Card = styled.div<{ $isMobile: boolean }>`
   flex-direction: column;
   gap: 32px;
 
-  /* HubSpot form styling — dark theme, matches the rest of the events page */
-  .hs-form-html,
-  .hs-form {
-    width: 100%;
+  /* HubSpot new form renderer (hsfc-*) — strip its chrome and re-style for the dark card */
+  --hsf-background__padding: 0px;
+  --hsf-background-color: transparent;
+
+  .hsfc-Renderer,
+  .hsfc-FormWrapper,
+  .hsfc-Form,
+  .hsfc-Step,
+  .hsfc-Step__Content {
+    background: transparent !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  .hs-form fieldset {
-    max-width: 100% !important;
+  .hsfc-Step__Content,
+  .hsfc-Form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  .hsfc-Row {
     display: flex !important;
     flex-direction: ${({ $isMobile }) => ($isMobile ? 'column' : 'row')} !important;
     gap: 16px !important;
-  }
-
-  .hs-form fieldset .hs-form-field {
-    flex: 1 !important;
     width: 100% !important;
   }
 
-  .hs-form .hs-form-field {
-    margin-bottom: 16px;
+  .hsfc-Row > * {
+    flex: 1 !important;
+    min-width: 0 !important;
   }
 
-  .hs-form label {
-    display: block;
+  .hsfc-FieldLabel,
+  .hsfc-FieldLabel * {
     color: ${({ theme }) => theme.colors.white} !important;
     font-size: 14px !important;
     font-weight: 500 !important;
     margin-bottom: 8px !important;
     text-align: left !important;
+    font-family: Inter, sans-serif !important;
   }
 
-  .hs-form label .hs-form-required {
+  .hsfc-FieldLabel__Required,
+  .hsfc-RequiredAsterisk {
     color: ${({ theme }) => theme.colors.pink} !important;
   }
 
-  .hs-form .hs-input,
-  .hs-form input[type='text'],
-  .hs-form input[type='email'],
-  .hs-form input[type='tel'],
-  .hs-form input[type='number'],
-  .hs-form textarea,
-  .hs-form select {
+  .hsfc-TextInput,
+  .hsfc-EmailInput,
+  .hsfc-PhoneInput,
+  .hsfc-NumberInput,
+  .hsfc-TextAreaInput,
+  .hsfc-DropdownInput,
+  input.hsfc-Input,
+  textarea.hsfc-Input,
+  select.hsfc-Input {
     width: 100% !important;
     background: ${({ theme }) => theme.colors.black} !important;
     border: 1px solid ${({ theme }) => theme.colors.grey_darker} !important;
@@ -67,25 +84,37 @@ const Card = styled.div<{ $isMobile: boolean }>`
     font-family: Inter, sans-serif !important;
     box-sizing: border-box !important;
     transition: border-color 0.2s ease !important;
+    box-shadow: none !important;
   }
 
-  .hs-form .hs-input:focus,
-  .hs-form input:focus,
-  .hs-form textarea:focus,
-  .hs-form select:focus {
+  .hsfc-TextInput:focus,
+  .hsfc-EmailInput:focus,
+  .hsfc-PhoneInput:focus,
+  .hsfc-NumberInput:focus,
+  .hsfc-TextAreaInput:focus,
+  .hsfc-DropdownInput:focus,
+  input.hsfc-Input:focus,
+  textarea.hsfc-Input:focus,
+  select.hsfc-Input:focus {
     outline: none !important;
     border-color: ${({ theme }) => theme.colors.purple} !important;
   }
 
-  .hs-form .hs-input::placeholder,
-  .hs-form input::placeholder,
-  .hs-form textarea::placeholder {
+  .hsfc-TextInput::placeholder,
+  .hsfc-EmailInput::placeholder,
+  .hsfc-PhoneInput::placeholder,
+  .hsfc-TextAreaInput::placeholder,
+  input.hsfc-Input::placeholder,
+  textarea.hsfc-Input::placeholder {
     color: ${({ theme }) => theme.colors.grey_lighter} !important;
+    opacity: 1 !important;
   }
 
-  .hs-form .hs-button,
-  .hs-form input[type='submit'],
-  .hs-form .hs-submit .actions input {
+  /* Submit button */
+  .hsfc-Button,
+  .hsfc-PrimaryButton,
+  button.hsfc-Button,
+  button[type='submit'] {
     width: 100% !important;
     background: ${({ theme }) => theme.colors.white} !important;
     border: none !important;
@@ -100,52 +129,53 @@ const Card = styled.div<{ $isMobile: boolean }>`
     margin-top: 8px !important;
   }
 
-  .hs-form .hs-button:hover,
-  .hs-form input[type='submit']:hover,
-  .hs-form .hs-submit .actions input:hover {
+  .hsfc-Button:hover,
+  .hsfc-PrimaryButton:hover,
+  button.hsfc-Button:hover,
+  button[type='submit']:hover {
     opacity: 0.85 !important;
   }
 
-  .hs-form .hs-error-msgs,
-  .hs-form .hs-error-msg {
+  /* Validation / error messaging */
+  .hsfc-FieldError,
+  .hsfc-FieldError *,
+  .hsfc-Field__Error,
+  [class*='Error'] {
     color: ${({ theme }) => theme.colors.pink} !important;
     font-size: 12px !important;
     margin-top: 4px !important;
   }
 
-  .hs-form .hs-richtext,
-  .hs-form .hs-richtext * {
-    color: ${({ theme }) => theme.colors.grey_lighter} !important;
-    font-size: 12px !important;
-  }
-
-  .hs-form .legal-consent-container {
-    margin-top: 16px;
-  }
-
-  .hs-form .legal-consent-container .hs-form-booleancheckbox-display {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .hs-form .legal-consent-container .hs-form-booleancheckbox-display input {
-    width: auto !important;
-    margin-top: 3px;
-  }
-
-  .hs-form .legal-consent-container .hs-form-booleancheckbox-display span,
-  .hs-form .legal-consent-container .hs-form-booleancheckbox-display p {
+  /* Rich text / legal copy */
+  .hsfc-RichText,
+  .hsfc-RichText *,
+  .hsfc-LegalConsent,
+  .hsfc-LegalConsent * {
     color: ${({ theme }) => theme.colors.grey_lighter} !important;
     font-size: 12px !important;
     line-height: 150% !important;
   }
 
-  .hs-form .submitted-message {
+  .hsfc-LegalConsent a {
+    color: ${({ theme }) => theme.colors.cyan} !important;
+    text-decoration: underline !important;
+  }
+
+  /* Checkboxes */
+  .hsfc-CheckboxField,
+  .hsfc-CheckboxField label,
+  .hsfc-CheckboxField span {
+    color: ${({ theme }) => theme.colors.grey_lighter} !important;
+    font-size: 12px !important;
+  }
+
+  /* Success / submitted state */
+  .hsfc-SubmittedMessage,
+  .hsfc-SubmittedMessage * {
     color: ${({ theme }) => theme.colors.white} !important;
     font-size: 16px !important;
     text-align: center !important;
-    padding: 24px !important;
+    padding: 24px 0 !important;
   }
 `;
 
@@ -160,13 +190,13 @@ export const EventHubspotForm = ({ portalId, formId, region = 'na1' }: EventHubs
 
   return (
     <Card $isMobile={isMobile}>
-      <Script src={`https://js.hsforms.net/forms/embed/developer/${portalId}.js`} strategy='afterInteractive' />
+      <Script src={`https://js.hsforms.net/forms/embed/${portalId}.js`} strategy='afterInteractive' />
 
       <Text fontSize={isMobile ? 28 : 38} fontWeight={600} lineHeight='110%'>
         Schedule a meeting with us at the event!
       </Text>
 
-      <div className='hs-form-html' data-region={region} data-form-id={formId} data-portal-id={portalId} />
+      <div className='hs-form-frame' data-region={region} data-form-id={formId} data-portal-id={portalId} />
     </Card>
   );
 };
