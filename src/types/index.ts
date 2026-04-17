@@ -29,6 +29,8 @@ export interface EventPost {
   booth?: string;
   content?: string;
   customHtml?: string;
+  hubspotFormId?: string;
+  hubspotPortalId?: string;
 }
 
 export interface WebinarSpeaker {

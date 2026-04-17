@@ -66,6 +66,18 @@ export default defineType({
       rows: 10,
       description: 'Optional raw HTML to embed on the page (e.g. HubSpot CTA). Renders below the content.',
     }),
+    defineField({
+      name: 'hubspotFormId',
+      title: 'HubSpot Form ID',
+      type: 'string',
+      description: 'Optional. If set together with HubSpot Portal ID, the page renders an embedded HubSpot form instead of the default contact form.',
+    }),
+    defineField({
+      name: 'hubspotPortalId',
+      title: 'HubSpot Portal ID',
+      type: 'string',
+      description: 'Optional. Required alongside HubSpot Form ID to embed a HubSpot form.',
+    }),
   ],
   preview: {
     select: {

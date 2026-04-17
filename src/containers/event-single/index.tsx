@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import { EventMap } from './event-map';
 import { EventForm } from './event-form';
+import { EventHubspotForm } from './event-hubspot-form';
 import { EventTable } from './event-table';
 import { EventHeader } from './event-header';
 import type { EventPost } from '@/types';
@@ -45,7 +46,11 @@ export const EventSingle = ({ event }: EventSingleProps) => {
           </FlexColumn>
 
           <FlexColumn $gap={isMobile ? 32 : 48}>
-            <EventForm eventName={event.title} />
+            {event.hubspotFormId && event.hubspotPortalId ? (
+              <EventHubspotForm portalId={event.hubspotPortalId} formId={event.hubspotFormId} />
+            ) : (
+              <EventForm eventName={event.title} />
+            )}
             <EventMap location={event.location} />
           </FlexColumn>
         </WrapContent>
