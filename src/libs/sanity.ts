@@ -55,7 +55,9 @@ const EVENT_FIELDS = `
   location,
   booth,
   content,
-  customHtml
+  customHtml,
+  hubspotFormId,
+  hubspotPortalId
 `;
 
 export const getAllEvents = async (): Promise<EventPost[]> => {
