@@ -4,9 +4,8 @@ import React from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
-import { SYSTEM_REQUIREMENTS_LINK } from '@/constants';
-import { ConstrainedWrapper, FlexColumn } from '@/styles';
 import { Button, TextLayers } from '@/components';
+import { ConstrainedWrapper, FlexColumn } from '@/styles';
 
 const FEATURES = [
   {
@@ -30,9 +29,6 @@ const FEATURES = [
     title: 'Enterprise Grade',
     descriptions: ['Built for large-scale production environments with centralized governance, Kubernetes and Linux VM support, RBAC, SSO, and the ability to scale across thousands of services.'],
     imageSrc: '/assets/renders/home_section_4.svg',
-
-    buttonText: 'Explore Insights',
-    buttonHref: SYSTEM_REQUIREMENTS_LINK,
   },
   {
     title: 'OpenTelemetry, Supercharged',
@@ -71,15 +67,10 @@ export const FeatureSections = () => {
   return (
     <ConstrainedWrapper $isMobile={isMobile}>
       <FlexColumn $gap={isMobile ? 32 : 64}>
-        {FEATURES.map(({ title, descriptions, imageSrc, buttonText, buttonHref }, i) => (
+        {FEATURES.map(({ title, descriptions, imageSrc }, i) => (
           <Section key={title} $isMobile={isMobile} $inverted={i % 2 === 1}>
             <TextContent $isMobile={isMobile}>
               <TextLayers title={title} descriptions={descriptions} />
-              {buttonText && buttonHref && (
-                <Button rightIconSrc='/assets/icons/arrow.svg' href={buttonHref}>
-                  {buttonText}
-                </Button>
-              )}
             </TextContent>
 
             <WrapRender $isMobile={isMobile}>{imageSrc && <Image src={imageSrc} alt={title} width={isMobile ? 300 : 486} height={isMobile ? 300 : 486} />}</WrapRender>

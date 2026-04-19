@@ -25,7 +25,7 @@ export const LearnMoreBlogs = ({ title = 'Discover Latest Blog Posts' }: LearnMo
   const { isMobile } = useMobile();
 
   return (
-    <ConstrainedWrapper $isMobile={isMobile} $paddingTop={isMobile ? 64 : 128}>
+    <ConstrainedWrapper $isMobile={isMobile}>
       <FlexColumn $gap={isMobile ? 32 : 64}>
         <TextLayers
           miniTitle='LEARN MORE'
@@ -40,12 +40,6 @@ export const LearnMoreBlogs = ({ title = 'Discover Latest Blog Posts' }: LearnMo
             <BlogCard key={blog.slug} {...blog} />
           ))}
         </CardsContainer>
-
-        <FlexRow $fullWidth $align='center' $justify='center'>
-          <Button rightIconSrc='/assets/icons/arrow.svg' href='/blog'>
-            Show All
-          </Button>
-        </FlexRow>
       </FlexColumn>
     </ConstrainedWrapper>
   );

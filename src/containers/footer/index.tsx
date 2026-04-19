@@ -102,7 +102,7 @@ const Footer = () => {
           <PaddToMatchNav $isMobile={isMobile}>
             <FlexColumn $gap={isMobile ? 12 : 4}>
               <BottomHalf $isMobile={isMobile}>
-                <Description $isMobile={isMobile}>Enterprise-Grade OpenTelemetry for Superior Application Performance Monitoring</Description>
+                <Description $isMobile={isMobile}>Observability Built to Conquer Outages</Description>
 
                 <ContainPolicies $isMobile={isMobile}>
                   <PolicyLink variant='transparent' href={PRIVACY_POLICY_LINK}>
