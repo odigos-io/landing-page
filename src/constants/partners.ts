@@ -3,7 +3,7 @@ export const CUSTOMERS = [
     src: '/assets/partners/walmart.svg',
     alt: 'walmart',
     href: 'https://walmart.com',
-    width: 110,
+    width: 129,
     height: 32,
   },
   {
@@ -28,13 +28,6 @@ export const CUSTOMERS = [
     height: 32,
   },
   {
-    src: '/assets/partners/car_iq.svg',
-    alt: 'car iq',
-    href: 'https://cariqpay.com',
-    width: 75,
-    height: 32,
-  },
-  {
     src: '/assets/partners/avetta.svg',
     alt: 'avetta',
     href: 'https://avetta.com',
@@ -49,33 +42,19 @@ export const CUSTOMERS = [
     height: 32,
   },
   {
-    src: '/assets/partners/access_bank.svg',
-    alt: 'access bank',
-    href: 'https://accessbankplc.com',
-    width: 100,
-    height: 32,
-  },
-  {
     src: '/assets/partners/inpost.svg',
     alt: 'inpost',
-    href: 'https://inpost.coplm',
+    href: 'https://inpost.pl',
     width: 90,
     height: 54,
   },
-  // {
-  //   src: '/assets/partners/merck.svg',
-  //   alt: 'merck',
-  //   href: 'https://merck.com',
-  //   width: 100,
-  //   height: 32,
-  // },
-  // {
-  //   src: '/assets/partners/kyndryl.svg',
-  //   alt: 'kyndryl',
-  //   href: 'https://kyndryl.com',
-  //   width: 100,
-  //   height: 32,
-  // },
+  {
+    src: '/assets/partners/deephealth.svg',
+    alt: 'deephealth',
+    href: 'https://deephealth.com',
+    width: 131,
+    height: 29,
+  },
 ];
 
 export const INVESTORS = [

@@ -32,14 +32,6 @@ export const TEAM = [
     linkedin: 'https://www.linkedin.com/in/ktora-tsur-9487331b0',
   },
   {
-    name: 'Dan Sela',
-    title: 'Backend Lead',
-    description:
-      'Dan is Backend Lead at Odigos, where he architects and scales the core systems that power seamless, zero-code distributed tracing.\n\nWith previous engineering leadership roles at Dynatrace and Rookout, he brings deep expertise in observability, distributed systems, and backend performance at scale.',
-    image: '/assets/team/dan_sela.jpg',
-    linkedin: 'https://www.linkedin.com/in/dan-sela',
-  },
-  {
     name: 'Alon Braymok',
     title: 'Frontend Lead',
     description:
