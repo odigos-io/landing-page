@@ -16,15 +16,33 @@ const Content = styled.div<{ $isMobile: boolean }>`
   width: 100%;
 `;
 
+const Relative = styled.div`
+  position: relative;
+`;
+
+const Absolute = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 export const Hero1 = () => {
   const { isMobile, screenWidth } = useMobile();
   const divider = isMobile ? 1.25 : 2.25;
+  const size = screenWidth / divider;
 
   return (
     <ConstrainedWrapper $isMobile={isMobile} $paddingTop={0}>
       <Content $isMobile={isMobile}>
         <TextAndButtons width={isMobile ? undefined : 500} />
-        <Image src='/assets/renders/landing.svg' alt='' width={screenWidth / divider} height={screenWidth / divider} />
+
+        <Relative>
+          <Image src='/assets/renders/landing_bg.png' alt='' width={size} height={size} priority />
+          <Absolute>
+            <Image src='/assets/renders/landing_fg.svg' alt='' width={size} height={size} priority />
+          </Absolute>
+        </Relative>
       </Content>
     </ConstrainedWrapper>
   );
