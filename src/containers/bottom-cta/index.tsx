@@ -12,6 +12,11 @@ const Wrapper = styled.section<{ $isMobile: boolean }>`
   align-items: flex-end;
   justify-content: center;
   padding: ${({ $isMobile }) => ($isMobile ? '24px 16px 0' : '42px 0 0')};
+
+  box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 const OuterBorder = styled.div<{ $isMobile: boolean }>`
