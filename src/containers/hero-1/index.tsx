@@ -29,7 +29,7 @@ const Absolute = styled.div`
 
 export const Hero1 = () => {
   const { isMobile, screenWidth } = useMobile();
-  const divider = isMobile ? 1.25 : 2.25;
+  const divider = isMobile ? 1.25 : 2.75;
   const size = screenWidth / divider;
 
   return (
