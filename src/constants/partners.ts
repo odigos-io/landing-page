@@ -55,6 +55,13 @@ export const CUSTOMERS = [
     width: 131,
     height: 29,
   },
+  {
+    src: '/assets/partners/omnissa.svg',
+    alt: 'omnissa',
+    href: 'https://omnissa.com',
+    width: 138,
+    height: 29,
+  },
 ];
 
 export const INVESTORS = [

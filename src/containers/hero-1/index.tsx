@@ -1,11 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useMobile } from '@/contexts';
 import { ConstrainedWrapper } from '@/styles';
+import { ParticleSphere } from './particle-sphere';
 import { TextAndButtons } from './text-and-buttons';
+
+const Relative = styled.div`
+  position: relative;
+`;
 
 const Content = styled.div<{ $isMobile: boolean }>`
   display: flex;
@@ -14,36 +19,47 @@ const Content = styled.div<{ $isMobile: boolean }>`
   justify-content: center;
   gap: 64px;
   width: 100%;
-`;
-
-const Relative = styled.div`
   position: relative;
+  z-index: 1;
 `;
 
-const Absolute = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+const FgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Hero1 = () => {
   const { isMobile, screenWidth } = useMobile();
   const divider = isMobile ? 1.25 : 2.75;
   const size = screenWidth / divider;
+  const fgRef = useRef<HTMLDivElement>(null);
 
   return (
-    <ConstrainedWrapper $isMobile={isMobile} $paddingTop={0}>
-      <Content $isMobile={isMobile}>
-        <TextAndButtons width={isMobile ? undefined : 500} />
+    <Relative>
+      <ParticleSphere
+        targetRef={fgRef}
+        colors={[
+          [80, 246, 232],
+          [106, 42, 255],
+        ]}
+        rotationFrames={8000}
+        particlesPerFrame={100}
+        particleSize={0.3}
+        sphereRadius={size * 0.3}
+        driftSpeed={0.005}
+        exitSpeed={0.0005}
+        exitChance={0.4}
+      />
+      <ConstrainedWrapper $isMobile={isMobile} $paddingTop={0}>
+        <Content $isMobile={isMobile}>
+          <TextAndButtons width={isMobile ? undefined : 500} />
 
-        <Relative>
-          <Image src='/assets/renders/landing_bg.png' alt='' width={size} height={size} priority />
-          <Absolute>
+          <FgContainer ref={fgRef}>
             <Image src='/assets/renders/landing_fg.svg' alt='' width={size} height={size} priority />
-          </Absolute>
-        </Relative>
-      </Content>
-    </ConstrainedWrapper>
+          </FgContainer>
+        </Content>
+      </ConstrainedWrapper>
+    </Relative>
   );
 };
