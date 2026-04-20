@@ -63,7 +63,7 @@ const FEATURES = [
     render: (isMobile: boolean) => (
       <Relative>
         <Image src='/assets/renders/home_section_2_bg.png' alt='' width={getImageSize(isMobile)} height={getImageSize(isMobile)} />
-        <Absolute $topOffset={4} $leftOffset={8}>
+        <Absolute $topOffset={4} $leftOffset={4}>
           <Image src='/assets/renders/home_section_2_fg.svg' alt='' width={getImageSize(isMobile, 1.65)} height={getImageSize(isMobile, 1.65)} />
         </Absolute>
       </Relative>

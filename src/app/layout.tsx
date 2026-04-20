@@ -77,7 +77,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         suppressHydrationWarning={true}
         style={{
-          width: '100vw',
+          width: '100%',
           minHeight: '100vh',
           margin: 0,
           padding: 0,

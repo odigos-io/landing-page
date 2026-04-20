@@ -15,13 +15,21 @@ const MobileProvider = ({ children }: { children: React.ReactNode }) => {
   const [screenWidth, setScreenWidth] = useState(INITIAL_STATE.screenWidth);
 
   useEffect(() => {
-    const handleResize = () => {
-      const isMobileUserAgent = typeof window !== 'undefined' ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent) : false;
+    // Only react to width changes. Mobile browsers fire `resize` when the URL/address
+    // bar hides/shows during vertical scroll — ignoring height-only changes prevents
+    // layout jitter (elements visibly sliding and re-centering on scroll).
+    let lastWidth = -1;
 
-      const isMobileScreen = window.innerWidth <= DEFAULT_LIMIT;
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width === lastWidth) return;
+      lastWidth = width;
+
+      const isMobileUserAgent = typeof window !== 'undefined' ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent) : false;
+      const isMobileScreen = width <= DEFAULT_LIMIT;
 
       setIsMobile(isMobileUserAgent || isMobileScreen);
-      setScreenWidth(window.innerWidth);
+      setScreenWidth(width);
     };
 
     handleResize(); // Initial check

@@ -9,8 +9,13 @@
 }
 
 * {
-  transition: all 0.3s;
   font-family: 'Inter', sans-serif;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 /*
