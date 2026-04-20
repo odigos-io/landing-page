@@ -37,7 +37,20 @@ export const Hero1 = () => {
 
   return (
     <Relative>
-      <ParticleSphere targetRef={fgRef} color={[64, 224, 208]} sphereRadius={size * 0.3} driftSpeed={0.005} exitSpeed={0.0005} rotationFrames={5000} />
+      <ParticleSphere
+        targetRef={fgRef}
+        colors={[
+          [80, 246, 232],
+          [106, 42, 255],
+        ]}
+        rotationFrames={8000}
+        particlesPerFrame={100}
+        particleSize={0.3}
+        sphereRadius={size * 0.3}
+        driftSpeed={0.005}
+        exitSpeed={0.0005}
+        exitChance={0.4}
+      />
       <ConstrainedWrapper $isMobile={isMobile} $paddingTop={0}>
         <Content $isMobile={isMobile}>
           <TextAndButtons width={isMobile ? undefined : 500} />

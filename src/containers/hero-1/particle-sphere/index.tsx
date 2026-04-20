@@ -3,7 +3,8 @@
 import { useRef, useEffect } from 'react';
 
 interface ParticleSphereProps {
-  color?: [number, number, number];
+  /** Palette of RGB triplets. Each particle picks one at random on spawn. */
+  colors?: [number, number, number][];
   /** Ref to the element the sphere should center behind. Falls back to canvas center. */
   targetRef?: React.RefObject<HTMLElement | null>;
   /** Sphere radius in pixels. When omitted, auto-sizes to 40% of the target element's smaller dimension, or 28% of the canvas. */
@@ -14,6 +15,12 @@ interface ParticleSphereProps {
   exitSpeed?: number;
   /** Number of frames for one full rotation. Higher = slower spin. Default 6000. */
   rotationFrames?: number;
+  /** Multiplier applied to each particle's drawn radius. Default 1. Lower = smaller particles. */
+  particleSize?: number;
+  /** Number of new particles emitted per frame. Higher = denser sphere. Default 8. */
+  particlesPerFrame?: number;
+  /** Probability (0–1) that a spawned particle drifts out of the sphere. Others stay on the surface. Default 1. */
+  exitChance?: number;
 }
 
 interface ParticleNode {
@@ -41,6 +48,8 @@ interface ParticleNode {
   iFramesAlive: number;
   bIsDead: boolean;
   fAlpha: number;
+  iColorIdx: number;
+  bExits: boolean;
 }
 
 const PI = Math.PI;
@@ -73,10 +82,22 @@ function createParticle(): ParticleNode {
     iFramesAlive: 0,
     bIsDead: false,
     fAlpha: 0,
+    iColorIdx: 0,
+    bExits: true,
   };
 }
 
-export const ParticleSphere: React.FC<ParticleSphereProps> = ({ color = [139, 85, 255], targetRef, sphereRadius, driftSpeed = 0.1, exitSpeed = 0.001, rotationFrames = 2000 }) => {
+export const ParticleSphere: React.FC<ParticleSphereProps> = ({
+  colors = [[139, 85, 255]],
+  targetRef,
+  sphereRadius,
+  driftSpeed = 0.1,
+  exitSpeed = 0.001,
+  rotationFrames = 2000,
+  particleSize = 1,
+  particlesPerFrame = 8,
+  exitChance = 1,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
 
@@ -92,7 +113,7 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({ color = [139, 85
     const SHRINK = 250.0;
     const FRAMES_TO_ROTATE = rotationFrames;
     const PERSPECTIVE = 250;
-    const NEW_PER_FRAME = 8;
+    const NEW_PER_FRAME = particlesPerFrame;
     const fVX = (2.0 * PI) / FRAMES_TO_ROTATE;
 
     let iRadius = 150;
@@ -125,10 +146,12 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({ color = [139, 85
       p.fAX = 0;
       p.fAY = 0;
       p.fAZ = 0;
+      p.iColorIdx = (random() * colors.length) | 0;
+      p.bExits = random() < exitChance;
     }
 
     function updateParticle(p: ParticleNode) {
-      if (p.iFramesAlive > p.fGrowDuration + p.fWaitDuration) {
+      if (p.bExits && p.iFramesAlive > p.fGrowDuration + p.fWaitDuration) {
         p.fVX += p.fAX + fMaxA * rnd2();
         p.fVY += p.fAY + fMaxA * rnd2();
         p.fVZ += p.fAZ + fMaxA * rnd2();
@@ -208,13 +231,15 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({ color = [139, 85
     ro.observe(canvas.parentElement || canvas);
     if (targetRef?.current) ro.observe(targetRef.current);
 
+    const colorPrefixes = colors.map(([r, g, b]) => `rgba(${r},${g},${b},`);
+
     function render() {
       ctx.clearRect(0, 0, w, h);
       let p = oRender.pFirst;
       while (p != null) {
-        ctx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},${p.fAlpha.toFixed(4)})`;
+        ctx.fillStyle = `${colorPrefixes[p.iColorIdx]}${p.fAlpha.toFixed(4)})`;
         ctx.beginPath();
-        ctx.arc(p.fProjX, p.fProjY, p.fRadiusCurrent, 0, 2 * PI, false);
+        ctx.arc(p.fProjX, p.fProjY, p.fRadiusCurrent * particleSize, 0, 2 * PI, false);
         ctx.closePath();
         ctx.fill();
         p = p.pNext;
@@ -249,7 +274,7 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({ color = [139, 85
       cancelAnimationFrame(animRef.current);
       ro.disconnect();
     };
-  }, [color, targetRef, sphereRadius, driftSpeed, exitSpeed, rotationFrames]);
+  }, [colors, targetRef, sphereRadius, driftSpeed, exitSpeed, rotationFrames, particleSize, particlesPerFrame, exitChance]);
 
   return (
     <canvas
