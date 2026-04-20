@@ -46,7 +46,7 @@ export const Hero1 = () => {
         rotationFrames={8000}
         particlesPerFrame={100}
         particleSize={0.3}
-        sphereRadius={size * 0.3}
+        sphereRadius={size * (isMobile ? 0.45 : 0.3)}
         driftSpeed={0.005}
         exitSpeed={0.0005}
         exitChance={0.4}
