@@ -1,12 +1,5 @@
 export const CUSTOMERS = [
   {
-    src: '/assets/partners/walmart.svg',
-    alt: 'walmart',
-    href: 'https://walmart.com',
-    width: 129,
-    height: 32,
-  },
-  {
     src: '/assets/partners/t_mobile.svg',
     alt: 't-mobile',
     href: 'https://t-mobile.com',
