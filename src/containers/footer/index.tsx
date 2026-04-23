@@ -70,6 +70,29 @@ const Soc2Badge = styled(Link)<{ $isMobile: boolean }>`
   position: absolute;
   top: 0;
   right: ${({ $isMobile }) => ($isMobile ? '16px' : '24px')};
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  color: inherit;
+  line-height: 0;
+`;
+
+// Reset any styling that external scripts (e.g. HubSpot CTA loader) may try to apply
+// to the logo's anchor when it matches their selectors. Keeps the logo as a plain link
+// with no background, padding, border, or radius.
+const LogoLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  color: inherit;
+  line-height: 0;
 `;
 
 const YEAR = new Date().getFullYear();
@@ -85,9 +108,9 @@ const Footer = () => {
           <TopHalf $isMobile={isMobile}>
             <FlexColumn $gap={12}>
               <PaddToMatchNav $isMobile={isMobile}>
-                <Link href='/'>
+                <LogoLink href='/' aria-label='Odigos home'>
                   <Image src='/assets/odigos/logo_white.svg' alt='logo' width={48} height={48} />
-                </Link>
+                </LogoLink>
               </PaddToMatchNav>
               <Navigation flexDirection={isMobile ? 'column' : 'row'} />
             </FlexColumn>
