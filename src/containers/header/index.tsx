@@ -27,6 +27,22 @@ const ContainMobileButtons = styled.div`
   gap: 12px;
 `;
 
+// Reset any styling that external scripts (e.g. HubSpot CTA loader) may try to apply
+// to the logo's anchor when it matches their selectors. Keeps the logo as a plain link
+// with no background, padding, border, or radius.
+const LogoLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  color: inherit;
+  line-height: 0;
+`;
+
 const Header = () => {
   const { isMobile } = useMobile();
 
@@ -59,9 +75,9 @@ const Header = () => {
 };
 
 const Logo = ({ isMobile }: { isMobile: boolean }) => (
-  <Link href='/'>
+  <LogoLink href='/' aria-label='Odigos home'>
     <Image src='/assets/odigos/logo_text_white.svg' alt='logo' width={isMobile ? 107 : 143} height={isMobile ? 24 : 32} priority />
-  </Link>
+  </LogoLink>
 );
 
 const MenuIcon = ({ toggleMenu }: { toggleMenu: () => void }) => (
