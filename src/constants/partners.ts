@@ -7,11 +7,11 @@ export const CUSTOMERS = [
     height: 39,
   },
   {
-    src: '/assets/partners/razorpay.svg',
-    alt: 'razorpay',
-    href: 'https://razorpay.com',
-    width: 146,
-    height: 31,
+    src: '/assets/partners/csaa.svg',
+    alt: 'csaa',
+    href: 'https://csaa-insurance.aaa.com',
+    width: 66,
+    height: 39,
   },
   {
     src: '/assets/partners/avodaq.svg',
