@@ -3,7 +3,7 @@
 import React from 'react';
 import { useMobile } from '@/contexts';
 import styled, { css } from 'styled-components';
-import { ContactUsButton, TextLayers, WatchDemoButton } from '@/components';
+import { ContactUsButton, TextLayers } from '@/components';
 
 const Container = styled.div<{ $isMobile: boolean; $width?: number }>`
   display: flex;
@@ -53,7 +53,6 @@ export const TextAndButtons = ({ width }: { width?: number }) => {
 
       <ContainButtons $isMobile={isMobile} $isSmallestScreen={screenWidth < 420}>
         <ContactUsButton rightIconSrc='/assets/icons/arrow.svg' />
-        <WatchDemoButton />
       </ContainButtons>
     </Container>
   );
