@@ -124,6 +124,7 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({
     let fCosAngle = 0.0;
     let w = 0;
     let h = 0;
+    let liveCount = 0;
 
     const oRender: { pFirst: ParticleNode | null } = { pFirst: null };
     const oBuffer: { pFirst: ParticleNode | null } = { pFirst: null };
@@ -179,6 +180,7 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({
 
       if (p.bIsDead) {
         swapList(p, oRender, oBuffer);
+        liveCount--;
       }
 
       p.fAlpha *= min(1.0, max(0.5, p.fRotZ / iRadius));
@@ -206,7 +208,7 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({
 
     function setSize() {
       const canvasRect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = canvasRect.width;
       h = canvasRect.height;
       canvas.width = w * dpr;
@@ -232,6 +234,13 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({
     if (targetRef?.current) ro.observe(targetRef.current);
 
     const colorPrefixes = colors.map(([r, g, b]) => `rgba(${r},${g},${b},`);
+    const MAX_LIVE = 1600;
+    const FRAME_MS = 1000 / 30;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let onScreen = true;
+    let pageVisible = !document.hidden;
+    let lastTs = 0;
 
     function render() {
       ctx.clearRect(0, 0, w, h);
@@ -240,21 +249,21 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({
         ctx.fillStyle = `${colorPrefixes[p.iColorIdx]}${p.fAlpha.toFixed(4)})`;
         ctx.beginPath();
         ctx.arc(p.fProjX, p.fProjY, p.fRadiusCurrent * particleSize, 0, 2 * PI, false);
-        ctx.closePath();
         ctx.fill();
         p = p.pNext;
       }
     }
 
-    function nextFrame() {
+    function step() {
       fAngle = (fAngle + fVX) % (2.0 * PI);
       fSinAngle = sin(fAngle);
       fCosAngle = cos(fAngle);
 
       let added = 0;
-      while (added++ < NEW_PER_FRAME) {
+      while (added++ < NEW_PER_FRAME && liveCount < MAX_LIVE) {
         const p = swapList(oBuffer.pFirst, oBuffer, oRender);
         initParticle(p);
+        liveCount++;
       }
 
       let p = oRender.pFirst;
@@ -265,14 +274,37 @@ export const ParticleSphere: React.FC<ParticleSphereProps> = ({
       }
 
       render();
-      animRef.current = requestAnimationFrame(nextFrame);
     }
 
-    animRef.current = requestAnimationFrame(nextFrame);
+    function loop(ts: number) {
+      animRef.current = requestAnimationFrame(loop);
+      if (!onScreen || !pageVisible) return;
+      if (ts - lastTs < FRAME_MS) return;
+      lastTs = ts;
+      step();
+    }
+
+    if (reduceMotion) {
+      for (let i = 0; i < 360; i++) step();
+    } else {
+      animRef.current = requestAnimationFrame(loop);
+    }
+
+    const io = new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+    });
+    io.observe(canvas);
+
+    const onVis = () => {
+      pageVisible = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', onVis);
 
     return () => {
       cancelAnimationFrame(animRef.current);
       ro.disconnect();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVis);
     };
   }, [colors, targetRef, sphereRadius, driftSpeed, exitSpeed, rotationFrames, particleSize, particlesPerFrame, exitChance]);
 

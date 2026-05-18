@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Text } from '@/components';
 import { useMobile } from '@/contexts';
+import { useOnScreen } from '@/hooks';
 import { CUSTOMERS } from '@/constants';
 import Marquee from 'react-fast-marquee';
 import styled, { useTheme } from 'styled-components';
@@ -34,15 +35,16 @@ const LogoItem = styled.a<{ $gap: number }>`
 export const TrustedBy = () => {
   const theme = useTheme();
   const { isMobile } = useMobile();
+  const { visibleRef, isVisible } = useOnScreen<HTMLDivElement>(undefined, '256px');
   const gap = isMobile ? 32 : 42;
 
   return (
-    <Wrapper>
+    <Wrapper ref={visibleRef}>
       <Text color={theme.colors.grey} fontSize={18} fontWeight={600} lineHeight='24px' noWrap>
-        TRUSTED BY
+        TRUSTED IN PRODUCTION
       </Text>
 
-      <Marquee speed={40} pauseOnHover autoFill>
+      <Marquee speed={40} pauseOnHover autoFill play={isVisible}>
         {CUSTOMERS.map(({ src, alt, href, width, height }) => (
           <LogoItem key={alt} href={href} target='_blank' rel='noopener noreferrer' $gap={gap}>
             <Image src={src} alt={alt} width={width} height={height} />

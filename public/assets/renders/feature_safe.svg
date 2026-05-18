@@ -1,0 +1,65 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="s_grad" x1="300" y1="150" x2="360" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#50F6E8"/><stop offset="1" stop-color="#8B55FF"/>
+    </linearGradient>
+    <radialGradient id="s_core" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#FFFFFF"/><stop offset="0.32" stop-color="#50F6E8"/><stop offset="1" stop-color="#7434FF"/>
+    </radialGradient>
+    <radialGradient id="s_halo" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#50F6E8" stop-opacity="0.15"/><stop offset="0.55" stop-color="#7434FF" stop-opacity="0.09"/><stop offset="1" stop-color="#7434FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="s_impact" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#FFFFFF"/><stop offset="0.4" stop-color="#FF7CA9"/><stop offset="1" stop-color="#FF7CA9" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="s_glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <ellipse cx="320" cy="320" rx="300" ry="300" fill="url(#s_halo)"/>
+
+  <!-- a reckless AI making the worst possible call -->
+  <circle cx="120" cy="320" r="30" fill="none" stroke="#8B55FF" stroke-opacity="0.6" stroke-width="2"/>
+  <g stroke="#8B55FF" stroke-opacity="0.5" stroke-width="1.4">
+    <line x1="120" y1="320" x2="103" y2="306"/><line x1="120" y1="320" x2="137" y2="306"/>
+    <line x1="120" y1="320" x2="103" y2="334"/><line x1="120" y1="320" x2="137" y2="334"/>
+  </g>
+  <circle cx="120" cy="320" r="5" fill="#8B55FF"/>
+  <path d="M150 320 L 210 300 L 188 330 L 250 312 L 232 344 L 286 326"
+        stroke="#FF7CA9" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"
+        fill="none" filter="url(#s_glow)"/>
+
+  <!-- the kernel-enforced wall it slams into -->
+  <path d="M300 130 q 70 190 0 380" stroke="#7434FF" stroke-opacity="0.25" stroke-width="14"
+        fill="none" filter="url(#s_glow)"/>
+  <path d="M300 130 q 70 190 0 380" stroke="url(#s_grad)" stroke-width="3" fill="none"/>
+  <g stroke="url(#s_grad)" stroke-opacity="0.4" stroke-width="1.4">
+    <path d="M309 200 q 40 0 33 40" fill="none"/>
+    <path d="M324 280 q 44 0 33 44" fill="none"/>
+    <path d="M324 360 q 44 0 30 42" fill="none"/>
+    <path d="M309 440 q 40 0 30 38" fill="none"/>
+  </g>
+
+  <!-- it scatters. it cannot get through -->
+  <circle cx="298" cy="324" r="34" fill="url(#s_impact)"/>
+  <g stroke="#FF7CA9" stroke-width="3" stroke-linecap="round" filter="url(#s_glow)">
+    <path d="M298 324 L 246 286"/><path d="M298 324 L 240 320"/>
+    <path d="M298 324 L 252 364"/><path d="M298 324 L 270 250"/>
+  </g>
+
+  <!-- production, untouched, still humming -->
+  <g stroke="#50F6E8" stroke-opacity="0.4" stroke-width="1.5">
+    <line x1="470" y1="320" x2="504" y2="320"/><line x1="470" y1="320" x2="481" y2="352"/>
+    <line x1="470" y1="320" x2="442" y2="340"/><line x1="470" y1="320" x2="442" y2="300"/>
+    <line x1="470" y1="320" x2="481" y2="288"/>
+  </g>
+  <g fill="url(#s_grad)" filter="url(#s_glow)">
+    <circle cx="504" cy="320" r="5.5"/><circle cx="481" cy="352" r="5.5"/><circle cx="442" cy="340" r="5.5"/>
+    <circle cx="442" cy="300" r="5.5"/><circle cx="481" cy="288" r="5.5"/>
+  </g>
+  <circle cx="470" cy="320" r="20" fill="url(#s_core)" filter="url(#s_glow)"/>
+  <circle cx="470" cy="320" r="6" fill="#FFFFFF"/>
+  <path d="M400 470 H 444 l 10 -26 l 16 50 l 12 -24 h 130" stroke="#50F6E8" stroke-opacity="0.55"
+        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

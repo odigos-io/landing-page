@@ -15,11 +15,19 @@ const Container = styled.div`
 `;
 
 const Title = styled(Text)<{ $isMobile: boolean }>`
-  padding: ${({ $isMobile }) => ($isMobile ? '32px 16px' : '52px 64px')};
+  padding: ${({ $isMobile }) => ($isMobile ? '32px 16px 12px' : '52px 64px 16px')};
   font-size: ${({ $isMobile }) => ($isMobile ? '48px' : '86px')};
   font-weight: 600;
   line-height: 110%;
   letter-spacing: -1.72px;
+`;
+
+const Intro = styled(Text)<{ $isMobile: boolean }>`
+  padding: ${({ $isMobile }) => ($isMobile ? '0 16px 24px' : '0 64px 40px')};
+  max-width: 900px;
+  color: ${({ theme }) => theme.colors.grey};
+  font-size: ${({ $isMobile }) => ($isMobile ? '16px' : '22px')};
+  line-height: 150%;
 `;
 
 const ContainTables = styled(FlexColumn)<{ $isMobile: boolean }>`
@@ -50,7 +58,10 @@ export const Plans = () => {
 
   return (
     <Container>
-      <Title $isMobile={isMobile}>Explore Capabilities by Plan</Title>
+      <Title $isMobile={isMobile}>Start free. Scale to production.</Title>
+      <Intro $isMobile={isMobile}>
+        Run Odigos open source yourself, or start a 14-day enterprise trial with full eBPF depth, multi-cluster, security, and support. No credit card.
+      </Intro>
       <ContainTables $isMobile={isMobile}>
         <Heading />
         <Table>

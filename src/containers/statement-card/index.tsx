@@ -65,7 +65,7 @@ export const StatementCard = () => {
           <InnerBorder $isMobile={isMobile}>
             <ContentCard $isMobile={isMobile}>
               <StatementText $isMobile={isMobile}>
-                Despite millions spent on observability,{!isMobile && <br />} the toughest problems persist.{!isMobile && <br />} AI is widening the gap.
+                Production breaks. You ask it what happened.{!isMobile && <br />} Root cause in seconds, not days.{!isMobile && <br />} No redeploy. No war room.
               </StatementText>
             </ContentCard>
           </InnerBorder>

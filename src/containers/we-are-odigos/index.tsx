@@ -45,11 +45,16 @@ export const WeAreOdigos = () => {
         <FlexColumn $gap={isMobile ? 16 : 32}>
           <Title $isMobile={isMobile}>We’re Odigos</Title>
           <TextLayers
-            miniTitle='VISION'
-            title='Pioneering the future of performance monitoring.'
+            miniTitle='OUR MISSION'
+            title='We brought observability to AI.'
             titleSettings={{
               smallTitle: isMobile,
             }}
+            descriptions={[
+              'AI writes the code now, and it ships to production faster than any team can watch it. The tools meant to catch it were built twenty years ago, for software people typed by hand.',
+              'So we rebuilt the layer underneath. Out-of-process eBPF that sees inside any running service, captures any signal on demand, and physically cannot take production down. Deep, safe, and dynamic at the same time, for the first time.',
+              'Every AI that runs production will need this. We built it first, and it already runs inside some of the most demanding production environments on earth.',
+            ]}
           />
         </FlexColumn>
         <ContainImage $isMobile={isMobile}>

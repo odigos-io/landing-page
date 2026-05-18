@@ -3,9 +3,9 @@ import Script from 'next/script';
 
 const URI = 'https://odigos.io',
   LOGO = '/favicon.ico',
-  TITLE = 'Odigos - Enterprise Grade OpenTelemetry',
-  DESCRIPTION = 'Accelerate OpenTelemetry implementation with Odigos, an eBPF-based solution providing zero-code, zero-performance overhead for deeper tracing',
-  KEYWORDS = ['OpenTelemetry', 'eBPF', 'Observability', 'Monitoring', 'Distributed Tracing', 'Tracing', 'Traces', 'Metrics', 'Logs'];
+  TITLE = 'Odigos - Ask Production Anything',
+  DESCRIPTION = 'AI writes the code now. The tools watching it in production were built 20 years ago. Odigos sees inside every running service and answers any question the second it breaks. No redeploy. No overhead. It cannot take production down. Root cause in seconds, not days.',
+  KEYWORDS = ['AI observability', 'observability for AI', 'production context', 'AI SRE', 'incident resolution', 'OpenTelemetry', 'eBPF', 'Observability', 'Distributed Tracing', 'Traces', 'Metrics', 'Logs'];
 
 export const metadata: Metadata = {
   metadataBase: new URL(URI),
@@ -78,6 +78,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         suppressHydrationWarning={true}
         style={{
           width: '100%',
+          maxWidth: '100vw',
+          overflowX: 'hidden',
           minHeight: '100vh',
           margin: 0,
           padding: 0,

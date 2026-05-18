@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useMobile } from '@/contexts';
 import { FlexColumn, FlexRow } from '@/styles';
 import styled, { css, useTheme } from 'styled-components';
-import { Button, ContactUsButton, Text } from '@/components';
+import { Button, ContactUsButton, Text, TrialButton } from '@/components';
 import { GITHUB_LINK, HEADER_HEIGHT_DESKTOP, HEADER_HEIGHT_MOBILE } from '@/constants';
 
 const Container = styled(FlexRow)<{ $isMobile: boolean; $isSticky: boolean }>`
@@ -103,13 +103,18 @@ const Plan = ({ isOss, isSticky }: { isOss: boolean; isSticky: boolean }) => {
           {isOss ? 'OPEN SOURCE' : 'ENTERPRISE'}
         </Text>
       </FlexRow>
-      {!isSticky && !isMobile && <Text color={theme.colors.off_white}>{isOss ? 'Zero-code distributed tracing.' : 'Mission critical distributed tracing.'}</Text>}
+      {!isSticky && !isMobile && (
+        <Text color={theme.colors.off_white}>{isOss ? 'Free and open source. Run it yourself.' : 'Production grade. 14 days free, no credit card.'}</Text>
+      )}
       {isOss ? (
         <PlanButton variant='secondary' href={GITHUB_LINK}>
           GitHub
         </PlanButton>
       ) : (
-        <ContactUsButton variant='primary' fullWidth />
+        <>
+          <TrialButton variant='primary' fullWidth />
+          <ContactUsButton variant='secondary' label='Talk to sales' fullWidth />
+        </>
       )}
     </ContainPlan>
   );

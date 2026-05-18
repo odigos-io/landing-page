@@ -61,8 +61,8 @@ export const Hero3 = () => {
       <Absolute $isMobile={isMobile}>
         <FlexColumn $gap={isMobile ? 24 : 48} $align='center' $justify='center' $fullHeight>
           <ContainText $isMobile={isMobile}>
-            <Title $isMobile={isMobile}>Unlock Deeper Observability</Title>
-            <SubTitle $isMobile={isMobile}>Enterprise-Grade OpenTelemetry for Superior Application Performance Monitoring</SubTitle>
+            <Title $isMobile={isMobile}>Root cause in seconds. Not days.</Title>
+            <SubTitle $isMobile={isMobile}>Odigos sees inside every running service, including the code your AI wrote, and answers any question the moment production breaks. Zero overhead. It cannot crash your app.</SubTitle>
           </ContainText>
 
           <FlexRow $gap={32}>
