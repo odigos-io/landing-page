@@ -3,7 +3,13 @@ import { CAREERS_LINK, DOCS_LINK } from './links';
 export const HEADER_HEIGHT_MOBILE = 75;
 export const HEADER_HEIGHT_DESKTOP = 91;
 
-export const NAVIGATION = [
+interface NavItem {
+  label: string;
+  href: string;
+  iconSrc?: string;
+}
+
+export const NAVIGATION: NavItem[] = [
   {
     label: 'Product',
     href: '/product',
