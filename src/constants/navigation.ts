@@ -1,4 +1,4 @@
-import { CAREERS_LINK, DOCS_LINK, GITHUB_LINK } from './links';
+import { CAREERS_LINK, DOCS_LINK } from './links';
 
 export const HEADER_HEIGHT_MOBILE = 75;
 export const HEADER_HEIGHT_DESKTOP = 91;
@@ -31,10 +31,5 @@ export const NAVIGATION = [
   {
     label: 'Documentation',
     href: DOCS_LINK,
-  },
-  {
-    label: 'GitHub',
-    iconSrc: '/assets/github.svg',
-    href: GITHUB_LINK,
   },
 ];

@@ -9,7 +9,7 @@ import { useMobile } from '@/contexts';
 import { Navigation } from '../navigation';
 import { Button, Text } from '@/components';
 import { ConstrainedWrapper, FlexColumn } from '@/styles';
-import { PRIVACY_POLICY_LINK, SOC_LINK, TRUST_CENTER_LINK } from '@/constants';
+import { GITHUB_LINK, PRIVACY_POLICY_LINK, SOC_LINK, TRUST_CENTER_LINK } from '@/constants';
 
 const Container = styled.div<{ $isMobile: boolean }>`
   background-color: ${({ theme }) => theme.colors.black_light};
@@ -95,6 +95,17 @@ const LogoLink = styled(Link)`
   line-height: 0;
 `;
 
+const SocialLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 const YEAR = new Date().getFullYear();
 const COPYRIGHT_TEXT = `© ${YEAR} Odigos. All rights reserved.`;
 
@@ -125,7 +136,7 @@ const Footer = () => {
           <PaddToMatchNav $isMobile={isMobile}>
             <FlexColumn $gap={isMobile ? 12 : 4}>
               <BottomHalf $isMobile={isMobile}>
-                <Description $isMobile={isMobile}>Observability Built to Conquer Outages</Description>
+                <Description $isMobile={isMobile}>The production data layer for the AI era.</Description>
 
                 <ContainPolicies $isMobile={isMobile}>
                   <PolicyLink variant='transparent' href={PRIVACY_POLICY_LINK}>
@@ -135,6 +146,10 @@ const Footer = () => {
                   <PolicyLink variant='transparent' href={TRUST_CENTER_LINK}>
                     Trust Center
                   </PolicyLink>
+                  <Text>|</Text>
+                  <SocialLink href={GITHUB_LINK} target='_blank' aria-label='Odigos on GitHub'>
+                    <Image src='/assets/github.svg' alt='GitHub' width={18} height={18} />
+                  </SocialLink>
                 </ContainPolicies>
               </BottomHalf>
 

@@ -15,8 +15,8 @@ export const Investors = () => {
       <FlexColumn $gap={isMobile ? 32 : 64}>
         <TextLayers
           miniTitle='INVESTORS'
-          title='Backing Our Vision'
-          descriptions={['Explore the investors who believe in our potential and are helping us achieve our goals through strategic support and funding.']}
+          title='Backed by infrastructure investors'
+          descriptions={['The funds that backed the last generation of infrastructure companies are backing the one that replaces them.']}
         />
 
         <FlexRow $gap={48} $wrap='wrap' $align='flex-start' $justify='space-between'>

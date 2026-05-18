@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export enum ModalType {
   CONTACT_US = 'contact-us',
   DEMO = 'demo',
+  TRIAL = 'trial',
 }
 
 interface ModalStore {

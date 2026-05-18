@@ -21,14 +21,14 @@ const Scripts = () => {
           `,
         }}
       />
-      <Script id='hs-script-loader' strategy='afterInteractive' src='//js.hs-scripts.com/50932826.js' />
+      <Script id='hs-script-loader' strategy='lazyOnload' src='//js.hs-scripts.com/50932826.js' />
       <Script id='cookieyes-banner' strategy='afterInteractive' src='https://cdn-cookieyes.com/client_data/b873ab43d440c7e433a75c19/script.js' />
-      <Script id='redodev-integration' strategy='afterInteractive'>
+      <Script id='redodev-integration' strategy='lazyOnload'>
         {`
           !function(){var e,t,n;e="756aafdccc100e4",t=function(){Reo.init({clientID:"756aafdccc100e4"})},(n=document.createElement("script")).src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();
         `}
       </Script>
-      <Script id='zoominfo-integration' strategy='afterInteractive'>
+      <Script id='zoominfo-integration' strategy='lazyOnload'>
         {`
           window[(function(_yFM, _tT) {
             var _DWg1K = '';
@@ -72,7 +72,7 @@ const Scripts = () => {
               });
         `}
       </Script>
-      <Script id='common-room-integration' strategy='afterInteractive'>
+      <Script id='common-room-integration' strategy='lazyOnload'>
         {`
           (function() {
             if (typeof window === 'undefined') return;
@@ -94,7 +94,7 @@ const Scripts = () => {
           })();
         `}
       </Script>
-      <Script id='hotjar-tracking' strategy='afterInteractive'>
+      <Script id='hotjar-tracking' strategy='lazyOnload'>
         {`
           (function(h,o,t,j,a,r){
               h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};

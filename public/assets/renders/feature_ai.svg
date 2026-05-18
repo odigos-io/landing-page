@@ -1,0 +1,57 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lp_g" x1="120" y1="220" x2="520" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#50F6E8"/><stop offset="1" stop-color="#8B55FF"/>
+    </linearGradient>
+    <linearGradient id="lp_o" x1="232" y1="258" x2="408" y2="382" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#50F6E8"/><stop offset="1" stop-color="#8B55FF"/>
+    </linearGradient>
+    <radialGradient id="lp_halo" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#8B55FF" stop-opacity="0.14"/><stop offset="0.55" stop-color="#50F6E8" stop-opacity="0.07"/><stop offset="1" stop-color="#7434FF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lp_glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <style>text{font-family:Inter,system-ui,sans-serif}</style>
+
+  <ellipse cx="320" cy="320" rx="300" ry="300" fill="url(#lp_halo)"/>
+
+  <!-- the feedback loop: AI acts, production answers, both flow through Odigos -->
+  <text x="320" y="226" fill="#50F6E8" font-size="15" font-weight="600" text-anchor="middle">AI asks and acts on production</text>
+  <text x="320" y="424" fill="#50F6E8" font-size="15" font-weight="600" text-anchor="middle">exact evidence, returned live</text>
+
+  <g stroke="url(#lp_g)" stroke-width="2.5" fill="none" stroke-linecap="round" filter="url(#lp_glow)">
+    <path d="M164 286 C 196 262, 210 286, 232 298"/>
+    <path d="M408 298 C 430 286, 444 262, 476 286"/>
+    <path d="M476 354 C 444 378, 430 354, 408 342"/>
+    <path d="M232 342 C 210 354, 196 378, 164 354"/>
+  </g>
+  <path d="M476 286 l -16 -2 M476 286 l 4 15" stroke="#50F6E8" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M164 354 l 16 2 M164 354 l -4 -15" stroke="#50F6E8" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="#50F6E8" filter="url(#lp_glow)">
+    <circle cx="205" cy="278" r="3.6"/><circle cx="436" cy="278" r="3.6"/>
+    <circle cx="436" cy="362" r="3.6"/><circle cx="205" cy="362" r="3.6"/>
+  </g>
+
+  <!-- AI -->
+  <circle cx="132" cy="320" r="46" fill="#0B1220" stroke="url(#lp_g)" stroke-width="2.5" filter="url(#lp_glow)"/>
+  <path d="M132 302 L136 316 L150 320 L136 324 L132 338 L128 324 L114 320 L128 316 Z" fill="url(#lp_g)" filter="url(#lp_glow)"/>
+  <text x="132" y="398" fill="#F9F9F9" font-size="19" font-weight="700" text-anchor="middle">AI</text>
+
+  <!-- Production -->
+  <circle cx="508" cy="320" r="46" fill="#0B1220" stroke="url(#lp_g)" stroke-width="2.5" filter="url(#lp_glow)"/>
+  <g stroke="#50F6E8" stroke-opacity="0.85" stroke-width="1.6" fill="none">
+    <rect x="488" y="303" width="40" height="10" rx="2"/>
+    <rect x="488" y="317" width="40" height="10" rx="2"/>
+    <rect x="488" y="331" width="40" height="10" rx="2"/>
+  </g>
+  <g fill="#50F6E8"><circle cx="495" cy="308" r="1.7"/><circle cx="495" cy="322" r="1.7"/><circle cx="495" cy="336" r="1.7"/></g>
+  <text x="508" y="398" fill="#F9F9F9" font-size="19" font-weight="700" text-anchor="middle">Production</text>
+
+  <!-- Odigos: the production data layer everything flows through -->
+  <rect x="234" y="260" width="172" height="120" rx="24" fill="#0B1220"/>
+  <rect x="234" y="260" width="172" height="120" rx="24" fill="url(#lp_o)" fill-opacity="0.1" stroke="url(#lp_o)" stroke-width="2.5" filter="url(#lp_glow)"/>
+  <text x="320" y="314" fill="#F9F9F9" font-size="26" font-weight="700" text-anchor="middle">Odigos</text>
+  <text x="320" y="342" fill="#50F6E8" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="0.8">production data layer</text>
+</svg>

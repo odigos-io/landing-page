@@ -1,0 +1,56 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dy_grad" x1="320" y1="160" x2="480" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#50F6E8"/><stop offset="1" stop-color="#8B55FF"/>
+    </linearGradient>
+    <radialGradient id="dy_fire" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#FFFFFF"/><stop offset="0.35" stop-color="#FF7CA9"/><stop offset="1" stop-color="#FF7CA9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="dy_halo" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#50F6E8" stop-opacity="0.15"/><stop offset="0.55" stop-color="#7434FF" stop-opacity="0.09"/><stop offset="1" stop-color="#7434FF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="dy_glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <ellipse cx="320" cy="320" rx="300" ry="300" fill="url(#dy_halo)"/>
+
+  <!-- timeline -->
+  <line x1="70" y1="372" x2="578" y2="372" stroke="#8B55FF" stroke-opacity="0.3" stroke-width="2"/>
+  <g stroke="#8B55FF" stroke-opacity="0.2" stroke-width="1.5">
+    <line x1="120" y1="366" x2="120" y2="378"/><line x1="200" y1="366" x2="200" y2="378"/>
+    <line x1="280" y1="366" x2="280" y2="378"/><line x1="360" y1="366" x2="360" y2="378"/>
+    <line x1="440" y1="366" x2="440" y2="378"/><line x1="520" y1="366" x2="520" y2="378"/>
+  </g>
+
+  <!-- deploy: the only signals old tools ever collect, decided here, blind to everything after -->
+  <path d="M150 372 l 14 -20 l 14 20 l -14 20 z" fill="none" stroke="#8B55FF" stroke-opacity="0.45" stroke-width="2"/>
+  <g stroke="#8B55FF" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="2 7">
+    <line x1="128" y1="372" x2="128" y2="452"/><line x1="164" y1="392" x2="164" y2="468"/><line x1="200" y1="372" x2="200" y2="452"/>
+  </g>
+  <g fill="none" stroke="#8B55FF" stroke-opacity="0.3" stroke-width="1.5">
+    <circle cx="128" cy="462" r="5.5"/><circle cx="164" cy="478" r="5.5"/><circle cx="200" cy="462" r="5.5"/>
+  </g>
+
+  <!-- the incident: nothing here was ever collected -->
+  <circle cx="470" cy="372" r="44" fill="url(#dy_fire)"/>
+  <g stroke="#FF7CA9" stroke-width="3" stroke-linecap="round" filter="url(#dy_glow)">
+    <line x1="470" y1="338" x2="470" y2="360"/><line x1="470" y1="384" x2="470" y2="406"/>
+    <line x1="436" y1="372" x2="458" y2="372"/><line x1="482" y1="372" x2="504" y2="372"/>
+    <line x1="446" y1="348" x2="461" y2="363"/><line x1="479" y1="381" x2="494" y2="396"/>
+  </g>
+
+  <!-- Odigos reaches back and pulls the signal that was never collected -->
+  <path d="M470 360 C 470 250, 360 250, 330 300" stroke="url(#dy_grad)" stroke-width="3"
+        stroke-linecap="round" fill="none" stroke-dasharray="1 9" filter="url(#dy_glow)"/>
+  <path d="M470 372 L 470 188" stroke="url(#dy_grad)" stroke-width="3" stroke-linecap="round" filter="url(#dy_glow)"/>
+  <g stroke="url(#dy_grad)" stroke-width="3" stroke-linecap="round" filter="url(#dy_glow)" fill="none">
+    <path d="M430 170 q 10 -16 20 0 t 20 0 t 20 0 t 20 0"/>
+  </g>
+  <circle cx="470" cy="188" r="9" fill="url(#dy_grad)" filter="url(#dy_glow)"/>
+  <circle cx="470" cy="188" r="19" fill="none" stroke="#50F6E8" stroke-opacity="0.45" stroke-width="1.5"/>
+  <circle cx="470" cy="188" r="30" fill="none" stroke="#50F6E8" stroke-opacity="0.2" stroke-width="1.5"/>
+  <circle cx="330" cy="300" r="8" fill="url(#dy_grad)" filter="url(#dy_glow)"/>
+  <circle cx="330" cy="300" r="17" fill="none" stroke="#50F6E8" stroke-opacity="0.4" stroke-width="1.5"/>
+</svg>

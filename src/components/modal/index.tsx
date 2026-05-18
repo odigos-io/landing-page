@@ -7,8 +7,18 @@ import { Text } from '../text';
 import { Button } from '../button';
 import { useMobile } from '@/contexts';
 import { useOnClickOutside } from '@/hooks';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { FlexColumn, FlexRow, hexOpacity } from '@/styles';
+
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+const popIn = keyframes`
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.97); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+`;
 
 interface ModalProps {
   isOpen: boolean;
@@ -25,6 +35,11 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.black + hexOpacity['080']};
+  animation: ${fadeIn} 0.18s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 const ModalContainer = styled.div<{ $isMobile: boolean }>`
@@ -39,6 +54,11 @@ const ModalContainer = styled.div<{ $isMobile: boolean }>`
   max-height: 85vh;
   max-width: 85vw;
   overflow-y: auto;
+  animation: ${popIn} 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
   ${({ $isMobile }) =>
     $isMobile
       ? css`

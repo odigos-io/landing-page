@@ -15,6 +15,7 @@ export * from './share-facebook-button';
 export * from './share-linkedin-button';
 export * from './share-twitter-button';
 export * from './slack-invite-button';
+export * from './trial-button';
 export * from './watch-demo-button';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -73,6 +74,15 @@ const Btn = styled.button<{
   white-space: nowrap;
   cursor: pointer;
   pointer-events: auto;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.08s ease;
+
+  &:active {
+    transform: translateY(1px);
+  }
 
   ${({ theme, $variant }) =>
     $variant === 'primary'

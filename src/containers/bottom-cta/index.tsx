@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { useMobile } from '@/contexts';
-import { ContactUsButton } from '@/components';
+import { ContactUsButton, TrialButton } from '@/components';
 import styled from 'styled-components';
-import { FlexColumn } from '@/styles';
+import { FlexColumn, FlexRow } from '@/styles';
 
 const Wrapper = styled.section<{ $isMobile: boolean }>`
   width: 100%;
@@ -69,8 +69,11 @@ export const BottomCTA = () => {
           <MiddleBorder $isMobile={isMobile}>
             <InnerBorder $isMobile={isMobile}>
               <ContentCard $isMobile={isMobile}>
-                <Heading $isMobile={isMobile}>Visibility across all services and the{!isMobile && <br />} right context when you need it most</Heading>
-                <ContactUsButton rightIconSrc='/assets/icons/arrow.svg' />
+                <Heading $isMobile={isMobile}>Bring us your worst 2am incident.{!isMobile && <br />} Watch it resolve in seconds.</Heading>
+                <FlexRow $gap={isMobile ? 12 : 16} $wrap='wrap' $align='center' $justify='center'>
+                  <TrialButton rightIconSrc='/assets/icons/arrow.svg' />
+                  <ContactUsButton variant='secondary' label='Get a demo' />
+                </FlexRow>
               </ContentCard>
             </InnerBorder>
           </MiddleBorder>

@@ -26,85 +26,69 @@ const TextContent = styled.div<{ $isMobile: boolean }>`
 
 const WrapRender = styled.div<{ $isMobile: boolean }>`
   width: ${({ $isMobile }) => ($isMobile ? '100%' : 'unset')};
-  display: ${({ $isMobile }) => ($isMobile ? 'flex' : 'unset')};
-  justify-content: ${({ $isMobile }) => ($isMobile ? 'center' : 'unset')};
-  align-items: ${({ $isMobile }) => ($isMobile ? 'center' : 'unset')};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const Relative = styled.div`
-  position: relative;
-`;
-
-const Absolute = styled.div<{ $topOffset?: number; $leftOffset?: number }>`
-  position: absolute;
-  top: calc(50% + ${({ $topOffset }) => $topOffset || 0}px);
-  left: calc(50% + ${({ $leftOffset }) => $leftOffset || 0}px);
-  transform: translate(-50%, -50%);
-`;
-
-const MOBILE_IMAGE_SIZE = 300;
+const MOBILE_IMAGE_SIZE = 320;
 const DESKTOP_IMAGE_SIZE = 486;
 
-const getImageSize = (isMobile: boolean, divider?: number) => {
-  return (isMobile ? MOBILE_IMAGE_SIZE : DESKTOP_IMAGE_SIZE) / (divider || 1);
-};
+const getImageSize = (isMobile: boolean) => (isMobile ? MOBILE_IMAGE_SIZE : DESKTOP_IMAGE_SIZE);
 
 const FEATURES = [
   {
-    title: 'Unmatched Visibility',
+    title: 'See the exact call that broke production.',
     descriptions: [
-      'Automatic context propagation across the full request path, including AI-generated code, legacy systems, compiled languages, third-party apps, messaging pipelines, and databases.',
+      'Other tools tell you a request was slow. Odigos uses out-of-process eBPF to show you the function, the query, the call that actually did it, across AI-written code, compiled binaries, and legacy services. Nothing to instrument by hand.',
     ],
-    render: (isMobile: boolean) => <Image src='/assets/renders/home_section_1.png' alt='' width={getImageSize(isMobile)} height={getImageSize(isMobile)} />,
+    image: '/assets/renders/feature_depth.svg',
   },
   {
-    title: 'Dynamic Observability',
-    descriptions: ['Turn instrumentation on where it creates value, improve signal quality, reduce noise, and adapt in real time as production changes.'],
-    render: (isMobile: boolean) => (
-      <Relative>
-        <Image src='/assets/renders/home_section_2_bg.png' alt='' width={getImageSize(isMobile)} height={getImageSize(isMobile)} />
-        <Absolute $topOffset={4} $leftOffset={4}>
-          <Image src='/assets/renders/home_section_2_fg.svg' alt='' width={getImageSize(isMobile, 1.65)} height={getImageSize(isMobile, 1.65)} />
-        </Absolute>
-      </Relative>
-    ),
+    title: 'Get the signal you never collected. After it breaks.',
+    descriptions: [
+      'Old tools lock in what they capture at deploy time. When that is not enough, your only move is to redeploy while production is down. Odigos turns on any eBPF probe the moment you or an AI asks for it. In real time. No redeploy.',
+    ],
+    image: '/assets/renders/feature_dynamic.svg',
   },
   {
-    title: 'Frictionless',
-    descriptions: ['Instrument any service at runtime using out-of-process eBPF. Zero code changes. Zero restarts. Less than 1% overhead. Vendor agnostic and OpenTelemetry native.'],
-    render: (isMobile: boolean) => <Image src='/assets/renders/home_section_3.png' alt='' width={getImageSize(isMobile)} height={getImageSize(isMobile)} />,
+    title: 'Safe enough to let AI run production.',
+    descriptions: [
+      'Odigos runs out-of-process in an eBPF sandbox the Linux kernel enforces. Under 1% overhead, no code changes, no restarts. Turn on anything, anywhere, even let an AI drive, and production keeps running at full speed.',
+    ],
+    image: '/assets/renders/feature_safe.svg',
   },
   {
-    title: 'Enterprise Grade',
-    descriptions: ['Built for large-scale production environments with centralized governance, Kubernetes and Linux VM support, RBAC, SSO, and the ability to scale across thousands of services.'],
-    render: (isMobile: boolean) => (
-      <Relative>
-        <Image src='/assets/renders/home_section_4_bg.png' alt='' width={getImageSize(isMobile)} height={getImageSize(isMobile)} />
-        <Absolute>
-          <Image src='/assets/renders/home_section_4_fg.svg' alt='' width={getImageSize(isMobile, 1.25)} height={getImageSize(isMobile, 1.25)} />
-        </Absolute>
-      </Relative>
-    ),
+    title: 'No model can debug evidence nobody collected.',
+    descriptions: [
+      'Every AI SRE on the market reads dashboards that were built before the incident. When the evidence was never collected, the smartest model money can buy is stuck. Odigos lets the AI ask production for exactly what it needs, the moment it needs it. Better data beats a smarter model.',
+    ],
+    image: '/assets/renders/feature_ai.svg',
   },
   {
-    title: 'OpenTelemetry, Supercharged',
-    descriptions: ['Take control of your telemetry with flexible pipelines that route, enrich, and send data anywhere to any backend without lock-in.'],
-    render: (isMobile: boolean) => <Image src='/assets/renders/home_section_5.png' alt='' width={getImageSize(isMobile)} height={getImageSize(isMobile)} />,
+    title: 'Built to run thousands of services.',
+    descriptions: [
+      'Centralized governance, Kubernetes and Linux VMs, RBAC, SSO, OpenTelemetry native, zero lock-in. The same install scales from ten services to tens of thousands without changing how your teams work.',
+    ],
+    image: '/assets/renders/feature_scale.svg',
   },
 ];
 
 export const FeatureSections = () => {
   const { isMobile } = useMobile();
+  const size = getImageSize(isMobile);
 
   return (
     <ConstrainedWrapper $isMobile={isMobile} $paddingTop={32} $paddingBottom={32}>
       <FlexColumn $gap={isMobile ? 32 : 64}>
-        {FEATURES.map(({ title, descriptions, render }, i) => (
+        {FEATURES.map(({ title, descriptions, image }, i) => (
           <Section key={title} $isMobile={isMobile} $inverted={i % 2 === 1}>
             <TextContent $isMobile={isMobile}>
               <TextLayers title={title} descriptions={descriptions} />
             </TextContent>
-            <WrapRender $isMobile={isMobile}>{render(isMobile)}</WrapRender>
+            <WrapRender $isMobile={isMobile}>
+              <Image src={image} alt='' width={size} height={size} />
+            </WrapRender>
           </Section>
         ))}
       </FlexColumn>

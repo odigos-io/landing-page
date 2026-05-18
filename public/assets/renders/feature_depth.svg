@@ -1,0 +1,72 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dp_g" x1="300" y1="270" x2="560" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#50F6E8"/><stop offset="1" stop-color="#8B55FF"/>
+    </linearGradient>
+    <linearGradient id="dp_hot" x1="320" y1="356" x2="540" y2="372" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF7CA9"/><stop offset="1" stop-color="#8B55FF"/>
+    </linearGradient>
+    <radialGradient id="dp_halo" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#50F6E8" stop-opacity="0.14"/><stop offset="0.55" stop-color="#7434FF" stop-opacity="0.08"/><stop offset="1" stop-color="#7434FF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="dp_glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <style>text{font-family:Inter,system-ui,sans-serif}</style>
+
+  <ellipse cx="320" cy="320" rx="300" ry="300" fill="url(#dp_halo)"/>
+
+  <!-- what other tools see: a request happened, and it was slow -->
+  <text x="64" y="86" fill="#A39BA0" font-size="13" font-weight="600" letter-spacing="2">OTHER TOOLS</text>
+  <g opacity="0.55">
+    <rect x="60" y="100" width="320" height="80" rx="14" fill="#0B1220" stroke="#8B55FF" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="2 8"/>
+    <text x="84" y="134" fill="#A39BA0" font-size="14">GET /checkout</text>
+    <rect x="84" y="146" width="210" height="14" rx="7" fill="#8B55FF" fill-opacity="0.4"/>
+    <text x="356" y="158" fill="#A39BA0" font-size="14" text-anchor="end">1.4s</text>
+  </g>
+  <text x="408" y="146" fill="#8B55FF" font-size="22" font-weight="700">?</text>
+
+  <path d="M120 196 V 224" stroke="#50F6E8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M112 216 l 8 10 l 8 -10" stroke="#50F6E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- what the code actually did: the real call path, and the exact slow call -->
+  <text x="64" y="256" fill="#50F6E8" font-size="13" font-weight="600" letter-spacing="2">WITH ODIGOS</text>
+
+  <g stroke="#50F6E8" stroke-opacity="0.4" stroke-width="1.5" fill="none">
+    <path d="M84 292 V 452"/>
+    <path d="M84 336 H 108"/>
+    <path d="M84 380 H 108"/>
+    <path d="M84 424 H 108"/>
+    <path d="M84 452 H 108"/>
+  </g>
+
+  <!-- root -->
+  <circle cx="84" cy="292" r="4.5" fill="url(#dp_g)"/>
+  <text x="100" y="297" fill="#F9F9F9" font-size="16" font-weight="600">GET /checkout</text>
+  <rect x="320" y="284" width="250" height="16" rx="8" fill="url(#dp_g)" filter="url(#dp_glow)"/>
+  <text x="320" y="334" fill="#F9F9F9" font-size="0"> </text>
+
+  <!-- children -->
+  <circle cx="112" cy="336" r="3.5" fill="#50F6E8"/>
+  <text x="126" y="341" fill="#E2E2E2" font-size="15">auth.verify</text>
+  <rect x="320" y="329" width="40" height="14" rx="7" fill="url(#dp_g)" fill-opacity="0.8"/>
+  <text x="572" y="341" fill="#A39BA0" font-size="13" text-anchor="end">90ms</text>
+
+  <circle cx="112" cy="380" r="3.5" fill="#FF7CA9"/>
+  <text x="126" y="385" fill="#FFFFFF" font-size="15" font-weight="600">db.query orders</text>
+  <rect x="320" y="372" width="216" height="16" rx="8" fill="url(#dp_hot)" filter="url(#dp_glow)"/>
+  <text x="572" y="385" fill="#FF7CA9" font-size="13" font-weight="600" text-anchor="end">1.1s</text>
+  <circle cx="536" cy="380" r="20" fill="none" stroke="#FF7CA9" stroke-opacity="0.6" stroke-width="1.5"/>
+  <text x="126" y="408" fill="#FF7CA9" font-size="12" font-weight="600">the exact call that broke production</text>
+
+  <circle cx="112" cy="424" r="3.5" fill="#50F6E8"/>
+  <text x="126" y="429" fill="#E2E2E2" font-size="15">redis.get session</text>
+  <rect x="320" y="417" width="22" height="14" rx="7" fill="url(#dp_g)" fill-opacity="0.8"/>
+  <text x="572" y="429" fill="#A39BA0" font-size="13" text-anchor="end">30ms</text>
+
+  <circle cx="112" cy="452" r="3.5" fill="#50F6E8"/>
+  <text x="126" y="457" fill="#E2E2E2" font-size="15">payment.charge</text>
+  <rect x="320" y="450" width="64" height="14" rx="7" fill="url(#dp_g)" fill-opacity="0.8"/>
+  <text x="572" y="462" fill="#A39BA0" font-size="13" text-anchor="end">0.2s</text>
+</svg>

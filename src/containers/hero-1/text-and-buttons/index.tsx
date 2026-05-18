@@ -3,7 +3,7 @@
 import React from 'react';
 import { useMobile } from '@/contexts';
 import styled, { css } from 'styled-components';
-import { ContactUsButton, TextLayers } from '@/components';
+import { ContactUsButton, TextLayers, TrialButton } from '@/components';
 
 const Container = styled.div<{ $isMobile: boolean; $width?: number }>`
   display: flex;
@@ -11,7 +11,8 @@ const Container = styled.div<{ $isMobile: boolean; $width?: number }>`
   align-items: flex-start;
   justify-content: center;
   gap: ${({ $isMobile }) => ($isMobile ? '32px' : '40px')};
-  width: ${({ $width }) => ($width ? `${$width}px` : 'unset')};
+  width: ${({ $isMobile, $width }) => ($isMobile ? '100%' : $width ? `${$width}px` : 'unset')};
+  max-width: 100%;
 `;
 
 const ContainButtons = styled.div<{ $isMobile: boolean; $isSmallestScreen: boolean }>`
@@ -37,14 +38,14 @@ export const TextAndButtons = ({ width }: { width?: number }) => {
   return (
     <Container $isMobile={isMobile} $width={width}>
       <TextLayers
-        title='Stop Guessing in Production'
+        title={'Ask production\nanything.'}
         titleSettings={{
           extraLargeTitle: true,
           minWidth: isMobile ? 'unset' : `${width}px`,
           center: isMobile,
         }}
         descriptions={[
-          'Outages start in the gaps others miss. See across the hardest parts of your system and capture more context when it matters most, so engineers and AI can resolve issues faster.',
+          'AI ships code to production faster than anyone can watch it. Odigos lets you see exactly what it does there: any service, any signal, on demand, with zero overhead and no redeploy.',
         ]}
         descriptionSettings={{
           center: isMobile,
@@ -52,7 +53,8 @@ export const TextAndButtons = ({ width }: { width?: number }) => {
       />
 
       <ContainButtons $isMobile={isMobile} $isSmallestScreen={screenWidth < 420}>
-        <ContactUsButton rightIconSrc='/assets/icons/arrow.svg' />
+        <TrialButton rightIconSrc='/assets/icons/arrow.svg' />
+        <ContactUsButton variant='secondary' label='Get a demo' />
       </ContainButtons>
     </Container>
   );
