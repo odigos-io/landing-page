@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react';
 import { useEvents } from '@/contexts';
-import { EventsAll, Hero3 } from '@/containers';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { EventsContent } from './events-content';
 
 const Event = () => {
   const { events } = useEvents();
@@ -17,12 +17,7 @@ const Event = () => {
 
   if (shouldGoToLatest) return null;
 
-  return (
-    <>
-      <EventsAll />
-      <Hero3 />
-    </>
-  );
+  return <EventsContent />;
 };
 
 export default Event;

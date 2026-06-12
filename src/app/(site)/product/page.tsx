@@ -1,17 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Hero3, Hero4, InfoSections2, LearnMoreBlogs } from '@/containers';
+import { ProductContent } from './product-content';
 
 const Product = () => {
-  return (
-    <>
-      <Hero4 />
-      <InfoSections2 />
-      <Hero3 />
-      <LearnMoreBlogs />
-    </>
-  );
+  return <ProductContent />;
 };
 
 export default Product;

@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Geist, Geist_Mono } from 'next/font/google';
+
+const display = Geist({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-display', display: 'swap' });
+const mono = Geist_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-mono', display: 'swap' });
 
 const URI = 'https://odigos.io',
   LOGO = '/assets/odigos/logo_white_filled.svg',
@@ -30,7 +34,7 @@ type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning className={`${display.variable} ${mono.variable}`}>
       <head>
         <link rel='icon' href={LOGO} type='image/svg+xml' />
         <meta content='width=device-width, initial-scale=1' name='viewport' />

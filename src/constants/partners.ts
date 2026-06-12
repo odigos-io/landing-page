@@ -14,6 +14,13 @@ export const CUSTOMERS = [
     height: 39,
   },
   {
+    src: '/assets/partners/merck.svg',
+    alt: 'merck',
+    href: 'https://merck.com',
+    width: 116,
+    height: 30,
+  },
+  {
     src: '/assets/partners/avodaq.svg',
     alt: 'avodaq',
     href: 'https://avodaq.com',

@@ -10,6 +10,7 @@ const EventsProvider = dynamic(() => import('@/contexts/useEvents'));
 const Header = dynamic(() => import('@/containers/header'));
 const Footer = dynamic(() => import('@/containers/footer'));
 const Modals = dynamic(() => import('@/containers/modals'));
+const HideOnHome = dynamic(() => import('@/containers/site-chrome/hide-on-home'));
 
 const Scripts = dynamic(() => import('@/libs/scripts'));
 
@@ -25,9 +26,13 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
         <MobileProvider>
           <BlogsProvider blogs={blogs}>
             <EventsProvider events={events}>
-              <Header />
+              <HideOnHome>
+                <Header />
+              </HideOnHome>
               {children}
-              <Footer />
+              <HideOnHome>
+                <Footer />
+              </HideOnHome>
               <Modals />
               <Scripts />
             </EventsProvider>

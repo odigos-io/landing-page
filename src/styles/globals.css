@@ -35,3 +35,99 @@ input:-webkit-autofill:active {
   -webkit-transition: all 50000s ease-in-out 0s;
   transition: all 50000s ease-in-out 0s;
 }
+
+/* ============================================================
+   LANDING — "Production, as an instrument"
+   Light, editorial-technical identity. Scoped to .landing-root
+   so the rest of the (dark) site is untouched.
+   ============================================================ */
+.landing-root {
+  /* canvas */
+  --paper: #fbfaf7;
+  --paper-2: #ffffff;
+  --paper-3: #f4f2ec;
+  /* ink */
+  --ink: #121215;
+  --ink-soft: #3b3b42;
+  --ink-mute: #6d6d75;
+  --ink-faint: #9a978e;
+  /* structure */
+  --line: #e8e5dd;
+  --line-strong: #d8d4c9;
+  /* accent — used sparingly, never as a white-bg gradient */
+  --accent: #5b43f1;
+  --accent-soft: #ece9ff;
+  --signal: #11a877;
+  --signal-soft: #e2f6ee;
+  --signal-bright: #1fd793;
+  --hot: #ff5d8f;
+  --grid: rgba(18, 18, 21, 0.05);
+  /* dark instrument panels */
+  --panel: #0b0b0d;
+  --panel-2: #131317;
+  --panel-line: rgba(255, 255, 255, 0.09);
+  --panel-ink: #ededf2;
+  --panel-mute: #8a8a95;
+  /* form */
+  --r-sm: 10px;
+  --r: 14px;
+  --r-lg: 22px;
+  --maxw: 1200px;
+  --shadow-soft: 0 1px 2px rgba(18, 18, 21, 0.04), 0 10px 30px -14px rgba(18, 18, 21, 0.14);
+  --shadow-panel: 0 40px 80px -32px rgba(24, 20, 54, 0.34), 0 12px 28px -16px rgba(24, 20, 54, 0.18);
+  --shadow-lift: 0 2px 4px rgba(18, 18, 21, 0.05), 0 18px 44px -20px rgba(18, 18, 21, 0.22);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display), 'Geist', system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv01', 'tnum' 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.011em;
+}
+
+.landing-root *,
+.landing-root *::before,
+.landing-root *::after {
+  box-sizing: border-box;
+}
+
+.landing-root ::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* visible keyboard focus for accessibility (does not show on mouse click) */
+.landing-root a:focus-visible,
+.landing-root button:focus-visible,
+.landing-root [tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.landing-root :focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* scroll-reveal: progressive enhancement — visible by default, hidden only once JS arms it */
+.landing-root [data-reveal].is-armed {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.landing-root [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-root [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .landing-root *,
+  .landing-root *::before,
+  .landing-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

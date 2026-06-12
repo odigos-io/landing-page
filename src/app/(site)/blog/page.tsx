@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useBlogs } from '@/contexts';
-import { BlogsAll, Hero3 } from '@/containers';
+import { BlogContent } from './blog-content';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const Blog = () => {
@@ -17,12 +17,7 @@ const Blog = () => {
 
   if (shouldGoToLatest) return null;
 
-  return (
-    <>
-      <BlogsAll />
-      <Hero3 />
-    </>
-  );
+  return <BlogContent />;
 };
 
 export default Blog;

@@ -1,15 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Investors, WeAreOdigos } from '@/containers';
+import AboutContent from './about-content';
 
 const About = () => {
-  return (
-    <>
-      <WeAreOdigos />
-      <Investors />
-    </>
-  );
+  return <AboutContent />;
 };
 
 export default About;
