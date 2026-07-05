@@ -134,13 +134,13 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Our own eBPF runtime · Exported in OpenTelemetry</Eyebrow>
+          <Eyebrow>The live context layer for production</Eyebrow>
           <H1>
             The Runtime
             <br />
             <em>Context</em> Platform
           </H1>
-          <Sub>Odigos captures the full runtime context across your applications, infrastructure, and AI workloads, then gives it to your engineers, security teams, and AI systems. No code changes, no manual instrumentation, no redeploys.</Sub>
+          <Sub>Odigos captures the full runtime context across your applications, infrastructure, and AI workloads, and feeds it live to the engineers, security teams, and AI agents that run your production. No code changes, no manual instrumentation, no redeploys.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

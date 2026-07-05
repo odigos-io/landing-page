@@ -141,7 +141,7 @@ const NEW = [
   'Full context across apps, infra, data flows, and dependencies',
   'Reconstructed from the kernel by our own eBPF runtime',
   'Every signal on demand, nothing decided in advance',
-  'No code changes, no manual instrumentation, no redeploys',
+  'New signals without a redeploy, safe to run across all of production',
 ];
 
 export const LandingOldWay = () => {
@@ -154,7 +154,7 @@ export const LandingOldWay = () => {
             <h2>
               Modern software is hard to understand <span className='mute'>from telemetry alone.</span>
             </h2>
-            <p>Applications, Kubernetes, APIs, databases, and AI workloads interact thousands of times a second. When something breaks, metrics, logs, and traces tell you what happened, not why. The answer lives in the runtime context behind every request.</p>
+            <p>Pre-built dashboards and sampled traces only cover what someone thought to instrument ahead of time. When an incident falls outside that, you are blind, and adding the missing signal means shipping a change to production. Runtime context closes that gap.</p>
           </Head>
         </Reveal>
 

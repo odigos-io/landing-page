@@ -5,111 +5,135 @@ import styled, { keyframes } from 'styled-components';
 
 type KF = ReturnType<typeof keyframes>;
 
-/* Hero art (light, no filters, no zoom). An organic distributed trace. An x-ray
-   beam sweeps LEFT to RIGHT and discovers a first set of spans; each one is
-   revealed exactly as the beam edge crosses its x. Moments later a second beam
-   sweeps RIGHT to LEFT and reveals more, again in step with the beam. Some
-   spans branch off, some loop back into the trace, some sit inline on the path.
-   Pure trace discovery (no profiling). */
+/* Hero art (light). A distributed trace, discovered then profiled. An x-ray beam
+   sweeps LEFT to RIGHT and reveals a first set of spans exactly as its edge
+   crosses each one; moments later a second beam sweeps RIGHT to LEFT and reveals
+   more. Discovered spans settle onto two clean rails (upper/lower) so the fully
+   revealed graph reads as a deliberate map, not scatter. On pass 2 the slow db
+   span (pg.query 274ms) is detected as the hot path, and the view then flies
+   into it (scale + translate) to profile it, before resetting and looping. */
 
 type Kind = 'gateway' | 'service' | 'fn' | 'db' | 'cache';
-type Span = { x: number; y: number; t: string; kind: Kind; side: 'up' | 'down' };
-type Disc = { d: string; len: number; w: number; ox: number; node: [number, number]; kind: Kind; label: string; anchor: 'start' | 'middle' | 'end'; lx: number; ly: number; wave: 1 | 2; hot?: boolean };
-type P = { x: number; y: number };
+type Node = { id: string; x: number; y: number; kind: Kind; wave: 1 | 2; label?: string; lside?: 'up' | 'down'; hot?: boolean };
+type Edge = { from: string; to: string; cross?: boolean };
 
-const SPANS: Span[] = [
-  { x: 42, y: 152, t: 'api-gateway', kind: 'gateway', side: 'up' },
-  { x: 110, y: 116, t: 'authGuard()', kind: 'fn', side: 'up' },
-  { x: 192, y: 158, t: 'checkout-svc', kind: 'service', side: 'down' },
-  { x: 286, y: 108, t: 'payments-svc', kind: 'service', side: 'up' },
-  { x: 372, y: 166, t: 'charge()', kind: 'fn', side: 'down' },
-  { x: 456, y: 132, t: 'postgres', kind: 'db', side: 'up' },
+// A discovered call graph (not a flat spine). The request fans out through
+// services into a branching, cross-linked web with depth: laid out left to
+// right by call depth, with organic vertical spread, curved edges, and a few
+// shared-dependency cross-links, so the fully-revealed shape reads as a real
+// distributed trace rather than rails of straight stubs.
+// pads snap to a clean column (by call depth) and row grid, so the board reads
+// as one deliberate, fully-wired circuit. Siblings share a parent's column and
+// fan out from a single junction. Columns x: 56 130 204 278 352 426. Rows y: 64
+// 104 150 196 236.
+const NODES: Node[] = [
+  { id: 'gw', x: 56, y: 150, kind: 'gateway', wave: 1, label: 'api-gateway', lside: 'down' },
+  { id: 'auth', x: 130, y: 104, kind: 'fn', wave: 1 },
+  { id: 'chk', x: 130, y: 196, kind: 'service', wave: 1, label: 'checkout-svc', lside: 'down' },
+  { id: 'sess', x: 204, y: 64, kind: 'cache', wave: 1 },
+  { id: 'cart', x: 204, y: 150, kind: 'fn', wave: 1 },
+  { id: 'pay', x: 204, y: 236, kind: 'service', wave: 1, label: 'payments-svc', lside: 'down' },
+  { id: 'inv', x: 278, y: 104, kind: 'service', wave: 2 },
+  { id: 'fraud', x: 278, y: 196, kind: 'fn', wave: 2 },
+  { id: 'chg', x: 278, y: 236, kind: 'fn', wave: 2 },
+  { id: 'resv', x: 352, y: 64, kind: 'fn', wave: 2 },
+  { id: 'risk', x: 352, y: 150, kind: 'fn', wave: 2 },
+  { id: 'pg', x: 352, y: 236, kind: 'db', wave: 2, label: 'pg.query · 274ms', lside: 'down', hot: true },
+  { id: 'pgsv', x: 426, y: 150, kind: 'db', wave: 2, label: 'postgres', lside: 'up' },
 ];
 
-function cubicAt(p0: P, c1: P, c2: P, p3: P, t: number): P {
-  const m = 1 - t;
-  return {
-    x: m * m * m * p0.x + 3 * m * m * t * c1.x + 3 * m * t * t * c2.x + t * t * t * p3.x,
-    y: m * m * m * p0.y + 3 * m * m * t * c1.y + 3 * m * t * t * c2.y + t * t * t * p3.y,
-  };
-}
-function buildTrace() {
-  const pts: P[] = [{ x: -16, y: 150 }, ...SPANS.map((s) => ({ x: s.x, y: s.y })), { x: 496, y: 122 }];
-  let d = `M${pts[0].x} ${pts[0].y}`;
-  const instr: Array<{ x: number; y: number; wave: 1 | 2 }> = [];
-  for (let i = 0; i < pts.length - 1; i++) {
-    const p0 = pts[i - 1] || pts[i];
-    const p1 = pts[i];
-    const p2 = pts[i + 1];
-    const p3 = pts[i + 2] || p2;
-    const c1: P = { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 };
-    const c2: P = { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 };
-    d += ` C${c1.x.toFixed(1)} ${c1.y.toFixed(1)} ${c2.x.toFixed(1)} ${c2.y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
-    if (i >= 1 && i <= pts.length - 3) {
-      const m = cubicAt(p1, c1, c2, p2, 0.5);
-      instr.push({ x: +m.x.toFixed(1), y: +m.y.toFixed(1), wave: i <= 3 ? 1 : 2 });
-    }
-  }
-  return { d, instr };
-}
-const { d: TRACE, instr: INSTR } = buildTrace();
-
-const DISC: Disc[] = [
-  // --- pass 1 (left to right). ox = where the branch attaches to the trace ---
-  { d: 'M110,116 C90,144 62,178 60,232', len: 136, w: 1.6, ox: 110, node: [60, 232], kind: 'cache', label: 'session.get', anchor: 'middle', lx: 60, ly: 246, wave: 1 },
-  { d: 'M192,158 C186,128 176,98 166,72', len: 102, w: 1.6, ox: 192, node: [166, 72], kind: 'fn', label: 'validateCart()', anchor: 'middle', lx: 166, ly: 60, wave: 1 },
-  { d: 'M192,158 C216,202 262,198 286,108', len: 150, w: 1.5, ox: 192, node: [240, 184], kind: 'fn', label: 'reserveStock()', anchor: 'middle', lx: 238, ly: 198, wave: 1 },
-  { d: 'M372,166 C369,192 364,216 360,240', len: 82, w: 1.7, ox: 372, node: [360, 240], kind: 'db', label: 'pg.query · 274ms', anchor: 'middle', lx: 360, ly: 254, wave: 1, hot: true },
-  // --- pass 2 (right to left) ---
-  { d: 'M456,132 C461,172 462,206 458,234', len: 110, w: 1.6, ox: 456, node: [458, 234], kind: 'db', label: 'commit', anchor: 'middle', lx: 456, ly: 248, wave: 2 },
-  { d: 'M286,108 C300,80 320,60 332,44', len: 86, w: 1.6, ox: 286, node: [332, 44], kind: 'fn', label: 'fraud.check()', anchor: 'middle', lx: 332, ly: 32, wave: 2 },
-  { d: 'M286,108 C308,202 356,204 372,166', len: 154, w: 1.5, ox: 286, node: [333, 197], kind: 'fn', label: 'applyPromo()', anchor: 'middle', lx: 331, ly: 213, wave: 2 },
-  { d: 'M110,116 C104,90 96,66 92,44', len: 80, w: 1.6, ox: 110, node: [92, 44], kind: 'fn', label: 'loadUser()', anchor: 'middle', lx: 92, ly: 32, wave: 2 },
+const EDGES: Edge[] = [
+  { from: 'gw', to: 'auth' },
+  { from: 'gw', to: 'chk' },
+  { from: 'auth', to: 'sess' },
+  { from: 'chk', to: 'cart' },
+  { from: 'chk', to: 'pay' },
+  { from: 'cart', to: 'inv' },
+  { from: 'pay', to: 'fraud' },
+  { from: 'pay', to: 'chg' },
+  { from: 'inv', to: 'resv' },
+  { from: 'fraud', to: 'risk' },
+  { from: 'chg', to: 'pg' },
+  { from: 'pg', to: 'pgsv' },
+  // cross-links: shared dependencies give the graph a web/mesh feel
+  { from: 'cart', to: 'sess', cross: true },
+  { from: 'inv', to: 'pg', cross: true },
+  { from: 'risk', to: 'pg', cross: true },
 ];
+
+const NMAP: Record<string, Node> = {};
+NODES.forEach((n) => (NMAP[n.id] = n));
 
 const DUR = '11s';
 
 /* Beam timing (matches xray1/xray2 below). The beam center x equals its
-   translateX. Pass 1 sweeps x = -30 -> 500 over loop 5%..22%. Pass 2 sweeps
-   x = 500 -> -30 over loop 26%..44%. So the loop % at which the beam crosses a
-   given x is: */
+   translateX. Both passes sweep LEFT to RIGHT: pass 1 over loop 5%..22%, pass 2
+   over loop 26%..44%. Sweeping the same direction twice keeps the reveal in call
+   order, parents before the children they call. The loop % at which the beam
+   crosses a given x is: */
 function crossAt(x: number, wave: 1 | 2): number {
-  return wave === 1 ? 5 + ((x + 30) / 530) * 17 : 26 + ((500 - x) / 530) * 18;
+  return wave === 1 ? 5 + ((x + 30) / 530) * 17 : 26 + ((x + 30) / 530) * 18;
 }
 /* reveal keyframes anchored to the beam-crossing moment r, then hold and fade
    together near the end of the loop. Encoded per element so it repeats cleanly. */
 const drawAt = (r: number) => keyframes`0%,${r.toFixed(1)}%{stroke-dashoffset:var(--len)}${(r + 5).toFixed(1)}%{stroke-dashoffset:0}88%{stroke-dashoffset:0}94%,100%{stroke-dashoffset:var(--len)}`;
 const popAt = (r: number) => keyframes`0%,${r.toFixed(1)}%{opacity:0;transform:scale(.3)}${(r + 3).toFixed(1)}%{opacity:1;transform:scale(1.08)}${(r + 5).toFixed(1)}%{transform:scale(1)}88%{opacity:1;transform:scale(1)}94%,100%{opacity:0;transform:scale(.3)}`;
-const diamondAt = (r: number) => keyframes`0%,${r.toFixed(1)}%{opacity:0;transform:scale(0) rotate(45deg)}${(r + 4).toFixed(1)}%{opacity:1;transform:scale(1) rotate(45deg)}88%{opacity:1;transform:scale(1) rotate(45deg)}94%,100%{opacity:0;transform:scale(0) rotate(45deg)}`;
 // a one-shot expanding ring at the moment a span is discovered
 const pingAt = (r: number) => keyframes`0%,${r.toFixed(1)}%{opacity:0;transform:scale(.3)}${(r + 1).toFixed(1)}%{opacity:.62}${(r + 8).toFixed(1)}%{opacity:0;transform:scale(2.7)}100%{opacity:0;transform:scale(2.7)}`;
 
-const DISC2 = DISC.map((b) => {
-  // anchor to the beam crossing the attach point, plus a small lag so the span
-  // snaps in just behind the scan edge, not ahead of it
-  const r = crossAt(b.ox, b.wave) + 1.5;
-  return { ...b, drawKf: drawAt(r), popKf: popAt(r + 0.8), pingKf: pingAt(r + 0.8) };
+// each node reveals just behind the scan edge as the beam crosses its x
+const NODES2 = NODES.map((n) => {
+  const r = crossAt(n.x, n.wave) + 1.8;
+  return { ...n, popKf: popAt(r), pingKf: pingAt(r) };
 });
-const INSTR2 = INSTR.map((p) => ({ ...p, kf: diamondAt(crossAt(p.x, p.wave) + 1.2) }));
-const HOT = DISC2.find((d) => d.hot)!;
+// each edge draws as the beam reaches the child it leads to
+// orthogonal PCB-style trace: horizontal run, a rounded 90 degree turn, vertical
+// run, another rounded turn into the pad. Pure right angles, no organic swoops.
+function orthPath(ax: number, ay: number, bx: number, by: number, midX: number, rc: number) {
+  const dh1 = midX >= ax ? 1 : -1;
+  const dv = by >= ay ? 1 : -1;
+  const dh2 = bx >= midX ? 1 : -1;
+  const r1 = Math.max(0, Math.min(rc, Math.abs(midX - ax), Math.abs(by - ay) / 2));
+  const r2 = Math.max(0, Math.min(rc, Math.abs(bx - midX), Math.abs(by - ay) / 2));
+  return `M${ax},${ay} H${(midX - dh1 * r1).toFixed(1)} Q${midX},${ay} ${midX},${(ay + dv * r1).toFixed(1)} V${(by - dv * r2).toFixed(1)} Q${midX},${by} ${(midX + dh2 * r2).toFixed(1)},${by} H${bx}`;
+}
+
+const EDGES2 = EDGES.map((e) => {
+  const a = NMAP[e.from];
+  const b = NMAP[e.to];
+  const dx = b.x - a.x;
+  // turn halfway between the two columns. Siblings from the same parent share
+  // this column, so they leave the parent as one trace and split at a junction.
+  const midX = a.x + dx * 0.5;
+  const d = orthPath(a.x, a.y, b.x, b.y, midX, 7);
+  const len = Math.round(Math.abs(midX - a.x) + Math.abs(b.y - a.y) + Math.abs(b.x - midX) + 18);
+  // draw the edge only once BOTH endpoints have been revealed, so a connector
+  // never appears before the node it points to
+  const r = Math.max(crossAt(a.x, a.wave), crossAt(b.x, b.wave)) + 2.2;
+  const hot = !!(a.hot || b.hot);
+  return { ...e, d, len, hot, drawKf: drawAt(r) };
+});
+const HOTN = NODES.find((n) => n.hot)!;
 
 const draw = keyframes`from{stroke-dashoffset:600}to{stroke-dashoffset:0}`;
 const ping = keyframes`0%{opacity:.55;transform:scale(.35)}70%,100%{opacity:0;transform:scale(2.6)}`;
 const nodeGlow = keyframes`0%,100%{opacity:.5}50%{opacity:1}`;
 const spanIn = keyframes`from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}`;
 const xray1 = keyframes`0%,5%{opacity:0;transform:translateX(-30px)}10%{opacity:1}22%{opacity:.85;transform:translateX(500px)}26%,100%{opacity:0;transform:translateX(510px)}`;
-const xray2 = keyframes`0%,26%{opacity:0;transform:translateX(500px)}31%{opacity:1}44%{opacity:.85;transform:translateX(-30px)}48%,100%{opacity:0;transform:translateX(-40px)}`;
-const fire = keyframes`0%,13%{opacity:0;transform:scale(.2)}19%{opacity:.95;transform:scale(1)}28%{opacity:0;transform:scale(3)}100%{opacity:0;transform:scale(3)}`;
-const radar = keyframes`0%,12%{opacity:0;transform:scale(.08)}18%{opacity:.6}30%{opacity:0;transform:scale(2.7)}100%{opacity:0;transform:scale(2.7)}`;
-const lock = keyframes`0%,12%{opacity:0;transform:scale(1.7)}19%{opacity:.95;transform:scale(1)}29%,100%{opacity:0;transform:scale(.85)}`;
+const xray2 = keyframes`0%,26%{opacity:0;transform:translateX(-30px)}31%{opacity:1}44%{opacity:.85;transform:translateX(500px)}48%,100%{opacity:0;transform:translateX(510px)}`;
+const fire = keyframes`0%,44%{opacity:0;transform:scale(.2)}50%{opacity:.95;transform:scale(1)}58%{opacity:0;transform:scale(3)}100%{opacity:0;transform:scale(3)}`;
+const radar = keyframes`0%,43%{opacity:0;transform:scale(.08)}51%{opacity:.6}60%{opacity:0;transform:scale(2.7)}100%{opacity:0;transform:scale(2.7)}`;
+const lock = keyframes`0%,44%{opacity:0;transform:scale(1.7)}51%{opacity:.95;transform:scale(1)}88%{opacity:.95;transform:scale(1)}94%,100%{opacity:0;transform:scale(.85)}`;
 const slowPulse = keyframes`0%,100%{opacity:.4;transform:scale(.85)}50%{opacity:.9;transform:scale(1.3)}`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}`;
 const glowPulse = keyframes`0%,100%{opacity:.15}50%{opacity:.27}`;
-const zoomPulse = keyframes`0%,13%{transform:scale(1)}20%{transform:scale(1.018)}30%,100%{transform:scale(1)}`;
-const hp1 = keyframes`0%,4%{opacity:0}9%,22%{opacity:1}27%,100%{opacity:0}`;
-const hp2 = keyframes`0%,24%{opacity:0}28%,33%{opacity:1}38%,100%{opacity:0}`;
-const hp3 = keyframes`0%,34%{opacity:0}39%,48%{opacity:1}53%,100%{opacity:0}`;
-const hp4 = keyframes`0%,54%{opacity:0}59%,90%{opacity:1}96%,100%{opacity:0}`;
+// fly into the hot node: scale up while translating so pg.query (viewBox 380,232)
+// lands just past panel center, keeping the frame full (no exposed background edge).
+const zoomFire = keyframes`0%,56%{transform:scale(1) translate(0,0)}68%{transform:scale(1.66) translate(-18.5%,-23.5%)}88%{transform:scale(1.66) translate(-18.5%,-23.5%)}95%,100%{transform:scale(1) translate(0,0)}`;
+const hp1 = keyframes`0%,4%{opacity:0}9%,22%{opacity:1}26%,100%{opacity:0}`;
+const hp2 = keyframes`0%,26%{opacity:0}30%,44%{opacity:1}48%,100%{opacity:0}`;
+const hp3 = keyframes`0%,45%{opacity:0}48%,58%{opacity:1}62%,100%{opacity:0}`;
+const hp4 = keyframes`0%,58%{opacity:0}62%,90%{opacity:1}96%,100%{opacity:0}`;
 const hudDot = keyframes`0%,100%{opacity:.4}50%{opacity:1}`;
 
 const Frame = styled.div`
@@ -181,8 +205,8 @@ const Panel = styled.div`
     display: block;
     width: 100%;
     height: 100%;
-    transform-origin: center;
-    animation: ${zoomPulse} ${DUR} ease-in-out infinite;
+    transform-origin: 50% 50%;
+    animation: ${zoomFire} ${DUR} cubic-bezier(0.5, 0, 0.2, 1) infinite;
   }
 
   .traceGlow2 {
@@ -367,12 +391,12 @@ const Panel = styled.div`
     animation: ${hp1} ${DUR} linear infinite;
   }
   .hud .p2 {
-    fill: #ff3d7a;
-    font-weight: 600;
+    fill: #5b43f1;
     animation: ${hp2} ${DUR} linear infinite;
   }
   .hud .p3 {
-    fill: #5b43f1;
+    fill: #ff3d7a;
+    font-weight: 600;
     animation: ${hp3} ${DUR} linear infinite;
   }
   .hud .p4 {
@@ -511,28 +535,19 @@ export const HeroArt = () => {
             </radialGradient>
           </defs>
 
-          {/* the organic route */}
-          <path className='traceGlow2' d={TRACE} />
-          <path className='traceGlow' d={TRACE} />
-          <path className='trace' d={TRACE} />
-
-          {/* custom instrumentation: finer spans on the trace, revealed in the beam wake */}
-          {INSTR2.map((p, i) => (
-            <g key={`i${i}`} transform={`translate(${p.x},${p.y})`}>
-              <AnimDiamond className='instr' $kf={p.kf}>
-                <circle className='iglow' cx={0} cy={0} r={5.6} />
-                <rect className='halo' x={-4.2} y={-4.2} width={8.4} height={8.4} rx={1.3} />
-                <rect className='core' x={-2.4} y={-2.4} width={4.8} height={4.8} rx={1} />
-                <rect className='ispec' x={-1.6} y={-1.6} width={1.5} height={1.5} rx={0.5} />
-              </AnimDiamond>
-            </g>
+          {/* discovered call graph: edges (glow under stroke), drawn as the beam reaches each child */}
+          {EDGES2.map((e, i) => (
+            <AnimBranch key={`eg${i}`} className={`branchGlow ${e.hot ? 'db' : 'fn'}`} d={e.d} strokeWidth={e.cross ? 3 : 4} $kf={e.drawKf} style={{ ['--len' as string]: `${e.len}`, opacity: e.cross ? 0.08 : 0.15 }} />
+          ))}
+          {EDGES2.map((e, i) => (
+            <AnimBranch key={`e${i}`} className={`branch ${e.hot ? 'db' : 'fn'}`} d={e.d} strokeWidth={e.cross ? 1.2 : 1.7} $kf={e.drawKf} style={{ ['--len' as string]: `${e.len}`, opacity: e.cross ? 0.7 : 1 }} />
           ))}
 
-          {/* pass 1 senses the slow span: fire + lock-on */}
-          <circle className='radar' cx={HOT.node[0]} cy={HOT.node[1]} r='12' />
-          <circle className='radar' cx={HOT.node[0]} cy={HOT.node[1]} r='12' style={{ animationDelay: '0.6s' }} />
-          <circle className='fire' cx={HOT.node[0]} cy={HOT.node[1]} r='26' />
-          <g transform={`translate(${HOT.node[0]},${HOT.node[1]})`}>
+          {/* pass 2 senses the slow db span: fire + radar + lock-on */}
+          <circle className='radar' cx={HOTN.x} cy={HOTN.y} r='12' />
+          <circle className='radar' cx={HOTN.x} cy={HOTN.y} r='12' style={{ animationDelay: '0.6s' }} />
+          <circle className='fire' cx={HOTN.x} cy={HOTN.y} r='26' />
+          <g transform={`translate(${HOTN.x},${HOTN.y})`}>
             <g className='reticle'>
               <path d='M-7,-3 V-7 H-3' />
               <path d='M3,-7 H7 V-3' />
@@ -541,30 +556,29 @@ export const HeroArt = () => {
             </g>
           </g>
 
-          {/* discovered spans, each revealed as the beam crosses it */}
-          {DISC2.map((b, i) => (
-            <AnimBranch key={`bg${i}`} className={`branchGlow ${b.kind}`} d={b.d} strokeWidth={b.w + 3} $kf={b.drawKf} style={{ ['--len' as string]: `${b.len}` }} />
+          {/* discovery pings */}
+          {NODES2.map((n, i) => (
+            <AnimPing key={`np${i}`} cx={n.x} cy={n.y} r={n.hot ? 5 : 4} stroke={n.hot ? '#ff4d85' : '#6a4bff'} $kf={n.pingKf} />
           ))}
-          {DISC2.map((b, i) => (
-            <AnimBranch key={`br${i}`} className={`branch ${b.kind}`} d={b.d} strokeWidth={b.w} $kf={b.drawKf} style={{ ['--len' as string]: `${b.len}` }} />
-          ))}
-          {DISC2.map((b, i) => (
-            <AnimPing key={`pg${i}`} cx={b.node[0]} cy={b.node[1]} r={b.hot ? 5 : 4} stroke={b.hot ? '#ff4d85' : '#6a4bff'} $kf={b.pingKf} />
-          ))}
-          {DISC2.map((b, i) => {
-            const r = b.hot ? 2.7 : 2.2;
+
+          {/* graph nodes as PCB pads */}
+          {NODES2.map((n, i) => {
+            const big = n.kind === 'service' || n.kind === 'db' || n.kind === 'gateway';
+            const s = n.hot ? 7.6 : big ? 6.6 : 5.2;
             return (
-              <AnimNode key={`bn${i}`} $kf={b.popKf}>
-                {b.hot && <circle className='hotPulse' cx={b.node[0]} cy={b.node[1]} r='6' />}
-                <circle cx={b.node[0]} cy={b.node[1]} r={r + 2.6} fill={b.hot ? 'rgba(255,77,133,0.2)' : 'rgba(106,75,255,0.14)'} />
-                <circle cx={b.node[0]} cy={b.node[1]} r={r} fill={b.hot ? 'url(#ndH)' : 'url(#g)'} stroke='#fff' strokeWidth='1' />
-                <circle cx={b.node[0] - 0.7} cy={b.node[1] - 0.8} r='0.7' fill='#fff' opacity='0.65' />
+              <AnimNode key={`n${i}`} $kf={n.popKf}>
+                {n.hot && <circle className='hotPulse' cx={n.x} cy={n.y} r='8' />}
+                <rect x={n.x - s / 2 - 1.6} y={n.y - s / 2 - 1.6} width={s + 3.2} height={s + 3.2} rx={2.4} fill={n.hot ? 'rgba(255,77,133,0.18)' : 'rgba(106,75,255,0.12)'} />
+                <rect x={n.x - s / 2} y={n.y - s / 2} width={s} height={s} rx={1.8} fill={n.hot ? 'url(#ndH)' : 'url(#g)'} stroke='#fff' strokeWidth='1' />
+                <rect x={n.x - s / 2 + 1} y={n.y - s / 2 + 1} width={1.5} height={1.5} rx={0.5} fill='#fff' opacity='0.6' />
               </AnimNode>
             );
           })}
-          {DISC2.map((b, i) => (
-            <AnimNode key={`bp${i}`} $kf={b.popKf}>
-              <Pill x={b.lx} y={b.ly} t={b.label} kind={b.kind} anchor={b.anchor} />
+
+          {/* sparse anchor labels (key services + the hot path) */}
+          {NODES2.filter((n) => n.label).map((n, i) => (
+            <AnimNode key={`nl${i}`} $kf={n.popKf}>
+              <Pill x={n.x} y={n.lside === 'down' ? n.y + 15 : n.y - 15} t={n.label!} kind={n.kind} anchor='middle' />
             </AnimNode>
           ))}
 
@@ -575,18 +589,8 @@ export const HeroArt = () => {
           </g>
           <g className='beamWrap b2'>
             <rect className='beam' x='-13' y='14' width='26' height='272' />
-            <rect className='scanEdge' x='-13' y='14' width='1.4' height='272' />
+            <rect className='scanEdge' x='11.6' y='14' width='1.4' height='272' />
           </g>
-
-          {/* span nodes + pills on the route */}
-          {SPANS.map((s, i) => (
-            <g key={`s${i}`} className='span' style={{ animationDelay: `${0.3 + i * 0.12}s` }}>
-              <circle className='ping' cx={s.x} cy={s.y} r='4' style={{ animationDelay: `${i * 0.5}s` }} />
-              <circle className='spanGlow' cx={s.x} cy={s.y} r='6.5' opacity='0.18' style={{ animationDelay: `${i * 0.4}s` }} />
-              <circle className='spanDot' cx={s.x} cy={s.y} r='3.6' />
-              <Pill x={s.x} y={s.side === 'up' ? s.y - 16 : s.y + 16} t={s.t} kind={s.kind} anchor='middle' />
-            </g>
-          ))}
 
           {/* narrative HUD */}
           <g className='hud'>
@@ -595,13 +599,13 @@ export const HeroArt = () => {
               x-ray pass 1 → discovering spans
             </text>
             <text className='p2' x='24' y='22'>
-              slow span detected · pg.query 274ms
+              x-ray pass 2 → deeper discovery
             </text>
             <text className='p3' x='24' y='22'>
-              ← x-ray pass 2 · deeper discovery
+              hot path found · pg.query 274ms
             </text>
             <text className='p4' x='24' y='22'>
-              runtime context captured · 13 spans
+              zoom in → profiling the hot path
             </text>
           </g>
         </svg>

@@ -165,22 +165,22 @@ const PanelCap = styled.div`
 const FEATURES = [
   {
     cap: 'A different kind of eBPF',
-    title: 'A purpose-built eBPF runtime.',
-    desc: 'This is not an off-the-shelf agent or a generic eBPF tool. We engineered our own eBPF runtime from the ground up to reconstruct the full context behind every request: the exact functions, queries, and dependencies, across every language and runtime, all the way down to the kernel. No code changes. No manual instrumentation.',
+    title: 'We built our own eBPF runtime.',
+    desc: 'Not an off-the-shelf agent, not a generic eBPF tool. We engineered our own runtime to reconstruct the exact functions, queries, and dependencies behind every request, across every language, all the way down to the kernel. Nothing to instrument, nothing to redeploy.',
     visual: <DepthVisual />,
     tags: ['our own eBPF runtime', 'every language', 'kernel-level'],
   },
   {
     cap: 'Open by export',
-    title: 'Your data leaves in the open standard.',
-    desc: 'Odigos exports everything in OpenTelemetry, so the context it captures is yours to send to any tool you already run, with zero lock-in. It runs out-of-process at under 1% overhead, safe to leave on across all of production.',
+    title: 'Your data leaves as OpenTelemetry.',
+    desc: 'Everything Odigos captures exports as OpenTelemetry, so it is yours to send to any tool you already run. No proprietary format, no lock-in. It runs out of process at under 1% overhead, safe to leave on across production.',
     visual: <SafeVisual />,
     tags: ['OpenTelemetry export', '< 1% overhead', 'zero lock-in'],
   },
   {
     cap: 'Dynamic & enterprise-ready',
-    title: 'Context on demand, for humans and AI.',
-    desc: 'Add visibility to any workload without redeploys, and give your AI systems live runtime context to act on instead of guessing. RBAC, policy controls, governance, and multi-environment management are built in.',
+    title: 'Live context, for your team and your AI.',
+    desc: 'Turn on visibility for any workload without a redeploy, and give your AI systems real runtime context to act on instead of guessing. RBAC, policy controls, and multi-environment management come standard.',
     visual: <AiVisual />,
     tags: ['no redeploys', 'agent-native', 'RBAC & governance'],
   },
@@ -193,8 +193,8 @@ export const LandingFeatures = () => {
         <Reveal>
           <Head>
             <Eyebrow>Why Odigos</Eyebrow>
-            <h2>Engineered for runtime context.</h2>
-            <p>Our own eBPF runtime captures the full context behind every request, then exports it in OpenTelemetry, yours to send anywhere. Deep, dynamic by design, and enterprise-ready.</p>
+            <h2>Built from the kernel up.</h2>
+            <p>Our own eBPF runtime reconstructs the full context behind every request, then exports it as OpenTelemetry you can send anywhere. Deep enough for engineers, open enough to never lock you in.</p>
           </Head>
         </Reveal>
 

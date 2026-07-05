@@ -221,8 +221,8 @@ export const LandingHowItWorks = () => {
         <Reveal>
           <Head>
             <Eyebrow>How it works</Eyebrow>
-            <h2>Capture runtime context automatically.</h2>
-            <p>Our own eBPF runtime captures the context across your entire environment and exports it in OpenTelemetry. No application changes, no developer effort, no operational overhead.</p>
+            <h2>Full production context in minutes.</h2>
+            <p>Our own eBPF runtime reads context straight from the kernel and exports it as OpenTelemetry you own. Nothing to instrument, nothing to redeploy.</p>
           </Head>
         </Reveal>
 
@@ -237,7 +237,7 @@ export const LandingHowItWorks = () => {
                 <StepTag>Install</StepTag>
               </StepTop>
               <StepTitle>One command, any environment</StepTitle>
-              <StepDesc>Install Odigos on Kubernetes or Linux. It maps your applications, infrastructure, data flows, dependencies, and AI workloads automatically.</StepDesc>
+              <StepDesc>Run one command on Kubernetes or Linux. Odigos maps every service, dependency, and data flow in your environment on its own.</StepDesc>
               <Term>
                 <span className='pmt'>❯</span>
                 <span className='cmd'>
@@ -252,8 +252,8 @@ export const LandingHowItWorks = () => {
                 <Num>2</Num>
                 <StepTag>Capture</StepTag>
               </StepTop>
-              <StepTitle>Runtime context, automatically</StepTitle>
-              <StepDesc>The eBPF runtime reconstructs the functions, queries, and dependencies behind live traffic in real time. No code changes, no manual instrumentation. Any signal, the moment you need it.</StepDesc>
+              <StepTitle>Context, straight from the kernel</StepTitle>
+              <StepDesc>Our eBPF runtime reconstructs the functions, queries, and dependencies behind live traffic as it happens. No code changes, no agents wired into your apps.</StepDesc>
               <Chips>
                 <span className='chip live'>eBPF probe attached</span>
                 <span className='chip'>trace</span>
@@ -267,8 +267,8 @@ export const LandingHowItWorks = () => {
                 <Num>3</Num>
                 <StepTag>Use</StepTag>
               </StepTop>
-              <StepTitle>Context for every consumer</StepTitle>
-              <StepDesc>Export it to your stack, your teams, and your AI in OpenTelemetry, with zero lock-in. Observe, explain, secure, act.</StepDesc>
+              <StepTitle>Send it anywhere you want</StepTitle>
+              <StepDesc>Export to the tools your teams already run, as OpenTelemetry, with zero lock-in. The same context feeds your dashboards, your security team, and your AI.</StepDesc>
               <Dests>
                 <span className='d'>Datadog</span>
                 <span className='d'>Grafana</span>

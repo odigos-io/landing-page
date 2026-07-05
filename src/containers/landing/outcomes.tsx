@@ -163,8 +163,8 @@ export const LandingOutcomes = () => {
         <Reveal>
           <Head>
             <Eyebrow>What context makes possible</Eyebrow>
-            <h2>Runtime context powers everything.</h2>
-            <p>One platform, every consumer. Engineering, security, platform teams, and AI systems all run on the same runtime context. It all starts there.</p>
+            <h2>Put runtime context to work.</h2>
+            <p>Engineering, security, and platform teams, and your AI systems, all run on the same runtime context. Observe, explain, secure, act.</p>
           </Head>
         </Reveal>
 
