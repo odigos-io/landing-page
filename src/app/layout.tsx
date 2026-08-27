@@ -8,8 +8,8 @@ const mono = Geist_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: 
 const URI = 'https://odigos.io',
   LOGO = '/assets/odigos/logo_white_filled.svg',
   TITLE = 'Odigos - Ask Production Anything',
-  DESCRIPTION = 'AI writes the code now. The tools watching it in production were built 20 years ago. Odigos sees inside every running service and answers any question the second it breaks. No redeploy. No overhead. It cannot take production down. Root cause in seconds, not days.',
-  KEYWORDS = ['AI observability', 'observability for AI', 'production context', 'AI SRE', 'incident resolution', 'OpenTelemetry', 'eBPF', 'Observability', 'Distributed Tracing', 'Traces', 'Metrics', 'Logs'];
+  DESCRIPTION = 'Odigos is the runtime context platform. Your engineers and your AI agents ask production a question, and our own eBPF runtime captures the exact data that answers it, live, with no code change and no redeploy. Any function, any query, any language, in seconds instead of a deploy cycle. Under 1% overhead, exported as OpenTelemetry, never locked in.',
+  KEYWORDS = ['runtime context', 'runtime context platform', 'AI observability', 'production context', 'eBPF', 'OpenTelemetry', 'observability', 'distributed tracing', 'runtime security', 'AI SRE', 'incident resolution'];
 
 export const metadata: Metadata = {
   metadataBase: new URL(URI),
