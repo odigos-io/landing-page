@@ -10,11 +10,11 @@ import {
   LandingHowItWorks,
   LandingProduct,
   LandingFeatures,
+  LandingIntegrations,
   LandingMidFlow,
   LandingOutcomes,
   LandingProof,
   LandingTestimonial,
-  LandingIntegrations,
   LandingFaq,
   LandingBlogs,
   LandingCTA,
@@ -33,11 +33,11 @@ const HomeContent = () => {
         <LandingHowItWorks />
         <LandingProduct />
         <LandingFeatures />
+        <LandingIntegrations />
         <LandingMidFlow />
         <LandingOutcomes />
         <LandingProof />
         <LandingTestimonial />
-        <LandingIntegrations />
         <LandingFaq />
         <LandingBlogs />
         <LandingCTA />

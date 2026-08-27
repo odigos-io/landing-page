@@ -3,563 +3,275 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-/* Hero art (light): THE INTERROGATION LOOP.
+/* Hero art: THE INTERROGATION LOOP, as the session itself.
 
-   An agent asks production a question. Odigos attaches a probe on the exact
-   span the question pointed at, and the trace gains resolution right there.
-   The answer travels back, and the answer becomes the next question, one level
-   deeper. Two full cycles per loop, then reset.
+   The previous version was a diagram with six regions (transcript, agent box,
+   two arcs, trace panel, probe chip, inspector) and you had to work out where
+   to look first. This is one column you read top to bottom, the way you read a
+   terminal: someone asks production a question in plain language, and data that
+   did not exist a second ago comes back, marked with a +. Then a deeper
+   question, and the arguments and the return value of the call itself.
 
-   Everything is opacity/transform on one shared timeline (DUR), so the whole
-   thing stays on the compositor. Reduced motion drops to a static frame. */
+   Every line is one opacity/transform animation on a shared timeline. */
 
-const DUR = '10s';
+const DUR = '12s';
 
-type KF = ReturnType<typeof keyframes>;
+type Kind = 'ask' | 'meta' | 'new' | 'arg' | 'ret' | 'foot';
 
-type Row = {
-  id: string;
-  d: number; // depth
-  w: number; // bar width
-  label: string;
-  wave: 0 | 1 | 2; // 0 = the coarse trace you already have
-  hot?: boolean;
+type L = {
+  at: number; // % of the loop when the line lands
+  kind: Kind;
+  a: string; // left side
+  b?: string; // right side: duration, or the value of an argument
+  gap?: boolean; // breathing room above
 };
 
-const ROWS: Row[] = [
-  { id: 'r0', d: 0, w: 100, label: 'POST /checkout · 812ms', wave: 0 },
-  { id: 'r1', d: 1, w: 88, label: 'payments-svc', wave: 0 },
-  { id: 'r2', d: 2, w: 76, label: 'charge()', wave: 0 },
-  { id: 'r3', d: 3, w: 64, label: 'fraudScore() · 240ms', wave: 1, hot: true },
-  { id: 'r4', d: 3, w: 44, label: 'reserveInventory() · 41ms', wave: 1 },
-  { id: 'r5', d: 3, w: 30, label: 'calculateTax() · 12ms', wave: 1 },
-  { id: 'r6', d: 4, w: 52, label: 'risk-api · retry 3/3', wave: 2, hot: true },
-  { id: 'r7', d: 4, w: 34, label: 'riskModel.score()', wave: 2 },
-  { id: 'r8', d: 4, w: 24, label: 'jwt.verify', wave: 2 },
+const LINES: L[] = [
+  { at: 4, kind: 'ask', a: 'why is checkout p99 up 3x?' },
+  { at: 11, kind: 'meta', a: 'capturing inside charge()' },
+  { at: 15, kind: 'new', a: 'fraudScore()', b: '240ms' },
+  { at: 18, kind: 'new', a: 'reserveInventory()', b: '41ms' },
+  { at: 21, kind: 'new', a: 'calculateTax()', b: '12ms' },
+  { at: 28, kind: 'ask', a: 'what is fraudScore() waiting on?', gap: true },
+  { at: 35, kind: 'meta', a: 'capturing arguments and return value' },
+  { at: 39, kind: 'new', a: 'risk-api · retry 3/3', b: '210ms' },
+  { at: 42, kind: 'arg', a: 'userId', b: '"u_8843"' },
+  { at: 45, kind: 'arg', a: 'amount', b: '249.90' },
+  { at: 48, kind: 'ret', a: '→ timeout, no fallback' },
+  { at: 56, kind: 'foot', a: 'answered in 1.2s · no code change · no redeploy', gap: true },
 ];
 
-const BAR_X = 204; // depth 0 bar start
-const BAR_STEP = 12; // indent per depth
-const ROW_Y = 140; // first row baseline
-const ROW_STEP = 16;
-const BAR_H = 9;
+const HOLD = 92;
 
-/* ── timeline, in % of DUR ───────────────────────────────────────────────────
-   Cause has to land on top of effect or none of this reads. The beam arrives
-   exactly when the probe snaps on, and the first new row lands right behind it.
-   cycle 1:  4 ask · 7 beam · 12 probe · 14 rows · 23 args · 26 beam back · 30 answer
-   cycle 2: 40 ask · 43 beam · 48 probe · 50 rows · 60 beam back · 64 answer
-   then everything holds until 92 so a late arrival still reads the whole thing */
-const Q1 = 7;
-const Q2 = 43;
-const A1 = 26;
-const A2 = 60;
-const P1 = 12;
-const P2 = 48;
-const W1 = 14;
-const W2 = 50;
-const INS = 23;
+const lineIn = (r: number) => keyframes`
+  0%,${r}%{opacity:0;transform:translateY(4px)}
+  ${r + 3}%{opacity:1;transform:none}
+  ${HOLD}%{opacity:1;transform:none}
+  ${HOLD + 4}%,100%{opacity:0;transform:none}`;
 
-const fadeAt = (a: number, b: number) => keyframes`0%,${a}%{opacity:0}${a + 2}%,${b}%{opacity:1}${b + 2}%,100%{opacity:0}`;
-
-/* a transcript line lands at `a`, holds while it is the live line (until `b`),
-   then stays on screen dimmed so the whole interrogation is readable at once */
-const lineAt = (a: number, b: number) => keyframes`
-  0%,${a}%{opacity:0}
-  ${a + 2}%,${b}%{opacity:1}
-  ${b + 3}%,91%{opacity:.42}
-  95%,100%{opacity:0}`;
-
-/* a discovered row slides out from under its parent and settles */
-const rowIn = (r: number) => keyframes`
-  0%,${r}%{opacity:0;transform:translateY(-6px) scaleX(.35)}
-  ${r + 4}%{opacity:1;transform:translateY(0) scaleX(1)}
-  91%{opacity:1;transform:translateY(0) scaleX(1)}
-  95%,100%{opacity:0;transform:translateY(-6px) scaleX(.35)}`;
-
-/* a beam draws across the gap between the two poles, then clears */
-const beamAt = (r: number) => keyframes`
-  0%,${r}%{stroke-dashoffset:var(--len);opacity:0}
-  ${r + 1}%{opacity:1}
-  ${r + 6}%{stroke-dashoffset:0;opacity:1}
-  ${r + 12}%{stroke-dashoffset:0;opacity:0}
-  100%{stroke-dashoffset:0;opacity:0}`;
-
-/* the packet that lands when a beam arrives */
-const landAt = (r: number) => keyframes`
-  0%,${r + 5}%{opacity:0;transform:scale(.2)}
-  ${r + 7}%{opacity:1;transform:scale(1)}
-  ${r + 11}%{opacity:1;transform:scale(1)}
-  ${r + 13}%,100%{opacity:0;transform:scale(.2)}`;
-
-/* the probe snaps onto the span the question pointed at, and holds until `end` */
-const probeAt = (r: number, end: number) => keyframes`
-  0%,${r}%{opacity:0;transform:scale(1.9)}
-  ${r + 3}%{opacity:1;transform:scale(1)}
-  ${end}%{opacity:1;transform:scale(1)}
-  ${end + 4}%,100%{opacity:0;transform:scale(1)}`;
-
-/* the row the question pointed at flashes as the capture attaches, so the link
-   between the question and that one span is not something you have to infer */
-const flashAt = (r: number) => keyframes`
+/* the live badge only shows while a capture is being attached */
+const liveAt = (r: number) => keyframes`
   0%,${r}%{opacity:0}
-  ${r + 2}%{opacity:.55}
-  ${r + 9}%,100%{opacity:0}`;
+  ${r + 2}%,${r + 8}%{opacity:1}
+  ${r + 10}%,100%{opacity:0}`;
 
-/* the inspector lands once the capture is attached and stays for the rest of
-   the loop, so the args and the return value are readable, not a flash */
-const panelIn = (r: number) => keyframes`
-  0%,${r}%{opacity:0;transform:scale(.94)}
-  ${r + 3}%{opacity:1;transform:scale(1)}
-  91%{opacity:1;transform:scale(1)}
-  95%,100%{opacity:0;transform:scale(.94)}`;
-
-const pingAt = (r: number) => keyframes`
-  0%,${r}%{opacity:0;transform:scale(.4)}
-  ${r + 2}%{opacity:.5}
-  ${r + 10}%,100%{opacity:0;transform:scale(2.8)}`;
-
-const core = keyframes`0%,100%{opacity:.6;transform:scale(.94)}50%{opacity:1;transform:scale(1.06)}`;
-const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}`;
-
-const ROWS2 = ROWS.map((r, i) => {
-  const y = ROW_Y + i * ROW_STEP;
-  const x = BAR_X + r.d * BAR_STEP;
-  // sequential, hot row first. The previous rotation landed the answering row
-  // last, which made the reveal look like scatter instead of a result.
-  const base = r.wave === 1 ? W1 : W2;
-  const at = base + ((i - 3) % 3) * 3;
-  return { ...r, x, y, kf: r.wave === 0 ? null : rowIn(at) };
-});
+const blink = keyframes`0%,49%{opacity:1}50%,100%{opacity:0}`;
+const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
+const sheen = keyframes`0%,100%{opacity:.4}50%{opacity:1}`;
 
 const Frame = styled.div`
-  position: relative;
   animation: ${float} 16s ease-in-out infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
 `;
 
-const GRAIN =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
-
 const Panel = styled.div`
   position: relative;
-  border-radius: 22px;
   overflow: hidden;
-  aspect-ratio: 1.6 / 1;
-  border: 1px solid rgba(91, 67, 241, 0.12);
-  background:
-    radial-gradient(52% 50% at 18% 44%, rgba(123, 93, 255, 0.16), transparent 70%),
-    radial-gradient(48% 48% at 82% 64%, rgba(17, 168, 119, 0.1), transparent 72%),
-    linear-gradient(180deg, #f1eefb 0%, #f7f4fc 55%, #f1eef8 100%);
-  box-shadow: var(--shadow-lift), inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 0 80px rgba(123, 93, 255, 0.06);
+  border-radius: 20px;
+  border: 1px solid rgba(91, 67, 241, 0.14);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfaff 62%, #f5f2fd 100%);
+  box-shadow: var(--shadow-panel);
+`;
 
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 4;
-    background-image: ${GRAIN};
-    background-size: 140px 140px;
-    opacity: 0.05;
-    mix-blend-mode: multiply;
+const Bar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(24, 20, 54, 0.07);
+  background: rgba(255, 255, 255, 0.72);
+
+  .who {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #11a877;
+    box-shadow: 0 0 0 3px rgba(17, 168, 119, 0.15);
+  }
+  .env {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
   }
 `;
 
-const Line = styled.g<{ $kf: KF }>`
-  animation: ${(p) => p.$kf} ${DUR} linear infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 0;
+const Feed = styled.div`
+  padding: 22px 22px 24px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: clamp(12px, 1.06vw, 15px);
+  line-height: 1.45;
+  @media (max-width: 1000px) {
+    font-size: clamp(12.5px, 3.3vw, 15px);
   }
 `;
 
-const Beam = styled.path<{ $kf: KF }>`
-  fill: none;
-  stroke-linecap: round;
-  stroke-dasharray: var(--len);
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 0;
-  }
-`;
-
-const Pop = styled.g<{ $kf: KF }>`
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 0;
-  }
-`;
-
-const RowG = styled.g<{ $kf: KF }>`
-  transform-box: fill-box;
-  transform-origin: left center;
+const Row = styled.div<{ $kf: ReturnType<typeof keyframes>; $gap?: boolean; $kind: Kind }>`
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 3.5px 0;
+  margin-top: ${(p) => (p.$gap ? '13px' : '0')};
   animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     opacity: 1;
     transform: none;
   }
-`;
 
-const Flash = styled.rect<{ $kf: KF }>`
-  animation: ${(p) => p.$kf} ${DUR} ease-out infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 0;
-  }
-`;
-
-const Ping = styled.circle<{ $kf: KF }>`
-  fill: none;
-  stroke-width: 1.2;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ${(p) => p.$kf} ${DUR} ease-out infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 0;
-  }
-`;
-
-const Svg = styled.svg`
-  position: relative;
-  z-index: 2;
-  display: block;
-  width: 100%;
-  height: 100%;
-
-  .panelBox {
-    fill: rgba(255, 255, 255, 0.6);
-    stroke: rgba(91, 67, 241, 0.14);
-    stroke-width: 1;
-  }
-  .agentBox {
-    fill: #ffffff;
-    stroke: rgba(91, 67, 241, 0.18);
-    stroke-width: 1;
-    filter: drop-shadow(0 10px 20px rgba(24, 20, 54, 0.1));
-  }
-  .cap {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 8.5px;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    fill: #9a97a8;
-  }
-  .agentName {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 12.5px;
+  .mark {
+    flex: none;
+    width: 11px;
+    text-align: center;
     font-weight: 600;
-    fill: #1a1730;
-    letter-spacing: -0.01em;
   }
-  .speaker {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  .a {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .line {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 12.5px;
-    letter-spacing: -0.012em;
+  .b {
+    flex: none;
+    font-variant-numeric: tabular-nums;
   }
-  .q .speaker,
-  .q .line {
-    fill: #5b43f1;
-  }
-  .a .speaker {
-    fill: #0e9a6c;
-  }
-  .a .line {
-    fill: #0c7a58;
-  }
-  .micro {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 8px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.8;
-  }
-  .micro.q {
-    fill: #5b43f1;
-  }
-  .micro.a {
-    fill: #0e9a6c;
-  }
-  .cap.on {
-    fill: #0e9a6c;
-  }
-  .inspector {
-    fill: rgba(255, 255, 255, 0.72);
-    stroke: rgba(91, 67, 241, 0.16);
-    stroke-width: 1;
-  }
-  .code {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 9.5px;
-    fill: #4b4860;
-    letter-spacing: -0.01em;
-  }
-  .code.k {
-    fill: #9a97a8;
-  }
-  .str {
-    fill: #5b43f1;
-  }
-  .num {
-    fill: #0e9a6c;
-  }
-  .err {
-    fill: #d63a6f;
-  }
-  .rowLabel {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 9.5px;
-    fill: #74718a;
-    letter-spacing: -0.01em;
-  }
-  .rowLabel.hot {
-    fill: #c9346a;
-  }
-  .barBase {
-    fill: rgba(24, 20, 54, 0.17);
-  }
-  .rowFlash {
-    fill: #11a877;
-  }
-  .probeRing {
-    fill: rgba(17, 168, 119, 0.08);
-    stroke: #11a877;
-    stroke-width: 1.2;
-  }
-  .chip {
-    fill: rgba(17, 168, 119, 0.1);
-    stroke: rgba(17, 168, 119, 0.38);
-    stroke-width: 1;
-  }
-  .chipText {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 8.5px;
-    fill: #0e9a6c;
-    letter-spacing: 0.02em;
-  }
-  .core {
-    animation: ${core} 2.6s ease-in-out infinite;
-    transform-box: fill-box;
-    transform-origin: center;
+
+  /* the question a human or an agent asked, in plain language */
+  ${(p) =>
+    p.$kind === 'ask' &&
+    `
+    .mark { color: var(--accent); }
+    .a { color: var(--ink); font-weight: 500; letter-spacing: -0.01em; }
+  `}
+
+  /* what odigos is doing about it, right now */
+  ${(p) =>
+    p.$kind === 'meta' &&
+    `
+    .a { color: var(--ink-faint); font-size: .88em; }
+  `}
+
+  /* data that did not exist a second ago, tinted so it reads at a glance */
+  ${(p) =>
+    p.$kind === 'new' &&
+    `
+    margin-left: -8px; padding-left: 8px;
+    margin-right: -8px; padding-right: 8px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, rgba(17,168,119,.09), rgba(17,168,119,0) 72%);
+    .mark { color: #0e9a6c; }
+    .a { color: var(--ink); }
+    .b { color: #0e9a6c; }
+  `}
+
+  ${(p) =>
+    p.$kind === 'arg' &&
+    `
+    padding-left: 21px;
+    .a { color: var(--ink-faint); }
+    .b { color: var(--accent); }
+  `}
+
+  ${(p) =>
+    p.$kind === 'ret' &&
+    `
+    padding-left: 21px;
+    .a { color: #d63a6f; }
+  `}
+
+  ${(p) =>
+    p.$kind === 'foot' &&
+    `
+    border-top: 1px solid rgba(24,20,54,.07);
+    padding-top: 12px;
+    .a { color: #0e9a6c; font-size: .9em; }
+  `}
+`;
+
+const Live = styled.span<{ $kf: ReturnType<typeof keyframes> }>`
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8em;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #0e9a6c;
+  animation: ${(p) => p.$kf} ${DUR} linear infinite;
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #11a877;
+    animation: ${sheen} 1.1s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) {
-    .core {
-      animation: none;
-    }
-  }
-  @media (max-width: 560px) {
-    /* at this size the transcript carries the message; keep only the labels
-       that name the finding, and keep them inside the frame */
-    /* the transcript already names db.pool and tls.handshake, so the labels
-       are redundant here and only risk running past the frame */
-    .rowLabel {
-      display: none;
-    }
-    .line {
-      font-size: 15px;
-    }
-    .speaker {
-      font-size: 10px;
-    }
-    .code {
-      font-size: 11px;
-    }
+    animation: none;
+    opacity: 0;
   }
 `;
 
-/* the loop across the gap: question out over the top, answer back underneath */
-const Q_PATH = 'M138,142 C160,128 164,121 184,121';
-const A_PATH = 'M184,199 C164,199 158,186 140,178';
-const LEN = 62;
+const Caret = styled.span`
+  display: inline-block;
+  width: 7px;
+  height: 0.95em;
+  vertical-align: -0.1em;
+  background: var(--accent);
+  opacity: 0.7;
+  animation: ${blink} 1.05s steps(1) infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
 
-const SCRIPT = [
-  { kind: 'q', speaker: 'agent', text: 'why is checkout p99 up 3x?', at: 4, until: 28 },
-  { kind: 'a', speaker: 'odigos', text: 'fraudScore() eats 240ms inside charge()', at: 30, until: 38 },
-  { kind: 'q', speaker: 'agent', text: 'what is fraudScore() waiting on?', at: 40, until: 58 },
-  { kind: 'a', speaker: 'odigos', text: '3 retries against the partner risk api', at: 62, until: 90 },
-] as const;
+const MARK: Record<Kind, string> = { ask: '❯', meta: '', new: '+', arg: '', ret: '', foot: '' };
 
-const LINE_Y = [28, 46, 64, 82];
-const LINES = SCRIPT.map((s) => ({ ...s, kf: lineAt(s.at, s.until) }));
-
-const STATES = [
-  { text: 'asking', kf: fadeAt(3, 27) },
-  { text: 'reading', kf: fadeAt(28, 38) },
-  { text: 'asking', kf: fadeAt(39, 59) },
-  { text: 'reading', kf: fadeAt(60, 91) },
-];
+const ROWS = LINES.map((l) => ({ ...l, kf: lineIn(l.at) }));
 
 export const HeroArt = () => {
   return (
     <Frame>
       <Panel>
-        <Svg viewBox='0 0 480 300' fill='none' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='An AI agent asks production why checkout latency tripled. Odigos attaches an eBPF probe to the exact span and new spans appear inside the live trace, the answer returns, and the agent asks a deeper question.'>
-          <defs>
-            <linearGradient id='barG' x1='0' y1='0' x2='1' y2='0'>
-              <stop stopColor='#6a4bff' />
-              <stop offset='1' stopColor='#11a877' />
-            </linearGradient>
-            <linearGradient id='barHot' x1='0' y1='0' x2='1' y2='0'>
-              <stop stopColor='#ff6a9c' />
-              <stop offset='1' stopColor='#ff3d7a' />
-            </linearGradient>
-            <linearGradient id='qBeam' x1='0' y1='0' x2='1' y2='0'>
-              <stop stopColor='rgba(91,67,241,0.12)' />
-              <stop offset='1' stopColor='#5b43f1' />
-            </linearGradient>
-            <linearGradient id='aBeam' x1='0' y1='0' x2='1' y2='0'>
-              <stop stopColor='#11a877' />
-              <stop offset='1' stopColor='rgba(17,168,119,0.12)' />
-            </linearGradient>
-            <radialGradient id='coreG'>
-              <stop offset='0' stopColor='#a690ff' />
-              <stop offset='1' stopColor='#5b43f1' />
-            </radialGradient>
-          </defs>
-
-          {/* the interrogation, as a running transcript */}
-          {LINES.map((l, i) => (
-            <Line key={`l${i}`} className={l.kind} $kf={l.kf}>
-              <text className='speaker' x='22' y={LINE_Y[i]}>
-                {l.speaker}
-              </text>
-              <text className='line' x='78' y={LINE_Y[i]}>
-                {l.text}
-              </text>
-            </Line>
+        <Bar>
+          <span className='who'>
+            <span className='dot' /> odigos
+          </span>
+          <span className='env'>production · live</span>
+        </Bar>
+        <Feed>
+          {ROWS.map((l, i) => (
+            <Row key={i} $kf={l.kf} $gap={l.gap} $kind={l.kind}>
+              <span className='mark' aria-hidden>
+                {MARK[l.kind]}
+              </span>
+              <span className='a'>{l.a}</span>
+              {l.kind === 'meta' && <Live $kf={liveAt(l.at)}>capturing</Live>}
+              {l.b && <span className='b'>{l.b}</span>}
+            </Row>
           ))}
-          <path d='M22,96 H458' stroke='rgba(24,20,54,0.07)' strokeWidth='1' />
-
-          {/* left pole: the agent */}
-          <rect className='agentBox' x='22' y='124' width='114' height='84' rx='14' />
-          <circle cx='79' cy='150' r='19' stroke='rgba(91,67,241,0.18)' strokeWidth='1' fill='none' />
-          <circle className='core' cx='79' cy='150' r='12' fill='url(#coreG)' opacity='0.92' />
-          <text className='agentName' x='79' y='185' textAnchor='middle'>
-            AI agent
-          </text>
-          {STATES.map((s, i) => (
-            <Line key={`s${i}`} $kf={s.kf}>
-              <text className='cap' x='79' y='199' textAnchor='middle'>
-                {s.text}
-              </text>
-            </Line>
-          ))}
-
-          {/* the loop */}
-          <path d={Q_PATH} stroke='rgba(91,67,241,0.28)' strokeWidth='1.3' strokeDasharray='3 4' fill='none' />
-          <path d={A_PATH} stroke='rgba(17,168,119,0.28)' strokeWidth='1.3' strokeDasharray='3 4' fill='none' />
-          <path d='M188,121 l-6,-3.2 v6.4 z' fill='rgba(91,67,241,0.55)' />
-          <path d='M136,178 l6,3.2 v-6.4 z' fill='rgba(17,168,119,0.55)' />
-          <text className='micro q' x='161' y='112' textAnchor='middle'>
-            asks
-          </text>
-          <text className='micro a' x='161' y='212' textAnchor='middle'>
-            answers
-          </text>
-          {[Q1, Q2].map((t, i) => (
-            <React.Fragment key={`q${i}`}>
-              <Beam d={Q_PATH} stroke='url(#qBeam)' strokeWidth='2.2' $kf={beamAt(t)} style={{ ['--len' as string]: `${LEN}` }} />
-              <Pop $kf={landAt(t)}>
-                <circle cx='184' cy='121' r='3.4' fill='#5b43f1' />
-              </Pop>
-            </React.Fragment>
-          ))}
-          {[A1, A2].map((t, i) => (
-            <React.Fragment key={`a${i}`}>
-              <Beam d={A_PATH} stroke='url(#aBeam)' strokeWidth='2.2' $kf={beamAt(t)} style={{ ['--len' as string]: `${LEN}` }} />
-              <Pop $kf={landAt(t)}>
-                <circle cx='140' cy='178' r='3.4' fill='#11a877' />
-              </Pop>
-            </React.Fragment>
-          ))}
-
-          {/* right pole: production, and the live trace inside it */}
-          <rect className='panelBox' x='190' y='108' width='272' height='180' rx='14' />
-          <text className='cap' x='204' y='128'>
-            production · live
-          </text>
-
-          {/* probe chip, panel header right */}
-          {[
-            [P1, 36],
-            [P2, 88],
-          ].map(([t, end], i) => (
-            <Pop key={`c${i}`} $kf={probeAt(t, end)}>
-              <rect className='chip' x='330' y='116' width='118' height='16' rx='8' />
-              <text className='chipText' x='340' y='127'>
-                eBPF probe attached
-              </text>
-            </Pop>
-          ))}
-
-          {ROWS2.map((r) =>
-            r.kf ? (
-              <RowG key={r.id} $kf={r.kf}>
-                <rect x={r.x} y={r.y} width={r.w} height={BAR_H} rx={3} fill={r.hot ? 'url(#barHot)' : 'url(#barG)'} />
-                <text className={`rowLabel${r.hot ? ' hot' : ''}${r.d >= 4 ? ' deep' : ''}`} x={r.x + r.w + 8} y={r.y + BAR_H - 1}>
-                  {r.label}
-                </text>
-              </RowG>
-            ) : (
-              <g key={r.id}>
-                <rect className='barBase' x={r.x} y={r.y} width={r.w} height={BAR_H} rx={3} />
-                <text className='rowLabel' x={r.x + r.w + 8} y={r.y + BAR_H - 1}>
-                  {r.label}
-                </text>
-              </g>
-            ),
-          )}
-
-          {/* the probe lands on the exact span the question pointed at */}
-          <Pop $kf={probeAt(P1, 36)}>
-            <rect className='probeRing' x={ROWS2[2].x - 4} y={ROWS2[2].y - 3} width={ROWS2[2].w + 8} height={BAR_H + 6} rx={5} />
-          </Pop>
-          <Flash className='rowFlash' x={ROWS2[2].x - 4} y={ROWS2[2].y - 3} width={ROWS2[2].w + 8} height={BAR_H + 6} rx={5} $kf={flashAt(P1)} />
-          <Ping cx={ROWS2[2].x} cy={ROWS2[2].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P1)} />
-          <Pop $kf={probeAt(P2, 88)}>
-            <rect className='probeRing' x={ROWS2[3].x - 4} y={ROWS2[3].y - 3} width={ROWS2[3].w + 8} height={BAR_H + 6} rx={5} />
-          </Pop>
-          <Flash className='rowFlash' x={ROWS2[3].x - 4} y={ROWS2[3].y - 3} width={ROWS2[3].w + 8} height={BAR_H + 6} rx={5} $kf={flashAt(P2)} />
-          <Ping cx={ROWS2[3].x} cy={ROWS2[3].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P2)} />
-
-          {/* the standing claim */}
-          {/* the arguments and the return value of the call itself */}
-          <Pop $kf={panelIn(INS)}>
-            <rect className='inspector' x='22' y='218' width='156' height='74' rx='10' />
-            <text className='cap' x='32' y='233'>
-              args + return value
-            </text>
-            <text className='code' x='32' y='249'>
-              fraudScore(
-            </text>
-            <text className='code k' x='38' y='261'>
-              userId{' '}
-              <tspan className='str'>&quot;u_8843&quot;</tspan>
-            </text>
-            <text className='code k' x='38' y='273'>
-              amount{' '}
-              <tspan className='num'>249.90</tspan>
-            </text>
-            <text className='code' x='32' y='285'>
-              ){' '}
-              <tspan className='err'>&#8594; risk api timeout</tspan>
-            </text>
-          </Pop>
-        </Svg>
+          <Row $kf={lineIn(62)} $kind='ask' $gap>
+            <span className='mark' aria-hidden>
+              ❯
+            </span>
+            <span className='a'>
+              <Caret />
+            </span>
+          </Row>
+        </Feed>
       </Panel>
     </Frame>
   );
