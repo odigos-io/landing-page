@@ -309,14 +309,18 @@ const Svg = styled.svg`
     }
   }
   @media (max-width: 560px) {
+    /* at this size the transcript carries the message; keep only the labels
+       that name the finding, and keep them inside the frame */
+    /* the transcript already names db.pool and tls.handshake, so the labels
+       are redundant here and only risk running past the frame */
     .rowLabel {
-      font-size: 11px;
-    }
-    .rowLabel.deep {
       display: none;
     }
     .line {
-      font-size: 14px;
+      font-size: 15px;
+    }
+    .speaker {
+      font-size: 10px;
     }
   }
 `;

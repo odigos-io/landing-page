@@ -9,9 +9,12 @@ import {
   LandingOldWay,
   LandingHowItWorks,
   LandingFeatures,
-  LandingIntegrations,
+  LandingMidFlow,
   LandingOutcomes,
+  LandingProof,
   LandingTestimonial,
+  LandingIntegrations,
+  LandingFaq,
   LandingCTA,
   LandingFooter,
 } from '@/containers/landing';
@@ -27,9 +30,12 @@ const HomeContent = () => {
         <LandingOldWay />
         <LandingHowItWorks />
         <LandingFeatures />
-        <LandingIntegrations />
+        <LandingMidFlow />
         <LandingOutcomes />
+        <LandingProof />
         <LandingTestimonial />
+        <LandingIntegrations />
+        <LandingFaq />
         <LandingCTA />
       </main>
       <LandingFooter />
