@@ -131,17 +131,17 @@ const Check = () => (
 );
 
 const OLD = [
-  'Metrics, logs, and traces scattered across silos',
-  'Dashboards defined before the incident ever happened',
-  'Blind to anything you never thought to instrument',
-  'A production redeploy just to add one missing signal',
+  'A graph fused from tools that were never wired for this',
+  'Instrumentation frozen months before the incident',
+  'Blind to anything nobody thought to capture',
+  'A code change and a deploy to add one missing signal',
 ];
 
 const NEW = [
-  'Full context across apps, infra, data flows, and dependencies',
-  'Reconstructed from the kernel by our own eBPF runtime',
-  'Every signal on demand, nothing decided in advance',
-  'New signals without a redeploy, safe to run across all of production',
+  'Ask production directly, while the incident is still open',
+  'The missing signal captured live, from the kernel, in seconds',
+  'Any function, any query, any language, on demand',
+  'No code change, no redeploy, safe across all of production',
 ];
 
 export const LandingOldWay = () => {
@@ -152,9 +152,9 @@ export const LandingOldWay = () => {
           <Head>
             <Eyebrow>The problem</Eyebrow>
             <h2>
-              Modern software is hard to understand <span className='mute'>from telemetry alone.</span>
+              Everyone is bolting AI onto <span className='mute'>instrumentation from 2005.</span>
             </h2>
-            <p>Pre-built dashboards and sampled traces only cover what someone thought to instrument ahead of time. When an incident falls outside that, you are blind, and adding the missing signal means shipping a change to production. Runtime context closes that gap.</p>
+            <p>Fuse the code repo, the ticket queue and the observability vendor into one graph, run a model over it, and hope it sees past the gaps. It cannot. A model cannot see what was never captured. The only fix is to go and capture it, live, at the moment the question comes up.</p>
           </Head>
         </Reveal>
 
@@ -162,9 +162,9 @@ export const LandingOldWay = () => {
           <Cols>
             <ColCard>
               <span className='tag'>
-                <Cross /> The old way
+                <Cross /> Everyone else
               </span>
-              <h3>Telemetry alone</h3>
+              <h3>The static bet</h3>
               <List>
                 {OLD.map((t) => (
                   <Item key={t}>
@@ -181,7 +181,7 @@ export const LandingOldWay = () => {
               <span className='tag'>
                 <Check /> With Odigos
               </span>
-              <h3>Runtime context</h3>
+              <h3>The Odigos loop</h3>
               <List>
                 {NEW.map((t) => (
                   <Item key={t} $new>

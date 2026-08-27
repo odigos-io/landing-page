@@ -65,7 +65,7 @@ export const LandingLogos = () => {
     <Section>
       <Inner>
         <Reveal>
-          <Label>Trusted by the world&apos;s most demanding enterprises</Label>
+          <Label>Running in production inside the world&apos;s most demanding enterprises</Label>
           <Wall>
             {CUSTOMERS.map(({ src, alt, width, height }) => (
               <Logo key={alt} aria-label={alt}>

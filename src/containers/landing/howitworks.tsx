@@ -221,8 +221,8 @@ export const LandingHowItWorks = () => {
         <Reveal>
           <Head>
             <Eyebrow>How it works</Eyebrow>
-            <h2>Full production context in minutes.</h2>
-            <p>Our own eBPF runtime reads context straight from the kernel and exports it as OpenTelemetry you own. Nothing to instrument, nothing to redeploy.</p>
+            <h2>From install to first answer in minutes.</h2>
+            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions your stack was never instrumented for.</p>
           </Head>
         </Reveal>
 
@@ -265,10 +265,10 @@ export const LandingHowItWorks = () => {
             <Card>
               <StepTop>
                 <Num>3</Num>
-                <StepTag>Use</StepTag>
+                <StepTag>Ask</StepTag>
               </StepTop>
-              <StepTitle>Send it anywhere you want</StepTitle>
-              <StepDesc>Export to the tools your teams already run, as OpenTelemetry, with zero lock-in. The same context feeds your dashboards, your security team, and your AI.</StepDesc>
+              <StepTitle>Ask, and keep asking</StepTitle>
+              <StepDesc>Your engineers and your agents query production directly. Anything missing is captured live, then exported as OpenTelemetry into whatever you already run.</StepDesc>
               <Dests>
                 <span className='d'>Datadog</span>
                 <span className='d'>Grafana</span>

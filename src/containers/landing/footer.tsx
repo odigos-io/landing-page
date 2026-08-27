@@ -128,7 +128,7 @@ export const LandingFooter = () => {
       <Top>
         <Brand>
           <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={128} height={29} />
-          <p>The runtime context platform. A purpose-built eBPF runtime captures the context engineers, security teams, and AI systems need, exported in OpenTelemetry and never locked in.</p>
+          <p>The runtime context platform. Our own eBPF runtime captures whatever your engineers or your agents ask for, live in production, and exports it as OpenTelemetry you always own.</p>
           <Socials>
             <Social href={GITHUB_LINK} target='_blank' aria-label='GitHub'>
               <Image src='/assets/github.svg' alt='GitHub' width={17} height={17} />

@@ -132,27 +132,27 @@ const Hub = () => (
 const OUTCOMES = [
   {
     icon: <Spark />,
-    title: 'Observe',
-    desc: 'See what is happening across every application, service, dependency, and data flow in production, in real time.',
-    metric: 'Full-stack visibility',
-  },
-  {
-    icon: <Hub />,
-    title: 'Explain',
-    desc: 'Get to why, not just what. The root cause lives in the runtime context, not in another dashboard or war room.',
-    metric: 'Root cause, not guesswork',
-  },
-  {
-    icon: <Shield />,
-    title: 'Secure',
-    desc: 'Surface risk and abnormal behavior the moment it happens, with the full runtime context behind every signal.',
-    metric: 'Risk caught in runtime',
+    title: 'AI SRE agents',
+    desc: 'Autonomous incident response and root-cause analysis, running on context captured while the incident is still open.',
+    metric: 'Vendor or in-house',
   },
   {
     icon: <Bolt />,
-    title: 'Act',
-    desc: 'Give engineers and AI systems the context to resolve issues and ship changes safely, in a fraction of the time.',
-    metric: 'Resolve and ship faster',
+    title: 'Regression agents',
+    desc: "One of the world's largest retailers built its own regression agent in-house, on Odigos runtime context.",
+    metric: 'Built in-house',
+  },
+  {
+    icon: <Shield />,
+    title: 'Security agents',
+    desc: 'Runtime detection and response with the full call path behind every signal, not just what crossed the network edge.',
+    metric: 'Runtime, not the edge',
+  },
+  {
+    icon: <Hub />,
+    title: 'Your engineers',
+    desc: 'The same context, in the tools they already run, so the humans and the agents are never working from different truths.',
+    metric: 'One shared truth',
   },
 ];
 
@@ -162,9 +162,9 @@ export const LandingOutcomes = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>What context makes possible</Eyebrow>
-            <h2>Put runtime context to work.</h2>
-            <p>Engineering, security, and platform teams, and your AI systems, all run on the same runtime context. Observe, explain, secure, act.</p>
+            <Eyebrow>What teams build on it</Eyebrow>
+            <h2>One layer. Every agent.</h2>
+            <p>Incident response, regression detection, runtime security. The teams running the largest production estates in the world build all of it on the same live context.</p>
           </Head>
         </Reveal>
 

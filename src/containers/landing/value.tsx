@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Applications, Kubernetes, APIs, databases, AI. Thousands of interactions every second. <b>When something breaks, telemetry tells you what happened. Context tells you why.</b>
+            Your instrumentation was decided months before the incident, by someone who could not know what you would need to ask. <b>When the question changes, the data doesn&apos;t.</b>
           </Statement>
         </Reveal>
       </Inner>

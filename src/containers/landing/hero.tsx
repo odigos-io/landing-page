@@ -39,7 +39,7 @@ const Bloom = styled.div`
 const Grid = styled(Container)`
   position: relative;
   display: grid;
-  grid-template-columns: 1.02fr 1.18fr;
+  grid-template-columns: 1.08fr 1.12fr;
   align-items: center;
   gap: 56px;
   padding-top: 84px;
@@ -78,11 +78,14 @@ const Copy = styled.div`
 
 const H1 = styled.h1`
   margin: 26px 0 0;
-  font-size: clamp(40px, 5.4vw, 72px);
-  line-height: 1;
+  font-size: clamp(38px, 4.9vw, 66px);
+  line-height: 1.02;
   font-weight: 600;
   letter-spacing: -0.04em;
   color: var(--ink);
+  span {
+    display: block;
+  }
   em {
     font-style: normal;
     position: relative;
@@ -134,13 +137,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>The live context layer for production</Eyebrow>
+          <Eyebrow>The runtime context platform</Eyebrow>
           <H1>
-            The Runtime
-            <br />
-            <em>Context</em> Platform
+            <span>Stop guessing.</span>
+            <span>
+              <em>Ask production.</em>
+            </span>
           </H1>
-          <Sub>Odigos captures the full runtime context across your applications, infrastructure, and AI workloads, and feeds it live to the engineers, security teams, and AI agents that run your production. No code changes, no manual instrumentation, no redeploys.</Sub>
+          <Sub>Your engineers and your AI agents ask production a question. Odigos captures the exact data that answers it, live from the kernel, with no code change and no redeploy. What took a deploy cycle now takes seconds.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

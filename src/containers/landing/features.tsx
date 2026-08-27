@@ -165,24 +165,24 @@ const PanelCap = styled.div`
 const FEATURES = [
   {
     cap: 'A different kind of eBPF',
-    title: 'We built our own eBPF runtime.',
-    desc: 'Not an off-the-shelf agent, not a generic eBPF tool. We engineered our own runtime to reconstruct the exact functions, queries, and dependencies behind every request, across every language, all the way down to the kernel. Nothing to instrument, nothing to redeploy.',
+    title: 'eBPF was built for the kernel. We made it see inside the application.',
+    desc: 'Not an off-the-shelf agent and not a generic eBPF tool. We wrote our own runtime to reconstruct the exact functions, queries, and dependencies behind every request, in every language, all the way down to the kernel. It took years, and there is no shortcut to it.',
     visual: <DepthVisual />,
-    tags: ['our own eBPF runtime', 'every language', 'kernel-level'],
+    tags: ['our own eBPF runtime', 'every language', 'function-level depth'],
+  },
+  {
+    cap: 'Dynamic instrumentation',
+    title: 'Ask for data that was never instrumented.',
+    desc: 'Point at a function, a query, or a service and Odigos captures it live, inside running production, with no code change and no redeploy. The answer comes back in seconds instead of a deploy cycle. That is the whole difference between an agent that can investigate and a model that has to guess.',
+    visual: <AiVisual />,
+    tags: ['no redeploys', 'captured on demand', 'safe in production'],
   },
   {
     cap: 'Open by export',
     title: 'Your data leaves as OpenTelemetry.',
-    desc: 'Everything Odigos captures exports as OpenTelemetry, so it is yours to send to any tool you already run. No proprietary format, no lock-in. It runs out of process at under 1% overhead, safe to leave on across production.',
+    desc: 'Everything Odigos captures exports as OpenTelemetry, so it is yours to send to any tool you already run. No proprietary format and no lock-in. It runs out of process at under 1% overhead, safe to leave on across all of production, with RBAC and policy controls as standard.',
     visual: <SafeVisual />,
-    tags: ['OpenTelemetry export', '< 1% overhead', 'zero lock-in'],
-  },
-  {
-    cap: 'Dynamic & enterprise-ready',
-    title: 'Live context, for your team and your AI.',
-    desc: 'Turn on visibility for any workload without a redeploy, and give your AI systems real runtime context to act on instead of guessing. RBAC, policy controls, and multi-environment management come standard.',
-    visual: <AiVisual />,
-    tags: ['no redeploys', 'agent-native', 'RBAC & governance'],
+    tags: ['OpenTelemetry export', '< 1% overhead', 'RBAC & governance'],
   },
 ];
 
@@ -194,7 +194,7 @@ export const LandingFeatures = () => {
           <Head>
             <Eyebrow>Why Odigos</Eyebrow>
             <h2>Built from the kernel up.</h2>
-            <p>Our own eBPF runtime reconstructs the full context behind every request, then exports it as OpenTelemetry you can send anywhere. Deep enough for engineers, open enough to never lock you in.</p>
+            <p>Our own eBPF runtime reconstructs the full context behind every request, captures anything you ask for on demand, and exports it as OpenTelemetry you can send anywhere. Deep enough for engineers, open enough to never lock you in.</p>
           </Head>
         </Reveal>
 

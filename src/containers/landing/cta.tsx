@@ -164,7 +164,7 @@ export const LandingCTA = () => {
             <Mesh />
             <Glow />
             <Eyebrow>Live in production in minutes</Eyebrow>
-            <Title>Bring us your worst 2am incident. Watch it resolve in seconds.</Title>
+            <Title>Bring us the question your stack has never been able to answer.</Title>
             <Ctas>
               <Primary
                 data-track='cta'
@@ -183,7 +183,7 @@ export const LandingCTA = () => {
                 Get a demo
               </Ghost>
             </Ctas>
-            <Note>Our own eBPF · Exports to OpenTelemetry, zero lock-in · No code changes</Note>
+            <Note>Our own eBPF · Exports as OpenTelemetry, zero lock-in · No code changes</Note>
           </Card>
         </Reveal>
       </Band>
