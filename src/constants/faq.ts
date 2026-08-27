@@ -12,7 +12,7 @@ export const FAQ = [
   {
     title: 'How does Odigos work?',
     description:
-      'Odigos uses out-of-process eBPF to instrument every running service the moment it starts. You get distributed traces, metrics, and logs with no code changes and no redeploys. It detects the language of each application and applies the right instrumentation automatically.',
+      'Odigos runs out-of-process eBPF and starts capturing from every service the moment it comes up. You get distributed traces, metrics, and logs with no code changes and no redeploys. It detects the language of each application and picks the right approach on its own.',
   },
   {
     title: 'Do I need to replace my current APM?',

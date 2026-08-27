@@ -69,7 +69,7 @@ export const Plans = () => {
             <TableRow key={item.label} {...item} />
           ))}
         </Table>
-        <SubTitle $isMobile={isMobile}>Low Overhead eBPF instrumentation</SubTitle>
+        <SubTitle $isMobile={isMobile}>Low overhead eBPF capture</SubTitle>
         <Table>
           {PLANS.ebpf.map((item) => (
             <TableRow key={item.label} {...item} />

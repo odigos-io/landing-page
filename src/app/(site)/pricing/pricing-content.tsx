@@ -681,7 +681,7 @@ export const PricingContent = () => {
               <Head>
                 <Eyebrow>Two ways to run</Eyebrow>
                 <h2>Pick the path that fits your stack.</h2>
-                <p>The same zero-code instrumentation underneath. Self-host the open source project, or get production-grade depth and support with Enterprise.</p>
+                <p>The same zero-code capture underneath. Self-host the open source project, or get production-grade depth and support with Enterprise.</p>
               </Head>
             </Reveal>
 
@@ -759,7 +759,7 @@ export const PricingContent = () => {
                   ))}
                 </RowList>
 
-                <GroupLabel>Low Overhead eBPF instrumentation</GroupLabel>
+                <GroupLabel>Low overhead eBPF capture</GroupLabel>
                 <RowList>
                   {PLANS.ebpf.map((item) => (
                     <Row key={item.label}>

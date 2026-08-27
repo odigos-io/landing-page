@@ -124,7 +124,7 @@ const Panel = styled.div`
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
   overflow: hidden;
-  aspect-ratio: 1.18 / 1;
+  aspect-ratio: 1.45 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,11 +178,11 @@ const FEATURES = [
     tags: ['no redeploys', 'captured on demand', 'safe in production'],
   },
   {
-    cap: 'Open by export',
-    title: 'Your data leaves as OpenTelemetry.',
-    desc: 'Everything Odigos captures leaves as OpenTelemetry, to any tool you already run, with nothing to migrate off later. It runs out of process at under 1% CPU, so it cannot take an application down, and RBAC and policy controls decide what may be captured and by whom.',
+    cap: 'Safe on all of production',
+    title: 'It cannot take your application down.',
+    desc: 'Every other way of getting this depth runs inside your process, one bad agent release away from taking the app with it. Ours runs outside it, at under 1% CPU, so you can leave it on across the whole estate. RBAC and policy controls decide what may be captured, and by whom.',
     visual: <SafeVisual />,
-    tags: ['OpenTelemetry export', '< 1% overhead', 'RBAC & governance'],
+    tags: ['out of process', '< 1% CPU', 'RBAC & governance'],
   },
 ];
 

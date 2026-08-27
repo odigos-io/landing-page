@@ -237,7 +237,7 @@ export const LandingHowItWorks = () => {
                 <StepTag>Install</StepTag>
               </StepTop>
               <StepTitle>One command, any environment</StepTitle>
-              <StepDesc>Run one command on Kubernetes or Linux. Odigos maps every service, dependency, and data flow in your environment on its own.</StepDesc>
+              <StepDesc>Run one command on Kubernetes or Linux. Odigos finds every service, works out what language it runs and what it talks to, and starts there. You do not tell it anything.</StepDesc>
               <Term>
                 <span className='pmt'>❯</span>
                 <span className='cmd'>
@@ -253,7 +253,7 @@ export const LandingHowItWorks = () => {
                 <StepTag>Capture</StepTag>
               </StepTop>
               <StepTitle>Context, straight from the kernel</StepTitle>
-              <StepDesc>Our eBPF runtime reconstructs the functions, queries, and dependencies behind live traffic as it happens. No code changes, no agents wired into your apps.</StepDesc>
+              <StepDesc>Our own eBPF runtime reads what is actually happening inside each process: the functions running, the queries they make, the arguments they carry. Nothing is wired into your apps.</StepDesc>
               <Chips>
                 <span className='chip live'>eBPF probe attached</span>
                 <span className='chip'>trace</span>

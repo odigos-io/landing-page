@@ -342,7 +342,7 @@ const FEATURES: Feature[] = [
     title: 'Tracing for the runtimes nobody else can reach.',
     desc: 'Automatic distributed tracing for the languages, platforms, and services other tools give up on.',
     bullets: [
-      'eBPF auto-instrumented languages: <strong>Go, Java, Python, NodeJS, Rust, C++</strong>',
+      'Captured automatically by eBPF: <strong>Go, Java, Python, NodeJS, Rust, C++</strong>',
       'Native support for <strong>Kubernetes, Virtual Machines & Bare Metal</strong>',
       'eBPF-powered tracing for <strong>microservices, monoliths, and databases</strong>',
     ],
@@ -476,7 +476,7 @@ const PILLARS: Pillar[] = [
     icon: <TowerIcon />,
     title: 'Odigos Tower',
     desc: 'One control plane for every fleet. Manage, scale, and govern your entire OpenTelemetry pipeline without touching application code.',
-    bullets: ['Apply instrumentation policies across the organization', 'Centralized control across Kubernetes, Virtual Machines, and Bare Metal', 'Centralized authentication and RBAC'],
+    bullets: ['Apply capture policies across the organization', 'Centralized control across Kubernetes, Virtual Machines, and Bare Metal', 'Centralized authentication and RBAC'],
   },
   {
     icon: <StreamsIcon />,
@@ -612,7 +612,7 @@ export const ProductContent = () => {
             <Reveal delay={120}>
               <HeroSub>
                 Odigos sees inside every running service, including the code your AI wrote, and answers any question the moment production breaks. Captured with our own eBPF, exported in OpenTelemetry. No
-                code changes, no manual instrumentation, no redeploys.
+                code changes, nothing to add to your apps, no redeploys.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
