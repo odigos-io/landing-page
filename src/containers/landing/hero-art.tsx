@@ -97,6 +97,14 @@ const probeAt = (r: number) => keyframes`
   ${r + 24}%{opacity:1;transform:scale(1)}
   ${r + 28}%,100%{opacity:0;transform:scale(1)}`;
 
+/* the inspector lands once the capture is attached and stays for the rest of
+   the loop, so the args and the return value are readable, not a flash */
+const panelIn = (r: number) => keyframes`
+  0%,${r}%{opacity:0;transform:scale(.94)}
+  ${r + 3}%{opacity:1;transform:scale(1)}
+  91%{opacity:1;transform:scale(1)}
+  95%,100%{opacity:0;transform:scale(.94)}`;
+
 const pingAt = (r: number) => keyframes`
   0%,${r}%{opacity:0;transform:scale(.4)}
   ${r + 2}%{opacity:.5}
@@ -270,6 +278,29 @@ const Svg = styled.svg`
   .cap.on {
     fill: #0e9a6c;
   }
+  .inspector {
+    fill: rgba(255, 255, 255, 0.72);
+    stroke: rgba(91, 67, 241, 0.16);
+    stroke-width: 1;
+  }
+  .code {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9.5px;
+    fill: #4b4860;
+    letter-spacing: -0.01em;
+  }
+  .code.k {
+    fill: #9a97a8;
+  }
+  .str {
+    fill: #5b43f1;
+  }
+  .num {
+    fill: #0e9a6c;
+  }
+  .err {
+    fill: #d63a6f;
+  }
   .rowLabel {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 9.5px;
@@ -322,12 +353,15 @@ const Svg = styled.svg`
     .speaker {
       font-size: 10px;
     }
+    .code {
+      font-size: 11px;
+    }
   }
 `;
 
 /* the loop across the gap: question out over the top, answer back underneath */
-const Q_PATH = 'M138,148 C160,130 164,121 184,121';
-const A_PATH = 'M184,199 C164,199 158,192 140,187';
+const Q_PATH = 'M138,142 C160,128 164,121 184,121';
+const A_PATH = 'M184,199 C164,199 158,186 140,178';
 const LEN = 62;
 
 const SCRIPT = [
@@ -389,16 +423,15 @@ export const HeroArt = () => {
           <path d='M22,96 H458' stroke='rgba(24,20,54,0.07)' strokeWidth='1' />
 
           {/* left pole: the agent */}
-          <rect className='agentBox' x='22' y='126' width='114' height='104' rx='14' />
-          <circle cx='79' cy='160' r='27' stroke='rgba(91,67,241,0.1)' strokeWidth='1' fill='none' />
-          <circle cx='79' cy='160' r='20' stroke='rgba(91,67,241,0.2)' strokeWidth='1' fill='none' />
-          <circle className='core' cx='79' cy='160' r='13' fill='url(#coreG)' opacity='0.92' />
-          <text className='agentName' x='79' y='202' textAnchor='middle'>
+          <rect className='agentBox' x='22' y='124' width='114' height='84' rx='14' />
+          <circle cx='79' cy='150' r='19' stroke='rgba(91,67,241,0.18)' strokeWidth='1' fill='none' />
+          <circle className='core' cx='79' cy='150' r='12' fill='url(#coreG)' opacity='0.92' />
+          <text className='agentName' x='79' y='185' textAnchor='middle'>
             AI agent
           </text>
           {STATES.map((s, i) => (
             <Line key={`s${i}`} $kf={s.kf}>
-              <text className='cap' x='79' y='216' textAnchor='middle'>
+              <text className='cap' x='79' y='199' textAnchor='middle'>
                 {s.text}
               </text>
             </Line>
@@ -408,11 +441,11 @@ export const HeroArt = () => {
           <path d={Q_PATH} stroke='rgba(91,67,241,0.28)' strokeWidth='1.3' strokeDasharray='3 4' fill='none' />
           <path d={A_PATH} stroke='rgba(17,168,119,0.28)' strokeWidth='1.3' strokeDasharray='3 4' fill='none' />
           <path d='M188,121 l-6,-3.2 v6.4 z' fill='rgba(91,67,241,0.55)' />
-          <path d='M136,187 l6,3.2 v-6.4 z' fill='rgba(17,168,119,0.55)' />
+          <path d='M136,178 l6,3.2 v-6.4 z' fill='rgba(17,168,119,0.55)' />
           <text className='micro q' x='161' y='112' textAnchor='middle'>
             asks
           </text>
-          <text className='micro a' x='161' y='215' textAnchor='middle'>
+          <text className='micro a' x='161' y='212' textAnchor='middle'>
             answers
           </text>
           {[Q1, Q2].map((t, i) => (
@@ -427,7 +460,7 @@ export const HeroArt = () => {
             <React.Fragment key={`a${i}`}>
               <Beam d={A_PATH} stroke='url(#aBeam)' strokeWidth='2.2' $kf={beamAt(t)} style={{ ['--len' as string]: `${LEN}` }} />
               <Pop $kf={landAt(t)}>
-                <circle cx='140' cy='187' r='3.4' fill='#11a877' />
+                <circle cx='140' cy='178' r='3.4' fill='#11a877' />
               </Pop>
             </React.Fragment>
           ))}
@@ -477,27 +510,28 @@ export const HeroArt = () => {
           <Ping cx={ROWS2[3].x} cy={ROWS2[3].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P2)} />
 
           {/* the standing claim */}
-          {/* the same question, answered both ways */}
-          <g className='claims'>
-            <text className='cap' x='22' y='244'>
-              time to that answer
+          {/* the arguments and the return value of the call itself */}
+          <Pop $kf={panelIn(W1 + 3)}>
+            <rect className='inspector' x='22' y='218' width='156' height='74' rx='10' />
+            <text className='cap' x='32' y='233'>
+              args + return value
             </text>
-            <text className='cap on' x='22' y='262'>
-              odigos
+            <text className='code' x='32' y='249'>
+              fraudScore(
             </text>
-            <text className='cap on' x='178' y='262' textAnchor='end'>
-              1.2s
+            <text className='code k' x='38' y='261'>
+              userId{' '}
+              <tspan className='str'>&quot;u_8843&quot;</tspan>
             </text>
-            <rect x='22' y='266' width='16' height='3' rx='1.5' fill='#11a877' />
-            <rect x='40' y='267' width='138' height='1' fill='rgba(24,20,54,0.08)' />
-            <text className='cap' x='22' y='282'>
-              ship a code change
+            <text className='code k' x='38' y='273'>
+              amount{' '}
+              <tspan className='num'>249.90</tspan>
             </text>
-            <text className='cap' x='178' y='282' textAnchor='end'>
-              3 weeks
+            <text className='code' x='32' y='285'>
+              ){' '}
+              <tspan className='err'>&#8594; risk api timeout</tspan>
             </text>
-            <rect x='22' y='286' width='156' height='3' rx='1.5' fill='rgba(24,20,54,0.16)' />
-          </g>
+          </Pop>
         </Svg>
       </Panel>
     </Frame>
