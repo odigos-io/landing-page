@@ -3,91 +3,94 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-/* Hero art: the two loops that can change what production tells you.
+/* Hero art: the two ways to change what production tells you.
 
-   Top loop is the SDLC. Its four steps light up one at a time and a full pass
-   takes the entire animation, ending in a single deploy that finally reaches
-   production. Bottom loop is the ADLC: ask, capture, answer. It completes five
-   passes in the same window, and every time it hits `capture` a span that was
-   never being collected appears in the live trace in the middle.
+   Left, the SDLC, drawn as the artifacts it actually produces: a diff, a pull
+   request waiting on reviewers, a CI queue, a release window on Thursday. Each
+   one arrives slowly, and at the end of the whole animation nothing has
+   shipped.
 
-   Nothing here claims a speed difference. You watch one. */
+   Middle, production, running the entire time.
 
-const DUR = '12s';
+   Right, the ADLC: an agent asks production a question and production answers
+   on the spot. Four complete exchanges land in the same window, each in about a
+   second, and the closing line says what that difference is worth.
 
-/* ── layout, in viewBox units ─────────────────────────────────────────────── */
-const W = 620;
-const CH = 34; // chip height
+   All motion is opacity/transform on one timeline. */
 
-const SDLC = [
-  { t: 'code', x: 36, w: 78 },
-  { t: 'review', w: 92, x: 126 },
-  { t: 'ci', w: 56, x: 230 },
-  { t: 'deploy', w: 88, x: 298 },
-];
-const SDLC_Y = 78;
+const DUR = '13s';
+const W = 700;
+const H = 470;
 
-const ADLC = [
-  { t: 'ask', w: 74, x: 36 },
-  { t: 'capture', w: 100, x: 122 },
-  { t: 'answer', w: 92, x: 234 },
-];
-const ADLC_Y = 396;
-
-const PROD = { x: 36, y: 152, w: 548, h: 170 };
-
-type Span = { label: string; start: number; ms: number; depth: number; at?: number; hot?: boolean };
-const TOTAL = 800;
-const SPANS: Span[] = [
-  { label: 'POST /checkout', start: 0, ms: 800, depth: 0 },
-  { label: 'payments-svc', start: 40, ms: 690, depth: 1 },
-  { label: 'charge()', start: 86, ms: 600, depth: 2 },
-  { label: 'fraudScore()', start: 116, ms: 240, depth: 3, at: 14, hot: true },
-  { label: 'risk-api · retry 3/3', start: 132, ms: 210, depth: 4, at: 34, hot: true },
-  { label: 'reserveInventory()', start: 372, ms: 41, depth: 3, at: 54 },
-  { label: 'calculateTax()', start: 430, ms: 12, depth: 3, at: 74 },
+/* ── left: what shipping a change actually looks like ─────────────────────── */
+const LX = 24;
+const LW = 226;
+const STEPS = [
+  {
+    at: 6,
+    y: 66,
+    h: 82,
+    head: 'charge.go',
+    tag: '1 file changed',
+    lines: [
+      { t: '- return risk(u)', kind: 'del' as const },
+      { t: '+ log.Info("risk", score)', kind: 'add' as const },
+    ],
+  },
+  { at: 28, y: 158, h: 62, head: 'pull request #4821', tag: 'waiting', lines: [{ t: 'needs 2 reviewers', kind: 'muted' as const }] },
+  { at: 50, y: 230, h: 62, head: 'ci · pipeline', tag: 'queued', lines: [{ t: 'behind 14 other jobs', kind: 'muted' as const }] },
+  { at: 72, y: 302, h: 62, head: 'release window', tag: 'thursday', lines: [{ t: 'not shipped yet', kind: 'muted' as const }] },
 ];
 
-const HOLD = 95;
-const BARS_X = PROD.x + 188;
-const BARS_W = PROD.w - 258;
-const px = (v: number) => BARS_X + (v / TOTAL) * BARS_W;
-const pw = (v: number) => (v / TOTAL) * BARS_W;
+/* ── right: what asking production looks like ─────────────────────────────── */
+const RX = 452;
+const RW = 224;
+const ASKS = [
+  { at: 10, y: 66, q: 'why is checkout p99 up 3x?', a: 'fraudScore() · 240ms' },
+  { at: 28, y: 148, q: 'what is it waiting on?', a: 'risk-api · 3 retries' },
+  { at: 46, y: 230, q: 'what did it send?', a: 'userId u_8843 · 249.90' },
+  { at: 64, y: 312, q: 'who else calls it?', a: '2 services · 1.4k/min' },
+];
+
+/* ── middle: production ───────────────────────────────────────────────────── */
+const PROD = { x: 288, y: 96, w: 126, h: 276 };
+const NODES = [
+  { x: 24, y: 46 },
+  { x: 78, y: 74 },
+  { x: 34, y: 118 },
+  { x: 92, y: 148 },
+  { x: 30, y: 196 },
+  { x: 86, y: 226 },
+];
+
+const HOLD = 94;
 
 /* ── motion ───────────────────────────────────────────────────────────────── */
+const slowIn = (r: number) => keyframes`
+  0%,${r}%{opacity:0;transform:translateY(8px)}
+  ${r + 6}%{opacity:1;transform:none}
+  ${HOLD}%{opacity:1;transform:none}
+  ${HOLD + 3}%,100%{opacity:0;transform:none}`;
 
-/* one step of a loop is lit between a and b */
-const litAt = (a: number, b: number) => keyframes`
-  0%,${a}%{opacity:0}
-  ${a + 1}%,${b}%{opacity:1}
-  ${b + 1}%,100%{opacity:0}`;
+const snapIn = (r: number) => keyframes`
+  0%,${r}%{opacity:0;transform:translateY(5px)}
+  ${r + 1.6}%{opacity:1;transform:none}
+  ${HOLD}%{opacity:1;transform:none}
+  ${HOLD + 3}%,100%{opacity:0;transform:none}`;
 
-/* the same, five times over, for the fast loop */
-const litFast = (a: number, b: number) => {
-  const seg = [0, 20, 40, 60, 80].map((o) => `${a + o}%,${b + o}%{opacity:1}${b + o + 1}%,${a + o + 19}%{opacity:0}`);
-  return keyframes`0%,${a}%{opacity:0}${seg.join('')}100%{opacity:0}`;
-};
+const ping = (r: number) => keyframes`
+  0%,${r}%{opacity:0;transform:scale(.4)}
+  ${r + 1}%{opacity:.6}
+  ${r + 6}%,100%{opacity:0;transform:scale(2.4)}`;
 
-const barIn = (r: number) => keyframes`
-  0%,${r}%{opacity:0;transform:scaleX(0)}
-  ${r + 3}%{opacity:1;transform:scaleX(1)}
-  ${HOLD}%{opacity:1;transform:scaleX(1)}
-  ${HOLD + 2}%,100%{opacity:0;transform:scaleX(0)}`;
-const rowIn = (r: number) => keyframes`
-  0%,${r}%{opacity:0}
-  ${r + 3}%,${HOLD}%{opacity:1}
-  ${HOLD + 2}%,100%{opacity:0}`;
+const closeIn = keyframes`
+  0%,84%{opacity:0;transform:translateY(6px)}
+  88%{opacity:1;transform:none}
+  ${HOLD}%{opacity:1;transform:none}
+  ${HOLD + 3}%,100%{opacity:0;transform:none}`;
 
-const deployPulse = keyframes`
-  0%,76%{opacity:0;transform:translateY(-16px)}
-  84%{opacity:1;transform:translateY(0)}
-  92%,100%{opacity:0;transform:translateY(10px)}`;
-
-const askFlow = keyframes`
-  0%{stroke-dashoffset:26}
-  100%{stroke-dashoffset:0}`;
-
-const breathe = keyframes`0%,100%{opacity:.45}50%{opacity:1}`;
+const breathe = keyframes`0%,100%{opacity:.4}50%{opacity:1}`;
+const drift = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 
 const Frame = styled.div`
@@ -96,7 +99,6 @@ const Frame = styled.div`
     animation: none;
   }
 `;
-
 const Panel = styled.div`
   position: relative;
   overflow: hidden;
@@ -110,36 +112,37 @@ const Panel = styled.div`
     height: auto;
   }
 `;
-
-const Lit = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
-  animation: ${(p) => p.$kf} ${DUR} steps(1, end) infinite;
+const Slow = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
+  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.33, 1, 0.68, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
-    opacity: 0;
+    opacity: 1;
   }
 `;
-const Bar = styled.rect<{ $kf?: ReturnType<typeof keyframes> }>`
-  transform-origin: left center;
+const Snap = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
+  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+  }
+`;
+const Ping = styled.circle<{ $kf: ReturnType<typeof keyframes> }>`
+  fill: none;
+  stroke: #11a877;
+  stroke-width: 1.4;
   transform-box: fill-box;
-  animation: ${(p) => p.$kf ?? 'none'} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-`;
-const Row = styled.g<{ $kf?: ReturnType<typeof keyframes> }>`
-  animation: ${(p) => p.$kf ?? 'none'} ${DUR} linear infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 1;
-  }
-`;
-const Deploy = styled.g`
-  animation: ${deployPulse} ${DUR} ease-in-out infinite;
+  transform-origin: center;
+  animation: ${(p) => p.$kf} ${DUR} ease-out infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     opacity: 0;
+  }
+`;
+const Close = styled.g`
+  animation: ${closeIn} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
   }
 `;
 
@@ -157,45 +160,88 @@ const Svg = styled.svg`
   .kick.fast {
     fill: #0e9a6c;
   }
-  .note {
+  .gloss {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 11px;
-    letter-spacing: 0.02em;
     fill: var(--ink-faint);
   }
-  .chip {
+  .card {
     fill: #fff;
-    stroke: rgba(24, 20, 54, 0.16);
+    stroke: rgba(24, 20, 54, 0.13);
     stroke-width: 1.2;
   }
-  .chipTxt {
+  .cardHead {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 12.5px;
+    font-size: 11.5px;
+    fill: var(--ink);
+  }
+  .cardTag {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    fill: var(--ink-faint);
+  }
+  .code {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+  }
+  .code.del {
+    fill: #c9346a;
+  }
+  .code.add {
+    fill: #0e9a6c;
+  }
+  .code.muted {
     fill: var(--ink-mute);
-    letter-spacing: 0.02em;
   }
-  .chipLit {
-    fill: rgba(24, 20, 54, 0.9);
+  .qCard {
+    fill: rgba(91, 67, 241, 0.05);
+    stroke: rgba(91, 67, 241, 0.3);
+    stroke-width: 1.2;
   }
-  .chipLitFast {
-    fill: #11a877;
+  .aCard {
+    fill: rgba(17, 168, 119, 0.06);
+    stroke: rgba(17, 168, 119, 0.34);
+    stroke-width: 1.2;
   }
-  .chipTxtLit {
+  .q {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 12.5px;
+    font-size: 11.5px;
+    fill: var(--accent);
+  }
+  .a {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11.5px;
+    fill: #0c7a58;
+  }
+  .who {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    fill: var(--ink-faint);
+  }
+  .prodBox {
+    fill: rgba(255, 255, 255, 0.66);
+    stroke: rgba(91, 67, 241, 0.2);
+    stroke-width: 1.2;
+  }
+  .prodLabel {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink-mute);
+  }
+  .node {
     fill: #fff;
-    letter-spacing: 0.02em;
+    stroke: rgba(91, 67, 241, 0.35);
+    stroke-width: 1.2;
   }
-  .loopPath {
-    fill: none;
-    stroke-width: 1.4;
-  }
-  .loopSlow {
-    stroke: rgba(24, 20, 54, 0.22);
-    stroke-dasharray: 4 5;
-  }
-  .loopFast {
-    stroke: rgba(17, 168, 119, 0.5);
+  .link {
+    stroke: rgba(91, 67, 241, 0.18);
+    stroke-width: 1;
   }
   .badge {
     fill: #fff;
@@ -211,7 +257,6 @@ const Svg = styled.svg`
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: -0.01em;
   }
   .badgeTxt.slow {
     fill: var(--ink);
@@ -219,183 +264,154 @@ const Svg = styled.svg`
   .badgeTxt.fast {
     fill: #0e9a6c;
   }
-  .prodBox {
-    fill: rgba(255, 255, 255, 0.75);
-    stroke: rgba(91, 67, 241, 0.18);
-    stroke-width: 1;
-  }
-  .cap {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    fill: var(--ink-faint);
-  }
-  .span {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    fill: var(--ink-mute);
-  }
-  .span.on {
+  .closeTxt {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     fill: var(--ink);
   }
-  .ms {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10px;
-    fill: var(--ink-faint);
-  }
-  .ms.on {
-    fill: #0e9a6c;
-  }
-  .plus {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    font-weight: 700;
+  .closeTxt tspan {
     fill: #0e9a6c;
   }
   .live {
-    animation: ${breathe} 1.6s ease-in-out infinite;
+    animation: ${breathe} 1.7s ease-in-out infinite;
   }
-  .flow {
-    fill: none;
-    stroke: #11a877;
-    stroke-width: 1.6;
-    stroke-dasharray: 26;
-    animation: ${askFlow} 1s linear infinite;
+  .swarm {
+    animation: ${drift} 3.4s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) {
     .live,
-    .flow {
+    .swarm {
       animation: none;
+    }
+  }
+  @media (max-width: 620px) {
+    .gloss,
+    .cardTag {
+      display: none;
+    }
+    .q,
+    .a,
+    .cardHead,
+    .code {
+      font-size: 14px;
+    }
+    .kick {
+      font-size: 15px;
+    }
+    .closeTxt {
+      font-size: 17px;
     }
   }
 `;
 
-const Chip = ({ t, x, w, y, kf, fast }: { t: string; x: number; w: number; y: number; kf: ReturnType<typeof keyframes>; fast?: boolean }) => (
-  <g>
-    <rect className='chip' x={x} y={y} width={w} height={CH} rx={CH / 2} />
-    <text className='chipTxt' x={x + w / 2} y={y + 22} textAnchor='middle'>
-      {t}
-    </text>
-    <Lit $kf={kf}>
-      <rect className={fast ? 'chipLitFast' : 'chipLit'} x={x} y={y} width={w} height={CH} rx={CH / 2} />
-      <text className='chipTxtLit' x={x + w / 2} y={y + 22} textAnchor='middle'>
-        {t}
-      </text>
-    </Lit>
-  </g>
-);
-
-const Arrow = ({ x, y, fast }: { x: number; y: number; fast?: boolean }) => <path d={`M${x},${y} l7,4 l-7,4 z`} fill={fast ? 'rgba(17,168,119,.6)' : 'rgba(24,20,54,.3)'} />;
-
 export const HeroArt = () => {
-  const sdlcEnd = SDLC[3].x + SDLC[3].w;
-  const adlcEnd = ADLC[2].x + ADLC[2].w;
   return (
     <Frame>
       <Panel>
         <Svg
-          viewBox={`0 0 ${W} 478`}
+          viewBox={`0 0 ${W} ${H}`}
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
           role='img'
-          aria-label='Two loops that can change what production tells you. The software delivery loop of code, review, CI and deploy takes three weeks per pass. The agent loop of ask, capture and answer takes 1.2 seconds, and each pass adds a new span to the live trace in production.'
+          aria-label='On the left, shipping a code change: a diff, a pull request waiting on reviewers, a CI queue and a release window on Thursday, and nothing has shipped. In the middle, production running live. On the right, an agent asking production four questions and getting each answered in about a second.'
         >
-          {/* ── the delivery loop ──────────────────────────────────────── */}
-          <text className='kick slow' x='36' y='32'>
+          {/* ── SDLC ───────────────────────────────────────────────────── */}
+          <text className='kick slow' x={LX} y='32'>
             SDLC
           </text>
-          <text className='note' x='94' y='32'>
-            the only way to change what production can tell you
+          <text className='gloss' x={LX + 58} y='32'>
+            ship a code change
           </text>
 
-          {SDLC.map((c, i) => (
-            <React.Fragment key={c.t}>
-              <Chip t={c.t} x={c.x} w={c.w} y={SDLC_Y} kf={litAt(i * 25, i * 25 + 24)} />
-              {i < SDLC.length - 1 && <Arrow x={c.x + c.w + 3} y={SDLC_Y + CH / 2 - 4} />}
-            </React.Fragment>
+          {STEPS.map((s, i) => (
+            <Slow key={i} $kf={slowIn(s.at)}>
+              <rect className='card' x={LX} y={s.y} width={LW} height={s.h} rx='10' />
+              <text className='cardHead' x={LX + 14} y={s.y + 22}>
+                {s.head}
+              </text>
+              <text className='cardTag' x={LX + LW - 14} y={s.y + 22} textAnchor='end'>
+                {s.tag}
+              </text>
+              {s.lines.map((l, j) => (
+                <text key={j} className={`code ${l.kind}`} x={LX + 14} y={s.y + 44 + j * 17}>
+                  {l.t}
+                </text>
+              ))}
+            </Slow>
           ))}
 
-          {/* it loops back on itself, over the top, and it takes weeks */}
-          <path className='loopPath loopSlow' d={`M${sdlcEnd - 20},${SDLC_Y} V52 H${SDLC[0].x + 20} V${SDLC_Y - 6}`} />
-          <path d={`M${SDLC[0].x + 16},${SDLC_Y - 4} l4,7 l4,-7 z`} fill='rgba(24,20,54,.3)' />
-          <rect className='badge badgeSlow' x='236' y='39' width='84' height='26' rx='13' />
-          <text className='badgeTxt slow' x='278' y='57' textAnchor='middle'>
+          <rect className='badge badgeSlow' x={LX + 62} y='386' width='102' height='28' rx='14' />
+          <text className='badgeTxt slow' x={LX + 113} y='405' textAnchor='middle'>
             3 weeks
           </text>
 
-          {/* one deploy finally lands, in its own lane under the chips */}
-          <path d={`M${SDLC[3].x + SDLC[3].w / 2},${SDLC_Y + CH + 4} V${PROD.y - 6}`} stroke='rgba(24,20,54,.18)' strokeWidth='1.4' strokeDasharray='4 5' />
-          <path d={`M${SDLC[3].x + SDLC[3].w / 2 - 4},${PROD.y - 8} l4,7 l4,-7 z`} fill='rgba(24,20,54,.3)' />
-          <text className='note' x={SDLC[3].x + SDLC[3].w / 2 + 12} y={PROD.y - 18}>
-            one deploy, finally
-          </text>
-          <Deploy>
-            <circle cx={SDLC[3].x + SDLC[3].w / 2} cy={PROD.y - 24} r='4.5' fill='rgba(24,20,54,.5)' />
-          </Deploy>
-
           {/* ── production ─────────────────────────────────────────────── */}
-          <rect className='prodBox' x={PROD.x} y={PROD.y} width={PROD.w} height={PROD.h} rx='14' />
-          <circle className='live' cx={PROD.x + 18} cy={PROD.y + 22} r='3.6' fill='#11a877' />
-          <text className='cap' x={PROD.x + 28} y={PROD.y + 26}>
-            production · live
+          <text className='prodLabel' x={PROD.x + PROD.w / 2} y={PROD.y - 14} textAnchor='middle'>
+            production
           </text>
-          <text className='cap' x={PROD.x + PROD.w - 16} y={PROD.y + 26} textAnchor='end'>
-            trace 8f2c14
-          </text>
-
-          {SPANS.map((s, i) => {
-            const y = PROD.y + 48 + i * 17;
-            return (
-              <Row key={s.label} $kf={s.at ? rowIn(s.at) : undefined}>
-                {s.at && (
-                  <text className='plus' x={PROD.x + 14 + s.depth * 7} y={y + 8}>
-                    +
-                  </text>
-                )}
-                <text className={`span${s.at ? ' on' : ''}`} x={PROD.x + 24 + s.depth * 7} y={y + 8}>
-                  {s.label}
-                </text>
-                <Bar x={px(s.start)} y={y} width={pw(s.ms)} height='8' rx='3' fill={s.hot ? '#ff3d7a' : s.at ? '#11a877' : 'rgba(24,20,54,.16)'} $kf={s.at ? barIn(s.at) : undefined} />
-                <text className={`ms${s.at ? ' on' : ''}`} x={PROD.x + PROD.w - 16} y={y + 8} textAnchor='end'>
-                  {s.ms}ms
-                </text>
-              </Row>
-            );
-          })}
-
-          {/* ── the agent loop ─────────────────────────────────────────── */}
-          <path className='flow' d={`M${ADLC[0].x + 34},${ADLC_Y - 46} V${PROD.y + PROD.h + 10}`} />
-          <path d={`M${ADLC[0].x + 30},${PROD.y + PROD.h + 14} l4,-7 l4,7 z`} fill='#11a877' />
-          <text className='note' x={ADLC[0].x + 44} y={ADLC_Y - 60}>
-            ask
-          </text>
-          <path d={`M${ADLC[2].x + 40},${PROD.y + PROD.h + 10} V${ADLC_Y - 46}`} stroke='rgba(17,168,119,.45)' strokeWidth='1.6' />
-          <path d={`M${ADLC[2].x + 36},${ADLC_Y - 44} l4,7 l4,-7 z`} fill='rgba(17,168,119,.7)' />
-          <text className='note' x={ADLC[2].x + 50} y={ADLC_Y - 60}>
-            answer, already in the trace
+          <rect className='prodBox' x={PROD.x} y={PROD.y} width={PROD.w} height={PROD.h} rx='16' />
+          <g className='swarm'>
+            {NODES.map((n, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && <line className='link' x1={PROD.x + NODES[i - 1].x} y1={PROD.y + NODES[i - 1].y} x2={PROD.x + n.x} y2={PROD.y + n.y} />}
+                <circle className='node' cx={PROD.x + n.x} cy={PROD.y + n.y} r='7' />
+              </React.Fragment>
+            ))}
+          </g>
+          <circle className='live' cx={PROD.x + PROD.w / 2 - 26} cy={PROD.y + PROD.h - 22} r='3.6' fill='#11a877' />
+          <text className='who' x={PROD.x + PROD.w / 2 - 16} y={PROD.y + PROD.h - 18}>
+            live
           </text>
 
-          <text className='kick fast' x='36' y={ADLC_Y - 18}>
-            ADLC
-          </text>
-          <text className='note' x='94' y={ADLC_Y - 18}>
-            your agents, asking production directly
+          {/* the deploy that never arrives inside this window */}
+          <path d={`M${LX + LW + 8},${PROD.y + 150} H${PROD.x - 8}`} stroke='rgba(24,20,54,.16)' strokeWidth='1.4' strokeDasharray='4 5' />
+          <text className='who' x={(LX + LW + PROD.x) / 2} y={PROD.y + 142} textAnchor='middle'>
+            deploy
           </text>
 
-          {ADLC.map((c, i) => (
-            <React.Fragment key={c.t}>
-              <Chip t={c.t} x={c.x} w={c.w} y={ADLC_Y} kf={litFast(i * 6, i * 6 + 5)} fast />
-              {i < ADLC.length - 1 && <Arrow x={c.x + c.w + 3} y={ADLC_Y + CH / 2 - 4} fast />}
+          {/* every question reaches production and comes straight back */}
+          {ASKS.map((a, i) => (
+            <React.Fragment key={`p${i}`}>
+              <path d={`M${PROD.x + PROD.w + 8},${a.y + 30} H${RX - 8}`} stroke='rgba(17,168,119,.32)' strokeWidth='1.4' />
+              <Ping cx={PROD.x + PROD.w - 4} cy={a.y + 30} r='7' $kf={ping(a.at)} />
             </React.Fragment>
           ))}
 
-          <path className='loopPath loopFast' d={`M${adlcEnd - 20},${ADLC_Y + CH} V${ADLC_Y + CH + 26} H${ADLC[0].x + 20} V${ADLC_Y + CH + 6}`} />
-          <path d={`M${ADLC[0].x + 16},${ADLC_Y + CH + 8} l4,-7 l4,7 z`} fill='rgba(17,168,119,.6)' />
-          <rect className='badge badgeFast' x='196' y={ADLC_Y + CH + 13} width='66' height='26' rx='13' />
-          <text className='badgeTxt fast' x='229' y={ADLC_Y + CH + 31} textAnchor='middle'>
-            1.2s
+          {/* ── ADLC ───────────────────────────────────────────────────── */}
+          <text className='kick fast' x={RX} y='32'>
+            ADLC
           </text>
+          <text className='gloss' x={RX + 58} y='32'>
+            ask production directly
+          </text>
+
+          {ASKS.map((a, i) => (
+            <Snap key={i} $kf={snapIn(a.at)}>
+              <rect className='qCard' x={RX} y={a.y} width={RW} height='30' rx='9' />
+              <text className='q' x={RX + 12} y={a.y + 20}>
+                {a.q}
+              </text>
+              <rect className='aCard' x={RX} y={a.y + 34} width={RW} height='30' rx='9' />
+              <text className='a' x={RX + 12} y={a.y + 54}>
+                {a.a}
+              </text>
+            </Snap>
+          ))}
+
+          <rect className='badge badgeFast' x={RX + 62} y='386' width='102' height='28' rx='14' />
+          <text className='badgeTxt fast' x={RX + 113} y='405' textAnchor='middle'>
+            1.2s each
+          </text>
+
+          {/* ── the point ──────────────────────────────────────────────── */}
+          <Close>
+            <path d={`M${LX},436 H${W - LX}`} stroke='rgba(24,20,54,.08)' strokeWidth='1' />
+            <text className='closeTxt' x={W / 2} y='458' textAnchor='middle'>
+              Still nothing shipped. <tspan>Four answers already in hand.</tspan>
+            </text>
+          </Close>
         </Svg>
       </Panel>
     </Frame>
