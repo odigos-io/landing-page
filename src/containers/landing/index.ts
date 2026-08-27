@@ -6,7 +6,6 @@ export * from './oldway';
 export * from './howitworks';
 export * from './product';
 export * from './features';
-export * from './midflow';
 export * from './proof';
 export * from './integrations';
 export * from './outcomes';

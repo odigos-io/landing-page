@@ -11,7 +11,6 @@ import {
   LandingProduct,
   LandingFeatures,
   LandingIntegrations,
-  LandingMidFlow,
   LandingOutcomes,
   LandingProof,
   LandingTestimonial,
@@ -34,7 +33,6 @@ const HomeContent = () => {
         <LandingProduct />
         <LandingFeatures />
         <LandingIntegrations />
-        <LandingMidFlow />
         <LandingOutcomes />
         <LandingProof />
         <LandingTestimonial />
