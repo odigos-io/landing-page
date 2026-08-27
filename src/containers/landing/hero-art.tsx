@@ -3,34 +3,57 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-/* Hero art: a race between two clocks around a living production system.
+/* Hero art: one agent, two routes to the same production.
 
-   Left, the delivery pipeline. A single packet crawls down code, review, ci,
-   deploy over the entire animation, and a day counter grinds from 1 to 21.
+   An agent working an incident needs data nobody collected. There are exactly
+   two ways to get it.
 
-   Right, the agent loop. Pulses fire into production about once a second, each
-   one coming back with a real answer, and an answer counter runs to 47.
+   The long way, along the top: add a log line, get it reviewed, wait for CI,
+   wait for the release window. Four gates, three weeks, and production only
+   learns anything at the very end.
 
-   Middle, production itself, lit and running the whole time.
+   The short way, along the bottom: ask production and it answers. No gates. The
+   line never stops firing, and answers keep landing while the top route is
+   still sitting in review.
 
-   Same window. One change shipped, forty-seven answers. */
+   The shape of the two paths is the argument. */
 
 const DUR = '12s';
-const W = 640;
-const H = 420;
+const W = 720;
+const H = 400;
 
-const CORE = { cx: 320, cy: 208, w: 168, h: 150 };
+const AGENT = { x: 86, y: 200, r: 34 };
+const PROD = { x: 614, y: 200, w: 116, h: 116 };
 
-/* the mesh inside production */
+/* the long way round */
+const TOP_Y = 92;
+const GATES = [
+  { at: 6, x: 146, w: 146, h: 48, kind: 'diff' as const, head: 'charge.go', line: '+ log.Info("risk", score)' },
+  { at: 30, x: 322, w: 82, h: 30, kind: 'chip' as const, head: 'review' },
+  { at: 54, x: 424, w: 54, h: 30, kind: 'chip' as const, head: 'ci' },
+  { at: 78, x: 498, w: 82, h: 30, kind: 'chip' as const, head: 'deploy' },
+];
+
+/* the short way */
+const BOT_Y = 306;
+const ANSWERS = [
+  { at: 4, until: 46, x: 146, t: 'fraudScore() 240ms' },
+  { at: 12, until: 54, x: 300, t: 'risk-api retry 3/3' },
+  { at: 20, until: 62, x: 454, t: 'userId "u_8843"' },
+  { at: 50, until: 92, x: 146, t: 'db.pool wait 190ms' },
+  { at: 58, until: 92, x: 300, t: '1.4k calls/min' },
+  { at: 66, until: 92, x: 454, t: 'p99 812ms' },
+];
+
 const MESH = [
-  { x: -52, y: -44 },
-  { x: 6, y: -58 },
-  { x: 54, y: -26 },
-  { x: -34, y: 4 },
-  { x: 22, y: 12 },
-  { x: -58, y: 46 },
-  { x: 4, y: 52 },
-  { x: 56, y: 34 },
+  { x: -34, y: -30 },
+  { x: 8, y: -40 },
+  { x: 36, y: -12 },
+  { x: -22, y: 6 },
+  { x: 18, y: 14 },
+  { x: -36, y: 34 },
+  { x: 6, y: 38 },
+  { x: 38, y: 24 },
 ];
 const LINKS: [number, number][] = [
   [0, 1],
@@ -42,56 +65,42 @@ const LINKS: [number, number][] = [
   [5, 6],
   [6, 7],
   [4, 7],
-  [6, 4],
 ];
 
-const STOPS = [
-  { t: 'code', y: 108 },
-  { t: 'review', y: 168 },
-  { t: 'ci', y: 228 },
-  { t: 'deploy', y: 288 },
-];
-const TRACK_X = 88;
-
-/* the counters. Each value owns a slice of the loop. */
-const DAYS = ['day 1', 'day 3', 'day 6', 'day 9', 'day 12', 'day 15', 'day 18', 'day 21'];
-const ANSWERS = ['4', '9', '14', '19', '24', '29', '34', '39', '43', '47'];
-
-/* answers that come back, cycling in four slots */
-const CHIPS = [
-  ['fraudScore() 240ms', 'db.pool wait 190ms', 'gc pause 44ms'],
-  ['risk-api retry 3/3', 'tls handshake 61ms', 'dns 12ms'],
-  ['userId "u_8843"', 'cart 3 items', 'region eu-west-1'],
-  ['1.4k calls/min', '2 callers', 'p99 812ms'],
-];
-const CHIP_X = 468;
-const CHIP_W = 150;
+const HOLD = 95;
 
 /* ── motion ───────────────────────────────────────────────────────────────── */
-const crawl = keyframes`
-  0%{transform:translateY(0);opacity:0}
-  4%{opacity:1}
-  96%{opacity:1}
-  100%{transform:translateY(180px);opacity:0}`;
+const gateIn = (r: number) => keyframes`
+  0%,${r}%{opacity:.18}
+  ${r + 5}%{opacity:1}
+  ${HOLD}%{opacity:1}
+  ${HOLD + 3}%,100%{opacity:.18}`;
 
-/* counter slots are contiguous: one value hands straight over to the next, so
-   the number is never absent for a frame */
-const fadeSlot = (a: number, b: number) => keyframes`
-  0%,${a}%{opacity:0}
-  ${a}%,${b}%{opacity:1}
-  ${b}%,100%{opacity:0}`;
+const answerIn = (a: number, b: number) => keyframes`
+  0%,${a}%{opacity:0;transform:translateY(8px) scale(.94)}
+  ${a + 2}%{opacity:1;transform:none}
+  ${b}%{opacity:1;transform:none}
+  ${b + 2}%,100%{opacity:0;transform:translateY(-6px) scale(.98)}`;
 
-const chipIn = (a: number, b: number) => keyframes`
-  0%,${a}%{opacity:0;transform:translateX(14px)}
-  ${a + 2}%,${b}%{opacity:1;transform:none}
-  ${b + 2}%,100%{opacity:0;transform:translateX(-8px)}`;
+const shipPulse = keyframes`
+  0%,88%{opacity:0}
+  92%{opacity:1}
+  ${HOLD + 2}%,100%{opacity:0}`;
 
-const shot = keyframes`
-  0%{opacity:0;transform:translateX(0) scale(.6)}
-  12%{opacity:1}
-  100%{opacity:0;transform:translateX(-118px) scale(1.1)}`;
+const fire = keyframes`
+  0%{opacity:0;transform:translateX(0)}
+  8%{opacity:1}
+  92%{opacity:1}
+  100%{opacity:0;transform:translateX(420px)}`;
 
-const coreGlow = keyframes`0%,100%{opacity:.5}50%{opacity:.9}`;
+const back = keyframes`
+  0%{opacity:0;transform:translateX(0)}
+  10%{opacity:.9}
+  90%{opacity:.9}
+  100%{opacity:0;transform:translateX(-420px)}`;
+
+const coreGlow = keyframes`0%,100%{opacity:.45}50%{opacity:.85}`;
+const agentGlow = keyframes`0%,100%{opacity:.5;transform:scale(.97)}50%{opacity:1;transform:scale(1.03)}`;
 const meshDrift = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}`;
 const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
@@ -102,16 +111,15 @@ const Frame = styled.div`
     animation: none;
   }
 `;
-
 const Panel = styled.div`
   position: relative;
   overflow: hidden;
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
-    radial-gradient(60% 60% at 78% 44%, rgba(17, 168, 119, 0.22), transparent 70%),
-    radial-gradient(58% 62% at 46% 52%, rgba(123, 93, 255, 0.28), transparent 72%),
-    linear-gradient(165deg, #0c0c11 0%, #131320 58%, #0e0e15 100%);
+    radial-gradient(52% 58% at 86% 52%, rgba(17, 168, 119, 0.2), transparent 70%),
+    radial-gradient(46% 56% at 12% 50%, rgba(123, 93, 255, 0.24), transparent 72%),
+    linear-gradient(165deg, #0c0c11 0%, #14141f 58%, #0e0e15 100%);
   box-shadow: var(--shadow-panel);
   svg {
     display: block;
@@ -119,21 +127,16 @@ const Panel = styled.div`
     height: auto;
   }
 `;
-
-const Crawl = styled.g`
-  animation: ${crawl} ${DUR} linear infinite;
+const Gate = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
+  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.33, 1, 0.68, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+    opacity: 1;
   }
 `;
-const Slot = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
-  animation: ${(p) => p.$kf} ${DUR} steps(1, end) infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 0;
-  }
-`;
-const Chip = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
+const Answer = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
+  transform-box: fill-box;
+  transform-origin: center;
   animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -141,8 +144,23 @@ const Chip = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
     transform: none;
   }
 `;
-const Shot = styled.circle<{ $d: string }>`
-  animation: ${shot} 1.05s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+const Ship = styled.g`
+  animation: ${shipPulse} ${DUR} linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
+  }
+`;
+const Fire = styled.circle<{ $d: string }>`
+  animation: ${fire} 1.15s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: ${(p) => p.$d};
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
+  }
+`;
+const Back = styled.circle<{ $d: string }>`
+  animation: ${back} 1.15s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   animation-delay: ${(p) => p.$d};
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -151,73 +169,97 @@ const Shot = styled.circle<{ $d: string }>`
 `;
 
 const Svg = styled.svg`
-  .kick {
+  .lane {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
   }
-  .kick.slow {
+  .lane.slow {
     fill: #8a8a95;
   }
-  .kick.fast {
+  .lane.fast {
     fill: #1fd793;
   }
-  .stop {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    fill: #7c7c88;
-  }
-  .num {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 600;
-    letter-spacing: -0.03em;
-  }
-  .num.slow {
-    font-size: 34px;
-    fill: #9a9aa6;
-  }
-  .num.fast {
-    font-size: 44px;
-    fill: #1fd793;
-  }
-  .under {
+  .note {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10.5px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.04em;
     fill: #6f6f7c;
   }
-  .coreLabel {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    fill: #b9b9c6;
+  .cost {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
-  .chipTxt {
+  .cost.slow {
+    fill: #a3a3ae;
+  }
+  .cost.fast {
+    fill: #1fd793;
+  }
+  .gateBox {
+    fill: rgba(255, 255, 255, 0.045);
+    stroke: rgba(255, 255, 255, 0.16);
+    stroke-width: 1.1;
+  }
+  .gateTxt {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11.5px;
+    fill: #c9c9d4;
+  }
+  .gateNote {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    fill: #75757f;
+  }
+  .diffTxt {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    fill: #55e0a3;
+  }
+  .ansBox {
+    fill: rgba(17, 168, 119, 0.16);
+    stroke: rgba(31, 215, 147, 0.5);
+    stroke-width: 1;
+  }
+  .ansTxt {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 11px;
     fill: #d8f5e8;
   }
-  .chipBox {
-    fill: rgba(17, 168, 119, 0.13);
-    stroke: rgba(31, 215, 147, 0.42);
-    stroke-width: 1;
-  }
-  .track {
-    stroke: rgba(255, 255, 255, 0.12);
+  .pathSlow {
+    stroke: rgba(255, 255, 255, 0.14);
     stroke-width: 1.4;
     stroke-dasharray: 3 6;
+    fill: none;
   }
-  .stopDot {
-    fill: #16161f;
-    stroke: rgba(255, 255, 255, 0.24);
+  .pathFast {
+    stroke: rgba(31, 215, 147, 0.42);
+    stroke-width: 1.6;
+    fill: none;
+  }
+  .agentRing {
+    fill: rgba(123, 93, 255, 0.14);
+    stroke: rgba(166, 144, 255, 0.5);
+    stroke-width: 1.3;
+  }
+  .agentTxt {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    fill: #cfc6ff;
+  }
+  .coreBox {
+    fill: rgba(255, 255, 255, 0.03);
+    stroke: rgba(166, 144, 255, 0.34);
     stroke-width: 1.2;
   }
   .link {
-    stroke: rgba(166, 144, 255, 0.42);
+    stroke: rgba(166, 144, 255, 0.4);
     stroke-width: 1;
   }
   .node {
@@ -225,13 +267,20 @@ const Svg = styled.svg`
     stroke: #a690ff;
     stroke-width: 1.3;
   }
-  .coreBox {
-    fill: rgba(255, 255, 255, 0.03);
-    stroke: rgba(166, 144, 255, 0.34);
-    stroke-width: 1.2;
+  .coreTxt {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    fill: #b9b9c6;
   }
   .halo {
     animation: ${coreGlow} 3.2s ease-in-out infinite;
+  }
+  .pulse {
+    animation: ${agentGlow} 2.6s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
   }
   .mesh {
     animation: ${meshDrift} 5s ease-in-out infinite;
@@ -243,20 +292,26 @@ const Svg = styled.svg`
   }
   @media (prefers-reduced-motion: reduce) {
     .halo,
+    .pulse,
     .mesh,
     .live {
       animation: none;
     }
   }
   @media (max-width: 620px) {
-    .stop,
-    .chipTxt,
-    .under,
-    .coreLabel {
+    .note,
+    .gateNote {
+      display: none;
+    }
+    .gateTxt,
+    .ansTxt,
+    .diffTxt {
       font-size: 13px;
     }
-    .kick {
-      font-size: 14px;
+    .lane,
+    .agentTxt,
+    .coreTxt {
+      font-size: 13px;
     }
   }
 `;
@@ -270,103 +325,115 @@ export const HeroArt = () => {
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
           role='img'
-          aria-label='A race around a live production system. On the left a delivery pipeline crawls from code to review to CI to deploy while a counter reaches day 21. On the right an agent fires a question into production about once a second and a counter reaches 47 answers.'
+          aria-label='An AI agent needs data nobody collected. The long route across the top adds a log line and passes through review, CI and a release window, taking three weeks before production learns anything. The short route along the bottom asks production directly and answers keep coming back in about a second each.'
         >
           <defs>
             <radialGradient id='halo'>
-              <stop offset='0' stopColor='rgba(166,144,255,.5)' />
+              <stop offset='0' stopColor='rgba(166,144,255,.45)' />
               <stop offset='1' stopColor='rgba(166,144,255,0)' />
             </radialGradient>
-            <linearGradient id='beam' x1='1' y1='0' x2='0' y2='0'>
-              <stop offset='0' stopColor='rgba(31,215,147,0)' />
-              <stop offset='1' stopColor='#1fd793' />
-            </linearGradient>
           </defs>
 
-          {/* ── left: the delivery pipeline ─────────────────────────────── */}
-          <text className='kick slow' x='40' y='52'>
+          {/* ── the two routes ─────────────────────────────────────────── */}
+          <path className='pathSlow' d={`M${AGENT.x},${AGENT.y - AGENT.r - 6} V${TOP_Y} H${PROD.x - 8}`} />
+          <path className='pathFast' d={`M${AGENT.x},${AGENT.y + AGENT.r + 6} V${BOT_Y} H${PROD.x - 8}`} />
+          <path className='pathSlow' d={`M${PROD.x - 8},${TOP_Y} V${PROD.y - PROD.h / 2 - 8}`} />
+          <path className='pathFast' d={`M${PROD.x - 8},${BOT_Y} V${PROD.y + PROD.h / 2 + 8}`} />
+
+          {/* ── the agent that needs data ──────────────────────────────── */}
+          <circle className='pulse' cx={AGENT.x} cy={AGENT.y} r={AGENT.r + 12} fill='url(#halo)' />
+          <circle className='agentRing' cx={AGENT.x} cy={AGENT.y} r={AGENT.r} />
+          <circle cx={AGENT.x} cy={AGENT.y} r='9' fill='#a690ff' />
+          <text className='agentTxt' x={AGENT.x} y={AGENT.y + AGENT.r + 26} textAnchor='middle'>
+            ai agent
+          </text>
+          <text className='note' x={AGENT.x} y={AGENT.y + AGENT.r + 42} textAnchor='middle'>
+            needs data
+          </text>
+          <text className='note' x={AGENT.x} y={AGENT.y + AGENT.r + 56} textAnchor='middle'>
+            nobody collected
+          </text>
+
+          {/* ── the long way ───────────────────────────────────────────── */}
+          <text className='lane slow' x='168' y='44'>
             SDLC
           </text>
-          <path className='track' d={`M${TRACK_X},96 V300`} />
-          {STOPS.map((s) => (
-            <g key={s.t}>
-              <circle className='stopDot' cx={TRACK_X} cy={s.y} r='5' />
-              <text className='stop' x={TRACK_X + 16} y={s.y + 4}>
-                {s.t}
-              </text>
-            </g>
-          ))}
-          <Crawl>
-            <circle cx={TRACK_X} cy='108' r='6.5' fill='#9a9aa6' opacity='.9' />
-          </Crawl>
-          {DAYS.map((d, i) => (
-            <Slot key={d} $kf={fadeSlot(i * 12.5, (i + 1) * 12.5)}>
-              <text className='num slow' x='40' y='362'>
-                {d}
-              </text>
-            </Slot>
-          ))}
-          <text className='under' x='40' y='382'>
-            to ship one change
+          <text className='note' x='226' y='44'>
+            change the code, then wait
           </text>
 
-          {/* ── middle: production ──────────────────────────────────────── */}
-          <circle className='halo' cx={CORE.cx} cy={CORE.cy} r='118' fill='url(#halo)' />
-          <rect className='coreBox' x={CORE.cx - CORE.w / 2} y={CORE.cy - CORE.h / 2} width={CORE.w} height={CORE.h} rx='18' />
-          <g className='mesh'>
-            {LINKS.map(([a, b], i) => (
-              <line key={i} className='link' x1={CORE.cx + MESH[a].x} y1={CORE.cy + MESH[a].y} x2={CORE.cx + MESH[b].x} y2={CORE.cy + MESH[b].y} />
-            ))}
-            {MESH.map((n, i) => (
-              <circle key={i} className='node' cx={CORE.cx + n.x} cy={CORE.cy + n.y} r='5.5' />
-            ))}
-          </g>
-          <text className='coreLabel' x={CORE.cx} y={CORE.cy - CORE.h / 2 - 14} textAnchor='middle'>
-            production
-          </text>
-          <circle className='live' cx={CORE.cx - 22} cy={CORE.cy + CORE.h / 2 + 18} r='3.4' fill='#1fd793' />
-          <text className='under' x={CORE.cx - 12} y={CORE.cy + CORE.h / 2 + 22}>
-            live
-          </text>
+          {GATES.map((g) => (
+            <Gate key={g.head} $kf={gateIn(g.at)}>
+              <rect className='gateBox' x={g.x} y={TOP_Y - g.h / 2} width={g.w} height={g.h} rx={g.kind === 'diff' ? 10 : 15} />
+              {g.kind === 'diff' ? (
+                <>
+                  <text className='gateNote' x={g.x + 12} y={TOP_Y - 8}>
+                    {g.head}
+                  </text>
+                  <text className='diffTxt' x={g.x + 12} y={TOP_Y + 12}>
+                    {g.line}
+                  </text>
+                </>
+              ) : (
+                <text className='gateTxt' x={g.x + g.w / 2} y={TOP_Y + 4} textAnchor='middle'>
+                  {g.head}
+                </text>
+              )}
+            </Gate>
+          ))}
 
-          {/* ── right: the agent loop ───────────────────────────────────── */}
-          <text className='kick fast' x={W - 40} y='52' textAnchor='end'>
+          <text className='cost slow' x={PROD.x - 8} y={TOP_Y - 34} textAnchor='end'>
+            3 weeks
+          </text>
+          <Ship>
+            <circle cx={PROD.x - 8} cy={PROD.y - PROD.h / 2 - 18} r='5' fill='#a3a3ae' />
+          </Ship>
+
+          {/* ── the short way ──────────────────────────────────────────── */}
+          <text className='lane fast' x='168' y={H - 30}>
             ADLC
           </text>
+          <text className='note' x='226' y={H - 30}>
+            ask production, get the answer, ask again
+          </text>
 
-          {/* questions firing into production, about once a second */}
-          {['0s', '0.35s', '0.7s'].map((d) => (
-            <Shot key={d} cx={CORE.cx + CORE.w / 2 + 122} cy={CORE.cy} r='4' fill='#1fd793' $d={d} />
+          {[0, 1, 2, 3].map((i) => (
+            <Fire key={`f${i}`} cx={AGENT.x + 24} cy={BOT_Y} r='3.6' fill='#1fd793' $d={`${i * 0.29}s`} />
           ))}
-          <path d={`M${CORE.cx + CORE.w / 2 + 8},${CORE.cy} H${CORE.cx + CORE.w / 2 + 126}`} stroke='url(#beam)' strokeWidth='1.2' opacity='.5' />
+          {[0, 1, 2].map((i) => (
+            <Back key={`b${i}`} cx={PROD.x - 30} cy={BOT_Y + 10} r='3' fill='rgba(31,215,147,.6)' $d={`${0.14 + i * 0.38}s`} />
+          ))}
 
-          {/* the answers that come back */}
-          {CHIPS.map((variants, row) =>
-            variants.map((t, k) => {
-              // one variant per row is on screen at any moment, and the rows
-              // flip at slightly different times so the stack always looks live
-              const span = 100 / variants.length;
-              const a = k * span + row * 1.5;
-              return (
-                <Chip key={`${row}-${k}`} $kf={chipIn(a, a + span - 1.5)}>
-                  <rect className='chipBox' x={CHIP_X} y={104 + row * 42} width={CHIP_W} height='28' rx='9' />
-                  <text className='chipTxt' x={CHIP_X + 12} y={104 + row * 42 + 18}>
-                    {t}
-                  </text>
-                </Chip>
-              );
-            }),
-          )}
-
-          {ANSWERS.map((n, i) => (
-            <Slot key={n} $kf={fadeSlot(i * 10, (i + 1) * 10)}>
-              <text className='num fast' x={W - 40} y='362' textAnchor='end'>
-                {n}
+          {ANSWERS.map((a, i) => (
+            <Answer key={i} $kf={answerIn(a.at, a.until)}>
+              <rect className='ansBox' x={a.x} y={BOT_Y - 46} width='146' height='28' rx='9' />
+              <text className='ansTxt' x={a.x + 12} y={BOT_Y - 27}>
+                {a.t}
               </text>
-            </Slot>
+            </Answer>
           ))}
-          <text className='under' x={W - 40} y='382' textAnchor='end'>
-            answers, same window
+
+          <text className='cost fast' x={PROD.x - 8} y={BOT_Y + 34} textAnchor='end'>
+            1.2s each
+          </text>
+
+          {/* ── production ─────────────────────────────────────────────── */}
+          <circle className='halo' cx={PROD.x} cy={PROD.y} r='92' fill='url(#halo)' />
+          <rect className='coreBox' x={PROD.x - PROD.w / 2} y={PROD.y - PROD.h / 2} width={PROD.w} height={PROD.h} rx='16' />
+          <g className='mesh'>
+            {LINKS.map(([a, b], i) => (
+              <line key={i} className='link' x1={PROD.x + MESH[a].x} y1={PROD.y + MESH[a].y} x2={PROD.x + MESH[b].x} y2={PROD.y + MESH[b].y} />
+            ))}
+            {MESH.map((n, i) => (
+              <circle key={i} className='node' cx={PROD.x + n.x} cy={PROD.y + n.y} r='5' />
+            ))}
+          </g>
+          <text className='coreTxt' x={PROD.x} y={PROD.y - PROD.h / 2 - 14} textAnchor='middle'>
+            production
+          </text>
+          <circle className='live' cx={PROD.x - 20} cy={PROD.y + PROD.h / 2 + 18} r='3.4' fill='#1fd793' />
+          <text className='note' x={PROD.x - 10} y={PROD.y + PROD.h / 2 + 22}>
+            live
           </text>
         </Svg>
       </Panel>
