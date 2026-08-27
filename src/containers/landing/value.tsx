@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Your data was frozen months before the incident. <b>When the question changes, the data doesn&rsquo;t.</b>
+            Every incident ends the same way. Someone adds a log line, ships it to production, and waits to find out if they guessed right. <b>Three days later, you have one more log line.</b>
           </Statement>
         </Reveal>
       </Inner>

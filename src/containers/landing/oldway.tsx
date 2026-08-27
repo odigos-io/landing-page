@@ -131,17 +131,17 @@ const Check = () => (
 );
 
 const OLD = [
-  'A graph fused from tools that were never wired for this',
-  'What gets collected was frozen months ago',
-  'Blind to anything nobody thought to capture',
-  'A code change and a deploy to add one missing signal',
+  'The signal you need was not on anyone\'s list months ago',
+  'A code change, a review and a deploy to add one line',
+  'Legacy services nobody has time to touch stay dark',
+  'An agent inside the process, one bad release from an outage',
 ];
 
 const NEW = [
-  'Ask production directly, while the incident is still open',
-  'The missing signal captured live, from the kernel, in seconds',
-  'Any function, any query, any language, on demand',
-  'No code change, no redeploy, safe across all of production',
+  'Ask for the function, the query or the argument you need',
+  'Captured in running production in seconds, with no deploy',
+  'Every service covered on day one, including the old ones',
+  'Out of process, so it cannot take the application down',
 ];
 
 export const LandingOldWay = () => {
@@ -152,9 +152,9 @@ export const LandingOldWay = () => {
           <Head>
             <Eyebrow>The problem</Eyebrow>
             <h2>
-              Everyone is bolting AI onto <span className='mute'>a 2005 data pipeline.</span>
+              Your stack answers <span className='mute'>the questions you already had.</span>
             </h2>
-            <p>Fuse the code repo, the ticket queue and the observability vendor into one graph, run a model over it, and hope it sees past the gaps. It cannot. A model cannot see what was never captured. The only fix is to go and capture it, live, at the moment the question comes up.</p>
+            <p>Dashboards, alerts and traces cover what somebody decided to collect months ago. The incident that actually costs you is the one outside that set, and closing the gap means a code change, a review, a pipeline and a deploy, while production is still burning. Your AI is stuck behind the same wall: it cannot reason about data nobody captured.</p>
           </Head>
         </Reveal>
 
@@ -162,9 +162,9 @@ export const LandingOldWay = () => {
           <Cols>
             <ColCard>
               <span className='tag'>
-                <Cross /> Everyone else
+                <Cross /> Today
               </span>
-              <h3>The static bet</h3>
+              <h3>Ship a deploy to see anything new</h3>
               <List>
                 {OLD.map((t) => (
                   <Item key={t}>
@@ -181,7 +181,7 @@ export const LandingOldWay = () => {
               <span className='tag'>
                 <Check /> With Odigos
               </span>
-              <h3>The Odigos loop</h3>
+              <h3>Ask, and it lands in seconds</h3>
               <List>
                 {NEW.map((t) => (
                   <Item key={t} $new>
