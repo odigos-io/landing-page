@@ -7,6 +7,7 @@ import {
   LandingLogos,
   LandingValue,
   LandingOldWay,
+  LandingRoutes,
   LandingHowItWorks,
   LandingProduct,
   LandingFeatures,
@@ -29,6 +30,7 @@ const HomeContent = () => {
         <LandingLogos />
         <LandingValue />
         <LandingOldWay />
+        <LandingRoutes />
         <LandingHowItWorks />
         <LandingProduct />
         <LandingFeatures />
