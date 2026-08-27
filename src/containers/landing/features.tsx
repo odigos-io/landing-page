@@ -172,7 +172,7 @@ const FEATURES = [
   },
   {
     cap: 'Dynamic instrumentation',
-    title: 'Ask for data that was never instrumented.',
+    title: 'Ask for data nobody thought to collect.',
     desc: 'Point at a function, a query, or a service and Odigos captures it live, inside running production, with no code change and no redeploy. The answer comes back in seconds instead of a deploy cycle. That is the whole difference between an agent that can investigate and a model that has to guess.',
     visual: <AiVisual />,
     tags: ['no redeploys', 'captured on demand', 'safe in production'],

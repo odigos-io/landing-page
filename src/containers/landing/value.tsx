@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Your instrumentation was decided months before the incident, by someone who could not know what you would need to ask. <b>When the question changes, the data doesn&apos;t.</b>
+            Your data was frozen months before the incident. <b>When the question changes, the data doesn&rsquo;t.</b>
           </Statement>
         </Reveal>
       </Inner>

@@ -132,7 +132,7 @@ const Check = () => (
 
 const OLD = [
   'A graph fused from tools that were never wired for this',
-  'Instrumentation frozen months before the incident',
+  'What gets collected was frozen months ago',
   'Blind to anything nobody thought to capture',
   'A code change and a deploy to add one missing signal',
 ];
@@ -152,7 +152,7 @@ export const LandingOldWay = () => {
           <Head>
             <Eyebrow>The problem</Eyebrow>
             <h2>
-              Everyone is bolting AI onto <span className='mute'>instrumentation from 2005.</span>
+              Everyone is bolting AI onto <span className='mute'>a 2005 data pipeline.</span>
             </h2>
             <p>Fuse the code repo, the ticket queue and the observability vendor into one graph, run a model over it, and hope it sees past the gaps. It cannot. A model cannot see what was never captured. The only fix is to go and capture it, live, at the moment the question comes up.</p>
           </Head>

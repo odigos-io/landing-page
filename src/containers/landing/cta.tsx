@@ -164,7 +164,7 @@ export const LandingCTA = () => {
             <Mesh />
             <Glow />
             <Eyebrow>Live in production in minutes</Eyebrow>
-            <Title>Bring us the question your stack can&apos;t answer.</Title>
+            <Title>Bring us the question your stack can&rsquo;t answer.</Title>
             <Ctas>
               <Primary
                 data-track='cta'

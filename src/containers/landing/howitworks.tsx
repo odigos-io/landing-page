@@ -222,7 +222,7 @@ export const LandingHowItWorks = () => {
           <Head>
             <Eyebrow>How it works</Eyebrow>
             <h2>From install to first answer in minutes.</h2>
-            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions your stack was never instrumented for.</p>
+            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions nobody set your stack up to answer.</p>
           </Head>
         </Reveal>
 

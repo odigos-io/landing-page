@@ -155,7 +155,7 @@ export const LandingMidFlow = () => {
             <h2>
               You sample at the start or the end. <span className='mute'>AI workflows fail in the middle.</span>
             </h2>
-            <p>An agent run is long, multi-step and unpredictable. Head sampling decides before the failure exists. Tail sampling decides after the trace is over, and holds every workflow in memory to get there. The decision has to happen mid-flow, and only instrumentation that can change while the workflow is still running gets there in time.</p>
+            <p>An agent run is long, multi-step and unpredictable. Head sampling decides before the failure exists. Tail sampling decides after the trace is over, and holds every workflow in memory to get there. The decision has to happen mid-flow, and only capture that can change while the run is still going gets there in time.</p>
           </Head>
         </Reveal>
 

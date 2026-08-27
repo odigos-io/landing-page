@@ -30,12 +30,12 @@ const ROWS: Row[] = [
   { id: 'r0', d: 0, w: 100, label: 'POST /checkout · 812ms', wave: 0 },
   { id: 'r1', d: 1, w: 88, label: 'payments-svc', wave: 0 },
   { id: 'r2', d: 2, w: 76, label: 'charge()', wave: 0 },
-  { id: 'r3', d: 3, w: 64, label: 'db.pool.acquire · 240ms', wave: 1, hot: true },
-  { id: 'r4', d: 3, w: 48, label: 'pg.query · 6ms', wave: 1 },
-  { id: 'r5', d: 3, w: 36, label: 'conn.wait · 234ms', wave: 1 },
-  { id: 'r6', d: 4, w: 52, label: 'tls.handshake · fraud-svc', wave: 2, hot: true },
-  { id: 'r7', d: 4, w: 40, label: 'x509.verify', wave: 2 },
-  { id: 'r8', d: 4, w: 28, label: 'runtime.gopark', wave: 2 },
+  { id: 'r3', d: 3, w: 64, label: 'fraudScore() · 240ms', wave: 1, hot: true },
+  { id: 'r4', d: 3, w: 44, label: 'reserveInventory() · 41ms', wave: 1 },
+  { id: 'r5', d: 3, w: 30, label: 'calculateTax() · 12ms', wave: 1 },
+  { id: 'r6', d: 4, w: 52, label: 'risk-api · retry 3/3', wave: 2, hot: true },
+  { id: 'r7', d: 4, w: 34, label: 'riskModel.score()', wave: 2 },
+  { id: 'r8', d: 4, w: 24, label: 'jwt.verify', wave: 2 },
 ];
 
 const BAR_X = 204; // depth 0 bar start
@@ -332,9 +332,9 @@ const LEN = 62;
 
 const SCRIPT = [
   { kind: 'q', speaker: 'agent', text: 'why is checkout p99 up 3x?', at: 6, until: 30 },
-  { kind: 'a', speaker: 'odigos', text: 'charge() waits 240ms on db.pool', at: 33, until: 45 },
-  { kind: 'q', speaker: 'agent', text: 'so what is holding the pool?', at: 46, until: 67 },
-  { kind: 'a', speaker: 'odigos', text: 'tls.handshake in fraud-svc, 11 new spans', at: 69, until: 90 },
+  { kind: 'a', speaker: 'odigos', text: 'fraudScore() eats 240ms inside charge()', at: 33, until: 45 },
+  { kind: 'q', speaker: 'agent', text: 'what is fraudScore() waiting on?', at: 46, until: 67 },
+  { kind: 'a', speaker: 'odigos', text: '3 retries against the partner risk api', at: 69, until: 90 },
 ] as const;
 
 const LINE_Y = [28, 46, 64, 82];
@@ -472,21 +472,31 @@ export const HeroArt = () => {
           </Pop>
           <Ping cx={ROWS2[2].x} cy={ROWS2[2].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P1)} />
           <Pop $kf={probeAt(P2)}>
-            <rect className='probeRing' x={ROWS2[5].x - 4} y={ROWS2[5].y - 3} width={ROWS2[5].w + 8} height={BAR_H + 6} rx={5} />
+            <rect className='probeRing' x={ROWS2[3].x - 4} y={ROWS2[3].y - 3} width={ROWS2[3].w + 8} height={BAR_H + 6} rx={5} />
           </Pop>
-          <Ping cx={ROWS2[5].x} cy={ROWS2[5].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P2)} />
+          <Ping cx={ROWS2[3].x} cy={ROWS2[3].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P2)} />
 
           {/* the standing claim */}
+          {/* the same question, answered both ways */}
           <g className='claims'>
-            <text className='cap' x='22' y='254'>
-              no code change
+            <text className='cap' x='22' y='244'>
+              time to that answer
             </text>
-            <text className='cap' x='22' y='268'>
-              no redeploy
+            <text className='cap on' x='22' y='262'>
+              odigos
             </text>
-            <text className='cap on' x='22' y='282'>
-              answer in 1.2s
+            <text className='cap on' x='178' y='262' textAnchor='end'>
+              1.2s
             </text>
+            <rect x='22' y='266' width='16' height='3' rx='1.5' fill='#11a877' />
+            <rect x='40' y='267' width='138' height='1' fill='rgba(24,20,54,0.08)' />
+            <text className='cap' x='22' y='282'>
+              ship a code change
+            </text>
+            <text className='cap' x='178' y='282' textAnchor='end'>
+              3 weeks
+            </text>
+            <rect x='22' y='286' width='156' height='3' rx='1.5' fill='rgba(24,20,54,0.16)' />
           </g>
         </Svg>
       </Panel>
