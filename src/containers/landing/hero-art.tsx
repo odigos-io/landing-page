@@ -13,7 +13,7 @@ import styled, { keyframes } from 'styled-components';
    Everything is opacity/transform on one shared timeline (DUR), so the whole
    thing stays on the compositor. Reduced motion drops to a static frame. */
 
-const DUR = '13s';
+const DUR = '10s';
 
 type KF = ReturnType<typeof keyframes>;
 
@@ -45,18 +45,20 @@ const ROW_STEP = 16;
 const BAR_H = 9;
 
 /* ── timeline, in % of DUR ───────────────────────────────────────────────────
-    6 agent asks          9 question beam       15 probe attaches
-   19 wave 1 lands       30 answer beam         32 answer reads
-   46 the answer becomes the next question, deeper
-   49 beam  54 probe  57 wave 2  66 beam  68 answer   92 reset             */
-const Q1 = 9;
-const Q2 = 49;
-const A1 = 30;
-const A2 = 66;
-const P1 = 15;
-const P2 = 54;
-const W1 = 19;
-const W2 = 57;
+   Cause has to land on top of effect or none of this reads. The beam arrives
+   exactly when the probe snaps on, and the first new row lands right behind it.
+   cycle 1:  4 ask · 7 beam · 12 probe · 14 rows · 23 args · 26 beam back · 30 answer
+   cycle 2: 40 ask · 43 beam · 48 probe · 50 rows · 60 beam back · 64 answer
+   then everything holds until 92 so a late arrival still reads the whole thing */
+const Q1 = 7;
+const Q2 = 43;
+const A1 = 26;
+const A2 = 60;
+const P1 = 12;
+const P2 = 48;
+const W1 = 14;
+const W2 = 50;
+const INS = 23;
 
 const fadeAt = (a: number, b: number) => keyframes`0%,${a}%{opacity:0}${a + 2}%,${b}%{opacity:1}${b + 2}%,100%{opacity:0}`;
 
@@ -90,12 +92,19 @@ const landAt = (r: number) => keyframes`
   ${r + 11}%{opacity:1;transform:scale(1)}
   ${r + 13}%,100%{opacity:0;transform:scale(.2)}`;
 
-/* the probe snapping onto the span the question pointed at */
-const probeAt = (r: number) => keyframes`
+/* the probe snaps onto the span the question pointed at, and holds until `end` */
+const probeAt = (r: number, end: number) => keyframes`
   0%,${r}%{opacity:0;transform:scale(1.9)}
   ${r + 3}%{opacity:1;transform:scale(1)}
-  ${r + 24}%{opacity:1;transform:scale(1)}
-  ${r + 28}%,100%{opacity:0;transform:scale(1)}`;
+  ${end}%{opacity:1;transform:scale(1)}
+  ${end + 4}%,100%{opacity:0;transform:scale(1)}`;
+
+/* the row the question pointed at flashes as the capture attaches, so the link
+   between the question and that one span is not something you have to infer */
+const flashAt = (r: number) => keyframes`
+  0%,${r}%{opacity:0}
+  ${r + 2}%{opacity:.55}
+  ${r + 9}%,100%{opacity:0}`;
 
 /* the inspector lands once the capture is attached and stays for the rest of
    the loop, so the args and the return value are readable, not a flash */
@@ -116,14 +125,16 @@ const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY
 const ROWS2 = ROWS.map((r, i) => {
   const y = ROW_Y + i * ROW_STEP;
   const x = BAR_X + r.d * BAR_STEP;
+  // sequential, hot row first. The previous rotation landed the answering row
+  // last, which made the reveal look like scatter instead of a result.
   const base = r.wave === 1 ? W1 : W2;
-  const at = base + ((i + 2) % 3) * 3;
+  const at = base + ((i - 3) % 3) * 3;
   return { ...r, x, y, kf: r.wave === 0 ? null : rowIn(at) };
 });
 
 const Frame = styled.div`
   position: relative;
-  animation: ${float} 13s ease-in-out infinite;
+  animation: ${float} 16s ease-in-out infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -194,6 +205,14 @@ const RowG = styled.g<{ $kf: KF }>`
     animation: none;
     opacity: 1;
     transform: none;
+  }
+`;
+
+const Flash = styled.rect<{ $kf: KF }>`
+  animation: ${(p) => p.$kf} ${DUR} ease-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
   }
 `;
 
@@ -313,6 +332,9 @@ const Svg = styled.svg`
   .barBase {
     fill: rgba(24, 20, 54, 0.17);
   }
+  .rowFlash {
+    fill: #11a877;
+  }
   .probeRing {
     fill: rgba(17, 168, 119, 0.08);
     stroke: #11a877;
@@ -365,20 +387,20 @@ const A_PATH = 'M184,199 C164,199 158,186 140,178';
 const LEN = 62;
 
 const SCRIPT = [
-  { kind: 'q', speaker: 'agent', text: 'why is checkout p99 up 3x?', at: 6, until: 30 },
-  { kind: 'a', speaker: 'odigos', text: 'fraudScore() eats 240ms inside charge()', at: 33, until: 45 },
-  { kind: 'q', speaker: 'agent', text: 'what is fraudScore() waiting on?', at: 46, until: 67 },
-  { kind: 'a', speaker: 'odigos', text: '3 retries against the partner risk api', at: 69, until: 90 },
+  { kind: 'q', speaker: 'agent', text: 'why is checkout p99 up 3x?', at: 4, until: 28 },
+  { kind: 'a', speaker: 'odigos', text: 'fraudScore() eats 240ms inside charge()', at: 30, until: 38 },
+  { kind: 'q', speaker: 'agent', text: 'what is fraudScore() waiting on?', at: 40, until: 58 },
+  { kind: 'a', speaker: 'odigos', text: '3 retries against the partner risk api', at: 62, until: 90 },
 ] as const;
 
 const LINE_Y = [28, 46, 64, 82];
 const LINES = SCRIPT.map((s) => ({ ...s, kf: lineAt(s.at, s.until) }));
 
 const STATES = [
-  { text: 'asking', kf: fadeAt(4, 30) },
-  { text: 'reading', kf: fadeAt(31, 45) },
-  { text: 'asking', kf: fadeAt(45, 66) },
-  { text: 'reading', kf: fadeAt(67, 91) },
+  { text: 'asking', kf: fadeAt(3, 27) },
+  { text: 'reading', kf: fadeAt(28, 38) },
+  { text: 'asking', kf: fadeAt(39, 59) },
+  { text: 'reading', kf: fadeAt(60, 91) },
 ];
 
 export const HeroArt = () => {
@@ -472,8 +494,11 @@ export const HeroArt = () => {
           </text>
 
           {/* probe chip, panel header right */}
-          {[P1, P2].map((t, i) => (
-            <Pop key={`c${i}`} $kf={probeAt(t)}>
+          {[
+            [P1, 36],
+            [P2, 88],
+          ].map(([t, end], i) => (
+            <Pop key={`c${i}`} $kf={probeAt(t, end)}>
               <rect className='chip' x='330' y='116' width='118' height='16' rx='8' />
               <text className='chipText' x='340' y='127'>
                 eBPF probe attached
@@ -500,18 +525,20 @@ export const HeroArt = () => {
           )}
 
           {/* the probe lands on the exact span the question pointed at */}
-          <Pop $kf={probeAt(P1)}>
+          <Pop $kf={probeAt(P1, 36)}>
             <rect className='probeRing' x={ROWS2[2].x - 4} y={ROWS2[2].y - 3} width={ROWS2[2].w + 8} height={BAR_H + 6} rx={5} />
           </Pop>
+          <Flash className='rowFlash' x={ROWS2[2].x - 4} y={ROWS2[2].y - 3} width={ROWS2[2].w + 8} height={BAR_H + 6} rx={5} $kf={flashAt(P1)} />
           <Ping cx={ROWS2[2].x} cy={ROWS2[2].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P1)} />
-          <Pop $kf={probeAt(P2)}>
+          <Pop $kf={probeAt(P2, 88)}>
             <rect className='probeRing' x={ROWS2[3].x - 4} y={ROWS2[3].y - 3} width={ROWS2[3].w + 8} height={BAR_H + 6} rx={5} />
           </Pop>
+          <Flash className='rowFlash' x={ROWS2[3].x - 4} y={ROWS2[3].y - 3} width={ROWS2[3].w + 8} height={BAR_H + 6} rx={5} $kf={flashAt(P2)} />
           <Ping cx={ROWS2[3].x} cy={ROWS2[3].y + BAR_H / 2} r='7' stroke='#11a877' $kf={pingAt(P2)} />
 
           {/* the standing claim */}
           {/* the arguments and the return value of the call itself */}
-          <Pop $kf={panelIn(W1 + 3)}>
+          <Pop $kf={panelIn(INS)}>
             <rect className='inspector' x='22' y='218' width='156' height='74' rx='10' />
             <text className='cap' x='32' y='233'>
               args + return value
