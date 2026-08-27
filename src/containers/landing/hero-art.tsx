@@ -3,74 +3,68 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-/* Hero art: a real distributed trace, interrogated live.
+/* Hero art: two clocks, one production.
 
-   It has to LOOK like a trace, so it is a waterfall: bars placed on a time
-   axis by when they started and how long they ran, nested by call depth. The
-   loop is what happens to it. Someone asks production a question in plain
-   language, and spans that were never being captured appear inside the trace,
-   marked green, with the arguments and the return value of the call that
-   turned out to be the problem. Then a deeper question, and it goes further in.
+   Left is the SDLC. It is the only way most teams can change what production
+   tells them: write code, review it, run the pipeline, deploy. One lap here
+   takes weeks, and the dot on that ring crawls.
 
-   Every bar is one transform animation on a shared timeline. */
+   Right is the agent loop: ask production, capture what answers it, read the
+   answer, ask the next thing. One lap takes about a second, and the dot laps
+   that ring over and over inside the time the left one barely moves.
 
-const DUR = '11s';
-const TOTAL = 812; // ms, the width of the whole trace
+   The middle is the live trace, and it gains a span on every fast lap. That is
+   the whole argument for dynamic capture: agents run at a cadence the delivery
+   pipeline can never feed. */
 
-type Span = {
-  label: string;
-  start: number;
-  ms: number;
-  depth: number;
-  at?: number; // % of the loop when it is captured. absent = already there
-  hot?: boolean;
+const DUR = '12s';
+
+/* ── geometry ─────────────────────────────────────────────────────────────── */
+const L = { cx: 100, cy: 170, r: 58 }; // sdlc ring
+const R = { cx: 533, cy: 170, r: 58 }; // agent ring
+const P = { x: 200, y: 70, w: 250, h: 210 }; // production
+
+const SDLC_NODES = [0, 90, 180, 270];
+const AGENT_NODES = [270, 30, 150];
+
+const onRing = (c: { cx: number; cy: number; r: number }, deg: number) => {
+  const a = ((deg - 90) * Math.PI) / 180;
+  return { x: c.cx + c.r * Math.cos(a), y: c.cy + c.r * Math.sin(a) };
 };
 
+type Span = { label: string; start: number; ms: number; depth: number; at?: number; hot?: boolean };
+const TOTAL = 800;
 const SPANS: Span[] = [
-  { label: 'POST /checkout', start: 0, ms: 812, depth: 0 },
-  { label: 'payments-svc', start: 38, ms: 700, depth: 1 },
-  { label: 'charge()', start: 88, ms: 600, depth: 2 },
-  { label: 'fraudScore()', start: 118, ms: 240, depth: 3, at: 13, hot: true },
-  { label: 'reserveInventory()', start: 372, ms: 41, depth: 3, at: 16 },
-  { label: 'calculateTax()', start: 430, ms: 12, depth: 3, at: 19 },
-  { label: 'risk-api · retry 3/3', start: 136, ms: 210, depth: 4, at: 37, hot: true },
-  { label: 'jwt.verify', start: 352, ms: 6, depth: 4, at: 40 },
+  { label: 'POST /checkout', start: 0, ms: 800, depth: 0 },
+  { label: 'payments-svc', start: 40, ms: 690, depth: 1 },
+  { label: 'charge()', start: 86, ms: 600, depth: 2 },
+  { label: 'fraudScore()', start: 116, ms: 240, depth: 3, at: 21, hot: true },
+  { label: 'risk-api retry 3/3', start: 132, ms: 210, depth: 4, at: 41, hot: true },
+  { label: 'reserveInventory()', start: 372, ms: 41, depth: 3, at: 61 },
+  { label: 'calculateTax()', start: 430, ms: 12, depth: 3, at: 81 },
 ];
 
-const ASKS = [
-  { text: 'why is checkout p99 up 3x?', doing: 'capturing inside charge()', at: 3, until: 24 },
-  { text: 'what is fraudScore() waiting on?', doing: 'capturing args and return value', at: 27, until: 90 },
-];
+const HOLD = 93;
 
-const HOLD = 91;
-const ARGS_AT = 44;
-const FOOT_AT = 52;
-
-/* a captured span draws itself along the time axis */
+/* ── motion ───────────────────────────────────────────────────────────────── */
+const spin = keyframes`from{transform:rotate(0deg)}to{transform:rotate(360deg)}`;
 const barIn = (r: number) => keyframes`
   0%,${r}%{opacity:0;transform:scaleX(0)}
-  ${r + 4}%{opacity:1;transform:scaleX(1)}
+  ${r + 3}%{opacity:1;transform:scaleX(1)}
   ${HOLD}%{opacity:1;transform:scaleX(1)}
-  ${HOLD + 4}%,100%{opacity:0;transform:scaleX(0)}`;
-
+  ${HOLD + 3}%,100%{opacity:0;transform:scaleX(0)}`;
 const rowIn = (r: number) => keyframes`
   0%,${r}%{opacity:0}
-  ${r + 3}%{opacity:1}
-  ${HOLD}%{opacity:1}
-  ${HOLD + 4}%,100%{opacity:0}`;
-
-const lineIn = (a: number, b: number) => keyframes`
-  0%,${a}%{opacity:0;transform:translateY(3px)}
-  ${a + 3}%,${b}%{opacity:1;transform:none}
-  ${b + 3}%,100%{opacity:0;transform:none}`;
-
-const holdIn = (r: number) => keyframes`
-  0%,${r}%{opacity:0;transform:translateY(3px)}
-  ${r + 3}%{opacity:1;transform:none}
-  ${HOLD}%{opacity:1;transform:none}
-  ${HOLD + 4}%,100%{opacity:0;transform:none}`;
-
-const pulse = keyframes`0%,100%{opacity:.45}50%{opacity:1}`;
+  ${r + 3}%,${HOLD}%{opacity:1}
+  ${HOLD + 3}%,100%{opacity:0}`;
+const askPulse = keyframes`
+  0%{stroke-dashoffset:17}
+  100%{stroke-dashoffset:0}`;
+const shipPulse = keyframes`
+  0%,86%{opacity:0;transform:translateX(-14px)}
+  90%{opacity:.9;transform:translateX(0)}
+  96%,100%{opacity:0;transform:translateX(10px)}`;
+const breathe = keyframes`0%,100%{opacity:.5}50%{opacity:1}`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 
 const Frame = styled.div`
@@ -85,172 +79,35 @@ const Panel = styled.div`
   overflow: hidden;
   border-radius: 20px;
   border: 1px solid rgba(91, 67, 241, 0.14);
-  background: linear-gradient(180deg, #ffffff 0%, #fcfbff 62%, #f6f3fd 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #fcfbff 60%, #f6f3fd 100%);
   box-shadow: var(--shadow-panel);
-  font-family: var(--font-mono), ui-monospace, monospace;
-`;
-
-const Bar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 18px;
-  border-bottom: 1px solid rgba(24, 20, 54, 0.07);
-  background: rgba(255, 255, 255, 0.72);
-  font-size: 11px;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-
-  .who {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--ink-mute);
-  }
-  .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #11a877;
-    box-shadow: 0 0 0 3px rgba(17, 168, 119, 0.15);
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 `;
 
-const Ask = styled.div`
-  position: relative;
-  height: 46px;
-  border-bottom: 1px solid rgba(24, 20, 54, 0.07);
-`;
-
-const AskLine = styled.div<{ $kf: ReturnType<typeof keyframes> }>`
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 18px;
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
+/* the slow ring makes one lap for the whole loop. The fast ring laps five
+   times in the same window, which is the entire point of the picture. */
+const Slow = styled.g`
+  transform-origin: ${L.cx}px ${L.cy}px;
+  animation: ${spin} ${DUR} linear infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
-
-  .q {
-    flex: 1 1 auto;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: clamp(12px, 1.05vw, 14.5px);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-  .caret {
-    color: var(--accent);
-    font-weight: 600;
-  }
-  .doing {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 10.5px;
-    letter-spacing: 0.04em;
-    color: #0e9a6c;
-  }
-  .doing::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #11a877;
-    animation: ${pulse} 1.1s ease-in-out infinite;
-  }
-  @media (max-width: 620px) {
-    .doing {
-      display: none;
-    }
-  }
 `;
-
-const Axis = styled.div`
-  display: grid;
-  grid-template-columns: 46% 1fr 54px;
-  align-items: center;
-  padding: 12px 18px 4px;
-  font-size: 9.5px;
-  letter-spacing: 0.06em;
-  color: var(--ink-faint);
-
-  .ticks {
-    position: relative;
-    height: 10px;
-  }
-  .ticks span {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-  }
-  .ticks span:first-child {
-    transform: none;
-  }
-`;
-
-const Rows = styled.div`
-  padding: 0 18px 16px;
-`;
-
-const Row = styled.div<{ $kf: ReturnType<typeof keyframes>; $new?: boolean }>`
-  display: grid;
-  grid-template-columns: 46% 1fr 54px;
-  align-items: center;
-  gap: 0;
-  height: 24px;
-  animation: ${(p) => p.$kf} ${DUR} linear infinite;
+const Fast = styled.g`
+  transform-origin: ${R.cx}px ${R.cy}px;
+  animation: ${spin} 2.4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
-    opacity: 1;
-  }
-
-  .label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 0;
-    font-size: clamp(10.5px, 0.92vw, 12.5px);
-    color: ${(p) => (p.$new ? 'var(--ink)' : 'var(--ink-mute)')};
-  }
-  .label span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .plus {
-    flex: none;
-    color: #0e9a6c;
-    font-weight: 700;
-  }
-  .track {
-    position: relative;
-    height: 100%;
-  }
-  .ms {
-    text-align: right;
-    font-size: clamp(10px, 0.85vw, 11.5px);
-    font-variant-numeric: tabular-nums;
-    color: ${(p) => (p.$new ? '#0e9a6c' : 'var(--ink-faint)')};
   }
 `;
 
-const Fill = styled.div<{ $kf?: ReturnType<typeof keyframes>; $hot?: boolean; $new?: boolean }>`
-  position: absolute;
-  top: 50%;
-  height: 9px;
-  margin-top: -4.5px;
-  border-radius: 3px;
+const Bar = styled.rect<{ $kf?: ReturnType<typeof keyframes> }>`
   transform-origin: left center;
-  background: ${(p) => (p.$hot ? 'linear-gradient(90deg,#ff6a9c,#ff3d7a)' : p.$new ? 'linear-gradient(90deg,#6a4bff,#11a877)' : 'rgba(24,20,54,.15)')};
+  transform-box: fill-box;
   animation: ${(p) => p.$kf ?? 'none'} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -258,115 +115,240 @@ const Fill = styled.div<{ $kf?: ReturnType<typeof keyframes>; $hot?: boolean; $n
     transform: none;
   }
 `;
-
-const Args = styled.div<{ $kf: ReturnType<typeof keyframes> }>`
-  margin: 2px 0 0 calc(46% + 0px);
-  padding: 8px 10px;
-  border-left: 2px solid rgba(255, 61, 122, 0.5);
-  background: rgba(255, 61, 122, 0.05);
-  border-radius: 0 8px 8px 0;
-  font-size: clamp(10px, 0.88vw, 12px);
-  line-height: 1.6;
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
+const Row = styled.g<{ $kf?: ReturnType<typeof keyframes> }>`
+  animation: ${(p) => p.$kf ?? 'none'} ${DUR} linear infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     opacity: 1;
   }
+`;
+const Ship = styled.g`
+  animation: ${shipPulse} ${DUR} ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
+  }
+`;
 
-  .k {
-    color: var(--ink-faint);
+const Svg = styled.svg`
+  .ringSlow {
+    fill: none;
+    stroke: rgba(24, 20, 54, 0.14);
+    stroke-width: 1.4;
+    stroke-dasharray: 4 5;
   }
-  .v {
-    color: var(--accent);
+  .ringFast {
+    fill: none;
+    stroke: rgba(17, 168, 119, 0.4);
+    stroke-width: 1.6;
   }
-  .r {
-    color: #d63a6f;
+  .nodeSlow {
+    fill: #fff;
+    stroke: rgba(24, 20, 54, 0.22);
+    stroke-width: 1.2;
+  }
+  .nodeFast {
+    fill: #fff;
+    stroke: rgba(17, 168, 119, 0.55);
+    stroke-width: 1.2;
+  }
+  .kicker {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .sub {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    fill: var(--ink-faint);
+  }
+  .clock {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .clockSub {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    fill: var(--ink-faint);
+  }
+  .slowInk {
+    fill: var(--ink-mute);
+  }
+  .fastInk {
+    fill: #0e9a6c;
+  }
+  .prodBox {
+    fill: rgba(255, 255, 255, 0.72);
+    stroke: rgba(91, 67, 241, 0.16);
+    stroke-width: 1;
+  }
+  .cap {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    fill: var(--ink-faint);
+  }
+  .span {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    fill: var(--ink-mute);
+  }
+  .span.on {
+    fill: var(--ink);
+  }
+  .plus {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    fill: #0e9a6c;
+  }
+  .live {
+    animation: ${breathe} 1.6s ease-in-out infinite;
+  }
+  .askPath {
+    fill: none;
+    stroke: #11a877;
+    stroke-width: 1.6;
+    stroke-dasharray: 17;
+    animation: ${askPulse} 1.2s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .live,
+    .askPath {
+      animation: none;
+    }
   }
   @media (max-width: 620px) {
-    margin-left: 0;
+    .span,
+    .cap {
+      font-size: 10px;
+    }
   }
 `;
 
-const Foot = styled.div<{ $kf: ReturnType<typeof keyframes> }>`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 18px;
-  padding: 11px 0 14px;
-  border-top: 1px solid rgba(24, 20, 54, 0.07);
-  font-size: clamp(10.5px, 0.9vw, 12px);
-  color: #0e9a6c;
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 1;
-  }
-`;
-
-const pct = (v: number) => `${(v / TOTAL) * 100}%`;
+const BARS_X = P.x + 108;
+const BARS_W = P.w - 122;
+const pctX = (v: number) => BARS_X + (v / TOTAL) * BARS_W;
+const pctW = (v: number) => (v / TOTAL) * BARS_W;
 
 export const HeroArt = () => {
   return (
     <Frame>
       <Panel>
-        <Bar>
-          <span className='who'>
-            <span className='dot' /> odigos
-          </span>
-          <span>trace 8f2c14 · production</span>
-        </Bar>
+        <Svg
+          viewBox='0 0 640 320'
+          fill='none'
+          xmlns='http://www.w3.org/2000/svg'
+          role='img'
+          aria-label='Two loops around one production system. On the left the software delivery lifecycle, which takes weeks per lap. On the right an agent loop asking production directly, which takes about a second per lap and adds new spans to the live trace on every pass.'
+        >
+          {/* ── left: the delivery pipeline ───────────────────────────── */}
+          <circle className='ringSlow' cx={L.cx} cy={L.cy} r={L.r} />
+          {SDLC_NODES.map((d) => {
+            const p = onRing(L, d);
+            return <circle key={d} className='nodeSlow' cx={p.x} cy={p.y} r='5' />;
+          })}
+          <Slow>
+            <circle cx={L.cx} cy={L.cy - L.r} r='6' fill='rgba(24,20,54,.5)' />
+          </Slow>
+          <text className='clock slowInk' x={L.cx} y={L.cy + 2} textAnchor='middle'>
+            3 weeks
+          </text>
+          <text className='clockSub' x={L.cx} y={L.cy + 16} textAnchor='middle'>
+            per lap
+          </text>
+          <text className='kicker slowInk' x={L.cx} y='42' textAnchor='middle'>
+            SDLC
+          </text>
+          <text className='sub' x={L.cx} y='58' textAnchor='middle'>
+            code · ci · deploy
+          </text>
+          <text className='sub' x={L.cx} y='268' textAnchor='middle'>
+            weeks to add
+          </text>
+          <text className='sub' x={L.cx} y='282' textAnchor='middle'>
+            one missing signal
+          </text>
 
-        <Ask>
-          {ASKS.map((a, i) => (
-            <AskLine key={i} $kf={lineIn(a.at, a.until)}>
-              <span className='caret'>❯</span>
-              <span className='q'>{a.text}</span>
-              <span className='doing'>{a.doing}</span>
-            </AskLine>
-          ))}
-        </Ask>
+          {/* deploys reach production once, late in the loop */}
+          <path d='M148,170 H196' stroke='rgba(24,20,54,.18)' strokeWidth='1.4' strokeDasharray='4 5' />
+          <Ship>
+            <circle cx='172' cy='170' r='4' fill='rgba(24,20,54,.5)' />
+          </Ship>
 
-        <Axis>
-          <span>span</span>
-          <span className='ticks'>
-            <span style={{ left: '0%' }}>0</span>
-            <span style={{ left: '25%' }}>200ms</span>
-            <span style={{ left: '50%' }}>400ms</span>
-            <span style={{ left: '75%' }}>600ms</span>
-          </span>
-          <span style={{ textAlign: 'right' }}>took</span>
-        </Axis>
+          {/* ── middle: production, and the trace inside it ────────────── */}
+          <rect className='prodBox' x={P.x} y={P.y} width={P.w} height={P.h} rx='12' />
+          <circle className='live' cx={P.x + 15} cy={P.y + 19} r='3.4' fill='#11a877' />
+          <text className='cap' x={P.x + 25} y={P.y + 22}>
+            production · live
+          </text>
 
-        <Rows>
-          {SPANS.map((s, i) => (
-            <React.Fragment key={s.label}>
-              <Row $kf={s.at ? rowIn(s.at) : rowIn(0)} $new={!!s.at}>
-                <span className='label' style={{ paddingLeft: `${s.depth * 11}px` }}>
-                  {s.at ? (
-                    <span className='plus' aria-hidden>
-                      +
-                    </span>
-                  ) : null}
-                  <span>{s.label}</span>
-                </span>
-                <span className='track'>
-                  <Fill style={{ left: pct(s.start), width: pct(s.ms) }} $kf={s.at ? barIn(s.at) : undefined} $hot={s.hot} $new={!!s.at} />
-                </span>
-                <span className='ms'>{s.ms}ms</span>
+          {SPANS.map((s, i) => {
+            const y = P.y + 44 + i * 22;
+            return (
+              <Row key={s.label} $kf={s.at ? rowIn(s.at) : undefined}>
+                {s.at && (
+                  <text className='plus' x={P.x + 11 + s.depth * 6} y={y + 7}>
+                    +
+                  </text>
+                )}
+                <text className={`span${s.at ? ' on' : ''}`} x={P.x + 20 + s.depth * 6} y={y + 7}>
+                  {s.label.length > 17 ? s.label.slice(0, 17) + '…' : s.label}
+                </text>
+                <Bar
+                  x={pctX(s.start)}
+                  y={y}
+                  width={pctW(s.ms)}
+                  height='7'
+                  rx='2.5'
+                  fill={s.hot ? '#ff3d7a' : s.at ? '#11a877' : 'rgba(24,20,54,.16)'}
+                  $kf={s.at ? barIn(s.at) : undefined}
+                />
               </Row>
-              {i === 6 && (
-                <Args $kf={holdIn(ARGS_AT)}>
-                  <div>
-                    <span className='k'>userId</span> <span className='v'>&quot;u_8843&quot;</span> <span className='k'>amount</span> <span className='v'>249.90</span>
-                  </div>
-                  <div className='r'>→ timeout after 3 retries, no fallback</div>
-                </Args>
-              )}
-            </React.Fragment>
-          ))}
-        </Rows>
+            );
+          })}
 
-        <Foot $kf={holdIn(FOOT_AT)}>answered in 1.2s · no code change · no redeploy</Foot>
+          {/* ── right: the agent loop ─────────────────────────────────── */}
+          <path className='askPath' d='M454,160 H471' />
+          <path d='M471,182 H454' stroke='rgba(17,168,119,.45)' strokeWidth='1.6' />
+          <path d='M452,182 l7,3.4 v-6.8 z' fill='rgba(17,168,119,.75)' />
+          <path d='M469,160 l7,-3.4 v6.8 z' fill='#11a877' />
+
+          <circle className='ringFast' cx={R.cx} cy={R.cy} r={R.r} />
+          {AGENT_NODES.map((d) => {
+            const p = onRing(R, d);
+            return <circle key={d} className='nodeFast' cx={p.x} cy={p.y} r='5' />;
+          })}
+          <Fast>
+            <circle cx={R.cx} cy={R.cy - R.r} r='6.4' fill='#11a877' />
+          </Fast>
+          <text className='clock fastInk' x={R.cx} y={R.cy + 2} textAnchor='middle'>
+            1.2s
+          </text>
+          <text className='clockSub' x={R.cx} y={R.cy + 16} textAnchor='middle'>
+            per lap
+          </text>
+          <text className='kicker fastInk' x={R.cx} y='42' textAnchor='middle'>
+            ADLC
+          </text>
+          <text className='sub' x={R.cx} y='58' textAnchor='middle'>
+            ask · capture · answer
+          </text>
+          <text className='sub' x={R.cx} y='268' textAnchor='middle'>
+            seconds to add
+          </text>
+          <text className='sub' x={R.cx} y='282' textAnchor='middle'>
+            one missing signal
+          </text>
+        </Svg>
       </Panel>
     </Frame>
   );

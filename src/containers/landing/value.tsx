@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Every incident ends the same way. Someone adds a log line, ships it to production, and waits to find out if they guessed right. <b>Three days later, you have one more log line.</b>
+            An agent can form a hypothesis, test it and move on in under a second. Getting it one signal nobody captured takes a code change, a review, a pipeline and a deploy. <b>Your agents run in seconds. Your visibility ships in sprints.</b>
           </Statement>
         </Reveal>
       </Inner>

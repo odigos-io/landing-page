@@ -162,9 +162,9 @@ export const LandingOutcomes = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>What teams build on it</Eyebrow>
-            <h2>One layer. Every agent.</h2>
-            <p>Incident response, regression detection, runtime security. The teams running the largest production estates in the world build all of it on the same live context.</p>
+            <Eyebrow>What teams do with it</Eyebrow>
+            <h2>One agent on the node. Every team downstream.</h2>
+            <p>Your SREs, your security team, and the agents your own engineers are building all read the same runtime context. One thing to roll out, one thing to secure, one thing to pay for, instead of a different agent per use case fighting for the same CPU.</p>
           </Head>
         </Reveal>
 
