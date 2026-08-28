@@ -30,11 +30,11 @@ const B3 = MAP.y + 224; // functions
 const HOLD = 93;
 
 const STEPS = [
-  { n: 1, at: 3, q: 'where are the errors?', a: 'checkout · 6.1% · p99 812ms' },
+  { n: 1, at: 3, q: 'what is failing right now?', a: 'checkout · 6.1% err · p99 812ms' },
   { n: 2, at: 21, q: 'show me a failing trace', a: 'charge() 600ms · nothing inside' },
-  { n: 3, at: 39, q: 'instrument charge() internals', a: '9 functions attached · live' },
-  { n: 4, at: 57, q: 'values on applyPromo()', a: 'in "BLACK50" → out 0.00', cause: true },
-  { n: 5, at: 75, q: 'how many carts hit it?', a: '1,284 in the last 5 min' },
+  { n: 3, at: 39, q: 'open charge() internals', a: '9 functions · live in 1.2s' },
+  { n: 4, at: 57, q: 'what does applyPromo() return?', a: 'in "BLACK50" → out 0.00', cause: true },
+  { n: 5, at: 75, q: 'how many carts hit that?', a: '1,284 carts · still counting' },
 ];
 
 /* band 1: the numbers you already have */
@@ -56,9 +56,9 @@ const SPANS = [
 const FNS = [
   { t: 'authorize()', x: 8, y: 0, known: true },
   { t: 'applyPromo()', x: 76, y: 32, target: true },
-  { t: 'taxFor()', x: 118, y: 2 },
+  { t: 'taxFor()', x: 102, y: 2 },
   { t: 'reserve()', x: 16, y: 62 },
-  { t: 'settle()', x: 130, y: 60 },
+  { t: 'settle()', x: 112, y: 60 },
   { t: 'riskScore()', x: 80, y: 92 },
 ];
 
@@ -142,7 +142,7 @@ const Svg = styled.svg`
   }
   .q {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 12.5px;
+    font-size: 13.5px;
     fill: var(--ink);
     letter-spacing: -0.01em;
   }
@@ -152,7 +152,7 @@ const Svg = styled.svg`
   }
   .a {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 12.5px;
+    font-size: 13.5px;
     fill: #0c7a58;
   }
   .a.cause {
@@ -235,9 +235,23 @@ const Svg = styled.svg`
     stroke: rgba(255, 61, 122, 0.45);
     stroke-width: 1.1;
   }
-  .valTxt {
+  .valKey {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10.5px;
+    fill: #b05c7d;
+  }
+  .valBig {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    fill: #d63a6f;
+  }
+  .valTag {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     fill: #c9346a;
   }
   .rule {
@@ -397,7 +411,7 @@ export const HeroArt = () => {
           {/* band 3 · the functions that were never being collected */}
           <G $kf={bandIn(39)}>
             <text className='depth' x={MAP.x + 16} y={B3 - 10}>
-              functions · captured on demand
+              internals · captured live
             </text>
             {FNS.map((f) => {
               const cx = MAP.x + 40 + f.x;
@@ -415,14 +429,20 @@ export const HeroArt = () => {
 
           {/* the value that no error and no duration would ever have shown */}
           <G $kf={bandIn(57)}>
-            <rect className='valBox' x={MAP.x + 198} y={B3 + 18} width='104' height='58' rx='10' />
-            <text className='valTxt' x={MAP.x + 210} y={B3 + 38}>
+            <rect className='valBox' x={MAP.x + 186} y={B3 + 8} width='116' height='82' rx='10' />
+            <text className='valKey' x={MAP.x + 198} y={B3 + 28}>
               in &quot;BLACK50&quot;
             </text>
-            <text className='valTxt' x={MAP.x + 210} y={B3 + 56}>
-              out 0.00
+            <text className='valKey' x={MAP.x + 198} y={B3 + 52}>
+              out
             </text>
-            <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 196}`} />
+            <text className='valBig' x={MAP.x + 226} y={B3 + 54}>
+              0.00
+            </text>
+            <text className='valTag' x={MAP.x + 198} y={B3 + 76}>
+              no error · 4ms
+            </text>
+            <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 184}`} />
           </G>
           <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(57)} />
         </Svg>
