@@ -48,11 +48,11 @@ const Logo = styled.div`
   }
   img {
     filter: brightness(0);
-    opacity: 0.46;
+    opacity: 0.58;
     transition: opacity 0.2s ease;
     width: auto;
     height: auto;
-    max-height: 30px;
+    max-height: 32px;
     max-width: 120px;
   }
   &:hover img {
