@@ -12,6 +12,8 @@ export * from './outcomes';
 export * from './testimonial';
 export * from './faq';
 export * from './blogs';
+export * from './prose';
 export * from './blog-post';
+export * from './event-post';
 export * from './cta';
 export * from './footer';

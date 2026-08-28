@@ -4,10 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
-import Preview from '@uiw/react-markdown-preview';
 import type { BlogPost } from '@/types';
 import { calculateReadingTime, isValidImageSrc } from '@/functions';
 import { Container, Eyebrow } from './primitives';
+import { Markdown, Prose } from './prose';
 import { HtmlEmbed } from '@/components';
 
 /* A blog post in the landing design language. The old one rendered the article
@@ -118,86 +118,6 @@ const Body = styled(Container)`
   max-width: 820px;
   padding-top: 44px;
   padding-bottom: 72px;
-
-  .wmde-markdown {
-    background: transparent !important;
-    color: var(--ink-soft);
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 17.5px;
-    line-height: 1.72;
-    letter-spacing: -0.003em;
-  }
-  .wmde-markdown h1,
-  .wmde-markdown h2,
-  .wmde-markdown h3,
-  .wmde-markdown h4 {
-    color: var(--ink);
-    letter-spacing: -0.028em;
-    border-bottom: 0;
-    margin-top: 2em;
-    margin-bottom: 0.5em;
-  }
-  .wmde-markdown h2 {
-    font-size: 30px;
-  }
-  .wmde-markdown h3 {
-    font-size: 22px;
-  }
-  .wmde-markdown a {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(91, 67, 241, 0.35);
-  }
-  .wmde-markdown a:hover {
-    border-bottom-color: var(--accent);
-  }
-  .wmde-markdown strong {
-    color: var(--ink);
-  }
-  .wmde-markdown blockquote {
-    color: var(--ink-mute);
-    border-left: 3px solid var(--accent);
-    background: var(--paper-3);
-    border-radius: 0 var(--r) var(--r) 0;
-    padding: 14px 20px;
-  }
-  .wmde-markdown code {
-    background: var(--paper-3);
-    color: var(--ink);
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.88em;
-  }
-  .wmde-markdown pre {
-    border-radius: var(--r);
-    border: 1px solid var(--panel-line);
-  }
-  .wmde-markdown pre code {
-    background: transparent;
-  }
-  .wmde-markdown img {
-    border-radius: var(--r);
-    border: 1px solid var(--line);
-  }
-  .wmde-markdown table tr,
-  .wmde-markdown table td,
-  .wmde-markdown table th {
-    background: transparent;
-    border-color: var(--line-strong);
-  }
-  .wmde-markdown hr {
-    background: var(--line);
-  }
-  /* the library hangs an octicon anchor off every heading; it reads as a stray
-     dash in this type scale */
-  .wmde-markdown .anchor {
-    display: none;
-  }
-  .wmde-markdown h1 .octicon-link,
-  .wmde-markdown h2 .octicon-link,
-  .wmde-markdown h3 .octicon-link,
-  .wmde-markdown h4 .octicon-link {
-    display: none;
-  }
 `;
 
 const fmt = (d?: string) => {
@@ -248,8 +168,10 @@ export const LandingBlogPost = ({ blog }: { blog: BlogPost }) => {
       )}
 
       <Body>
-        {blog.content && <Preview source={blog.content} wrapperElement={{ 'data-color-mode': 'light' }} style={{ background: 'transparent' }} />}
-        {blog.customHtml && <HtmlEmbed html={blog.customHtml} />}
+        <Prose>
+          <Markdown content={blog.content} />
+          {blog.customHtml && <HtmlEmbed html={blog.customHtml} />}
+        </Prose>
       </Body>
     </>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getEventBySlug } from '@/libs/markdown';
-import { EventSingle, Hero3, LearnMoreEvents } from '@/containers';
+import { LandingHeader, LandingEventPost, LandingCTA, LandingFooter } from '@/containers/landing';
 
 interface EventPageProps {
   params: Promise<{
@@ -64,11 +64,14 @@ const Event = async ({ params }: EventPageProps) => {
     if (!event) notFound();
 
     return (
-      <>
-        <EventSingle event={event} />
-        <LearnMoreEvents title='Related Events' />
-        <Hero3 />
-      </>
+      <div className='landing-root'>
+        <LandingHeader />
+        <main>
+          <LandingEventPost event={event} />
+          <LandingCTA />
+        </main>
+        <LandingFooter />
+      </div>
     );
   } catch {
     notFound();
