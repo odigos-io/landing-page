@@ -140,22 +140,25 @@ const StepDesc = styled.p`
 
 /* mini visuals */
 const Term = styled.div`
+  /* this is a command to read, not a control to press. It used to render as
+     the darkest, most button shaped element in the card, sitting exactly where
+     a CTA would sit. */
   font-family: var(--font-mono), monospace;
   font-size: 12.5px;
-  background: var(--panel);
-  border: 1px solid var(--panel-line);
-  border-radius: 10px;
-  padding: 12px 13px;
-  color: #c9c9d2;
-  display: flex;
+  background: var(--paper-3);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 11px 13px;
+  color: var(--ink);
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   .pmt {
-    color: var(--signal-bright);
+    color: #0e9a6c;
   }
   .cmd b {
-    color: #fff;
-    font-weight: 500;
+    color: var(--ink);
+    font-weight: 600;
   }
 `;
 
