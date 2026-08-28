@@ -58,14 +58,28 @@ const Shot = styled.div`
     height: auto;
   }
 
-  /* the screenshot is 1440 wide; on phones it would become unreadable mush,
-     so it scrolls sideways inside its own frame instead of shrinking */
+  /* the screenshot is 1440 wide; on phones it would become unreadable mush, so
+     it scrolls sideways inside its own frame instead of shrinking. The scroll
+     starts past the first column so the frame opens on the part that matters,
+     and the right edge fades so it reads as scrollable rather than cropped. */
   @media (max-width: 720px) {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     img {
-      width: 900px;
+      width: 1040px;
       max-width: none;
+      margin-left: -232px;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 56px;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(11, 11, 13, 0), rgba(11, 11, 13, 0.85));
     }
   }
 `;

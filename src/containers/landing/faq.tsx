@@ -42,6 +42,10 @@ const Talk = styled.a`
 `;
 
 const Head = styled.div`
+  @media (min-width: 901px) {
+    position: sticky;
+    top: 104px;
+  }
   position: sticky;
   top: 96px;
   @media (max-width: 900px) {

@@ -97,7 +97,7 @@ const H1 = styled.h1`
     position: absolute;
     left: -0.02em;
     right: -0.02em;
-    bottom: -0.06em;
+    bottom: -0.13em;
     height: 0.075em;
     background: linear-gradient(90deg, var(--accent), #8a74ff 60%, var(--signal-bright));
     border-radius: 3px;

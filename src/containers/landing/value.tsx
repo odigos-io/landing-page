@@ -22,7 +22,7 @@ const Statement = styled.h2`
   margin: 0 auto;
   max-width: 920px;
   text-align: center;
-  font-size: clamp(28px, 4.2vw, 46px);
+  font-size: clamp(28px, 3.6vw, 46px);
   line-height: 1.2;
   font-weight: 500;
   letter-spacing: -0.025em;

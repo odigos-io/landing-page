@@ -126,10 +126,11 @@ const Panel = styled.div`
   overflow: hidden;
   aspect-ratio: 1.45 / 1;
   @media (max-width: 700px) {
-    /* the fixed-size visuals overflow a short panel on a phone */
+    /* the fixed-size visuals overflow a short panel on a phone, and the caption
+       is absolutely positioned so content has to be pushed clear of it */
     aspect-ratio: auto;
-    min-height: 300px;
-    padding-bottom: 24px;
+    min-height: 280px;
+    padding: 46px 14px 24px;
   }
   display: flex;
   align-items: center;

@@ -22,7 +22,7 @@ const Head = styled.div`
   max-width: 760px;
   h2 {
     margin: 18px 0 0;
-    font-size: clamp(28px, 4vw, 50px);
+    font-size: clamp(28px, 3.6vw, 46px);
     line-height: 1.04;
     font-weight: 600;
     letter-spacing: -0.035em;

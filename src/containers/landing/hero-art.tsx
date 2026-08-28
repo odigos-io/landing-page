@@ -58,8 +58,8 @@ const FNS = [
   { t: 'applyPromo()', x: 70, y: 34, target: true },
   { t: 'taxFor()', x: 116, y: 0 },
   { t: 'reserve()', x: 16, y: 62 },
-  { t: 'settle()', x: 118, y: 56 },
-  { t: 'riskScore()', x: 74, y: 90 },
+  { t: 'settle()', x: 124, y: 54 },
+  { t: 'riskScore()', x: 64, y: 90 },
 ];
 
 /* ── motion ───────────────────────────────────────────────────────────────── */
@@ -451,8 +451,8 @@ export const HeroArt = () => {
               if (s.empty) {
                 return (
                   <g key={i}>
-                    <text className='span' x={MAP.x + 30} y={y + 8}>
-                      ?
+                    <text className='span' x={MAP.x + 24} y={y + 8}>
+                      not collected
                     </text>
                     <rect className='dark' x={BAR_X + 16} y={y} width={BAR_W * s.w} height='8' rx='3' />
                   </g>
@@ -504,7 +504,7 @@ export const HeroArt = () => {
             <text className='valKey' x={MAP.x + 198} y={B3 + 52}>
               out
             </text>
-            <text className='valBig' x={MAP.x + 226} y={B3 + 54}>
+            <text className='valBig' x={MAP.x + 212} y={B3 + 54}>
               0.00
             </text>
             <text className='valTag' x={MAP.x + 198} y={B3 + 76}>
