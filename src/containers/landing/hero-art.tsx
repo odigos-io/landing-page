@@ -18,9 +18,9 @@ const W = 660;
 const H = 430;
 
 const LX = 24;
-const LW = 268;
+const LW = 272;
 const ROW_Y = 92;
-const ROW_H = 60;
+const ROW_H = 62;
 
 const MAP = { x: 320, y: 40, w: 316, h: 352 };
 const B1 = MAP.y + 56; // metrics
@@ -31,7 +31,7 @@ const HOLD = 93;
 
 const STEPS = [
   { n: 1, at: 2, q: 'checkout revenue is down 12%', a: 'errors 0.1% · p99 normal' },
-  { n: 2, at: 12, q: 'show me a checkout trace', a: '12 spans green · charge() 600ms' },
+  { n: 2, at: 12, q: 'show me a checkout trace', a: '12 spans green · 600ms' },
   { n: 3, at: 24, q: 'open charge() internals', a: '9 functions · live in 1.2s' },
   { n: 4, at: 36, q: 'what does applyPromo() return?', a: 'in "BLACK50" → out 0.00', cause: true },
   { n: 5, at: 48, q: 'since when? how much?', a: '6 days · 1,284 carts · $84k', cause: true },
@@ -144,7 +144,7 @@ const Svg = styled.svg`
   }
   .q {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 13.5px;
+    font-size: 15px;
     fill: var(--ink);
     letter-spacing: -0.01em;
   }
@@ -154,7 +154,7 @@ const Svg = styled.svg`
   }
   .a {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 13.5px;
+    font-size: 15px;
     fill: #0c7a58;
   }
   .a.cause {
@@ -231,9 +231,10 @@ const Svg = styled.svg`
     stroke-dasharray: 3 4;
   }
   .valBox {
-    fill: rgba(255, 61, 122, 0.07);
-    stroke: rgba(255, 61, 122, 0.45);
-    stroke-width: 1.1;
+    fill: rgba(255, 255, 255, 0.92);
+    stroke: rgba(255, 61, 122, 0.5);
+    stroke-width: 1.2;
+    filter: drop-shadow(0 10px 22px rgba(24, 20, 54, 0.14));
   }
   .valKey {
     font-family: var(--font-mono), ui-monospace, monospace;
@@ -416,6 +417,9 @@ export const HeroArt = () => {
           <text className='who' x={MAP.x + 26} y={MAP.y + 24}>
             production · live
           </text>
+
+          <path className='rule' d={`M${MAP.x + 12},${B2 - 30} H${MAP.x + MAP.w - 12}`} />
+          <path className='rule' d={`M${MAP.x + 12},${B3 - 32} H${MAP.x + MAP.w - 12}`} />
 
           {/* band 1 · the numbers everyone already has */}
           <text className='depth' x={MAP.x + 16} y={B1 - 12}>
