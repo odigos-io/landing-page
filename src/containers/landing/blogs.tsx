@@ -147,9 +147,10 @@ const ReadMore = styled.span`
   gap: 7px;
 `;
 
-export const LandingBlogs = () => {
+export const LandingBlogs = ({ exclude, title = 'Latest from the blog' }: { exclude?: string; title?: string } = {}) => {
   const { blogs } = useBlogs();
-  const posts = blogs.slice(0, 3);
+  // never offer a reader the post they are already on
+  const posts = blogs.filter((b) => b.slug !== exclude).slice(0, 3);
   if (!posts.length) return null;
 
   return (
@@ -159,7 +160,7 @@ export const LandingBlogs = () => {
           <Head>
             <div>
               <Eyebrow>From the team</Eyebrow>
-              <h2>Latest from the blog</h2>
+              <h2>{title}</h2>
             </div>
             <More href='/blog'>
               All posts
