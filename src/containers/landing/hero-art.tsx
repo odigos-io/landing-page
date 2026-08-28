@@ -106,11 +106,6 @@ const Panel = styled.div`
     radial-gradient(42% 46% at 14% 38%, rgba(123, 93, 255, 0.15), transparent 72%),
     linear-gradient(180deg, #ffffff 0%, #fcfbff 60%, #f6f3fd 100%);
   box-shadow: var(--shadow-panel);
-  svg {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
 `;
 const G = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
   animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
@@ -133,6 +128,13 @@ const Ping = styled.circle<{ $kf: ReturnType<typeof keyframes> }>`
 `;
 
 const Svg = styled.svg`
+  display: block;
+  width: 100%;
+  height: auto;
+  @media (max-width: 620px) {
+    display: none;
+  }
+
   .who {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10.5px;
@@ -292,6 +294,75 @@ const Svg = styled.svg`
 const BAR_X = MAP.x + 108;
 const BAR_W = MAP.w - 176;
 
+const MobileSvg = styled.svg`
+  display: none;
+  width: 100%;
+  height: auto;
+  @media (max-width: 620px) {
+    display: block;
+  }
+  .who {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    fill: var(--ink-faint);
+  }
+  .q {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 13px;
+    fill: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .caret {
+    fill: var(--accent);
+    font-weight: 700;
+  }
+  .a {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 13px;
+    fill: #0c7a58;
+  }
+  .a.cause {
+    fill: #c9346a;
+  }
+  .num {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    fill: #fff;
+  }
+  .numRing {
+    fill: #11a877;
+  }
+  .numRing.cause {
+    fill: #ff3d7a;
+  }
+  .depth {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink-faint);
+  }
+  .rule {
+    stroke: rgba(24, 20, 54, 0.08);
+    stroke-width: 1;
+  }
+  .live {
+    animation: ${blink} 1.7s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .live {
+      animation: none;
+    }
+  }
+`;
+
+/* on a phone the three bands cannot be drawn at a readable size, so the depth
+   each question reaches is named instead */
+const DEPTH = ['metrics', 'trace', 'internals', 'values', 'impact'];
+
 export const HeroArt = () => {
   return (
     <Frame>
@@ -444,6 +515,44 @@ export const HeroArt = () => {
           </G>
           <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(57)} />
         </Svg>
+
+        <MobileSvg viewBox='0 0 340 320' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden>
+          <circle className='live' cx='18' cy='22' r='3.4' fill='#11a877' />
+          <text className='who' x='28' y='26'>
+            production · live
+          </text>
+          <text className='who' x='324' y='26' textAnchor='end'>
+            5 questions
+          </text>
+          <path className='rule' d='M14,38 H324' />
+          {STEPS.map((s, i) => {
+            const y = 62 + i * 52;
+            const tone = s.cause ? ' cause' : '';
+            return (
+              <React.Fragment key={`m${s.n}`}>
+                <G $kf={askIn(s.at)}>
+                  <text className='depth' x='324' y={y - 12} textAnchor='end'>
+                    {DEPTH[i]}
+                  </text>
+                  <text className='q' x='14' y={y}>
+                    <tspan className='caret'>❯ </tspan>
+                    {s.q}
+                  </text>
+                </G>
+                <G $kf={ansIn(s.at)}>
+                  <circle className={`numRing${tone}`} cx='21' cy={y + 19} r='7.5' />
+                  <text className='num' x='21' y={y + 22.5} textAnchor='middle'>
+                    {s.n}
+                  </text>
+                  <text className={`a${tone}`} x='36' y={y + 23}>
+                    {s.a}
+                  </text>
+                </G>
+                {i < STEPS.length - 1 && <path className='rule' d={`M14,${y + 34} H324`} />}
+              </React.Fragment>
+            );
+          })}
+        </MobileSvg>
       </Panel>
     </Frame>
   );
