@@ -141,7 +141,7 @@ const NEW = [
   'Ask for the function, the query or the argument you need',
   'Captured in running production in seconds, with no deploy',
   'Every service covered on day one, including the old ones',
-  'Out of process, so it cannot take the application down',
+  'Out of process, so your blast radius stays zero',
 ];
 
 export const LandingOldWay = () => {

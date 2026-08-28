@@ -179,8 +179,8 @@ const FEATURES = [
   },
   {
     cap: 'Safe on all of production',
-    title: 'It cannot take your application down.',
-    desc: 'Every other way of getting this depth runs inside your process, one bad agent release away from taking the app with it. Ours runs outside it, at under 1% CPU, so you can leave it on across the whole estate. RBAC and policy controls decide what may be captured, and by whom.',
+    title: 'Out of process. Out of your blast radius.',
+    desc: 'Every other way of getting this depth runs inside your process, one bad agent release away from taking the app down with it. Ours never touches your process. Under 1% CPU, safe to leave on across the whole estate, with RBAC and policy controls over what may be captured and by whom.',
     visual: <SafeVisual />,
     tags: ['out of process', '< 1% CPU', 'RBAC & governance'],
   },

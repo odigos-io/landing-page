@@ -7,7 +7,7 @@ export const FAQ = [
   {
     title: 'Is capturing new data in live production actually safe?',
     description:
-      'It runs out of process in eBPF, under 1% CPU, so it cannot take your application down the way an in-process agent can. What may be captured, and by whom, is governed by RBAC and policy controls, and every capture is scoped to the workload you point it at.',
+      'It runs out of process in eBPF, under 1% CPU. It never loads into your application, so a bad release of ours cannot take your application down with it. What may be captured, and by whom, is governed by RBAC and policy controls, and every capture is scoped to the workload you point it at.',
   },
   {
     title: 'How does Odigos work?',

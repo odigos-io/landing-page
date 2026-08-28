@@ -20,30 +20,32 @@ const H = 404;
 
 const MAP = { x: 328, y: 44, w: 288, h: 320 };
 const N = {
-  gw: { x: 40, y: 62, t: 'gateway' },
-  chk: { x: 126, y: 46, t: 'checkout' },
-  fr: { x: 112, y: 136, t: 'fraud-svc' },
-  risk: { x: 226, y: 102, t: 'risk-api' },
-  pg: { x: 176, y: 214, t: 'postgres' },
-  rep: { x: 56, y: 244, t: 'reports' },
+  charge: { x: 132, y: 52, t: 'charge()', known: true },
+  auth: { x: 40, y: 106, t: 'authorize()', known: true },
+  promo: { x: 150, y: 140, t: 'applyPromo()' },
+  tax: { x: 240, y: 108, t: 'taxFor()' },
+  reserve: { x: 58, y: 206, t: 'reserve()' },
+  settle: { x: 168, y: 240, t: 'settle()' },
+  risk: { x: 246, y: 196, t: 'riskScore()' },
 } as const;
 type NodeId = keyof typeof N;
 
 const EDGES: [NodeId, NodeId][] = [
-  ['gw', 'chk'],
-  ['chk', 'fr'],
-  ['fr', 'risk'],
-  ['fr', 'pg'],
-  ['rep', 'pg'],
-  ['gw', 'fr'],
+  ['charge', 'auth'],
+  ['charge', 'promo'],
+  ['charge', 'tax'],
+  ['promo', 'settle'],
+  ['auth', 'reserve'],
+  ['tax', 'risk'],
+  ['promo', 'risk'],
 ];
 
 /* the investigation. `dead` is the wrong turn, `cause` is where it ends. */
 const STEPS = [
-  { n: 1, node: 'chk' as NodeId, at: 4, q: 'why is checkout p99 up 3x?', a: 'fraudScore() · 240ms' },
-  { n: 2, node: 'risk' as NodeId, at: 26, q: 'is the risk api slow?', a: 'no · p50 12ms', dead: true },
-  { n: 3, node: 'pg' as NodeId, at: 48, q: 'what is fraudScore waiting on?', a: 'db.pool.acquire · 210ms' },
-  { n: 4, node: 'rep' as NodeId, at: 70, q: 'who is holding the pool?', a: 'reportJob() holds 8', cause: true },
+  { n: 1, node: 'charge' as NodeId, at: 4, q: 'what runs inside charge()?', a: '9 found · 5 never collected' },
+  { n: 2, node: 'promo' as NodeId, at: 26, q: 'capture applyPromo() args', a: 'promoId "BLACK50" · uid 8843' },
+  { n: 3, node: 'promo' as NodeId, at: 48, q: 'is it throwing?', a: 'no · err nil · 4ms', dead: true },
+  { n: 4, node: 'promo' as NodeId, at: 70, q: 'what is it returning?', a: 'discount 0.00 always', cause: true },
 ];
 
 const ROW_Y = 92;
@@ -214,8 +216,14 @@ const Svg = styled.svg`
   }
   .node {
     fill: #fff;
-    stroke: rgba(24, 20, 54, 0.18);
+    stroke: rgba(24, 20, 54, 0.22);
     stroke-width: 1.2;
+  }
+  .dark {
+    fill: none;
+    stroke: rgba(24, 20, 54, 0.2);
+    stroke-width: 1.1;
+    stroke-dasharray: 3 4;
   }
   .edge {
     stroke: rgba(24, 20, 54, 0.12);
@@ -254,11 +262,7 @@ const mx = (id: NodeId) => MAP.x + N[id].x;
 const my = (id: NodeId) => MAP.y + N[id].y;
 
 /* the route the investigation actually took */
-const LEGS = [
-  { from: 'chk' as NodeId, to: 'risk' as NodeId, at: 26, dead: true },
-  { from: 'chk' as NodeId, to: 'pg' as NodeId, at: 48 },
-  { from: 'pg' as NodeId, to: 'rep' as NodeId, at: 70 },
-];
+const LEGS = [{ from: 'charge' as NodeId, to: 'promo' as NodeId, at: 26 }];
 
 export const HeroArt = () => {
   return (
@@ -317,8 +321,13 @@ export const HeroArt = () => {
           <rect x={MAP.x} y={MAP.y} width={MAP.w} height={MAP.h} rx='16' fill='rgba(255,255,255,.55)' stroke='rgba(91,67,241,.14)' />
           <circle className='live' cx={MAP.x + 16} cy={MAP.y + 20} r='3.4' fill='#11a877' />
           <text className='who' x={MAP.x + 26} y={MAP.y + 24}>
-            production · live
+            checkout-svc · live
           </text>
+          <G $kf={askIn(8)}>
+            <text className='tag' x={MAP.x + MAP.w - 16} y={MAP.y + 24} textAnchor='end' style={{ fill: '#0e9a6c' }}>
+              +5 discovered
+            </text>
+          </G>
 
           {EDGES.map(([a, b], i) => (
             <line key={i} className='edge' x1={mx(a)} y1={my(a)} x2={mx(b)} y2={my(b)} />
@@ -326,27 +335,34 @@ export const HeroArt = () => {
 
           {LEGS.map((l, i) => {
             const len = Math.round(Math.hypot(mx(l.to) - mx(l.from), my(l.to) - my(l.from))) + 4;
-            return (
-              <Route
-                key={i}
-                d={`M${mx(l.from)},${my(l.from)} L${mx(l.to)},${my(l.to)}`}
-                stroke={l.dead ? 'rgba(24,20,54,.28)' : '#11a877'}
-                strokeWidth={l.dead ? 1.4 : 2}
-                strokeDasharray={l.dead ? '4 5' : undefined}
-                style={{ ['--len' as string]: `${len}` }}
-                $kf={routeIn(l.at)}
-              />
-            );
+            return <Route key={i} d={`M${mx(l.from)},${my(l.from)} L${mx(l.to)},${my(l.to)}`} stroke='#11a877' strokeWidth='2' style={{ ['--len' as string]: `${len}` }} $kf={routeIn(l.at)} />;
           })}
 
           {(Object.keys(N) as NodeId[]).map((id) => {
+            const n = N[id] as { x: number; y: number; t: string; known?: boolean };
             const step = STEPS.find((s) => s.node === id);
+            const r = step ? 10 : 7.5;
+            if (n.known) {
+              return (
+                <g key={id}>
+                  <circle className='node' cx={mx(id)} cy={my(id)} r={r} />
+                  <text className='svc' x={mx(id)} y={my(id) + r + 14} textAnchor='middle'>
+                    {n.t}
+                  </text>
+                </g>
+              );
+            }
+            // nothing was ever collected about this one, so it starts as an
+            // outline with no name on it, and fills in when it is discovered
             return (
               <g key={id}>
-                <circle className='node' cx={mx(id)} cy={my(id)} r={step ? 10 : 7} />
-                <text className='svc' x={mx(id)} y={my(id) + (step ? 25 : 21)} textAnchor='middle'>
-                  {N[id].t}
-                </text>
+                <circle className='dark' cx={mx(id)} cy={my(id)} r={r} />
+                <G $kf={askIn(8)}>
+                  <circle className='node' cx={mx(id)} cy={my(id)} r={r} />
+                  <text className='svc' x={mx(id)} y={my(id) + r + 14} textAnchor='middle'>
+                    {n.t}
+                  </text>
+                </G>
               </g>
             );
           })}
@@ -356,7 +372,7 @@ export const HeroArt = () => {
             return (
               <React.Fragment key={`p${s.n}`}>
                 <Probe $kf={probeIn(s.at)}>
-                  <circle className={`numRing${tone}`} cx={mx(s.node) + 14} cy={my(s.node) - 12} r='8.5' />
+                  <circle className={`numRing${tone}`} cx={mx(s.node) + 15} cy={my(s.node) - 13} r='8.5' />
                   <text className='num' x={mx(s.node) + 14} y={my(s.node) - 8.5} textAnchor='middle'>
                     {s.n}
                   </text>
