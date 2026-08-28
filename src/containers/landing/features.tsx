@@ -194,7 +194,7 @@ export const LandingFeatures = () => {
           <Head>
             <Eyebrow>Why Odigos</Eyebrow>
             <h2>Built from the kernel up.</h2>
-            <p>Our own eBPF runtime reconstructs the full context behind every request, captures anything you ask for on demand, and exports it as OpenTelemetry you can send anywhere. Deep enough for engineers, open enough to never lock you in.</p>
+            <p>Our own eBPF runtime reads what is actually happening inside a running process. Whatever you ask for, it captures on demand and exports as OpenTelemetry.</p>
           </Head>
         </Reveal>
 
