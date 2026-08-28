@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBlogBySlug } from '@/libs/markdown';
-import { BlogSingle, Hero3, LearnMoreBlogs } from '@/containers';
+import { LandingHeader, LandingBlogPost, LandingBlogs, LandingCTA, LandingFooter } from '@/containers/landing';
 
 interface BlogPageProps {
   params: Promise<{
@@ -77,11 +77,15 @@ const Blog = async ({ params }: BlogPageProps) => {
     if (!blog) notFound();
 
     return (
-      <>
-        <BlogSingle blog={blog} />
-        <LearnMoreBlogs title='Related Articles' />
-        <Hero3 />
-      </>
+      <div className='landing-root'>
+        <LandingHeader />
+        <main>
+          <LandingBlogPost blog={blog} />
+          <LandingBlogs />
+          <LandingCTA />
+        </main>
+        <LandingFooter />
+      </div>
     );
   } catch {
     notFound();
