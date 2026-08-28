@@ -13,7 +13,7 @@ import styled, { keyframes } from 'styled-components';
    The map on the right is the same descent drawn as three bands, metrics over
    trace over functions, each one opening as the agent reaches it. */
 
-const DUR = '16s';
+const DUR = '12s';
 const W = 660;
 const H = 430;
 
@@ -30,11 +30,11 @@ const B3 = MAP.y + 224; // functions
 const HOLD = 93;
 
 const STEPS = [
-  { n: 1, at: 3, q: 'checkout revenue is down 12%', a: 'errors 0.1% · p99 normal' },
-  { n: 2, at: 21, q: 'show me a checkout trace', a: '12 spans green · charge() 600ms' },
-  { n: 3, at: 39, q: 'open charge() internals', a: '9 functions · live in 1.2s' },
-  { n: 4, at: 57, q: 'what does applyPromo() return?', a: 'in "BLACK50" → out 0.00', cause: true },
-  { n: 5, at: 75, q: 'since when? how much?', a: '6 days · 1,284 carts · $84k', cause: true },
+  { n: 1, at: 2, q: 'checkout revenue is down 12%', a: 'errors 0.1% · p99 normal' },
+  { n: 2, at: 12, q: 'show me a checkout trace', a: '12 spans green · charge() 600ms' },
+  { n: 3, at: 24, q: 'open charge() internals', a: '9 functions · live in 1.2s' },
+  { n: 4, at: 36, q: 'what does applyPromo() return?', a: 'in "BLACK50" → out 0.00', cause: true },
+  { n: 5, at: 48, q: 'since when? how much?', a: '6 days · 1,284 carts · $84k', cause: true },
 ];
 
 /* band 1: the numbers you already have */
@@ -418,10 +418,10 @@ export const HeroArt = () => {
           </text>
 
           {/* band 1 · the numbers everyone already has */}
-          <G $kf={bandIn(3)}>
-            <text className='depth' x={MAP.x + 16} y={B1 - 12}>
-              metrics
-            </text>
+          <text className='depth' x={MAP.x + 16} y={B1 - 12}>
+            metrics
+          </text>
+          <G $kf={bandIn(2)}>
             {SERVICES.map((s, i) => {
               const x = MAP.x + 16 + i * 98;
               return (
@@ -437,16 +437,16 @@ export const HeroArt = () => {
               );
             })}
           </G>
-          <G $kf={drillIn(19)}>
+          <G $kf={drillIn(10)}>
             <path className='drill' d={`M${MAP.x + 60},${B1 + 34} V${B2 - 22}`} />
             <path d={`M${MAP.x + 56},${B2 - 20} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
           </G>
 
           {/* band 2 · the trace, which runs out exactly where it matters */}
-          <G $kf={bandIn(21)}>
-            <text className='depth' x={MAP.x + 16} y={B2 - 8}>
-              trace
-            </text>
+          <text className='depth' x={MAP.x + 16} y={B2 - 8}>
+            trace
+          </text>
+          <G $kf={bandIn(12)}>
             {SPANS.map((s, i) => {
               const y = B2 + 4 + i * 16;
               if (s.empty) {
@@ -472,16 +472,16 @@ export const HeroArt = () => {
               );
             })}
           </G>
-          <G $kf={drillIn(37)}>
+          <G $kf={drillIn(22)}>
             <path className='drill' d={`M${MAP.x + 60},${B2 + 76} V${B3 - 24}`} />
             <path d={`M${MAP.x + 56},${B3 - 22} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
           </G>
 
           {/* band 3 · the functions that were never being collected */}
-          <G $kf={bandIn(39)}>
-            <text className='depth' x={MAP.x + 16} y={B3 - 10}>
-              internals · captured live
-            </text>
+          <text className='depth' x={MAP.x + 16} y={B3 - 10}>
+            internals · captured live
+          </text>
+          <G $kf={bandIn(24)}>
             {FNS.map((f) => {
               const cx = MAP.x + 40 + f.x;
               const cy = B3 + 18 + f.y;
@@ -497,7 +497,7 @@ export const HeroArt = () => {
           </G>
 
           {/* the value that no error and no duration would ever have shown */}
-          <G $kf={bandIn(57)}>
+          <G $kf={bandIn(36)}>
             <rect className='valBox' x={MAP.x + 186} y={B3 + 8} width='116' height='82' rx='10' />
             <text className='valKey' x={MAP.x + 198} y={B3 + 28}>
               in &quot;BLACK50&quot;
@@ -513,7 +513,7 @@ export const HeroArt = () => {
             </text>
             <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 184}`} />
           </G>
-          <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(57)} />
+          <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(36)} />
         </Svg>
 
         <MobileSvg viewBox='0 0 340 320' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden>
