@@ -39,7 +39,7 @@ const Bloom = styled.div`
 const Grid = styled(Container)`
   position: relative;
   display: grid;
-  grid-template-columns: 1.08fr 1.12fr;
+  grid-template-columns: 0.95fr 1.25fr;
   align-items: center;
   gap: 56px;
   padding-top: 84px;
