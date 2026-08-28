@@ -3,57 +3,64 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-/* Hero art: an agent interrogating production, including the wrong turn.
+/* Hero art: an agent drilling from the top of the stack to the bottom.
 
-   Four exchanges, left to right. The agent asks, production answers with data
-   nobody was collecting, and the answer decides the next question. One of them
-   is a dead end and gets ruled out, which is what a real investigation looks
-   like, and the last one lands on a cause no static trace contained: a
-   reporting job holding the connection pool.
+   It starts where everyone starts, with rate and errors and duration, and it
+   keeps going down: to the trace, to the functions inside the slow span that
+   nothing was ever collecting, to the arguments and return values of one of
+   them, and then back out to how much of production it touched.
 
-   The map on the right is the same investigation drawn as a route: a grey
-   branch that stops, and a green one that keeps going deeper. */
+   The map on the right is the same descent drawn as three bands, metrics over
+   trace over functions, each one opening as the agent reaches it. */
 
-const DUR = '15s';
-const W = 640;
-const H = 404;
+const DUR = '16s';
+const W = 660;
+const H = 430;
 
-const MAP = { x: 328, y: 44, w: 288, h: 320 };
-const N = {
-  charge: { x: 132, y: 52, t: 'charge()', known: true },
-  auth: { x: 40, y: 106, t: 'authorize()', known: true },
-  promo: { x: 150, y: 140, t: 'applyPromo()' },
-  tax: { x: 240, y: 108, t: 'taxFor()' },
-  reserve: { x: 58, y: 206, t: 'reserve()' },
-  settle: { x: 168, y: 240, t: 'settle()' },
-  risk: { x: 246, y: 196, t: 'riskScore()' },
-} as const;
-type NodeId = keyof typeof N;
-
-const EDGES: [NodeId, NodeId][] = [
-  ['charge', 'auth'],
-  ['charge', 'promo'],
-  ['charge', 'tax'],
-  ['promo', 'settle'],
-  ['auth', 'reserve'],
-  ['tax', 'risk'],
-  ['promo', 'risk'],
-];
-
-/* the investigation. `dead` is the wrong turn, `cause` is where it ends. */
-const STEPS = [
-  { n: 1, node: 'charge' as NodeId, at: 4, q: 'what runs inside charge()?', a: '9 found · 5 never collected' },
-  { n: 2, node: 'promo' as NodeId, at: 26, q: 'capture applyPromo() args', a: 'promoId "BLACK50" · uid 8843' },
-  { n: 3, node: 'promo' as NodeId, at: 48, q: 'is it throwing?', a: 'no · err nil · 4ms', dead: true },
-  { n: 4, node: 'promo' as NodeId, at: 70, q: 'what is it returning?', a: 'discount 0.00 always', cause: true },
-];
-
-const ROW_Y = 92;
-const ROW_H = 68;
 const LX = 24;
-const LW = 276;
+const LW = 268;
+const ROW_Y = 92;
+const ROW_H = 60;
+
+const MAP = { x: 320, y: 40, w: 316, h: 352 };
+const B1 = MAP.y + 56; // metrics
+const B2 = MAP.y + 134; // trace
+const B3 = MAP.y + 224; // functions
 
 const HOLD = 93;
+
+const STEPS = [
+  { n: 1, at: 3, q: 'where are the errors?', a: 'checkout · 6.1% · p99 812ms' },
+  { n: 2, at: 21, q: 'show me a failing trace', a: 'charge() 600ms · nothing inside' },
+  { n: 3, at: 39, q: 'instrument charge() internals', a: '9 functions attached · live' },
+  { n: 4, at: 57, q: 'values on applyPromo()', a: 'in "BLACK50" → out 0.00', cause: true },
+  { n: 5, at: 75, q: 'how many carts hit it?', a: '1,284 in the last 5 min' },
+];
+
+/* band 1: the numbers you already have */
+const SERVICES = [
+  { t: 'checkout', v: '6.1%', hot: true },
+  { t: 'payments', v: '0.2%' },
+  { t: 'fraud', v: '0.1%' },
+];
+
+/* band 2: the trace, which stops exactly where it gets interesting */
+const SPANS = [
+  { t: 'POST /checkout', w: 1, ms: '812ms' },
+  { t: 'payments-svc', w: 0.84, ms: '690ms' },
+  { t: 'charge()', w: 0.72, ms: '600ms', hot: true },
+  { t: '', w: 0.5, ms: '', empty: true },
+];
+
+/* band 3: what was inside it all along */
+const FNS = [
+  { t: 'authorize()', x: 8, y: 0, known: true },
+  { t: 'applyPromo()', x: 76, y: 32, target: true },
+  { t: 'taxFor()', x: 118, y: 2 },
+  { t: 'reserve()', x: 16, y: 62 },
+  { t: 'settle()', x: 130, y: 60 },
+  { t: 'riskScore()', x: 80, y: 92 },
+];
 
 /* ── motion ───────────────────────────────────────────────────────────────── */
 const askIn = (r: number) => keyframes`
@@ -61,31 +68,24 @@ const askIn = (r: number) => keyframes`
   ${r + 2}%{opacity:1;transform:none}
   ${HOLD}%{opacity:1;transform:none}
   ${HOLD + 3}%,100%{opacity:0;transform:translateY(-4px)}`;
-
 const ansIn = (r: number) => keyframes`
-  0%,${r + 6}%{opacity:0;transform:translateY(6px)}
-  ${r + 9}%{opacity:1;transform:none}
+  0%,${r + 5}%{opacity:0;transform:translateY(6px)}
+  ${r + 8}%{opacity:1;transform:none}
   ${HOLD}%{opacity:1;transform:none}
   ${HOLD + 3}%,100%{opacity:0;transform:translateY(-4px)}`;
-
-const probeIn = (r: number) => keyframes`
-  0%,${r + 2}%{opacity:0;transform:scale(2)}
-  ${r + 6}%{opacity:1;transform:scale(1)}
-  ${HOLD}%{opacity:1;transform:scale(1)}
-  ${HOLD + 3}%,100%{opacity:0;transform:scale(1)}`;
-
-const routeIn = (r: number) => keyframes`
-  0%,${r + 3}%{stroke-dashoffset:var(--len);opacity:0}
-  ${r + 4}%{opacity:1}
-  ${r + 9}%{stroke-dashoffset:0;opacity:1}
-  ${HOLD}%{stroke-dashoffset:0;opacity:1}
+const bandIn = (r: number) => keyframes`
+  0%,${r + 2}%{opacity:0;transform:translateY(10px)}
+  ${r + 7}%{opacity:1;transform:none}
+  ${HOLD}%{opacity:1;transform:none}
+  ${HOLD + 3}%,100%{opacity:0;transform:translateY(-6px)}`;
+const drillIn = (r: number) => keyframes`
+  0%,${r}%{opacity:0}
+  ${r + 4}%,${HOLD}%{opacity:1}
   ${HOLD + 3}%,100%{opacity:0}`;
-
 const pingAt = (r: number) => keyframes`
   0%,${r + 2}%{opacity:0;transform:scale(.5)}
   ${r + 4}%{opacity:.6}
   ${r + 12}%,100%{opacity:0;transform:scale(2.6)}`;
-
 const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
 const core = keyframes`0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.05)}`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
@@ -102,8 +102,8 @@ const Panel = styled.div`
   border-radius: 20px;
   border: 1px solid rgba(91, 67, 241, 0.14);
   background:
-    radial-gradient(46% 44% at 80% 60%, rgba(17, 168, 119, 0.1), transparent 70%),
-    radial-gradient(42% 46% at 14% 40%, rgba(123, 93, 255, 0.15), transparent 72%),
+    radial-gradient(46% 44% at 80% 62%, rgba(17, 168, 119, 0.1), transparent 70%),
+    radial-gradient(42% 46% at 14% 38%, rgba(123, 93, 255, 0.15), transparent 72%),
     linear-gradient(180deg, #ffffff 0%, #fcfbff 60%, #f6f3fd 100%);
   box-shadow: var(--shadow-panel);
   svg {
@@ -118,27 +118,6 @@ const G = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
     animation: none;
     opacity: 1;
     transform: none;
-  }
-`;
-const Probe = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-`;
-const Route = styled.path<{ $kf: ReturnType<typeof keyframes> }>`
-  fill: none;
-  stroke-linecap: round;
-  stroke-dasharray: var(--len);
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    stroke-dashoffset: 0;
-    opacity: 1;
   }
 `;
 const Ping = styled.circle<{ $kf: ReturnType<typeof keyframes> }>`
@@ -176,22 +155,7 @@ const Svg = styled.svg`
     font-size: 12.5px;
     fill: #0c7a58;
   }
-  .a.dead {
-    fill: #93909f;
-  }
   .a.cause {
-    fill: #c9346a;
-  }
-  .tag {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 9.5px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .tag.dead {
-    fill: #93909f;
-  }
-  .tag.cause {
     fill: #c9346a;
   }
   .num {
@@ -203,21 +167,62 @@ const Svg = styled.svg`
   .numRing {
     fill: #11a877;
   }
-  .numRing.dead {
-    fill: #a9a6b4;
-  }
   .numRing.cause {
     fill: #ff3d7a;
   }
-  .svc {
+  .depth {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    fill: var(--ink-faint);
+  }
+  .pill {
+    fill: #fff;
+    stroke: rgba(24, 20, 54, 0.16);
+    stroke-width: 1.1;
+  }
+  .pill.hot {
+    stroke: #ff3d7a;
+    stroke-width: 1.5;
+  }
+  .pillTxt {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    fill: var(--ink-mute);
+  }
+  .pillTxt.hot {
+    fill: var(--ink);
+  }
+  .pillVal {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    fill: var(--ink-faint);
+  }
+  .pillVal.hot {
+    fill: #c9346a;
+  }
+  .span {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10px;
     fill: var(--ink-mute);
+  }
+  .fn {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    fill: var(--ink-mute);
+  }
+  .fn.on {
+    fill: var(--ink);
   }
   .node {
     fill: #fff;
     stroke: rgba(24, 20, 54, 0.22);
     stroke-width: 1.2;
+  }
+  .node.on {
+    stroke: #ff3d7a;
+    stroke-width: 1.6;
   }
   .dark {
     fill: none;
@@ -225,13 +230,24 @@ const Svg = styled.svg`
     stroke-width: 1.1;
     stroke-dasharray: 3 4;
   }
-  .edge {
-    stroke: rgba(24, 20, 54, 0.12);
+  .valBox {
+    fill: rgba(255, 61, 122, 0.07);
+    stroke: rgba(255, 61, 122, 0.45);
     stroke-width: 1.1;
+  }
+  .valTxt {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    fill: #c9346a;
   }
   .rule {
     stroke: rgba(24, 20, 54, 0.08);
     stroke-width: 1;
+  }
+  .drill {
+    stroke: rgba(17, 168, 119, 0.5);
+    stroke-width: 1.4;
+    stroke-dasharray: 3 4;
   }
   .agentCore {
     animation: ${core} 2.6s ease-in-out infinite;
@@ -252,17 +268,17 @@ const Svg = styled.svg`
     .a {
       font-size: 14px;
     }
-    .svc {
+    .span,
+    .fn,
+    .pillTxt,
+    .pillVal {
       font-size: 12px;
     }
   }
 `;
 
-const mx = (id: NodeId) => MAP.x + N[id].x;
-const my = (id: NodeId) => MAP.y + N[id].y;
-
-/* the route the investigation actually took */
-const LEGS = [{ from: 'charge' as NodeId, to: 'promo' as NodeId, at: 26 }];
+const BAR_X = MAP.x + 108;
+const BAR_W = MAP.w - 176;
 
 export const HeroArt = () => {
   return (
@@ -273,23 +289,22 @@ export const HeroArt = () => {
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
           role='img'
-          aria-label='An AI agent interrogating live production in four exchanges. Checkout p99 is up, fraudScore takes 240ms, the risk API is ruled out, the wait is on the database connection pool, and a reporting job is holding eight connections.'
+          aria-label='An agent drilling from error rates down to a trace, then into the functions inside the slow span that nothing was collecting, then to the arguments and return value of one of them, and finally to how many carts it affected.'
         >
-          {/* ── the agent ──────────────────────────────────────────────── */}
+          {/* ── the agent, and the descent ─────────────────────────────── */}
           <circle className='agentCore' cx='40' cy='42' r='11' fill='#5b43f1' opacity='.9' />
           <circle cx='40' cy='42' r='18' stroke='rgba(91,67,241,.22)' strokeWidth='1' fill='none' />
           <text className='who' x='66' y='46'>
             ai agent
           </text>
           <text className='who' x={LX + LW} y='46' textAnchor='end'>
-            4 questions · 6s
+            5 questions · 8s
           </text>
           <path className='rule' d={`M${LX},64 H${LX + LW}`} />
 
-          {/* ── the exchanges ──────────────────────────────────────────── */}
           {STEPS.map((s, i) => {
             const y = ROW_Y + i * ROW_H;
-            const tone = s.dead ? ' dead' : s.cause ? ' cause' : '';
+            const tone = s.cause ? ' cause' : '';
             return (
               <React.Fragment key={s.n}>
                 <G $kf={askIn(s.at)}>
@@ -299,88 +314,117 @@ export const HeroArt = () => {
                   </text>
                 </G>
                 <G $kf={ansIn(s.at)}>
-                  <circle className={`numRing${tone}`} cx={LX + 7} cy={y + 20} r='8' />
-                  <text className='num' x={LX + 7} y={y + 23.5} textAnchor='middle'>
+                  <circle className={`numRing${tone}`} cx={LX + 7} cy={y + 19} r='8' />
+                  <text className='num' x={LX + 7} y={y + 22.5} textAnchor='middle'>
                     {s.n}
                   </text>
-                  <text className={`a${tone}`} x={LX + 24} y={y + 24}>
+                  <text className={`a${tone}`} x={LX + 24} y={y + 23}>
                     {s.a}
                   </text>
-                  {(s.dead || s.cause) && (
-                    <text className={`tag${tone}`} x={LX + LW} y={y + 24} textAnchor='end'>
-                      {s.dead ? 'ruled out' : 'root cause'}
-                    </text>
-                  )}
                 </G>
-                {i < STEPS.length - 1 && <path className='rule' d={`M${LX},${y + 40} H${LX + LW}`} />}
+                {i < STEPS.length - 1 && <path className='rule' d={`M${LX},${y + 36} H${LX + LW}`} />}
               </React.Fragment>
             );
           })}
 
-          {/* ── production, and the route the agent took through it ────── */}
+          {/* ── the same descent, drawn ────────────────────────────────── */}
           <rect x={MAP.x} y={MAP.y} width={MAP.w} height={MAP.h} rx='16' fill='rgba(255,255,255,.55)' stroke='rgba(91,67,241,.14)' />
           <circle className='live' cx={MAP.x + 16} cy={MAP.y + 20} r='3.4' fill='#11a877' />
           <text className='who' x={MAP.x + 26} y={MAP.y + 24}>
-            checkout-svc · live
+            production · live
           </text>
-          <G $kf={askIn(8)}>
-            <text className='tag' x={MAP.x + MAP.w - 16} y={MAP.y + 24} textAnchor='end' style={{ fill: '#0e9a6c' }}>
-              +5 discovered
+
+          {/* band 1 · the numbers everyone already has */}
+          <G $kf={bandIn(3)}>
+            <text className='depth' x={MAP.x + 16} y={B1 - 12}>
+              metrics
             </text>
-          </G>
-
-          {EDGES.map(([a, b], i) => (
-            <line key={i} className='edge' x1={mx(a)} y1={my(a)} x2={mx(b)} y2={my(b)} />
-          ))}
-
-          {LEGS.map((l, i) => {
-            const len = Math.round(Math.hypot(mx(l.to) - mx(l.from), my(l.to) - my(l.from))) + 4;
-            return <Route key={i} d={`M${mx(l.from)},${my(l.from)} L${mx(l.to)},${my(l.to)}`} stroke='#11a877' strokeWidth='2' style={{ ['--len' as string]: `${len}` }} $kf={routeIn(l.at)} />;
-          })}
-
-          {(Object.keys(N) as NodeId[]).map((id) => {
-            const n = N[id] as { x: number; y: number; t: string; known?: boolean };
-            const step = STEPS.find((s) => s.node === id);
-            const r = step ? 10 : 7.5;
-            if (n.known) {
+            {SERVICES.map((s, i) => {
+              const x = MAP.x + 16 + i * 98;
               return (
-                <g key={id}>
-                  <circle className='node' cx={mx(id)} cy={my(id)} r={r} />
-                  <text className='svc' x={mx(id)} y={my(id) + r + 14} textAnchor='middle'>
-                    {n.t}
+                <g key={s.t}>
+                  <rect className={`pill${s.hot ? ' hot' : ''}`} x={x} y={B1} width='90' height='30' rx='9' />
+                  <text className={`pillTxt${s.hot ? ' hot' : ''}`} x={x + 10} y={B1 + 13}>
+                    {s.t}
+                  </text>
+                  <text className={`pillVal${s.hot ? ' hot' : ''}`} x={x + 10} y={B1 + 25}>
+                    {s.v} errors
                   </text>
                 </g>
               );
-            }
-            // nothing was ever collected about this one, so it starts as an
-            // outline with no name on it, and fills in when it is discovered
-            return (
-              <g key={id}>
-                <circle className='dark' cx={mx(id)} cy={my(id)} r={r} />
-                <G $kf={askIn(8)}>
-                  <circle className='node' cx={mx(id)} cy={my(id)} r={r} />
-                  <text className='svc' x={mx(id)} y={my(id) + r + 14} textAnchor='middle'>
-                    {n.t}
-                  </text>
-                </G>
-              </g>
-            );
-          })}
+            })}
+          </G>
+          <G $kf={drillIn(19)}>
+            <path className='drill' d={`M${MAP.x + 60},${B1 + 34} V${B2 - 22}`} />
+            <path d={`M${MAP.x + 56},${B2 - 20} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
+          </G>
 
-          {STEPS.map((s) => {
-            const tone = s.dead ? ' dead' : s.cause ? ' cause' : '';
-            return (
-              <React.Fragment key={`p${s.n}`}>
-                <Probe $kf={probeIn(s.at)}>
-                  <circle className={`numRing${tone}`} cx={mx(s.node) + 15} cy={my(s.node) - 13} r='8.5' />
-                  <text className='num' x={mx(s.node) + 14} y={my(s.node) - 8.5} textAnchor='middle'>
-                    {s.n}
+          {/* band 2 · the trace, which runs out exactly where it matters */}
+          <G $kf={bandIn(21)}>
+            <text className='depth' x={MAP.x + 16} y={B2 - 8}>
+              trace
+            </text>
+            {SPANS.map((s, i) => {
+              const y = B2 + 4 + i * 16;
+              if (s.empty) {
+                return (
+                  <g key={i}>
+                    <text className='span' x={MAP.x + 30} y={y + 8}>
+                      ?
+                    </text>
+                    <rect className='dark' x={BAR_X + 16} y={y} width={BAR_W * s.w} height='8' rx='3' />
+                  </g>
+                );
+              }
+              return (
+                <g key={i}>
+                  <text className='span' x={MAP.x + 16 + i * 6} y={y + 8}>
+                    {s.t}
                   </text>
-                </Probe>
-                <Ping cx={mx(s.node)} cy={my(s.node)} r='13' stroke={s.dead ? 'rgba(24,20,54,.3)' : s.cause ? '#ff3d7a' : '#11a877'} $kf={pingAt(s.at)} />
-              </React.Fragment>
-            );
-          })}
+                  <rect x={BAR_X} y={y} width={BAR_W * s.w} height='8' rx='3' fill={s.hot ? '#ff3d7a' : 'rgba(24,20,54,.16)'} />
+                  <text className='span' x={MAP.x + MAP.w - 16} y={y + 8} textAnchor='end'>
+                    {s.ms}
+                  </text>
+                </g>
+              );
+            })}
+          </G>
+          <G $kf={drillIn(37)}>
+            <path className='drill' d={`M${MAP.x + 60},${B2 + 76} V${B3 - 24}`} />
+            <path d={`M${MAP.x + 56},${B3 - 22} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
+          </G>
+
+          {/* band 3 · the functions that were never being collected */}
+          <G $kf={bandIn(39)}>
+            <text className='depth' x={MAP.x + 16} y={B3 - 10}>
+              functions · captured on demand
+            </text>
+            {FNS.map((f) => {
+              const cx = MAP.x + 40 + f.x;
+              const cy = B3 + 18 + f.y;
+              return (
+                <g key={f.t}>
+                  <circle className={`node${f.target ? ' on' : ''}`} cx={cx} cy={cy} r={f.target ? 9 : 7} />
+                  <text className={`fn${f.target ? ' on' : ''}`} x={cx} y={cy + (f.target ? 22 : 20)} textAnchor='middle'>
+                    {f.t}
+                  </text>
+                </g>
+              );
+            })}
+          </G>
+
+          {/* the value that no error and no duration would ever have shown */}
+          <G $kf={bandIn(57)}>
+            <rect className='valBox' x={MAP.x + 198} y={B3 + 18} width='104' height='58' rx='10' />
+            <text className='valTxt' x={MAP.x + 210} y={B3 + 38}>
+              in &quot;BLACK50&quot;
+            </text>
+            <text className='valTxt' x={MAP.x + 210} y={B3 + 56}>
+              out 0.00
+            </text>
+            <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 196}`} />
+          </G>
+          <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(57)} />
         </Svg>
       </Panel>
     </Frame>
