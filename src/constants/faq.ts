@@ -1,6 +1,6 @@
 export const FAQ = [
   {
-    title: 'Can our own agents ask Odigos for data that was never instrumented?',
+    title: 'Can our agents ask for data nobody set up to collect?',
     description:
       'Yes. That is the point of the platform. An agent (or an engineer) can point at a function, a query, or a service that nobody ever set up to be watched, and Odigos attaches the capture live in running production. The answer comes back in seconds, as OpenTelemetry, with no code change and no redeploy.',
   },

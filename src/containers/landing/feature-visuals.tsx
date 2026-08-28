@@ -202,7 +202,7 @@ export const SafeVisual = () => (
           <circle className='arc' cx='84' cy='84' r='75' transform='rotate(-90 84 84)' />
         </Ring>
         <GaugeCenter>
-          <div className='v'>0.8%</div>
+          <div className='v'>&lt;1%</div>
           <div className='k'>CPU overhead</div>
         </GaugeCenter>
       </div>

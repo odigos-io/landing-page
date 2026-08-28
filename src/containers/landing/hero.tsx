@@ -80,6 +80,7 @@ const H1 = styled.h1`
   margin: 26px 0 0;
   font-size: clamp(38px, 4.9vw, 66px);
   line-height: 1.02;
+  padding-bottom: 0.1em;
   font-weight: 600;
   letter-spacing: -0.04em;
   color: var(--ink);
@@ -96,8 +97,8 @@ const H1 = styled.h1`
     position: absolute;
     left: -0.02em;
     right: -0.02em;
-    bottom: 0.07em;
-    height: 0.085em;
+    bottom: -0.06em;
+    height: 0.075em;
     background: linear-gradient(90deg, var(--accent), #8a74ff 60%, var(--signal-bright));
     border-radius: 3px;
   }
@@ -144,7 +145,7 @@ export const LandingHero = () => {
               <em>Ask production.</em>
             </span>
           </H1>
-          <Sub>Your engineers and the agents you build ask. Odigos captures what answers them inside live production, down to a function&rsquo;s arguments and what it returned. No code change. No redeploy.</Sub>
+          <Sub>Point at any function in live production and get its arguments and return values back in seconds. No code change. No redeploy.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

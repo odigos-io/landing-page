@@ -15,26 +15,26 @@ import styled, { keyframes } from 'styled-components';
 
 const DUR = '12s';
 const W = 660;
-const H = 430;
+const H = 452;
 
 const LX = 24;
-const LW = 272;
+const LW = 292;
 const ROW_Y = 92;
 const ROW_H = 62;
 
-const MAP = { x: 320, y: 40, w: 316, h: 352 };
+const MAP = { x: 344, y: 40, w: 300, h: 380 };
 const B1 = MAP.y + 56; // metrics
 const B2 = MAP.y + 134; // trace
-const B3 = MAP.y + 224; // functions
+const B3 = MAP.y + 244; // functions
 
-const HOLD = 93;
+const HOLD = 96;
 
 const STEPS = [
   { n: 1, at: 2, q: 'checkout revenue is down 12%', a: 'errors 0.1% · p99 normal' },
-  { n: 2, at: 12, q: 'show me a checkout trace', a: '12 spans green · 600ms' },
-  { n: 3, at: 24, q: 'open charge() internals', a: '9 functions · live in 1.2s' },
-  { n: 4, at: 36, q: 'what does applyPromo() return?', a: 'in "BLACK50" → out 0.00', cause: true },
-  { n: 5, at: 48, q: 'since when? how much?', a: '6 days · 1,284 carts · $84k', cause: true },
+  { n: 2, at: 10, q: 'show me a checkout trace', a: '12 green · charge() 600ms' },
+  { n: 3, at: 19, q: 'open charge() internals', a: '9 functions · capturing in 1.2s' },
+  { n: 4, at: 28, q: 'what does applyPromo() return?', a: 'in "BLACK50" → out 0.00', cause: true },
+  { n: 5, at: 37, q: 'since when? how much?', a: '6 days · 1,284 carts · $84k', cause: true },
 ];
 
 /* band 1: the numbers you already have */
@@ -59,7 +59,7 @@ const FNS = [
   { t: 'taxFor()', x: 102, y: 2 },
   { t: 'reserve()', x: 16, y: 62 },
   { t: 'settle()', x: 112, y: 60 },
-  { t: 'riskScore()', x: 80, y: 92 },
+  { t: 'riskScore()', x: 80, y: 84 },
 ];
 
 /* ── motion ───────────────────────────────────────────────────────────────── */
@@ -69,8 +69,8 @@ const askIn = (r: number) => keyframes`
   ${HOLD}%{opacity:1;transform:none}
   ${HOLD + 3}%,100%{opacity:0;transform:translateY(-4px)}`;
 const ansIn = (r: number) => keyframes`
-  0%,${r + 5}%{opacity:0;transform:translateY(6px)}
-  ${r + 8}%{opacity:1;transform:none}
+  0%,${r + 4}%{opacity:0;transform:translateY(6px)}
+  ${r + 6}%{opacity:1;transform:none}
   ${HOLD}%{opacity:1;transform:none}
   ${HOLD + 3}%,100%{opacity:0;transform:translateY(-4px)}`;
 const bandIn = (r: number) => keyframes`
@@ -382,7 +382,7 @@ export const HeroArt = () => {
             ai agent
           </text>
           <text className='who' x={LX + LW} y='46' textAnchor='end'>
-            5 questions · 8s
+            5 questions · 5s
           </text>
           <path className='rule' d={`M${LX},64 H${LX + LW}`} />
 
@@ -441,7 +441,7 @@ export const HeroArt = () => {
               );
             })}
           </G>
-          <G $kf={drillIn(10)}>
+          <G $kf={drillIn(8)}>
             <path className='drill' d={`M${MAP.x + 60},${B1 + 34} V${B2 - 22}`} />
             <path d={`M${MAP.x + 56},${B2 - 20} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
           </G>
@@ -450,7 +450,7 @@ export const HeroArt = () => {
           <text className='depth' x={MAP.x + 16} y={B2 - 8}>
             trace
           </text>
-          <G $kf={bandIn(12)}>
+          <G $kf={bandIn(10)}>
             {SPANS.map((s, i) => {
               const y = B2 + 4 + i * 16;
               if (s.empty) {
@@ -476,16 +476,16 @@ export const HeroArt = () => {
               );
             })}
           </G>
-          <G $kf={drillIn(22)}>
+          <G $kf={drillIn(17)}>
             <path className='drill' d={`M${MAP.x + 60},${B2 + 76} V${B3 - 24}`} />
             <path d={`M${MAP.x + 56},${B3 - 22} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
           </G>
 
           {/* band 3 · the functions that were never being collected */}
           <text className='depth' x={MAP.x + 16} y={B3 - 10}>
-            internals · captured live
+            internals · live
           </text>
-          <G $kf={bandIn(24)}>
+          <G $kf={bandIn(19)}>
             {FNS.map((f) => {
               const cx = MAP.x + 40 + f.x;
               const cy = B3 + 18 + f.y;
@@ -501,7 +501,7 @@ export const HeroArt = () => {
           </G>
 
           {/* the value that no error and no duration would ever have shown */}
-          <G $kf={bandIn(36)}>
+          <G $kf={bandIn(28)}>
             <rect className='valBox' x={MAP.x + 186} y={B3 + 8} width='116' height='82' rx='10' />
             <text className='valKey' x={MAP.x + 198} y={B3 + 28}>
               in &quot;BLACK50&quot;
@@ -517,7 +517,7 @@ export const HeroArt = () => {
             </text>
             <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 184}`} />
           </G>
-          <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(36)} />
+          <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(28)} />
         </Svg>
 
         <MobileSvg viewBox='0 0 340 320' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden>

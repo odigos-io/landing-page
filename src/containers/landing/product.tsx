@@ -114,7 +114,7 @@ export const LandingProduct = () => {
 
         <Reveal delay={70}>
           <Shot>
-            <Image src='/assets/renders/product_preview.png' alt='The Odigos console, showing instrumentation rules, detected sources, in-flight actions, and export destinations for a production cluster' width={1440} height={900} sizes='(max-width: 1200px) 100vw, 1200px' />
+            <Image src='/assets/renders/product_preview.png' alt='The Odigos console: detected sources, in-flight actions and export destinations for a production cluster' width={1440} height={900} sizes='(max-width: 1200px) 100vw, 1200px' />
           </Shot>
         </Reveal>
 

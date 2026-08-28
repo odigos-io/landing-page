@@ -77,7 +77,7 @@ export const LandingTestimonial = () => {
         <Reveal>
           <Mark>&ldquo;</Mark>
           <Quote>
-            eBPF-based instrumentation is clearly the future for observability. With Odigos we expanded observability across our services with <b>almost zero developer overhead</b>, sending traces, metrics, and logs straight into our existing stack.
+            With Odigos we expanded observability across our services with <b>almost zero developer overhead</b>, sending traces, metrics, and logs straight into our existing stack.
           </Quote>
           <Author>
             <div className='who'>
