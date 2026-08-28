@@ -211,7 +211,7 @@ export const SafeVisual = () => (
           <span className='dot' /> out-of-process
         </span>
         <span className='pill'>kernel-enforced</span>
-        <span className='pill'>100% uptime</span>
+        <span className='pill'>no in-process agent</span>
       </Pills>
     </Gauge>
   </Wrap>
