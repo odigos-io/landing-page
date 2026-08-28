@@ -54,8 +54,8 @@ const SPANS = [
 
 /* band 3: what was inside it all along */
 const FNS = [
-  { t: 'authorize()', x: 8, y: 0, known: true },
-  { t: 'applyPromo()', x: 70, y: 34, target: true },
+  { t: 'authorize()', x: 6, y: 0, known: true },
+  { t: 'applyPromo()', x: 58, y: 34, target: true },
   { t: 'taxFor()', x: 116, y: 0 },
   { t: 'reserve()', x: 16, y: 62 },
   { t: 'settle()', x: 104, y: 56 },
@@ -512,7 +512,7 @@ export const HeroArt = () => {
             </text>
             <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 184}`} />
           </G>
-          <Ping cx={MAP.x + 110} cy={B3 + 52} r='13' stroke='#ff3d7a' $kf={pingAt(28)} />
+          <Ping cx={MAP.x + 98} cy={B3 + 52} r='13' stroke='#ff3d7a' $kf={pingAt(28)} />
         </Svg>
 
         <MobileSvg viewBox='0 0 340 320' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden>
