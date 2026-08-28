@@ -30,16 +30,16 @@ const B3 = MAP.y + 224; // functions
 const HOLD = 93;
 
 const STEPS = [
-  { n: 1, at: 3, q: 'what is failing right now?', a: 'checkout · 6.1% err · p99 812ms' },
-  { n: 2, at: 21, q: 'show me a failing trace', a: 'charge() 600ms · nothing inside' },
+  { n: 1, at: 3, q: 'checkout revenue is down 12%', a: 'errors 0.1% · p99 normal' },
+  { n: 2, at: 21, q: 'show me a checkout trace', a: '12 spans green · charge() 600ms' },
   { n: 3, at: 39, q: 'open charge() internals', a: '9 functions · live in 1.2s' },
   { n: 4, at: 57, q: 'what does applyPromo() return?', a: 'in "BLACK50" → out 0.00', cause: true },
-  { n: 5, at: 75, q: 'how many carts hit that?', a: '1,284 carts · still counting' },
+  { n: 5, at: 75, q: 'since when? how much?', a: '6 days · 1,284 carts · $84k', cause: true },
 ];
 
 /* band 1: the numbers you already have */
 const SERVICES = [
-  { t: 'checkout', v: '6.1%', hot: true },
+  { t: 'checkout', v: '0.1%', sel: true },
   { t: 'payments', v: '0.2%' },
   { t: 'fraud', v: '0.1%' },
 ];
@@ -48,7 +48,7 @@ const SERVICES = [
 const SPANS = [
   { t: 'POST /checkout', w: 1, ms: '812ms' },
   { t: 'payments-svc', w: 0.84, ms: '690ms' },
-  { t: 'charge()', w: 0.72, ms: '600ms', hot: true },
+  { t: 'charge()', w: 0.72, ms: '600ms', sel: true },
   { t: '', w: 0.5, ms: '', empty: true },
 ];
 
@@ -182,8 +182,8 @@ const Svg = styled.svg`
     stroke: rgba(24, 20, 54, 0.16);
     stroke-width: 1.1;
   }
-  .pill.hot {
-    stroke: #ff3d7a;
+  .pill.sel {
+    stroke: #6a4bff;
     stroke-width: 1.5;
   }
   .pillTxt {
@@ -191,7 +191,7 @@ const Svg = styled.svg`
     font-size: 10.5px;
     fill: var(--ink-mute);
   }
-  .pillTxt.hot {
+  .pillTxt.sel {
     fill: var(--ink);
   }
   .pillVal {
@@ -199,9 +199,7 @@ const Svg = styled.svg`
     font-size: 10.5px;
     fill: var(--ink-faint);
   }
-  .pillVal.hot {
-    fill: #c9346a;
-  }
+
   .span {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10px;
@@ -357,11 +355,11 @@ export const HeroArt = () => {
               const x = MAP.x + 16 + i * 98;
               return (
                 <g key={s.t}>
-                  <rect className={`pill${s.hot ? ' hot' : ''}`} x={x} y={B1} width='90' height='30' rx='9' />
-                  <text className={`pillTxt${s.hot ? ' hot' : ''}`} x={x + 10} y={B1 + 13}>
+                  <rect className={`pill${s.sel ? ' sel' : ''}`} x={x} y={B1} width='90' height='30' rx='9' />
+                  <text className={`pillTxt${s.sel ? ' sel' : ''}`} x={x + 10} y={B1 + 13}>
                     {s.t}
                   </text>
-                  <text className={`pillVal${s.hot ? ' hot' : ''}`} x={x + 10} y={B1 + 25}>
+                  <text className='pillVal' x={x + 10} y={B1 + 25}>
                     {s.v} errors
                   </text>
                 </g>
@@ -395,7 +393,7 @@ export const HeroArt = () => {
                   <text className='span' x={MAP.x + 16 + i * 6} y={y + 8}>
                     {s.t}
                   </text>
-                  <rect x={BAR_X} y={y} width={BAR_W * s.w} height='8' rx='3' fill={s.hot ? '#ff3d7a' : 'rgba(24,20,54,.16)'} />
+                  <rect x={BAR_X} y={y} width={BAR_W * s.w} height='8' rx='3' fill={s.sel ? '#6a4bff' : 'rgba(24,20,54,.16)'} />
                   <text className='span' x={MAP.x + MAP.w - 16} y={y + 8} textAnchor='end'>
                     {s.ms}
                   </text>
