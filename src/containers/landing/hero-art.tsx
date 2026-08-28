@@ -56,7 +56,7 @@ const SPANS = [
 const FNS = [
   { t: 'authorize()', x: 6, y: 0, known: true },
   { t: 'applyPromo()', x: 58, y: 34, target: true },
-  { t: 'taxFor()', x: 116, y: 0 },
+  { t: 'taxFor()', x: 100, y: 0 },
   { t: 'reserve()', x: 16, y: 62 },
   { t: 'settle()', x: 104, y: 56 },
   { t: 'riskScore()', x: 64, y: 90 },
@@ -497,20 +497,22 @@ export const HeroArt = () => {
 
           {/* the value that no error and no duration would ever have shown */}
           <G $kf={bandIn(28)}>
-            <rect className='valBox' x={MAP.x + 186} y={B3 + 8} width='116' height='82' rx='10' />
-            <text className='valKey' x={MAP.x + 198} y={B3 + 28}>
+            {/* the box sits inside the panel, and the value is right-aligned so
+                it can never run into its own label whatever the font metrics */}
+            <rect className='valBox' x={MAP.x + 172} y={B3 + 8} width='116' height='82' rx='10' />
+            <text className='valKey' x={MAP.x + 184} y={B3 + 28}>
               in &quot;BLACK50&quot;
             </text>
-            <text className='valKey' x={MAP.x + 198} y={B3 + 52}>
+            <text className='valKey' x={MAP.x + 184} y={B3 + 54}>
               out
             </text>
-            <text className='valBig' x={MAP.x + 210} y={B3 + 54}>
+            <text className='valBig' x={MAP.x + 276} y={B3 + 56} textAnchor='end'>
               0.00
             </text>
-            <text className='valTag' x={MAP.x + 198} y={B3 + 76}>
+            <text className='valTag' x={MAP.x + 184} y={B3 + 78}>
               no error · 4ms
             </text>
-            <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 184}`} />
+            <path className='rule' d={`M${MAP.x + 122},${B3 + 52} H${MAP.x + 170}`} />
           </G>
           <Ping cx={MAP.x + 98} cy={B3 + 52} r='13' stroke='#ff3d7a' $kf={pingAt(28)} />
         </Svg>
