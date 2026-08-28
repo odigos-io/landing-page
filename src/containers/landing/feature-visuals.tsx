@@ -53,7 +53,7 @@ const Bar = styled.div<{ $w: number; $hot?: boolean; $i: number }>`
   transform-origin: left;
   animation: ${grow} 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: ${({ $i }) => 0.12 + $i * 0.09}s;
-  background: ${({ $hot }) => ($hot ? 'linear-gradient(90deg,#ff4d85,#8b55ff)' : 'linear-gradient(90deg,#12bda9,#5b43f1)')};
+  background: ${({ $hot }) => ($hot ? '#ff3d7a' : 'rgba(91,67,241,.72)')};
   box-shadow: ${({ $hot }) => ($hot ? '0 4px 14px rgba(255,77,133,.32)' : '0 2px 8px rgba(91,67,241,.16)')};
   overflow: hidden;
   &::after {
