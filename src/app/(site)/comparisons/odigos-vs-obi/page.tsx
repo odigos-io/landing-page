@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { getComparisonBySlug } from '@/constants';
-import { ComparisonVs, Hero3 } from '@/containers';
+import { LandingHeader, LandingComparison, LandingCTA, LandingFooter } from '@/containers/landing';
 
 const comparison = getComparisonBySlug('odigos-vs-obi');
 
@@ -10,10 +10,14 @@ const OdigosVsObi = () => {
   if (!comparison) return null;
 
   return (
-    <>
-      <ComparisonVs comparison={comparison} />
-      <Hero3 />
-    </>
+    <div className='landing-root'>
+      <LandingHeader />
+      <main>
+        <LandingComparison comparison={comparison} />
+        <LandingCTA />
+      </main>
+      <LandingFooter />
+    </div>
   );
 };
 

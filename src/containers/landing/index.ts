@@ -13,6 +13,7 @@ export * from './testimonial';
 export * from './faq';
 export * from './blogs';
 export * from './prose';
+export * from './comparison';
 export * from './blog-post';
 export * from './event-post';
 export * from './cta';

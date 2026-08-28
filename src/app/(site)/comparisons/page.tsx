@@ -1,14 +1,18 @@
 'use client';
 
 import React from 'react';
-import { ComparisonsHub, Hero3 } from '@/containers';
+import { LandingHeader, LandingComparisonsHub, LandingCTA, LandingFooter } from '@/containers/landing';
 
 const Comparisons = () => {
   return (
-    <>
-      <ComparisonsHub />
-      <Hero3 />
-    </>
+    <div className='landing-root'>
+      <LandingHeader />
+      <main>
+        <LandingComparisonsHub />
+        <LandingCTA />
+      </main>
+      <LandingFooter />
+    </div>
   );
 };
 
