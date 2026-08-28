@@ -1,5 +1,15 @@
 export const FAQ = [
   {
+    title: 'Where does the captured data go?',
+    description:
+      'Wherever you send it. Odigos runs inside your cluster and exports as OpenTelemetry to the destinations you configure, so captured data can stay entirely within your own infrastructure. Values are shaped before they leave: PII masking, attribute deletion and sampling all run in flight, in your cluster.',
+  },
+  {
+    title: 'Who can capture argument values, and how is that audited?',
+    description:
+      'Capture is a governed action, not a developer convenience. RBAC controls who can request it and on which workloads, policy controls limit what may be captured at all, and every capture is scoped to the workload it was requested for. Teams handling card or patient data typically mask at the source and allow capture only on named services.',
+  },
+  {
     title: 'Can our agents ask for data nobody set up to collect?',
     description:
       'Yes. That is the point of the platform. An agent (or an engineer) can point at a function, a query, or a service that nobody ever set up to be watched, and Odigos attaches the capture live in running production. The answer comes back in seconds, as OpenTelemetry, with no code change and no redeploy.',

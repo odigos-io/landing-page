@@ -33,7 +33,7 @@ const Head = styled.div`
   }
   h2 {
     margin: 18px 0 0;
-    font-size: clamp(28px, 3.4vw, 40px);
+    font-size: clamp(28px, 3.6vw, 46px);
     line-height: 1.08;
     font-weight: 600;
     letter-spacing: -0.03em;
@@ -131,7 +131,6 @@ export const LandingFaq = () => {
           <Head>
             <Eyebrow>Questions, answered</Eyebrow>
             <h2>The things engineering leaders ask first.</h2>
-            <p>Straight answers on how Odigos fits next to what you already run.</p>
           </Head>
         </Reveal>
 

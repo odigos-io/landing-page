@@ -183,7 +183,7 @@ export const LandingCTA = () => {
                 Get a demo
               </Ghost>
             </Ctas>
-            <Note>Our own eBPF · Exports as OpenTelemetry, zero lock-in · No code changes</Note>
+            <Note>Our own eBPF. Nothing enters your process.</Note>
           </Card>
         </Reveal>
       </Band>

@@ -27,7 +27,7 @@ const Head = styled.div`
   }
   h2 {
     margin: 18px 0 0;
-    font-size: clamp(28px, 3.6vw, 44px);
+    font-size: clamp(28px, 3.6vw, 46px);
     line-height: 1.06;
     font-weight: 600;
     letter-spacing: -0.03em;
@@ -193,7 +193,7 @@ export const LandingFeatures = () => {
         <Reveal>
           <Head>
             <Eyebrow>Why Odigos</Eyebrow>
-            <h2>Built from the kernel up.</h2>
+            <h2>Everyone else&rsquo;s eBPF stops at the syscall.</h2>
             <p>Our own eBPF runtime reads what is actually happening inside a running process. Whatever you ask for, it captures on demand and exports as OpenTelemetry.</p>
           </Head>
         </Reveal>

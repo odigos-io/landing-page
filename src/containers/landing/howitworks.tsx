@@ -23,7 +23,7 @@ const Head = styled.div`
   margin-bottom: 60px;
   h2 {
     margin: 18px 0 0;
-    font-size: clamp(28px, 3.6vw, 44px);
+    font-size: clamp(28px, 3.6vw, 46px);
     line-height: 1.06;
     font-weight: 600;
     letter-spacing: -0.03em;
@@ -221,7 +221,7 @@ export const LandingHowItWorks = () => {
         <Reveal>
           <Head>
             <Eyebrow>How it works</Eyebrow>
-            <h2>From install to first answer in minutes.</h2>
+            <h2>The first thing you ask it is something your stack has never answered.</h2>
             <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions nobody set your stack up to answer.</p>
           </Head>
         </Reveal>

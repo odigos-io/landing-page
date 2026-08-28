@@ -7,15 +7,14 @@ import {
   LandingLogos,
   LandingValue,
   LandingOldWay,
-  LandingHowItWorks,
-  LandingProduct,
   LandingFeatures,
-  LandingIntegrations,
-  LandingOutcomes,
   LandingProof,
+  LandingProduct,
+  LandingOutcomes,
+  LandingHowItWorks,
   LandingTestimonial,
-  LandingFaq,
   LandingBlogs,
+  LandingFaq,
   LandingCTA,
   LandingFooter,
 } from '@/containers/landing';
@@ -29,15 +28,14 @@ const HomeContent = () => {
         <LandingLogos />
         <LandingValue />
         <LandingOldWay />
-        <LandingHowItWorks />
-        <LandingProduct />
         <LandingFeatures />
-        <LandingIntegrations />
-        <LandingOutcomes />
         <LandingProof />
+        <LandingProduct />
+        <LandingOutcomes />
+        <LandingHowItWorks />
         <LandingTestimonial />
-        <LandingFaq />
         <LandingBlogs />
+        <LandingFaq />
         <LandingCTA />
       </main>
       <LandingFooter />

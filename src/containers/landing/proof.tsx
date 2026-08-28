@@ -50,7 +50,7 @@ const Copy = styled.div`
   position: relative;
   h2 {
     margin: 14px 0 0;
-    font-size: clamp(28px, 3.4vw, 42px);
+    font-size: clamp(28px, 3.6vw, 46px);
     line-height: 1.1;
     letter-spacing: -0.032em;
     font-weight: 600;
@@ -134,7 +134,7 @@ export const LandingProof = () => {
               <h2>
                 Cheaper than the agent <span className='mute'>you are already running.</span>
               </h2>
-              <p>eBPF runs outside your process, so depth stops costing you throughput. One Fortune 500 customer benchmarked us against their legacy bytecode agent on the same traces, across 1.04 million cores.</p>
+              <p>eBPF runs outside your process, so depth stops costing you throughput. One Fortune 500 customer benchmarked us against their legacy bytecode agent on the same traces, across 1.04 million cores. Another, one of the largest retailers in the world, built its own regression agent in-house on this data.</p>
             </Copy>
 
             <Stats>
@@ -148,7 +148,7 @@ export const LandingProof = () => {
               </Stat>
               <Stat>
                 <span className='n'>
-                  <em>5-27.6%</em>
+                  <em>up to 27.6%</em>
                 </span>
                 <span className='t'>
                   less CPU than their legacy bytecode agent, <b>on identical traces</b>, measured by the customer.
@@ -163,7 +163,7 @@ export const LandingProof = () => {
                 </span>
               </Stat>
             </Stats>
-            <Note>// 11 enterprises in production · SOC 2 · open source core</Note>
+            <Note>// 11 enterprises in production, SOC 2 audited</Note>
           </Slab>
         </Reveal>
       </Inner>

@@ -26,7 +26,7 @@ const Head = styled.div`
   max-width: 700px;
   h2 {
     margin: 14px 0 0;
-    font-size: clamp(28px, 3.6vw, 44px);
+    font-size: clamp(28px, 3.6vw, 46px);
     line-height: 1.08;
     letter-spacing: -0.032em;
     font-weight: 600;
@@ -106,7 +106,7 @@ export const LandingProduct = () => {
           <Head>
             <Eyebrow>The console</Eyebrow>
             <h2>
-              Sources, actions, destinations. <span className='mute'>One screen.</span>
+              Everything you capture, <span className='mute'>on one screen.</span>
             </h2>
             <p>Pick what to capture, shape it while it is still in flight, and send it wherever you want. Nothing here is a black box: every rule is visible, reversible, and scoped per cluster.</p>
           </Head>
