@@ -156,7 +156,7 @@ const Arrow = () => (
   </svg>
 );
 
-const HUBSPOT_DEMO_URL =
+export const HUBSPOT_DEMO_URL =
   'https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/redirect?encryptedPayload=AVxigLKKpYFkaGHLV2SjisuKL8vGZv8GBmHLZBbEO8WEPKpvVFGLbCJ75h5TYp0EunqgNph6y6otczaQIcIVW%2Bjg6QKGujbcqjfJbc0ppMX0vfLpYVru76VnnU3%2FWnz91xJehZPt8GVQCH9oQWAKvhLTOMypjCua0VKp16%2Bf%2BFCDMSrqktcXUfrk&webInteractiveContentId=208657275164&portalId=50932826';
 
 export const TrialCTA = ({ size = 'md', label = 'Start 14-day trial' }: { size?: 'sm' | 'md'; label?: string }) => {

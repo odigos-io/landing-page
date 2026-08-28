@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FAQ } from '@/constants';
-import { Container, Eyebrow, Reveal } from './primitives';
+import { Container, Eyebrow, Reveal, HUBSPOT_DEMO_URL } from './primitives';
 
 const Section = styled.section`
   background: var(--paper-3);
@@ -22,6 +22,22 @@ const Inner = styled(Container)`
     gap: 36px;
     padding-top: 64px;
     padding-bottom: 64px;
+  }
+`;
+
+const Talk = styled.a`
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 3px;
+  transition: border-color 0.18s ease;
+  &:hover {
+    border-bottom-color: var(--ink);
   }
 `;
 
@@ -131,6 +147,12 @@ export const LandingFaq = () => {
           <Head>
             <Eyebrow>Questions, answered</Eyebrow>
             <h2>The things engineering leaders ask first.</h2>
+            <Talk href={HUBSPOT_DEMO_URL} target='_blank' rel='noreferrer'>
+              Ask us the rest
+              <svg width='15' height='15' viewBox='0 0 16 16' fill='none' aria-hidden>
+                <path d='M3 8h9M8.5 3.5 13 8l-4.5 4.5' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' strokeLinejoin='round' />
+              </svg>
+            </Talk>
           </Head>
         </Reveal>
 
