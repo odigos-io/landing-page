@@ -27,7 +27,7 @@ const B1 = MAP.y + 56; // metrics
 const B2 = MAP.y + 134; // trace
 const B3 = MAP.y + 244; // functions
 
-const HOLD = 96;
+const HOLD = 100;
 
 const STEPS = [
   { n: 1, at: 2, q: 'checkout revenue is down 12%', a: 'errors 0.1% · p99 normal' },
@@ -55,33 +55,28 @@ const SPANS = [
 /* band 3: what was inside it all along */
 const FNS = [
   { t: 'authorize()', x: 8, y: 0, known: true },
-  { t: 'applyPromo()', x: 76, y: 32, target: true },
-  { t: 'taxFor()', x: 102, y: 2 },
+  { t: 'applyPromo()', x: 70, y: 34, target: true },
+  { t: 'taxFor()', x: 116, y: 0 },
   { t: 'reserve()', x: 16, y: 62 },
-  { t: 'settle()', x: 112, y: 60 },
-  { t: 'riskScore()', x: 80, y: 84 },
+  { t: 'settle()', x: 118, y: 56 },
+  { t: 'riskScore()', x: 74, y: 90 },
 ];
 
 /* ── motion ───────────────────────────────────────────────────────────────── */
+/* the art plays once and stays. Its resting state used to be an empty frame,
+   which is what a scroll-past, a screenshot or a two second visit actually saw */
 const askIn = (r: number) => keyframes`
   0%,${r}%{opacity:0;transform:translateY(6px)}
-  ${r + 2}%{opacity:1;transform:none}
-  ${HOLD}%{opacity:1;transform:none}
-  ${HOLD + 3}%,100%{opacity:0;transform:translateY(-4px)}`;
+  ${r + 2}%,100%{opacity:1;transform:none}`;
 const ansIn = (r: number) => keyframes`
   0%,${r + 4}%{opacity:0;transform:translateY(6px)}
-  ${r + 6}%{opacity:1;transform:none}
-  ${HOLD}%{opacity:1;transform:none}
-  ${HOLD + 3}%,100%{opacity:0;transform:translateY(-4px)}`;
+  ${r + 6}%,100%{opacity:1;transform:none}`;
 const bandIn = (r: number) => keyframes`
   0%,${r + 2}%{opacity:0;transform:translateY(10px)}
-  ${r + 7}%{opacity:1;transform:none}
-  ${HOLD}%{opacity:1;transform:none}
-  ${HOLD + 3}%,100%{opacity:0;transform:translateY(-6px)}`;
+  ${r + 7}%,100%{opacity:1;transform:none}`;
 const drillIn = (r: number) => keyframes`
   0%,${r}%{opacity:0}
-  ${r + 4}%,${HOLD}%{opacity:1}
-  ${HOLD + 3}%,100%{opacity:0}`;
+  ${r + 4}%,100%{opacity:1}`;
 const pingAt = (r: number) => keyframes`
   0%,${r + 2}%{opacity:0;transform:scale(.5)}
   ${r + 4}%{opacity:.6}
@@ -108,7 +103,7 @@ const Panel = styled.div`
   box-shadow: var(--shadow-panel);
 `;
 const G = styled.g<{ $kf: ReturnType<typeof keyframes> }>`
-  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation: ${(p) => p.$kf} ${DUR} cubic-bezier(0.16, 1, 0.3, 1) both;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     opacity: 1;
@@ -120,7 +115,7 @@ const Ping = styled.circle<{ $kf: ReturnType<typeof keyframes> }>`
   stroke-width: 1.3;
   transform-box: fill-box;
   transform-origin: center;
-  animation: ${(p) => p.$kf} ${DUR} ease-out infinite;
+  animation: ${(p) => p.$kf} ${DUR} ease-out both;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     opacity: 0;
@@ -419,7 +414,7 @@ export const HeroArt = () => {
           </text>
 
           <path className='rule' d={`M${MAP.x + 12},${B2 - 30} H${MAP.x + MAP.w - 12}`} />
-          <path className='rule' d={`M${MAP.x + 12},${B3 - 32} H${MAP.x + MAP.w - 12}`} />
+          <path className='rule' d={`M${MAP.x + 12},${B3 - 40} H${MAP.x + MAP.w - 12}`} />
 
           {/* band 1 · the numbers everyone already has */}
           <text className='depth' x={MAP.x + 16} y={B1 - 12}>
@@ -477,8 +472,8 @@ export const HeroArt = () => {
             })}
           </G>
           <G $kf={drillIn(17)}>
-            <path className='drill' d={`M${MAP.x + 60},${B2 + 76} V${B3 - 24}`} />
-            <path d={`M${MAP.x + 56},${B3 - 22} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
+            <path className='drill' d={`M${MAP.x + 60},${B2 + 76} V${B3 - 30}`} />
+            <path d={`M${MAP.x + 56},${B3 - 28} l4,6 l4,-6 z`} fill='rgba(17,168,119,.6)' />
           </G>
 
           {/* band 3 · the functions that were never being collected */}

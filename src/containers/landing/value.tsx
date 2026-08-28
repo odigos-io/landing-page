@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            An agent tests a hypothesis in under a second. Getting it one signal nobody captured takes a code change, a review and a deploy. <b>Your agents run in seconds. Your visibility ships in sprints.</b>
+            Your agents reason in seconds. <b>Adding the one signal they ask for still takes a pull request, a review and a deploy.</b>
           </Statement>
         </Reveal>
       </Inner>

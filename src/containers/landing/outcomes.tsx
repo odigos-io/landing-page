@@ -151,7 +151,7 @@ const OUTCOMES = [
   {
     icon: <Hub />,
     title: 'Your engineers',
-    desc: 'The same context, in the tools they already run, so the humans and the agents are never working from different truths.',
+    desc: 'The same captured data lands in Datadog, Grafana or Splunk, so an engineer can re-run the exact query the agent used to reach its answer.',
     metric: 'One shared truth',
   },
 ];

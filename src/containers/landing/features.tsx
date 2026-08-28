@@ -125,6 +125,12 @@ const Panel = styled.div`
   box-shadow: var(--shadow-soft);
   overflow: hidden;
   aspect-ratio: 1.45 / 1;
+  @media (max-width: 700px) {
+    /* the fixed-size visuals overflow a short panel on a phone */
+    aspect-ratio: auto;
+    min-height: 300px;
+    padding-bottom: 24px;
+  }
   display: flex;
   align-items: center;
   justify-content: center;
