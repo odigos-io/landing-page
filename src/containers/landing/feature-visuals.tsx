@@ -76,7 +76,7 @@ const Callout = styled.div`
   background: rgba(255, 77, 133, 0.08);
   border: 1px solid rgba(255, 77, 133, 0.28);
   font-size: 10.5px;
-  color: var(--hot);
+  color: var(--hot-ink);
   font-family: var(--font-display), sans-serif;
   animation: ${grow} 0.5s ease both;
   animation-delay: 0.7s;
@@ -324,7 +324,7 @@ const Evidence = styled.div`
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--signal);
+    color: var(--signal-ink);
     display: inline-flex;
     align-items: center;
     gap: 5px;

@@ -87,7 +87,7 @@ const Card = styled.div`
     font-family: var(--font-mono), monospace;
     font-size: 12px;
     letter-spacing: 0.02em;
-    color: var(--signal);
+    color: var(--signal-ink);
     display: inline-flex;
     align-items: center;
     gap: 7px;

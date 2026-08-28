@@ -189,7 +189,7 @@ const Chips = styled.div`
   .chip.live {
     border-color: rgba(17, 168, 119, 0.3);
     background: var(--signal-soft);
-    color: var(--signal);
+    color: var(--signal-ink);
     display: inline-flex;
     align-items: center;
     gap: 6px;

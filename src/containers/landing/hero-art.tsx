@@ -58,7 +58,7 @@ const FNS = [
   { t: 'applyPromo()', x: 70, y: 34, target: true },
   { t: 'taxFor()', x: 116, y: 0 },
   { t: 'reserve()', x: 16, y: 62 },
-  { t: 'settle()', x: 124, y: 54 },
+  { t: 'settle()', x: 104, y: 56 },
   { t: 'riskScore()', x: 64, y: 90 },
 ];
 
@@ -504,7 +504,7 @@ export const HeroArt = () => {
             <text className='valKey' x={MAP.x + 198} y={B3 + 52}>
               out
             </text>
-            <text className='valBig' x={MAP.x + 212} y={B3 + 54}>
+            <text className='valBig' x={MAP.x + 218} y={B3 + 54}>
               0.00
             </text>
             <text className='valTag' x={MAP.x + 198} y={B3 + 76}>
@@ -512,7 +512,7 @@ export const HeroArt = () => {
             </text>
             <path className='rule' d={`M${MAP.x + 125},${B3 + 50} H${MAP.x + 184}`} />
           </G>
-          <Ping cx={MAP.x + 116} cy={B3 + 50} r='13' stroke='#ff3d7a' $kf={pingAt(28)} />
+          <Ping cx={MAP.x + 110} cy={B3 + 52} r='13' stroke='#ff3d7a' $kf={pingAt(28)} />
         </Svg>
 
         <MobileSvg viewBox='0 0 340 320' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden>

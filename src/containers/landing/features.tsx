@@ -189,7 +189,7 @@ const FEATURES = [
     title: 'Out of process. Out of your blast radius.',
     desc: 'Every other way of getting this depth runs inside your process, one bad agent release away from taking the app down with it. Ours never touches your process. Under 1% CPU, safe to leave on across the whole estate, with RBAC and policy controls over what may be captured and by whom.',
     visual: <SafeVisual />,
-    tags: ['out of process', '< 1% CPU', 'RBAC & governance'],
+    tags: ['out of process', 'no agent in your app', 'RBAC & governance'],
   },
 ];
 
