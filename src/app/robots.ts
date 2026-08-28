@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/studio/', '/dinner/'],
+      disallow: ['/studio/', '/dinner/', '/new/'],
     },
     sitemap: 'https://odigos.io/sitemap.xml',
   };

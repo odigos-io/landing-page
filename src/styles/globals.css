@@ -8,7 +8,7 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
-* {
+body {
   font-family: 'Inter', sans-serif;
 }
 
@@ -16,6 +16,13 @@ html,
 body {
   overflow-x: hidden;
   overscroll-behavior-x: none;
+}
+
+/* the light pages paint their own box, so without this the document behind them
+   stays black and rubber-band overscroll shows it */
+html:has(.landing-root),
+html:has(.landing-root) body {
+  background: #fbfaf7;
 }
 
 /*
@@ -102,6 +109,9 @@ input:-webkit-autofill:active {
 /* visible keyboard focus for accessibility (does not show on mouse click) */
 .landing-root a:focus-visible,
 .landing-root button:focus-visible,
+.landing-root input:focus-visible,
+.landing-root textarea:focus-visible,
+.landing-root select:focus-visible,
 .landing-root [tabindex]:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;

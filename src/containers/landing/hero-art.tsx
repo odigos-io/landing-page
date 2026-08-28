@@ -504,7 +504,7 @@ export const HeroArt = () => {
             <text className='valKey' x={MAP.x + 198} y={B3 + 52}>
               out
             </text>
-            <text className='valBig' x={MAP.x + 218} y={B3 + 54}>
+            <text className='valBig' x={MAP.x + 210} y={B3 + 54}>
               0.00
             </text>
             <text className='valTag' x={MAP.x + 198} y={B3 + 76}>
