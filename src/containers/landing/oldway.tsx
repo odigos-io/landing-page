@@ -154,7 +154,7 @@ export const LandingOldWay = () => {
             <h2>
               Your stack answers <span className='mute'>the questions you already had.</span>
             </h2>
-            <p>Dashboards, alerts and traces cover what somebody decided to collect months ago. The incident that actually costs you is the one outside that set, and closing the gap means a code change, a review, a pipeline and a deploy, while production is still burning. Your AI is stuck behind the same wall: it cannot reason about data nobody captured.</p>
+            <p>Dashboards and traces cover what somebody chose to collect months ago. The incident that costs you is always outside that set, and closing the gap means shipping code while production burns. Your AI hits the same wall: it cannot reason about data nobody captured.</p>
           </Head>
         </Reveal>
 

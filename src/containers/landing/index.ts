@@ -3,7 +3,6 @@ export * from './hero';
 export * from './logos';
 export * from './value';
 export * from './oldway';
-export * from './routes';
 export * from './howitworks';
 export * from './product';
 export * from './features';

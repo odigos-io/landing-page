@@ -144,7 +144,7 @@ export const LandingHero = () => {
               <em>Ask production.</em>
             </span>
           </H1>
-          <Sub>Your engineers and your agents ask. Odigos goes and captures the exact data that answers, live from the kernel, inside running production. No code change. No redeploy. Seconds instead of a deploy cycle.</Sub>
+          <Sub>Your engineers and your agents ask. Odigos captures the exact data that answers, live inside running production. No code change. No redeploy.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
