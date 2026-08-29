@@ -14,6 +14,7 @@ export * from './faq';
 export * from './blogs';
 export * from './prose';
 export * from './comparison';
+export * from './trial-modal';
 export * from './blog-post';
 export * from './event-post';
 export * from './cta';

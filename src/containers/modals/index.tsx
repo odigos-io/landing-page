@@ -4,7 +4,7 @@ import React from 'react';
 import { ModalType, useModalStore } from '@/store';
 import { ContactUsModal } from './contact-us-modal';
 import { DemoModal } from './demo-modal';
-import { TrialModal } from './trial-modal';
+import { LandingTrialModal } from '@/containers/landing';
 
 const Modals = () => {
   const { modal, setModal } = useModalStore();
@@ -13,7 +13,7 @@ const Modals = () => {
     <>
       <DemoModal isOpen={modal === ModalType.DEMO} onClose={() => setModal(null)} />
       <ContactUsModal isOpen={modal === ModalType.CONTACT_US} onClose={() => setModal(null)} />
-      <TrialModal isOpen={modal === ModalType.TRIAL} onClose={() => setModal(null)} />
+      <LandingTrialModal isOpen={modal === ModalType.TRIAL} onClose={() => setModal(null)} />
     </>
   );
 };
