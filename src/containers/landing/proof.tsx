@@ -159,7 +159,7 @@ export const LandingProof = () => {
                   <em>0</em>
                 </span>
                 <span className='t'>
-                  code changes, redeploys or CI runs <b>to capture something new</b>.
+                  code changes or redeploys <b>to capture something new</b>.
                 </span>
               </Stat>
             </Stats>

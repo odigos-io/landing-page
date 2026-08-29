@@ -150,7 +150,7 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>The problem</Eyebrow>
+            <Eyebrow>Where every investigation stalls</Eyebrow>
             <h2>
               Your stack answers <span className='mute'>the questions you already had.</span>
             </h2>

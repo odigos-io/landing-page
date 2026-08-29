@@ -150,7 +150,7 @@ export const LandingFaq = () => {
         <Reveal>
           <Head>
             <Eyebrow>Questions, answered</Eyebrow>
-            <h2>The things engineering leaders ask first.</h2>
+            <h2>The questions your security team asks first.</h2>
             <Talk href={HUBSPOT_DEMO_URL} target='_blank' rel='noreferrer'>
               Ask us the rest
               <svg width='15' height='15' viewBox='0 0 16 16' fill='none' aria-hidden>

@@ -120,9 +120,9 @@ export const LandingProduct = () => {
           <Head>
             <Eyebrow>The console</Eyebrow>
             <h2>
-              Everything you capture, <span className='mute'>on one screen.</span>
+              Nothing gets captured <span className='mute'>that you did not name.</span>
             </h2>
-            <p>Pick what to capture, shape it while it is still in flight, and send it wherever you want. Nothing here is a black box: every rule is visible, reversible, and scoped per cluster.</p>
+            <p>Every capture rule is one line you can read, scoped per cluster and reversible. Shape the data while it is still in flight, then send it wherever you already send telemetry.</p>
           </Head>
         </Reveal>
 
@@ -136,7 +136,7 @@ export const LandingProduct = () => {
           <Notes>
             <div>
               <h3>Sources find themselves</h3>
-              <p>Every workload is detected with its language and runtime. Nothing to tag, nothing to annotate, nothing to redeploy.</p>
+              <p>Every workload is detected with its language and runtime. Nothing to tag. Nothing to redeploy.</p>
             </div>
             <div>
               <h3>Actions run in flight</h3>

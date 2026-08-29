@@ -255,7 +255,7 @@ export const LandingHowItWorks = () => {
                 <Num>2</Num>
                 <StepTag>Capture</StepTag>
               </StepTop>
-              <StepTitle>Context, straight from the kernel</StepTitle>
+              <StepTitle>Inside the process, not at the syscall</StepTitle>
               <StepDesc>Our own eBPF runtime reads what is actually happening inside each process: the functions running, the queries they make, the arguments they carry. Nothing is wired into your apps.</StepDesc>
               <Chips>
                 <span className='chip live'>eBPF probe attached</span>

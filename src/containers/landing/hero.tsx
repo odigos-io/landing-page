@@ -39,7 +39,7 @@ const Bloom = styled.div`
 const Grid = styled(Container)`
   position: relative;
   display: grid;
-  grid-template-columns: 0.95fr 1.25fr;
+  grid-template-columns: 1.02fr 1.18fr;
   align-items: center;
   gap: 56px;
   padding-top: 84px;
@@ -78,7 +78,7 @@ const Copy = styled.div`
 
 const H1 = styled.h1`
   margin: 26px 0 0;
-  font-size: clamp(38px, 4.9vw, 66px);
+  font-size: clamp(34px, 4.4vw, 56px);
   line-height: 1.02;
   padding-bottom: 0.1em;
   font-weight: 600;
@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>The runtime context platform</Eyebrow>
+          <Eyebrow>Runtime context, captured on demand</Eyebrow>
           <H1>
-            <span>Stop guessing.</span>
+            <span>Ask the code</span>
             <span>
-              <em>Ask production.</em>
+              <em>that&rsquo;s running.</em>
             </span>
           </H1>
-          <Sub>Point at any function in live production and get its arguments and return values back in seconds. No code change. No redeploy.</Sub>
+          <Sub>Your agents read the repo. Nobody reads the running system. Point Odigos at any function in a live service and get its arguments and return value back in about a second.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

@@ -163,7 +163,7 @@ export const LandingCTA = () => {
           <Card>
             <Mesh />
             <Glow />
-            <Eyebrow>Live in production in minutes</Eyebrow>
+            <Eyebrow>One command. Any Kubernetes cluster.</Eyebrow>
             <Title>Bring us the question your stack can&rsquo;t answer.</Title>
             <Ctas>
               <Primary

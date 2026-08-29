@@ -164,7 +164,7 @@ export const LandingOutcomes = () => {
           <Head>
             <Eyebrow>What teams do with it</Eyebrow>
             <h2>One agent on the node. Every team downstream.</h2>
-            <p>Your SREs, your security team and the agents your engineers build all read the same context. One thing to roll out, one thing to secure, one thing to pay for, instead of a different agent per use case fighting for the same CPU.</p>
+            <p>Your SREs and the agents your engineers build read the same context. One thing to roll out. One thing to secure. Not a different agent per use case, all fighting for the same CPU.</p>
           </Head>
         </Reveal>
 

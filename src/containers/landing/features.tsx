@@ -173,7 +173,7 @@ const FEATURES = [
   {
     cap: 'A different kind of eBPF',
     title: 'eBPF was built for the kernel. We made it see inside the application.',
-    desc: 'Off-the-shelf eBPF sees syscalls and network traffic. Ours sees inside the process: the exact functions that ran, the queries they made, the arguments they were called with, in every language. That took years to build and there is no shortcut to it.',
+    desc: 'Off-the-shelf eBPF sees syscalls and network traffic. Ours reads inside the process: the functions that ran, the queries they made, the arguments they carried. Including a stripped, statically linked Go binary, which is the case every other approach gives up on. Nothing loads into your application to do it.',
     visual: <DepthVisual />,
     tags: ['our own eBPF runtime', 'every language', 'function-level depth'],
   },
@@ -199,7 +199,7 @@ export const LandingFeatures = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>Why Odigos</Eyebrow>
+            <Eyebrow>The part that took years</Eyebrow>
             <h2>Everyone else&rsquo;s eBPF stops at the syscall.</h2>
             <p>Our own eBPF runtime reads what is actually happening inside a running process. Whatever you ask for, it captures on demand and exports as OpenTelemetry.</p>
           </Head>
