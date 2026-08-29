@@ -131,17 +131,17 @@ const Check = () => (
 );
 
 const OLD = [
-  'The signal you need was not on anyone\'s list months ago',
-  'A code change, a review and a deploy to add one line',
-  'Legacy services nobody has time to touch stay dark',
-  'An agent inside the process, one bad release from an outage',
+  'The value you need is inside a function nobody watched',
+  'Reading it means a pull request and a release window',
+  'Compiled services nobody owns cannot be touched at all',
+  'An agent inside your process, one bad release from an outage',
 ];
 
 const NEW = [
-  'Ask for the function, the query or the argument you need',
-  'Captured in running production in seconds, with no deploy',
-  'Every service covered on day one, including the old ones',
-  'Out of process, so your blast radius stays zero',
+  'Name any function in a running service. No code required',
+  'Its arguments and return value, back in about a second',
+  'Including a stripped Go binary nobody ever instrumented',
+  'Nothing is loaded into your application to do it',
 ];
 
 export const LandingOldWay = () => {
@@ -152,9 +152,9 @@ export const LandingOldWay = () => {
           <Head>
             <Eyebrow>Where every investigation stalls</Eyebrow>
             <h2>
-              Your stack answers <span className='mute'>the questions you already had.</span>
+              The answer is in a variable <span className='mute'>nobody logged.</span>
             </h2>
-            <p>Dashboards and traces cover what somebody chose to collect months ago. The incident that costs you is always outside that set, and closing the gap means shipping code while production burns. Your AI hits the same wall: it cannot reason about data nobody captured.</p>
+            <p>You can see the request arrive and you can see it leave. What happened inside charge() is not in your telemetry, because nobody predicted you would need it. Getting it means editing the code and shipping it, which is where the investigation stops for two weeks. Your agents hit the same wall, at machine speed.</p>
           </Head>
         </Reveal>
 
@@ -164,7 +164,7 @@ export const LandingOldWay = () => {
               <span className='tag'>
                 <Cross /> Today
               </span>
-              <h3>Ship a deploy to see anything new</h3>
+              <h3>Ship code to read one value</h3>
               <List>
                 {OLD.map((t) => (
                   <Item key={t}>
@@ -181,7 +181,7 @@ export const LandingOldWay = () => {
               <span className='tag'>
                 <Check /> With Odigos
               </span>
-              <h3>Ask, and it lands in seconds</h3>
+              <h3>Name the function. Read the value.</h3>
               <List>
                 {NEW.map((t) => (
                   <Item key={t} $new>

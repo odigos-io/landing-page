@@ -132,26 +132,26 @@ const Hub = () => (
 const OUTCOMES = [
   {
     icon: <Spark />,
-    title: 'AI SRE agents',
-    desc: 'Autonomous incident response and root-cause analysis, running on context captured while the incident is still open.',
-    metric: 'Vendor or in-house',
+    title: 'Incident response',
+    desc: '"What did charge() return for the 14 carts that failed?" Asked and answered while the incident is still open, by your AI SRE or by the engineer on call.',
+    metric: 'Vendor agents or your own',
   },
   {
     icon: <Bolt />,
-    title: 'Regression agents',
-    desc: "One of the world's largest retailers built its own regression agent in-house, on Odigos runtime context.",
+    title: 'Regression',
+    desc: '"Which function got slower since Tuesday, and what was it called with?" One of the largest retailers in the world built its own regression agent in-house on exactly this.',
     metric: 'Built in-house',
   },
   {
     icon: <Shield />,
-    title: 'Security agents',
-    desc: 'Runtime detection and response with the full call path behind every signal, not just what crossed the network edge.',
+    title: 'Runtime security',
+    desc: '"What arguments did this service actually send to that endpoint?" The full call path behind a signal, not just the packet that crossed the edge.',
     metric: 'Runtime, not the edge',
   },
   {
     icon: <Hub />,
     title: 'Your engineers',
-    desc: 'The same captured data lands in Datadog, Grafana or Splunk, so an engineer can re-run the exact query the agent used to reach its answer.',
+    desc: '"Show me what the agent saw." The same captured values land in Datadog, Grafana or Splunk, so a human can re-run the exact question and check the answer.',
     metric: 'One shared truth',
   },
 ];
@@ -163,7 +163,7 @@ export const LandingOutcomes = () => {
         <Reveal>
           <Head>
             <Eyebrow>What teams do with it</Eyebrow>
-            <h2>One agent on the node. Every team downstream.</h2>
+            <h2>Different questions. The same capture.</h2>
             <p>Your SREs and the agents your engineers build read the same context. One thing to roll out. One thing to secure. Not a different agent per use case, all fighting for the same CPU.</p>
           </Head>
         </Reveal>
