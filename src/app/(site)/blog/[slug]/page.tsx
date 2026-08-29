@@ -81,7 +81,7 @@ const Blog = async ({ params }: BlogPageProps) => {
         <LandingHeader />
         <main>
           <LandingBlogPost blog={blog} />
-          <LandingBlogs exclude={slug} title='More from the blog' />
+          <LandingBlogs exclude={slug} title='More from the blog.' />
           <LandingCTA />
         </main>
         <LandingFooter />

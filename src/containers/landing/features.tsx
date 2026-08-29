@@ -6,7 +6,7 @@ import { Container, Eyebrow, Reveal } from './primitives';
 import { DepthVisual, SafeVisual, AiVisual } from './feature-visuals';
 
 const Section = styled.section`
-  background: var(--paper);
+  background: var(--paper-3);
   border-bottom: 1px solid var(--line);
 `;
 

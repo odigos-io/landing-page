@@ -147,7 +147,7 @@ const ReadMore = styled.span`
   gap: 7px;
 `;
 
-export const LandingBlogs = ({ exclude, title = 'Latest from the blog' }: { exclude?: string; title?: string } = {}) => {
+export const LandingBlogs = ({ exclude, title = 'Latest from the blog.' }: { exclude?: string; title?: string } = {}) => {
   const { blogs } = useBlogs();
   // never offer a reader the post they are already on
   const posts = blogs.filter((b) => b.slug !== exclude).slice(0, 3);

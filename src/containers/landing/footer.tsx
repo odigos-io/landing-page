@@ -68,7 +68,7 @@ const Col = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 13px;
-  h4 {
+  h3 {
     margin: 0 0 4px;
     font-family: var(--font-mono), monospace;
     font-size: 11.5px;
@@ -143,15 +143,15 @@ export const LandingFooter = () => {
         </Brand>
 
         <Col>
-          <h4>Product</h4>
-          <Link href='/product'>Platform</Link>
+          <h3>Product</h3>
+          <Link href='/product'>Product</Link>
           <Link href='/pricing'>Pricing</Link>
           <Link href={DOCS_LINK} target='_blank'>Documentation</Link>
           <Link href={DOCS_LINK + '/quickstart/introduction'} target='_blank'>Quickstart</Link>
         </Col>
 
         <Col>
-          <h4>Company</h4>
+          <h3>Company</h3>
           <Link href='/about'>About</Link>
           <Link href='/blog'>Blog</Link>
           <Link href='/events'>Events</Link>
@@ -159,7 +159,7 @@ export const LandingFooter = () => {
         </Col>
 
         <Col>
-          <h4>Trust</h4>
+          <h3>Trust</h3>
           <Link href={TRUST_CENTER_LINK} target='_blank'>Trust Center</Link>
           <Link href={SOC_LINK} target='_blank'>SOC 2</Link>
           <Link href={PRIVACY_POLICY_LINK} target='_blank'>Privacy Policy</Link>

@@ -6,7 +6,7 @@ import { FAQ } from '@/constants';
 import { Container, Eyebrow, Reveal, HUBSPOT_DEMO_URL } from './primitives';
 
 const Section = styled.section`
-  background: var(--paper-3);
+  background: var(--paper);
   border-bottom: 1px solid var(--line);
 `;
 

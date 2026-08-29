@@ -200,13 +200,13 @@ export const LandingHeader = () => {
             <TrialCTA size='sm' />
           </Right>
 
-          <Burger aria-label='Open menu' onClick={() => setOpen(true)}>
+          <Burger aria-label='Open menu' aria-expanded={open} aria-controls='mobile-nav' onClick={() => setOpen(true)}>
             <span />
           </Burger>
         </Row>
       </Container>
 
-      <Sheet $open={open}>
+      <Sheet id='mobile-nav' $open={open}>
         <SheetTop>
           <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={120} height={27} />
           <Close aria-label='Close menu' onClick={() => setOpen(false)}>
