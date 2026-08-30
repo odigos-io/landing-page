@@ -120,9 +120,14 @@ export const DepthVisual = () => (
 /* ---------------- 1. INSIDE vs OUTSIDE the service ---------------- */
 const InWrap = styled.div`
   width: 100%;
+  max-width: 470px;
+  padding: 20px 30px 4px;
   display: flex;
   flex-direction: column;
   gap: 0;
+  @media (max-width: 700px) {
+    padding: 0 2px;
+  }
 `;
 
 const Cap = styled.div<{ $ours?: boolean }>`
