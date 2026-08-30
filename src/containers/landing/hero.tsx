@@ -145,7 +145,7 @@ export const LandingHero = () => {
               <em>Production stayed closed.</em>
             </span>
           </H1>
-          <Sub>Odigos opens it. Ask any running service what a function was called with and what it returned, and get the real values in about a second, with no code change and nothing added to your application.</Sub>
+          <Sub>Odigos opens it. Your agents can move from the whole cluster down to a single value inside a running service and back up again, as many times as it takes, with no code change. That is the difference between an AI SRE that writes a summary and one that closes the incident.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

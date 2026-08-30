@@ -3,27 +3,26 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
-/* Hero art: the code, with production's answers sitting next to it.
+/* Hero art: the ladder.
 
-   Every competitor in this category puts a dashboard in the hero. None of
-   them show code. This shows the function, and beside each line the values
-   it actually ran with a minute ago in production. The bug is visible in the
-   picture: the rule lookup came back empty, so a valid zero went out as the
-   discount and nothing ever threw. */
+   The big promise, not the function detail. An agent starts at the whole
+   estate and walks down until the picture is one value, then walks back up
+   and goes again. Resolution is drawn as type size, so the descent is legible
+   without a caption, and the rail on the left carries both directions. */
 
-const T = 6.8;
+const T = 7.4;
 const p = (s: number) => Math.max(0, Math.min(100, (s / T) * 100));
 
-const arrive = (s: number) => keyframes`
-  0%,${p(s)}%{opacity:0;transform:translateX(-8px)}
-  ${p(s + 0.45)}%,100%{opacity:1;transform:none}`;
+const step = (s: number) => keyframes`
+  0%,${p(s)}%{opacity:0;transform:translateY(8px)}
+  ${p(s + 0.5)}%,100%{opacity:1;transform:none}`;
 
 const fin = (s: number) => keyframes`
   0%,${p(s)}%{opacity:0}
   ${p(s + 0.5)}%,100%{opacity:1}`;
 
+const draw = keyframes`from{transform:scaleY(0)}to{transform:scaleY(1)}`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
-const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
 
 const reduce = css`
   @media (prefers-reduced-motion: reduce) {
@@ -53,215 +52,191 @@ const Bar = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 15px 24px;
+  padding: 15px 26px;
   background: var(--paper-3);
   border-bottom: 1px solid var(--line);
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 11.5px;
-  color: var(--ink-mute);
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
   @media (max-width: 1000px) {
-    padding: 13px 16px;
+    padding: 13px 18px;
+    font-size: 10px;
   }
 
-  .live {
+  .both {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    font-size: 10.5px;
-    color: var(--signal-ink);
+    color: var(--accent);
     white-space: nowrap;
   }
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--signal);
-    animation: ${blink} 1.9s ease-in-out infinite;
+`;
+
+const Body = styled.div`
+  position: relative;
+  padding: 26px 30px 22px 58px;
+  @media (max-width: 1000px) {
+    padding: 20px 18px 18px 46px;
+  }
+`;
+
+/* the rail: one shaft, two directions */
+const Rail = styled.div`
+  position: absolute;
+  left: 30px;
+  top: 32px;
+  bottom: 30px;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(91, 67, 241, 0.5), rgba(17, 168, 119, 0.5));
+  transform-origin: top center;
+  animation: ${draw} 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @media (max-width: 1000px) {
+    left: 22px;
   }
   @media (prefers-reduced-motion: reduce) {
-    .dot {
-      animation: none;
-    }
+    animation: none;
   }
 `;
 
-const Call = styled.div<{ $t: number }>`
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 14px 24px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(91, 67, 241, 0.035);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: clamp(12.5px, 1.2vw, 14.5px);
-  color: var(--ink);
-  animation: ${(x) => arrive(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
+const Pip = styled.i<{ $t: number; $last?: boolean }>`
+  position: absolute;
+  left: -33px;
+  @media (max-width: 1000px) {
+    left: -29px;
+  }
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid ${({ $last }) => ($last ? 'var(--accent)' : 'rgba(91,67,241,0.42)')};
+  background: ${({ $last }) => ($last ? 'var(--accent)' : 'var(--paper-2)')};
+  animation: ${(x) => fin(x.$t)} ${T}s ease both;
   ${reduce}
-  @media (max-width: 1000px) {
-    padding: 12px 16px;
-  }
-
-  .lbl {
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .v {
-    color: var(--accent);
-  }
 `;
 
-const Code = styled.div`
-  padding: 24px 24px 10px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: clamp(13px, 1.25vw, 15px);
-  line-height: 2.15;
-  @media (max-width: 1000px) {
-    padding: 18px 16px 8px;
-    line-height: 2;
-  }
-`;
-
-const Line = styled.div`
+const Rung = styled.div<{ $t: number; $i: number; $last?: boolean }>`
+  position: relative;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
+  padding: ${({ $last }) => ($last ? '18px 0 4px' : '11px 0')};
+  border-top: ${({ $i }) => ($i === 0 ? 'none' : '1px solid var(--line)')};
+  animation: ${(x) => step(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
+  ${reduce}
 
-  .c {
-    color: var(--ink);
-    white-space: pre;
+  .scope {
+    font-size: ${({ $i, $last }) => ($last ? '26px' : `${14 + $i * 2.3}px`)};
+    font-weight: ${({ $last }) => ($last ? 600 : 500)};
+    letter-spacing: ${({ $last }) => ($last ? '-0.03em' : '-0.015em')};
+    line-height: 1.25;
+    color: ${({ $last }) => ($last ? 'var(--ink)' : 'var(--ink-mute)')};
   }
-  .kw {
-    color: #8b6cf0;
+  .saw {
+    flex-shrink: 0;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: ${({ $last }) => ($last ? '15px' : '12.5px')};
+    color: ${({ $last }) => ('var(--ink-faint)')};
   }
-  .fn {
-    color: var(--ink);
+  .saw b {
+    font-weight: 600;
+    color: var(--hot-ink);
   }
-  .lit {
-    color: var(--ink-faint);
+  @media (max-width: 480px) {
+    .scope {
+      font-size: ${({ $i, $last }) => ($last ? '22px' : `${13 + $i}px`)};
+    }
   }
 `;
 
-const Val = styled.span<{ $t: number; $bad?: boolean }>`
-  display: inline-flex;
+const Again = styled.div<{ $t: number }>`
+  position: relative;
+  margin-top: 18px;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  padding: 3px 10px;
-  border-radius: 7px;
-  font-size: clamp(11.5px, 1.1vw, 13px);
-  line-height: 1.5;
-  background: ${({ $bad }) => ($bad ? 'rgba(255,93,143,0.1)' : 'rgba(91,67,241,0.07)')};
-  border: 1px solid ${({ $bad }) => ($bad ? 'rgba(255,93,143,0.34)' : 'rgba(91,67,241,0.18)')};
-  color: ${({ $bad }) => ($bad ? 'var(--hot-ink)' : 'var(--accent)')};
-  font-weight: ${({ $bad }) => ($bad ? 600 : 400)};
-  margin-left: auto;
-  animation: ${(x) => arrive(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
+  gap: 9px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--signal-ink);
+  animation: ${(x) => fin(x.$t)} ${T}s ease both;
   ${reduce}
 `;
 
 const Foot = styled.div<{ $t: number }>`
-  margin-top: 6px;
-  padding: 16px 24px 20px;
+  padding: 16px 22px 20px;
   border-top: 1px solid var(--line);
   display: flex;
   align-items: baseline;
   gap: 10px;
   flex-wrap: wrap;
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--ink-faint);
-  animation: ${(x) => fin(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: ${(x) => fin(x.$t)} ${T}s ease both;
   ${reduce}
   @media (max-width: 1000px) {
-    padding: 14px 16px 16px;
+    padding: 14px 18px 16px;
   }
 
-  b {
-    color: var(--signal-ink);
-    font-weight: 500;
-  }
   .sep {
     color: var(--line-strong);
   }
 `;
 
+const UpDown = () => (
+  <svg width='13' height='13' viewBox='0 0 14 14' fill='none' aria-hidden>
+    <path d='M4 1.5v11m-2.2-2.2L4 12.5l2.2-2.2M10 12.5v-11m-2.2 2.2L10 1.5l2.2 2.2' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+  </svg>
+);
+
+const LADDER: { scope: string; saw: React.ReactNode }[] = [
+  { scope: '400 services', saw: 'nothing is failing' },
+  { scope: 'one service', saw: 'checkout, p99 flat' },
+  { scope: 'one request', saw: 'POST /orders, 214ms' },
+  { scope: 'one function', saw: 'promo.Apply, no error' },
+];
+
 export const HeroArt = () => (
   <Frame>
     <Panel>
       <Bar>
-        <span>checkout-svc / promo.go</span>
-        <span className='live'>
-          <i className='dot' />
-          values from production
+        <span>your agent, moving through production</span>
+        <span className='both'>
+          <UpDown />
+          both directions
         </span>
       </Bar>
 
-      <Call $t={0.5}>
-        <span className='lbl'>the call we captured</span>
-        <span>
-          Apply(code <span className='v'>&quot;BLACK50&quot;</span>, cart <span className='v'>49.00</span>)
-        </span>
-      </Call>
+      <Body>
+        <Rail />
+        {LADDER.map((r, i) => (
+          <Rung key={r.scope} $t={0.4 + i * 0.55} $i={i}>
+            <Pip $t={0.4 + i * 0.55} />
+            <span className='scope'>{r.scope}</span>
+            <span className='saw'>{r.saw}</span>
+          </Rung>
+        ))}
 
-      <Code>
-        <Line>
-          <span className='c'>
-            <span className='kw'>func</span> Apply(code <span className='kw'>string</span>, cart <span className='kw'>float64</span>) <span className='kw'>float64</span> {'{'}
+        <Rung $t={2.8} $i={4} $last>
+          <Pip $t={2.8} $last />
+          <span className='scope'>one value</span>
+          <span className='saw'>
+            it returned <b>$0.00</b> instead of $24.50
           </span>
-        </Line>
+        </Rung>
 
-        <Line>
-          <span className='c'>{'    '}rule := rules.For(code)</span>
-          <Val $t={1.4} $bad>
-            rule = nil
-          </Val>
-        </Line>
+        <Again $t={3.8}>
+          <UpDown />
+          then back up, and down again, until it is not a theory
+        </Again>
+      </Body>
 
-        <Line>
-          <span className='c'>
-            {'    '}
-            <span className='kw'>if</span> rule == nil {'{'}
-          </span>
-        </Line>
-
-        <Line>
-          <span className='c'>
-            {'        '}
-            <span className='kw'>return</span> 0
-          </span>
-          <Val $t={2.3} $bad>
-            returned $0.00 to the customer
-          </Val>
-        </Line>
-
-        <Line>
-          <span className='c'>{'    }'}</span>
-        </Line>
-
-        <Line>
-          <span className='c'>
-            {'    '}
-            <span className='kw'>return</span> cart * rule.Pct
-          </span>
-          <Val $t={3.1}>never reached</Val>
-        </Line>
-
-        <Line>
-          <span className='c'>{'}'}</span>
-        </Line>
-      </Code>
-
-      <Foot $t={3.9}>
-        <b>read from 41,208 live calls</b>
+      <Foot $t={4.4}>
+        any service in the cluster
         <span className='sep'>·</span>
-        1.2 seconds
+        about a second per step
         <span className='sep'>·</span>
         no code change
       </Foot>
