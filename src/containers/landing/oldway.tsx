@@ -233,7 +233,7 @@ export const LandingOldWay = () => {
           <Stage>
             <Bar>
               <span>what your agent comes back with</span>
-              <span>every time</span>
+              <span>the same answer every time</span>
             </Bar>
             <Body>
               <Quote>&ldquo;Looks like the promo rule lookup is coming back empty for some carts, which would explain the missing discount. I cannot confirm it from the data I have. Open a pull request with this log line and deploy it, and I will validate once the failure happens again.&rdquo;</Quote>
