@@ -439,18 +439,18 @@ export const HeroArt = () => (
           <Card top={12} h={100} depth={0} l={36} r={346} />
         </In>
         <In $t={2.15}>
-          <Card top={136} h={126} depth={1} l={36} r={346} />
+          <Card top={136} h={138} depth={1} l={36} r={346} />
         </In>
         <In $t={4.15}>
-          <Card top={286} h={130} depth={2} l={36} r={346} />
+          <Card top={292} h={138} depth={2} l={36} r={346} />
         </In>
         <In $t={7.5}>
-          <Card top={440} h={112} depth={3} l={36} r={346} />
+          <Card top={452} h={104} depth={3} l={36} r={346} />
         </In>
 
         <In $t={0}>
-          <DownRail x1={12} y1={12} x2={12} y2={548} />
-          <UpRail x1={26} y1={12} x2={26} y2={548} />
+          <DownRail x1={12} y1={12} x2={12} y2={558} />
+          <UpRail x1={26} y1={12} x2={26} y2={558} />
         </In>
 
         <In $t={0}>
@@ -486,8 +486,15 @@ export const HeroArt = () => (
           </text>
         </In>
         <Rung y={174} t={2.5} down='open an order that paid full' up='' upAt={99} xd={12} xu={26} l={52} r={336} />
+        <In $t={3.4}>
+          <path d='M40 190 H26' stroke='var(--signal)' strokeWidth='1.5' />
+          <path d='m26 186.5 -5 3.5 5 3.5z' fill='var(--signal)' />
+          <text className='up' x={52} y={193}>
+            5 spans · promo.Apply 4ms
+          </text>
+        </In>
         {SPANS.map((s, i) => {
-          const y = 194 + i * 14;
+          const y = 208 + i * 14;
           const w = Math.max(3, (s.ms / 214) * 76);
           return (
             <Wipe key={s.name} $t={2.7 + i * 0.12} $d={0.4}>
@@ -501,32 +508,24 @@ export const HeroArt = () => (
             </Wipe>
           );
         })}
-        <In $t={3.4}>
-          <path d='M40 258 H26' stroke='var(--signal)' strokeWidth='1.5' />
-          <path d='m26 254.5 -5 3.5 5 3.5z' fill='var(--signal)' />
-          <text className='up' x={52} y={261}>
-            promo.Apply · 4ms
-          </text>
-        </In>
-
-        <Cone x1={218} x2={248} top={262} bottom={286} t={4.0} l={36} r={346} />
+        <Cone x1={76} x2={140} top={274} bottom={292} t={4.0} l={36} r={346} />
 
         <In $t={4.3}>
-          <text className='lbl' x={52} y={306}>
+          <text className='lbl' x={52} y={312}>
             INSIDE promo.Apply · STRIPPED
           </text>
         </In>
-        <Rung y={324} t={4.5} down='read the promo logic' up='' upAt={99} xd={12} xu={26} l={52} r={336} />
+        <Rung y={330} t={4.5} down='read the promo logic' up='' upAt={99} xd={12} xu={26} l={52} r={336} />
         <In $t={5.3}>
-          <path d='M40 340 H26' stroke='#b3b0a8' strokeWidth='1.5' strokeDasharray='3 3' />
-          <path d='m26 336.5 -5 3.5 5 3.5z' fill='none' stroke='#b3b0a8' strokeWidth='1.2' />
-          <text className='dead' x={52} y={343} textDecoration='line-through'>
+          <path d='M40 346 H26' stroke='#b3b0a8' strokeWidth='1.5' strokeDasharray='3 3' />
+          <path d='m26 342.5 -5 3.5 5 3.5z' fill='#c2bfb7' />
+          <text className='dead' x={52} y={349} textDecoration='line-through'>
             no symbols in the binary
           </text>
         </In>
-        <Rung y={364} t={6.1} down='recover layout · attach uprobe' up='' upAt={99} xd={12} xu={26} l={52} r={336} />
+        <Rung y={370} t={6.1} down='recover layout · attach uprobe' up='' upAt={99} xd={12} xu={26} l={52} r={336} />
         {FRAMES.map((f, i) => {
-          const y = 384 + i * 14;
+          const y = 390 + i * 14;
           return (
             <g key={f.blind}>
               <Out $t={6.6 + i * 0.09}>
@@ -545,19 +544,19 @@ export const HeroArt = () => (
           );
         })}
 
-        <Cone x1={52} x2={96} top={416} bottom={440} t={7.4} l={36} r={346} />
+        <Cone x1={52} x2={96} top={430} bottom={452} t={7.4} l={36} r={346} />
 
-        <Rung y={466} t={7.8} down='capture arguments and return' up='' upAt={99} xd={12} xu={26} l={52} r={336} />
+        <Rung y={478} t={7.8} down='capture arguments and return' up='' upAt={99} xd={12} xu={26} l={52} r={336} />
         <In $t={8.2}>
-          <text className='code' x={52} y={488}>
+          <text className='code' x={52} y={502}>
             Apply(code &quot;BLACK50&quot;, cart 49.00)
           </text>
         </In>
         <Pop $t={9.2}>
-          <text className='big' x={52} y={528} style={{ fontSize: 28 }}>
+          <text className='big' x={52} y={540} style={{ fontSize: 28 }}>
             0.00
           </text>
-          <text className='hot' x={122} y={528} textDecoration='line-through'>
+          <text className='hot' x={122} y={540} textDecoration='line-through'>
             expected 24.50
           </text>
         </Pop>
@@ -566,7 +565,7 @@ export const HeroArt = () => (
           <circle cx={12} cy={18} r={3.2} fill='var(--accent)' />
         </Dive>
         <Surface $t={9.7}>
-          <circle cx={26} cy={500} r={3.2} fill='var(--signal)' />
+          <circle cx={26} cy={520} r={3.2} fill='var(--signal)' />
         </Surface>
       </Mobile>
     </Panel>
