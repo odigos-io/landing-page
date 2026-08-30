@@ -7,6 +7,7 @@ import styled, { keyframes } from 'styled-components';
    body of the page stays cohesively light. Pure CSS/SVG. */
 
 const grow = keyframes`from{transform:scaleX(0)}to{transform:scaleX(1)}`;
+const fadeUp = keyframes`from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}`;
 const sweep = keyframes`0%{transform:translateX(-120%)}100%{transform:translateX(360%)}`;
 const dash = keyframes`to{stroke-dashoffset:0}`;
 const flow = keyframes`0%{offset-distance:0%;opacity:0}12%{opacity:1}88%{opacity:1}100%{offset-distance:100%;opacity:0}`;
@@ -113,6 +114,156 @@ export const DepthVisual = () => (
       <b>pg.query orders</b> · missing index · +274ms
     </Callout>
   </Wrap>
+);
+
+
+/* ---------------- 1. BINARY: the read nobody else can do ---------------- */
+
+const BinWrap = styled.div`
+  width: 100%;
+  max-width: 460px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+`;
+
+const BinHead = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  span.b {
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--line-strong);
+    background: var(--paper);
+  }
+  span.warn {
+    border-color: rgba(255, 61, 122, 0.35);
+    color: #c9346a;
+  }
+`;
+
+const BinCard = styled.div`
+  margin-top: 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  background: var(--paper-2);
+  padding: 16px 16px 14px;
+  box-shadow: var(--shadow-soft);
+`;
+
+const BinRow = styled.div<{ $i: number }>`
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 3px 0;
+  font-size: 12.5px;
+  animation: ${fadeUp} 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: ${({ $i }) => 0.1 + $i * 0.09}s;
+
+  .reg {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .arrow {
+    color: var(--ink-faint);
+  }
+  .type {
+    color: var(--ink);
+  }
+  .off {
+    color: var(--ink-faint);
+  }
+  .name {
+    color: var(--ink-mute);
+  }
+  .val {
+    color: var(--accent);
+  }
+  .val.out {
+    color: #d63a6f;
+  }
+`;
+
+const BinField = styled.div<{ $i: number }>`
+  display: grid;
+  grid-template-columns: 58px 74px 1fr;
+  gap: 8px;
+  padding: 2px 0 2px 18px;
+  font-size: 12px;
+  animation: ${fadeUp} 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: ${({ $i }) => 0.1 + $i * 0.09}s;
+  .off {
+    color: var(--ink-faint);
+  }
+  .name {
+    color: var(--ink-mute);
+  }
+  .val {
+    color: var(--accent);
+  }
+`;
+
+const BinRule = styled.div`
+  margin: 11px 0;
+  height: 1px;
+  background: var(--line);
+`;
+
+const BinFoot = styled.div`
+  margin-top: 12px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--signal-ink);
+`;
+
+export const BinaryVisual = () => (
+  <BinWrap>
+    <BinHead>
+      <span className='b'>checkout-svc</span>
+      <span className='b'>go1.22</span>
+      <span className='b warn'>stripped</span>
+      <span className='b warn'>no DWARF</span>
+    </BinHead>
+
+    <BinCard>
+      <BinRow $i={0}>
+        <span className='reg'>uprobe</span>
+        <span>
+          <span className='off'>0x4a91c0</span> <span className='name'>applyPromo</span>
+        </span>
+      </BinRow>
+      <BinRule />
+      <BinRow $i={1}>
+        <span className='reg'>rdi</span>
+        <span>
+          <span className='arrow'>&rarr;</span> <span className='type'>*promo.Request</span>
+        </span>
+      </BinRow>
+      <BinField $i={2}>
+        <span className='off'>+0x00</span>
+        <span className='name'>id</span>
+        <span className='val'>&quot;BLACK50&quot;</span>
+      </BinField>
+      <BinField $i={3}>
+        <span className='off'>+0x18</span>
+        <span className='name'>userId</span>
+        <span className='val'>8843</span>
+      </BinField>
+      <BinRule />
+      <BinRow $i={4}>
+        <span className='reg'>rax</span>
+        <span>
+          <span className='arrow'>&larr;</span> <span className='type'>float64</span> <span className='val out'>0.00</span>
+        </span>
+      </BinRow>
+    </BinCard>
+
+    <BinFoot>struct layout recovered from the binary. nothing loaded into the process.</BinFoot>
+  </BinWrap>
 );
 
 /* ---------------- 2. SAFE — overhead gauge ---------------- */

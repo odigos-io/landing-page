@@ -130,19 +130,7 @@ const Check = () => (
   </svg>
 );
 
-const OLD = [
-  'Evidence ends at the span. The bug is inside the function',
-  'Producing new evidence means a pull request and a release',
-  'Compiled services nobody owns stay unreadable',
-  'A smarter model over the same missing fact is still a guess',
-];
 
-const NEW = [
-  'The agent names a function and gets its arguments back',
-  'New evidence from the running system in about a second',
-  'Including a stripped Go binary nobody ever instrumented',
-  'Nothing is loaded into your application to do it',
-];
 
 export const LandingOldWay = () => {
   return (
@@ -158,43 +146,6 @@ export const LandingOldWay = () => {
           </Head>
         </Reveal>
 
-        <Reveal delay={80}>
-          <Cols>
-            <ColCard>
-              <span className='tag'>
-                <Cross /> Today
-              </span>
-              <h3>The agent stops at the service</h3>
-              <List>
-                {OLD.map((t) => (
-                  <Item key={t}>
-                    <span className='ic'>
-                      <Cross />
-                    </span>
-                    {t}
-                  </Item>
-                ))}
-              </List>
-            </ColCard>
-
-            <ColCard $new>
-              <span className='tag'>
-                <Check /> With Odigos
-              </span>
-              <h3>The agent gets the value</h3>
-              <List>
-                {NEW.map((t) => (
-                  <Item key={t} $new>
-                    <span className='ic'>
-                      <Check />
-                    </span>
-                    {t}
-                  </Item>
-                ))}
-              </List>
-            </ColCard>
-          </Cols>
-        </Reveal>
       </Inner>
     </Section>
   );

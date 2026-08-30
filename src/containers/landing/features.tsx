@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container, Eyebrow, Reveal } from './primitives';
-import { DepthVisual, SafeVisual, AiVisual } from './feature-visuals';
+import { BinaryVisual, SafeVisual, AiVisual } from './feature-visuals';
 
 const Section = styled.section`
   background: var(--paper-3);
@@ -174,7 +174,7 @@ const FEATURES = [
     cap: 'A different kind of eBPF',
     title: 'eBPF was built for the kernel. We made it see inside the application.',
     desc: 'Off-the-shelf eBPF sees syscalls and network traffic. Ours reads inside the process: the functions that ran, the queries they made, the arguments they carried. Including a stripped, statically linked Go binary, which is the case every other approach gives up on. Nothing loads into your application to do it.',
-    visual: <DepthVisual />,
+    visual: <BinaryVisual />,
     tags: ['our own eBPF runtime', 'every language', 'function-level depth'],
   },
   {

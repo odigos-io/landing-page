@@ -79,7 +79,7 @@ const Copy = styled.div`
 const H1 = styled.h1`
   margin: 26px 0 0;
   font-size: clamp(34px, 4.4vw, 56px);
-  line-height: 1.02;
+  line-height: 1.22;
   padding-bottom: 0.1em;
   font-weight: 600;
   letter-spacing: -0.04em;
@@ -97,7 +97,7 @@ const H1 = styled.h1`
     position: absolute;
     left: -0.02em;
     right: -0.02em;
-    bottom: -0.13em;
+    bottom: -0.17em;
     height: 0.075em;
     background: linear-gradient(90deg, var(--accent), #8a74ff 60%, var(--signal-bright));
     border-radius: 3px;
@@ -140,12 +140,12 @@ export const LandingHero = () => {
         <Copy>
           <Eyebrow>Runtime context for AI agents</Eyebrow>
           <H1>
-            <span>Any function.</span>
             <span>
-              <em>No SDK. No deploy.</em>
+              <em>Any function.</em>
             </span>
+            <span>No SDK. No deploy.</span>
           </H1>
-          <Sub>Your agents can only investigate the services somebody prepared for them. Odigos reads any function in any live service, including a stripped Go binary nobody instrumented, and returns what it was called with and what it returned. Nothing is loaded into your process.</Sub>
+          <Sub>Your agents can only investigate the services somebody prepared for them. Odigos reads the ones nobody prepared, down to a stripped Go binary with no symbols in it.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

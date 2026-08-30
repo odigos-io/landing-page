@@ -132,22 +132,6 @@ export const LandingProduct = () => {
           </Shot>
         </Reveal>
 
-        <Reveal delay={120}>
-          <Notes>
-            <div>
-              <h3>Sources find themselves</h3>
-              <p>Every workload is detected with its language and runtime. Nothing to tag. Nothing to redeploy.</p>
-            </div>
-            <div>
-              <h3>Actions run in flight</h3>
-              <p>Mask PII, sample errors, add Kubernetes attributes. The data is shaped before it ever leaves your cluster.</p>
-            </div>
-            <div>
-              <h3>The values are yours</h3>
-              <p>Captured values leave as OpenTelemetry, into whatever you already run. Nothing about them is proprietary and nothing is held here.</p>
-            </div>
-          </Notes>
-        </Reveal>
       </Inner>
     </Section>
   );

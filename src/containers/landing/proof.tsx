@@ -148,18 +148,18 @@ export const LandingProof = () => {
               </Stat>
               <Stat>
                 <span className='n'>
-                  <em>up to 27.6%</em>
+                  <em>27.6%</em>
                 </span>
                 <span className='t'>
-                  less CPU than their legacy bytecode agent, <b>on identical traces</b>, measured by the customer.
+                  less CPU than their legacy bytecode agent at the top of the range they measured, <b>on identical traces</b>, on their own hardware.
                 </span>
               </Stat>
               <Stat>
                 <span className='n'>
-                  <em>0</em>
+                  <em>1.04M</em>
                 </span>
                 <span className='t'>
-                  code changes or redeploys <b>to capture something new</b>.
+                  cores under measurement when they ran it. <b>Zero code changes to capture something new.</b>
                 </span>
               </Stat>
             </Stats>

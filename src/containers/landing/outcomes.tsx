@@ -82,23 +82,7 @@ const Card = styled.div`
     line-height: 1.6;
     color: var(--ink-mute);
   }
-  .metric {
-    margin-top: 18px;
-    font-family: var(--font-mono), monospace;
-    font-size: 12px;
-    letter-spacing: 0.02em;
-    color: var(--signal-ink);
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .metric::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--signal-bright);
-  }
+
 `;
 
 const Bolt = () => (
@@ -134,25 +118,21 @@ const OUTCOMES = [
     icon: <Spark />,
     title: 'Incident response',
     desc: '"What did charge() return for the 14 carts that failed?" Asked and answered while the incident is still open, by your AI SRE or by the engineer on call.',
-    metric: 'Vendor agents or your own',
   },
   {
     icon: <Bolt />,
     title: 'Regression',
     desc: '"Which function got slower since Tuesday, and what was it called with?" One of the largest retailers in the world built its own regression agent in-house on exactly this.',
-    metric: 'Built in-house',
   },
   {
     icon: <Shield />,
     title: 'Runtime security',
     desc: '"What arguments did this service actually send to that endpoint?" The full call path behind a signal, not just the packet that crossed the edge.',
-    metric: 'Runtime, not the edge',
   },
   {
     icon: <Hub />,
     title: 'Your engineers',
     desc: '"Show me what the agent saw." The same captured values land in Datadog, Grafana or Splunk, so a human can re-run the exact question and check the answer.',
-    metric: 'One shared truth',
   },
 ];
 
@@ -175,7 +155,6 @@ export const LandingOutcomes = () => {
                 <span className='ic'>{o.icon}</span>
                 <h3>{o.title}</h3>
                 <p>{o.desc}</p>
-                <span className='metric'>{o.metric}</span>
               </Card>
             </Reveal>
           ))}

@@ -129,6 +129,20 @@ const Evidence = styled.div<{ $kf: ReturnType<typeof keyframes> }>`
   }
 `;
 
+/* the fact that makes the card impossible rather than ordinary */
+const Tag = styled.div`
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  background: rgba(255, 61, 122, 0.08);
+  border: 1px solid rgba(255, 61, 122, 0.28);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: clamp(11px, 0.95vw, 12.5px);
+  letter-spacing: 0.01em;
+  color: #c9346a;
+`;
+
 const Returned = styled.div`
   margin-top: 16px;
   padding-top: 14px;
@@ -152,10 +166,12 @@ const Returned = styled.div`
     color: #d63a6f;
     line-height: 1;
   }
-  .note {
+  .was {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11.5px;
-    color: var(--ink-mute);
+    font-size: clamp(11.5px, 1vw, 13px);
+    color: var(--ink-faint);
+    text-decoration: line-through;
+    text-decoration-color: rgba(24, 20, 54, 0.3);
   }
 `;
 
@@ -236,6 +252,7 @@ export const HeroArt = () => {
 
         <Cap>what odigos read out of the process</Cap>
         <Evidence $kf={IN(18)}>
+          <Tag>never instrumented · no symbols · nothing redeployed</Tag>
           <div className='fn'>applyPromo(</div>
           <div className='arg'>
             <span className='k'>promoId</span>
@@ -250,6 +267,7 @@ export const HeroArt = () => {
           <Returned>
             <span className='lbl'>returned</span>
             <span className='val'>0.00</span>
+            <span className='was'>should have been 24.50</span>
           </Returned>
           <Kicker>on every call. no error. 4ms.</Kicker>
         </Evidence>
