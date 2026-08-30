@@ -232,7 +232,7 @@ export const HeroArt = () => {
   return (
     <Frame>
       <Panel>
-        <Cap>what every other tool saw</Cap>
+        <Cap>what the rest of your observability stack saw</Cap>
         <Clean $kf={IN(2)}>
           <span>
             <i className='ok' /> errors 0.1%
