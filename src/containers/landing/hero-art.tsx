@@ -29,15 +29,40 @@ const stay = (a: number) => keyframes`
   0%,${a}% { opacity:0; transform:translateY(4px) }
   ${a + 3}%,100% { opacity:1; transform:none }`;
 
-const lock = keyframes`
-  0%,66% { opacity:.22; transform:scale(1) }
-  72%    { opacity:1;   transform:scale(2.6) }
-  78%,100%{ opacity:1;  transform:scale(1.9) }`;
-
 const halo = keyframes`
   0%,70%  { opacity:0; transform:scale(.4) }
   80%     { opacity:.5; transform:scale(1) }
   100%    { opacity:0; transform:scale(1.9) }`;
+
+const GREY = 'rgba(24, 20, 54, 0.32)';
+const LIT = '#5b43f1';
+
+/* never in scope after the first pass: fades back and stays back */
+const outOfScope = keyframes`
+  0%,20%  { fill:${GREY}; opacity:1 }
+  32%,100%{ fill:${GREY}; opacity:.26 }`;
+
+/* in scope for step one only */
+const scope1 = keyframes`
+  0%,24%  { fill:${GREY}; opacity:1 }
+  31%,41% { fill:${LIT};  opacity:1 }
+  50%,100%{ fill:${GREY}; opacity:.3 }`;
+
+/* in scope until step three closes past it */
+const scope2 = keyframes`
+  0%,24%  { fill:${GREY}; opacity:1 }
+  31%,59% { fill:${LIT};  opacity:1 }
+  68%,100%{ fill:${GREY}; opacity:.34 }`;
+
+/* the one it lands on */
+const scope3 = keyframes`
+  0%,24%  { fill:${GREY}; opacity:1; transform:scale(1) }
+  31%,62% { fill:${LIT};  opacity:1; transform:scale(1.25) }
+  72%,100%{ fill:${LIT};  opacity:1; transform:scale(2.4) }`;
+
+const linkDim = keyframes`
+  0%,22%  { opacity:1 }
+  34%,100%{ opacity:.4 }`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
@@ -131,12 +156,34 @@ const Map = styled.svg`
   .link {
     stroke: rgba(24, 20, 54, 0.13);
     stroke-width: 0.28;
+    animation: ${linkDim} ${T}s ease-in-out infinite;
   }
-  .node {
-    fill: rgba(24, 20, 54, 0.3);
+  circle {
+    fill: rgba(24, 20, 54, 0.32);
+    transform-box: fill-box;
+    transform-origin: center;
   }
-  .near {
-    fill: rgba(91, 67, 241, 0.5);
+  .d0 {
+    animation: ${outOfScope} ${T}s ease-in-out infinite;
+  }
+  .d1 {
+    animation: ${scope1} ${T}s ease-in-out infinite;
+  }
+  .d2 {
+    animation: ${scope2} ${T}s ease-in-out infinite;
+  }
+  .d3 {
+    animation: ${scope3} ${T}s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    circle,
+    .link {
+      animation: none;
+    }
+    .d3 {
+      fill: #5b43f1;
+      transform: scale(2.4);
+    }
   }
 `;
 
@@ -209,22 +256,6 @@ const Reticle = styled.div`
 `;
 
 /* what it lands on */
-const Target = styled.i`
-  position: absolute;
-  left: 65.6%;
-  top: 36.2%;
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: ${lock} ${T}s ease-in-out infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    transform: scale(1.9);
-  }
-`;
-
 const Halo = styled.i`
   position: absolute;
   left: 65.6%;
@@ -260,6 +291,15 @@ const CLUSTERS: [number, number, number][] = [
   [84, 88, 5],
 ];
 
+/* the reticle stops, in the same units the map is drawn in */
+const BOXES: [number, number, number, number][] = [
+  [43 * 1.42, 12, 35 * 1.42, 42],
+  [56 * 1.42, 25, 16 * 1.42, 20],
+  [62.4 * 1.42, 32, 6.4 * 1.42, 8.4],
+];
+
+const inBox = (x: number, y: number, b: [number, number, number, number]) => x >= b[0] && x <= b[0] + b[2] && y >= b[1] && y <= b[1] + b[3];
+
 const build = () => {
   let s = 20260830;
   const rnd = () => {
@@ -282,7 +322,24 @@ const build = () => {
     links.push({ x1: cx, y1: cy, x2: next[0], y2: next[1] });
   });
 
-  return { nodes, links };
+  /* the exact point the focus lands on */
+  nodes.push({ x: 93.2, y: 36.2, r: 1.5, near: true });
+
+  const depths = nodes.map((n) => {
+    let d = 0;
+    BOXES.forEach((b, i) => {
+      if (inBox(n.x, n.y, b)) d = i + 1;
+    });
+    return d;
+  });
+
+  /* exactly one node is allowed to be the landing point */
+  const last = depths.length - 1;
+  depths.forEach((d, i) => {
+    if (d === 3 && i !== last) depths[i] = 2;
+  });
+
+  return { nodes, links, depths };
 };
 
 const MAP = build();
@@ -392,12 +449,11 @@ export const HeroArt = () => (
             <line key={i} className='link' x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
           ))}
           {MAP.nodes.map((n, i) => (
-            <circle key={i} className={n.near ? 'node near' : 'node'} cx={n.x} cy={n.y} r={n.r} />
+            <circle key={i} className={`d${MAP.depths[i]}`} cx={n.x} cy={n.y} r={n.r} />
           ))}
         </Map>
 
         <Halo />
-        <Target />
         <Reticle>
           <span />
           <span />

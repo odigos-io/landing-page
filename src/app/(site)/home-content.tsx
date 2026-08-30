@@ -10,11 +10,9 @@ import {
   LandingFeatures,
   LandingProduct,
   LandingProof,
-  LandingOutcomes,
   LandingHowItWorks,
   LandingTestimonial,
   LandingBlogs,
-  LandingFaq,
   LandingCTA,
   LandingFooter,
 } from '@/containers/landing';
@@ -31,11 +29,9 @@ const HomeContent = () => {
         <LandingFeatures />
         <LandingProduct />
         <LandingProof />
-        <LandingOutcomes />
         <LandingHowItWorks />
         <LandingTestimonial />
         <LandingBlogs />
-        <LandingFaq />
         <LandingCTA />
       </main>
       <LandingFooter />
