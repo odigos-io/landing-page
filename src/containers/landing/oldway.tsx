@@ -138,11 +138,11 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>Where every AI investigation ends</Eyebrow>
+            <Eyebrow>Where every AI investigation stops</Eyebrow>
             <h2>
-              Your agent narrowed it to a service. <span className='mute'>Then it ran out of facts.</span>
+              Your agent is reading a transcript <span className='mute'>of a conversation it was never in.</span>
             </h2>
-            <p>A trace tells an agent which service was slow. It does not contain the value that made it slow, because nobody logged that value. So the agent writes a plausible summary, a human opens the code, and the real answer waits for a release. Every model in the world reasoning over the same missing fact still gets a guess.</p>
+            <p>An agent investigates the way a good engineer does. It forms a hypothesis, tests it, throws it out and goes again, from the shape of the failure down to the one value that explains it. Every tool you can hand it breaks that loop at the first turn, because every tool returns a recording made months ago by somebody who did not know this incident was coming. So the agent writes a confident paragraph about what probably happened, and then tells you to add a log line. That is the failure said out loud. The product cannot answer the question, so it hands the question back to your engineers as a pull request and a release window.</p>
           </Head>
         </Reveal>
 

@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Everything else that can read a value in production needs that service to have been prepared for it months ago. <b>Odigos reads the ones nobody prepared.</b>
+            Every other tool sends signal out of production. <b>Odigos sends questions in.</b>
           </Statement>
         </Reveal>
       </Inner>

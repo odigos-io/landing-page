@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Runtime context for AI agents</Eyebrow>
+          <Eyebrow>eBPF that reads inside the process, not at the syscall</Eyebrow>
           <H1>
+            <span>Production</span>
             <span>
-              <em>Any function.</em>
+              <em>answers back.</em>
             </span>
-            <span>No SDK. No deploy.</span>
           </H1>
-          <Sub>Your agents can only investigate the services somebody prepared for them. Odigos reads the ones nobody prepared, down to a stripped Go binary with no symbols in it.</Sub>
+          <Sub>Point Odigos at any function in a live service, including a stripped Go binary with no symbols that nothing was ever set up to watch, and get back the arguments it was called with and what it returned. In about a second.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
