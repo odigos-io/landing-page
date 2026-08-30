@@ -138,8 +138,8 @@ const Cap = styled.div<{ $ours?: boolean }>`
 `;
 
 const seeIn = keyframes`
-  0%,10%{opacity:0;transform:translateY(8px)}
-  22%,100%{opacity:1;transform:none}`;
+  from{opacity:0;transform:translateY(9px)}
+  to{opacity:1;transform:none}`;
 
 const Box = styled.div<{ $ours?: boolean; $delay: string }>`
   margin-top: 10px;
@@ -149,7 +149,7 @@ const Box = styled.div<{ $ours?: boolean; $delay: string }>`
   box-shadow: ${({ $ours }) => ($ours ? '0 14px 34px rgba(24,20,54,0.1)' : 'none')};
   padding: 18px 20px;
   font-family: var(--font-mono), ui-monospace, monospace;
-  animation: ${seeIn} 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation: ${seeIn} 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: ${({ $delay }) => $delay};
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -207,13 +207,17 @@ export const BinaryVisual = () => (
       <span>everyone else stops here</span>
       <span>the syscall</span>
     </Cap>
-    <Box $delay='0s'>
+    <Box $delay='0.05s'>
       <div className='line'>
         <span>POST /orders</span>
         <span className='t'>214ms · 200 OK</span>
       </div>
       <div className='line'>
-        <span className='t'>and that is the whole story they can tell</span>
+        <span>GET /cart</span>
+        <span className='t'>31ms · 200 OK</span>
+      </div>
+      <div className='line'>
+        <span className='t'>that is the whole story they can tell</span>
       </div>
     </Box>
 
@@ -225,7 +229,7 @@ export const BinaryVisual = () => (
       <span>odigos reads here</span>
       <span>inside the code</span>
     </Cap>
-    <Box $ours $delay='0.7s'>
+    <Box $ours $delay='0.35s'>
       <div className='line'>
         <span>
           applyPromo(<span className='v'>&quot;BLACK50&quot;</span>, <span className='v'>$49.00</span>)
@@ -236,6 +240,9 @@ export const BinaryVisual = () => (
           returned <span className='bad'>$0.00</span>
         </span>
         <span className='t'>on every call</span>
+      </div>
+      <div className='line'>
+        <span className='t'>the value that explains the drop, out of a running service</span>
       </div>
     </Box>
   </InWrap>
