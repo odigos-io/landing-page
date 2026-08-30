@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Answers out of running production, with no code change</Eyebrow>
+          <Eyebrow>The incidents that never trigger an alert</Eyebrow>
           <H1>
-            <span>Production</span>
+            <span>Nothing was broken.</span>
             <span>
-              <em>answers back.</em>
+              <em>You still lost money.</em>
             </span>
           </H1>
-          <Sub>Something breaks and your team needs one value out of a live service to explain it. Today that costs a code change, a release, and waiting for it to happen again. With Odigos it costs a question.</Sub>
+          <Sub>The expensive failures do not throw errors. Something returns the wrong value and keeps returning it for days while every check passes. Odigos asks a running service what it actually returned, and answers in seconds, with no code change.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
