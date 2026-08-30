@@ -149,7 +149,7 @@ export const LandingFaq = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>Questions, answered</Eyebrow>
+            <Eyebrow>Before it goes to your security review</Eyebrow>
             <h2>The questions your security team asks first.</h2>
             <Talk href={HUBSPOT_DEMO_URL} target='_blank' rel='noreferrer'>
               Ask us the rest
