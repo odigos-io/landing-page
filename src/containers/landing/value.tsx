@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Your agents reason in seconds. <b>Adding the one signal they ask for still takes a pull request and a release window.</b>
+            Every tool in this category is making the model smarter. <b>None of them can produce a fact that was never recorded.</b>
           </Statement>
         </Reveal>
       </Inner>

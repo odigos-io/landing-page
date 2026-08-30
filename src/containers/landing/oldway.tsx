@@ -131,15 +131,15 @@ const Check = () => (
 );
 
 const OLD = [
-  'The value you need is inside a function nobody watched',
-  'Reading it means a pull request and a release window',
-  'Compiled services nobody owns cannot be touched at all',
-  'An agent inside your process, one bad release from an outage',
+  'Evidence ends at the span. The bug is inside the function',
+  'Producing new evidence means a pull request and a release',
+  'Compiled services nobody owns stay unreadable',
+  'A smarter model over the same missing fact is still a guess',
 ];
 
 const NEW = [
-  'Name any function in a running service. No code required',
-  'Its arguments and return value, back in about a second',
+  'The agent names a function and gets its arguments back',
+  'New evidence from the running system in about a second',
   'Including a stripped Go binary nobody ever instrumented',
   'Nothing is loaded into your application to do it',
 ];
@@ -150,11 +150,11 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>Where every investigation stalls</Eyebrow>
+            <Eyebrow>Where every AI investigation ends</Eyebrow>
             <h2>
-              The answer is in a variable <span className='mute'>nobody logged.</span>
+              Your agent narrowed it to a service. <span className='mute'>Then it ran out of facts.</span>
             </h2>
-            <p>You can see the request arrive and you can see it leave. What happened inside charge() is not in your telemetry, because nobody predicted you would need it. Getting it means editing the code and shipping it, which is where the investigation stops for two weeks. Your agents hit the same wall, at machine speed.</p>
+            <p>A trace tells an agent which service was slow. It does not contain the value that made it slow, because nobody logged that value. So the agent writes a plausible summary, a human opens the code, and the real answer waits for a release. Every model in the world reasoning over the same missing fact still gets a guess.</p>
           </Head>
         </Reveal>
 
@@ -164,7 +164,7 @@ export const LandingOldWay = () => {
               <span className='tag'>
                 <Cross /> Today
               </span>
-              <h3>Ship code to read one value</h3>
+              <h3>The agent stops at the service</h3>
               <List>
                 {OLD.map((t) => (
                   <Item key={t}>
@@ -181,7 +181,7 @@ export const LandingOldWay = () => {
               <span className='tag'>
                 <Check /> With Odigos
               </span>
-              <h3>Name the function. Read the value.</h3>
+              <h3>The agent gets the value</h3>
               <List>
                 {NEW.map((t) => (
                   <Item key={t} $new>

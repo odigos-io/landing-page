@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Runtime context, captured on demand</Eyebrow>
+          <Eyebrow>Runtime evidence for AI agents</Eyebrow>
           <H1>
-            <span>Ask the code</span>
+            <span>Pinpoint the bug.</span>
             <span>
-              <em>that&rsquo;s running.</em>
+              <em>Not the service.</em>
             </span>
           </H1>
-          <Sub>Your agents read the repo. Nobody reads the running system. Point Odigos at any function in a live service and get its arguments and return value back in about a second.</Sub>
+          <Sub>Your agents do not have a reasoning problem. They have an evidence problem. Odigos reads any function in a live service and returns the arguments it was called with and what it came back with, in about a second.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
