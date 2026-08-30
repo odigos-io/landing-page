@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Every other tool sends signal out of production. <b>Odigos sends questions in.</b>
+            Every system you own can be asked a question and answer it. <b>Odigos makes production one of them.</b>
           </Statement>
         </Reveal>
       </Inner>

@@ -39,7 +39,7 @@ const Bloom = styled.div`
 const Grid = styled(Container)`
   position: relative;
   display: grid;
-  grid-template-columns: 1.02fr 1.18fr;
+  grid-template-columns: 1.12fr 1.08fr;
   align-items: center;
   gap: 56px;
   padding-top: 84px;
@@ -78,7 +78,7 @@ const Copy = styled.div`
 
 const H1 = styled.h1`
   margin: 26px 0 0;
-  font-size: clamp(34px, 4.4vw, 56px);
+  font-size: clamp(32px, 4vw, 50px);
   line-height: 1.22;
   padding-bottom: 0.1em;
   font-weight: 600;
@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>The incidents that never trigger an alert</Eyebrow>
+          <Eyebrow>The last closed system in your stack</Eyebrow>
           <H1>
-            <span>Nothing was broken.</span>
+            <span>AI got fast.</span>
             <span>
-              <em>You still lost money.</em>
+              <em>Production stayed closed.</em>
             </span>
           </H1>
-          <Sub>The expensive failures do not throw errors. Something returns the wrong value and keeps returning it for days while every check passes. Odigos asks a running service what it actually returned, and answers in seconds, with no code change.</Sub>
+          <Sub>Your agent can read every function in the repo and not one value those functions returned in production. Getting that value has always meant changing the code and shipping a release. Odigos asks the running service instead, and answers in about a second.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

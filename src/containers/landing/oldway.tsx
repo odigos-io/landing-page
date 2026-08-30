@@ -221,22 +221,22 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>Where every AI investigation stops</Eyebrow>
+            <Eyebrow>The price of asking production anything</Eyebrow>
             <h2>
-              Your agent is reading a transcript <span className='mute'>of a conversation it was never in.</span>
+              Your agent can rewrite the service. <span className='mute'>It cannot ask it anything.</span>
             </h2>
-            <p>Every tool it can reach hands back a recording somebody set up months ago. When the answer is not in that recording, the problem is not the model. It is that one more fact costs a release.</p>
+            <p>It can read every function in the repo, open a pull request and ship the fix. What it cannot do is find out what one of those functions actually returned in production, because nobody recorded that value. So it does the only thing left and asks you to go record it.</p>
           </Head>
         </Reveal>
 
         <Reveal delay={80}>
           <Stage>
             <Bar>
-              <span>what your agent asks for</span>
+              <span>what your agent asks you for</span>
               <span>one more value</span>
             </Bar>
             <Body>
-              <Quote>&ldquo;I cannot see what the promo code returned. Add a log line here and redeploy, then wait for it to happen again.&rdquo;</Quote>
+              <Quote>&ldquo;I cannot see what applyPromo returned. Add a log line here and ship it, then wait for the failure to happen again.&rdquo;</Quote>
 
               <Diff>
                 {'  func Apply(code string, cart float64) float64 {\n'}
@@ -264,7 +264,7 @@ export const LandingOldWay = () => {
 
               <Payoff>
                 <span>
-                  With Odigos, that same value is <b>a question you ask a running service.</b>
+                  Odigos answers that question <b>without touching the code.</b>
                 </span>
                 <span className='t'>4 seconds</span>
               </Payoff>
