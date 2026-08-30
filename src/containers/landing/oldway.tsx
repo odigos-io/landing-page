@@ -40,97 +40,97 @@ const Head = styled.div`
   }
 `;
 
-const Cols = styled.div`
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+const Ledger = styled.div`
+  margin-top: 52px;
+  @media (max-width: 1000px) {
+    margin-top: 38px;
+  }
+
+  .cap {
+    max-width: 620px;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--ink-mute);
+    margin: 0 0 22px;
+  }
+`;
+
+const Table = styled.div`
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   overflow: hidden;
   background: var(--paper-2);
   box-shadow: var(--shadow-soft);
-  @media (max-width: 820px) {
+`;
+
+const HeadRow = styled.div`
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: 24px;
+  padding: 14px 28px;
+  background: var(--paper-3);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  @media (max-width: 720px) {
     grid-template-columns: 1fr;
-    margin-top: 40px;
+    gap: 4px;
+    padding: 12px 20px;
   }
 `;
 
-const ColCard = styled.div<{ $new?: boolean }>`
-  padding: 34px 32px;
-  position: relative;
-  background: ${({ $new }) => ($new ? 'var(--paper-2)' : 'var(--paper-3)')};
-  border-right: 1px solid var(--line);
-  @media (max-width: 820px) {
-    border-right: none;
-    border-bottom: 1px solid var(--line);
-  }
+const Row = styled.div<{ $ours?: boolean }>`
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: 24px;
+  align-items: baseline;
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--line);
+  background: ${({ $ours }) => ($ours ? 'var(--paper-2)' : 'transparent')};
+  box-shadow: ${({ $ours }) => ($ours ? 'inset 3px 0 0 var(--accent)' : 'none')};
   &:last-child {
-    border-right: none;
     border-bottom: none;
   }
-
-  .tag {
-    display: inline-flex;
-    align-items: center;
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
     gap: 8px;
-    font-family: var(--font-mono), monospace;
-    font-size: 11.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${({ $new }) => ($new ? 'var(--signal)' : 'var(--ink-faint)')};
+    padding: 18px 20px;
   }
-  h3 {
-    margin: 14px 0 24px;
-    font-size: 22px;
+
+  .who {
+    font-size: 16.5px;
+    font-weight: ${({ $ours }) => ($ours ? 600 : 500)};
+    letter-spacing: -0.01em;
+    color: ${({ $ours }) => ($ours ? 'var(--ink)' : 'var(--ink-mute)')};
+  }
+  .need {
+    font-size: 16px;
+    line-height: 1.5;
+    color: ${({ $ours }) => ($ours ? 'var(--ink)' : 'var(--ink-mute)')};
+  }
+  .need b {
     font-weight: 600;
-    letter-spacing: -0.02em;
-    color: ${({ $new }) => ($new ? 'var(--ink)' : 'var(--ink-mute)')};
+    color: var(--ink);
   }
 `;
 
-const List = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const Item = styled.li<{ $new?: boolean }>`
-  display: flex;
-  gap: 13px;
-  align-items: flex-start;
-  font-size: 15.5px;
-  line-height: 1.45;
-  color: ${({ $new }) => ($new ? 'var(--ink-soft)' : 'var(--ink-mute)')};
-  .ic {
-    flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    border-radius: 7px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1px;
-    background: ${({ $new }) => ($new ? 'var(--signal-soft)' : 'rgba(18,18,21,0.05)')};
-    color: ${({ $new }) => ($new ? 'var(--signal)' : 'var(--ink-faint)')};
-  }
-  ${({ $new }) => !$new && 'text-decoration: none;'}
-`;
-
-const Cross = () => (
-  <svg width='12' height='12' viewBox='0 0 14 14' fill='none' aria-hidden>
-    <path d='M3.5 3.5l7 7M10.5 3.5l-7 7' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
-  </svg>
-);
-const Check = () => (
-  <svg width='13' height='13' viewBox='0 0 14 14' fill='none' aria-hidden>
-    <path d='M2.5 7.4 5.6 10.5 11.5 3.5' stroke='currentColor' strokeWidth='1.9' strokeLinecap='round' strokeLinejoin='round' />
-  </svg>
-);
-
-
+const PREREQ: { who: string; need: React.ReactNode; ours?: boolean }[] = [
+  { who: 'Datadog, Dynatrace', need: 'their agent compiled into the service, a runtime they support, and your source code linked to it' },
+  { who: 'OpenTelemetry, remote config', need: 'a signal somebody already decided to expose' },
+  { who: 'A new log line', need: 'a pull request, a review, a release, and the failure happening a second time' },
+  {
+    who: 'Odigos',
+    need: (
+      <>
+        <b>the process is running</b>
+      </>
+    ),
+    ours: true,
+  },
+];
 
 export const LandingOldWay = () => {
   return (
@@ -142,10 +142,27 @@ export const LandingOldWay = () => {
             <h2>
               Your agent is reading a transcript <span className='mute'>of a conversation it was never in.</span>
             </h2>
-            <p>An agent investigates the way a good engineer does. It forms a hypothesis, tests it, throws it out and goes again, from the shape of the failure down to the one value that explains it. Every tool you can hand it breaks that loop at the first turn, because every tool returns a recording made months ago by somebody who did not know this incident was coming. So the agent writes a confident paragraph about what probably happened, and then tells you to add a log line. That is the failure said out loud. The product cannot answer the question, so it hands the question back to your engineers as a pull request and a release window.</p>
+            <p>An agent investigates the way a good engineer does. It forms a hypothesis, tests it, throws it out and goes again, from the shape of the failure down to the one value that explains it. Every tool you can hand it breaks that loop at the first turn, because every tool returns a recording made months ago by somebody who did not know this incident was coming. So the agent writes a confident paragraph about what probably happened, and then tells you to add a log line.</p>
           </Head>
         </Reveal>
 
+        <Reveal delay={80}>
+          <Ledger>
+            <p className='cap'>Plenty of tools can now push a question into a live process. Datadog and Dynatrace both ship it. What separates them is everything that had to be true before you were allowed to ask.</p>
+            <Table>
+              <HeadRow>
+                <span>tool</span>
+                <span>what has to be true before it answers</span>
+              </HeadRow>
+              {PREREQ.map((r) => (
+                <Row key={r.who} $ours={r.ours}>
+                  <span className='who'>{r.who}</span>
+                  <span className='need'>{r.need}</span>
+                </Row>
+              ))}
+            </Table>
+          </Ledger>
+        </Reveal>
       </Inner>
     </Section>
   );

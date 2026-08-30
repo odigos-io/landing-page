@@ -216,7 +216,7 @@ const UpRail = styled.line`
 
 const XD = 24; // request channel, going down
 const XU = 42; // answer channel, coming up
-const L = 68; // content left
+const L = 92; // content left
 const R = 496; // content right
 const CL = L - 16; // card left
 const CR = R + 16; // card right
@@ -285,10 +285,18 @@ export const HeroArt = () => (
   <Frame>
     <Panel>
       <Desktop viewBox='0 0 520 574' role='img' aria-label='Four cuts into a running production system, each at higher resolution than the one above, ending in the arguments and return value of one function.'>
-        <Card top={14} h={84} depth={0} />
-        <Card top={120} h={126} depth={1} />
-        <Card top={268} h={118} depth={2} />
-        <Card top={408} h={136} depth={3} />
+        <In $t={0}>
+          <Card top={14} h={84} depth={0} />
+        </In>
+        <In $t={2.15}>
+          <Card top={120} h={126} depth={1} />
+        </In>
+        <In $t={4.15}>
+          <Card top={268} h={118} depth={2} />
+        </In>
+        <In $t={7.5}>
+          <Card top={408} h={136} depth={3} />
+        </In>
 
         <In $t={0}>
           <DownRail x1={XD} y1={14} x2={XD} y2={544} />
@@ -302,7 +310,7 @@ export const HeroArt = () => (
           </text>
         </In>
         <Wipe $t={0.2} $d={0.7}>
-          {Array.from({ length: 52 }, (_, i) => (
+          {Array.from({ length: 50 }, (_, i) => (
             <rect key={i} x={L + i * 8} y={42} width={3} height={13} rx={1} fill='var(--line-strong)' />
           ))}
         </Wipe>
@@ -331,7 +339,7 @@ export const HeroArt = () => (
               <text className={s.pick ? 'code' : 'dim'} x={L + s.indent} y={y}>
                 {s.name}
               </text>
-              <rect x={300 + s.indent} y={y - 7} width={w} height={7} rx={2} fill={s.pick ? 'var(--accent)' : 'var(--line-strong)'} />
+              <rect x={310 + s.indent} y={y - 7} width={w} height={7} rx={2} fill={s.pick ? 'var(--accent)' : 'var(--line-strong)'} />
               <text className='dim' x={R} y={y} textAnchor='end'>
                 {s.ms}ms
               </text>
@@ -427,10 +435,18 @@ export const HeroArt = () => (
 
       {/* ---------------- mobile ---------------- */}
       <Mobile viewBox='0 0 350 570' role='img' aria-label='Four cuts into a running production system, ending in the arguments and return value of one function.'>
-        <Card top={12} h={100} depth={0} l={36} r={346} />
-        <Card top={136} h={126} depth={1} l={36} r={346} />
-        <Card top={286} h={130} depth={2} l={36} r={346} />
-        <Card top={440} h={112} depth={3} l={36} r={346} />
+        <In $t={0}>
+          <Card top={12} h={100} depth={0} l={36} r={346} />
+        </In>
+        <In $t={2.15}>
+          <Card top={136} h={126} depth={1} l={36} r={346} />
+        </In>
+        <In $t={4.15}>
+          <Card top={286} h={130} depth={2} l={36} r={346} />
+        </In>
+        <In $t={7.5}>
+          <Card top={440} h={112} depth={3} l={36} r={346} />
+        </In>
 
         <In $t={0}>
           <DownRail x1={12} y1={12} x2={12} y2={548} />
