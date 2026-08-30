@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Container, Eyebrow, Reveal } from './primitives';
 
 const Section = styled.section`
@@ -19,7 +19,7 @@ const Inner = styled(Container)`
 `;
 
 const Head = styled.div`
-  max-width: 760px;
+  max-width: 780px;
   h2 {
     margin: 18px 0 0;
     font-size: clamp(28px, 3.6vw, 46px);
@@ -33,104 +33,187 @@ const Head = styled.div`
   }
   p {
     margin: 20px 0 0;
-    font-size: 18px;
-    line-height: 1.6;
+    font-size: 18.5px;
+    line-height: 1.55;
     color: var(--ink-soft);
-    max-width: 600px;
+    max-width: 620px;
   }
 `;
 
-const Ledger = styled.div`
+const Stage = styled.div`
   margin-top: 52px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--paper-2);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
   @media (max-width: 1000px) {
     margin-top: 38px;
   }
-
-  .cap {
-    max-width: 620px;
-    font-size: 16.5px;
-    line-height: 1.55;
-    color: var(--ink-mute);
-    margin: 0 0 22px;
-  }
 `;
 
-const Table = styled.div`
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--paper-2);
-  box-shadow: var(--shadow-soft);
-`;
-
-const HeadRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.72fr 1.28fr;
-  gap: 24px;
-  padding: 14px 28px;
+const Bar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
   background: var(--paper-3);
   border-bottom: 1px solid var(--line);
   font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: 11.5px;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--ink-faint);
-  @media (max-width: 720px) {
-    grid-template-columns: 1fr;
-    gap: 4px;
-    padding: 12px 20px;
+  @media (max-width: 640px) {
+    padding: 12px 18px;
   }
 `;
 
-const Row = styled.div<{ $ours?: boolean }>`
-  display: grid;
-  grid-template-columns: 0.72fr 1.28fr;
-  gap: 24px;
-  align-items: baseline;
-  padding: 22px 28px;
-  border-bottom: 1px solid var(--line);
-  background: ${({ $ours }) => ($ours ? 'var(--paper-2)' : 'transparent')};
-  box-shadow: ${({ $ours }) => ($ours ? 'inset 3px 0 0 var(--accent)' : 'none')};
-  &:last-child {
-    border-bottom: none;
+const Body = styled.div`
+  padding: 30px 24px 26px;
+  @media (max-width: 640px) {
+    padding: 22px 18px 20px;
   }
-  @media (max-width: 720px) {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 18px 20px;
-  }
+`;
 
-  .who {
-    font-size: 16.5px;
-    font-weight: ${({ $ours }) => ($ours ? 600 : 500)};
-    letter-spacing: -0.01em;
-    color: ${({ $ours }) => ($ours ? 'var(--ink)' : 'var(--ink-mute)')};
-  }
-  .need {
-    font-size: 16px;
-    line-height: 1.5;
-    color: ${({ $ours }) => ($ours ? 'var(--ink)' : 'var(--ink-mute)')};
-  }
-  .need b {
-    font-weight: 600;
+const Quote = styled.p`
+  margin: 0 0 26px;
+  font-size: clamp(17px, 1.8vw, 21px);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  max-width: 640px;
+`;
+
+const typeIn = keyframes`
+  0%,26%{opacity:0;transform:translateX(-6px)}
+  34%,100%{opacity:1;transform:none}`;
+
+const Diff = styled.pre`
+  margin: 0;
+  padding: 20px 22px;
+  border-radius: 12px;
+  background: #fbfaf7;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: clamp(12.5px, 1.15vw, 14px);
+  line-height: 1.85;
+  color: var(--ink-mute);
+  overflow-x: auto;
+
+  .add {
+    display: block;
+    margin: 0 -22px;
+    padding: 0 22px;
+    background: rgba(17, 168, 119, 0.09);
     color: var(--ink);
+    animation: ${typeIn} 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .add b {
+    color: var(--signal-ink);
+    font-weight: 600;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .add {
+      animation: none;
+    }
   }
 `;
 
-const PREREQ: { who: string; need: React.ReactNode; ours?: boolean }[] = [
-  { who: 'Datadog, Dynatrace', need: 'their agent compiled into the service, a runtime they support, and your source code linked to it' },
-  { who: 'OpenTelemetry, remote config', need: 'a signal somebody already decided to expose' },
-  { who: 'A new log line', need: 'a pull request, a review, a release, and the failure happening a second time' },
-  {
-    who: 'Odigos',
-    need: (
-      <>
-        <b>the process is running</b>
-      </>
-    ),
-    ours: true,
-  },
-];
+const step = keyframes`
+  0%,8%{opacity:.28}
+  16%,100%{opacity:1}`;
+
+const Train = styled.div`
+  margin-top: 26px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .s {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 15px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    font-size: 14.5px;
+    color: var(--ink-mute);
+    animation: ${step} 9s linear infinite;
+  }
+  .s:nth-child(1) {
+    animation-delay: 0.4s;
+  }
+  .s:nth-child(3) {
+    animation-delay: 0.9s;
+  }
+  .s:nth-child(5) {
+    animation-delay: 1.4s;
+  }
+  .s:nth-child(7) {
+    animation-delay: 1.9s;
+  }
+  .a {
+    color: var(--line-strong);
+    font-size: 15px;
+  }
+  .cost {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 9px;
+    font-size: 15px;
+    color: var(--ink-faint);
+    animation: ${step} 9s linear infinite;
+    animation-delay: 2.4s;
+  }
+  .cost b {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--hot-ink);
+  }
+  @media (max-width: 780px) {
+    .cost {
+      margin-left: 0;
+      width: 100%;
+      margin-top: 6px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .s,
+    .cost {
+      animation: none;
+    }
+  }
+`;
+
+const Payoff = styled.div`
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: clamp(17px, 1.7vw, 20px);
+  letter-spacing: -0.015em;
+  color: var(--ink);
+
+  b {
+    font-weight: 600;
+  }
+  .t {
+    font-family: var(--font-mono), monospace;
+    font-size: 14px;
+    color: var(--signal-ink);
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--signal-soft);
+  }
+`;
 
 export const LandingOldWay = () => {
   return (
@@ -142,26 +225,51 @@ export const LandingOldWay = () => {
             <h2>
               Your agent is reading a transcript <span className='mute'>of a conversation it was never in.</span>
             </h2>
-            <p>An agent investigates the way a good engineer does. It forms a hypothesis, tests it, throws it out and goes again, from the shape of the failure down to the one value that explains it. Every tool you can hand it breaks that loop at the first turn, because every tool returns a recording made months ago by somebody who did not know this incident was coming. So the agent writes a confident paragraph about what probably happened, and then tells you to add a log line.</p>
+            <p>Every tool it can reach hands back a recording somebody set up months ago. When the answer is not in that recording, the problem is not the model. It is that one more fact costs a release.</p>
           </Head>
         </Reveal>
 
         <Reveal delay={80}>
-          <Ledger>
-            <p className='cap'>Plenty of tools can now push a question into a live process. Datadog and Dynatrace both ship it. What separates them is everything that had to be true before you were allowed to ask.</p>
-            <Table>
-              <HeadRow>
-                <span>tool</span>
-                <span>what has to be true before it answers</span>
-              </HeadRow>
-              {PREREQ.map((r) => (
-                <Row key={r.who} $ours={r.ours}>
-                  <span className='who'>{r.who}</span>
-                  <span className='need'>{r.need}</span>
-                </Row>
-              ))}
-            </Table>
-          </Ledger>
+          <Stage>
+            <Bar>
+              <span>what your agent asks for</span>
+              <span>one more value</span>
+            </Bar>
+            <Body>
+              <Quote>&ldquo;I cannot see what the promo code returned. Add a log line here and redeploy, then wait for it to happen again.&rdquo;</Quote>
+
+              <Diff>
+                {'  func Apply(code string, cart float64) float64 {\n'}
+                {'      d := lookup(code)\n'}
+                <span className='add'>
+                  {'+     '}
+                  <b>log.Info(&quot;promo&quot;, &quot;code&quot;, code, &quot;discount&quot;, d)</b>
+                </span>
+                {'      return d\n'}
+                {'  }'}
+              </Diff>
+
+              <Train>
+                <span className='s'>pull request</span>
+                <span className='a'>→</span>
+                <span className='s'>review</span>
+                <span className='a'>→</span>
+                <span className='s'>release</span>
+                <span className='a'>→</span>
+                <span className='s'>wait for it to happen again</span>
+                <span className='cost'>
+                  <b>6 days</b> to answer one question
+                </span>
+              </Train>
+
+              <Payoff>
+                <span>
+                  With Odigos, that same value is <b>a question you ask a running service.</b>
+                </span>
+                <span className='t'>4 seconds</span>
+              </Payoff>
+            </Body>
+          </Stage>
         </Reveal>
       </Inner>
     </Section>

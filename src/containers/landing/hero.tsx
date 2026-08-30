@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>eBPF that reads inside the process, not at the syscall</Eyebrow>
+          <Eyebrow>Answers out of running production, with no code change</Eyebrow>
           <H1>
             <span>Production</span>
             <span>
               <em>answers back.</em>
             </span>
           </H1>
-          <Sub>Point Odigos at any function in a live service, including a stripped Go binary with no symbols that nothing was ever set up to watch, and get back the arguments it was called with and what it returned. In about a second.</Sub>
+          <Sub>Something breaks and your team needs one value out of a live service to explain it. Today that costs a code change, a release, and waiting for it to happen again. With Odigos it costs a question.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

@@ -117,153 +117,128 @@ export const DepthVisual = () => (
 );
 
 
-/* ---------------- 1. BINARY: the read nobody else can do ---------------- */
-
-const BinWrap = styled.div`
+/* ---------------- 1. INSIDE vs OUTSIDE the service ---------------- */
+const InWrap = styled.div`
   width: 100%;
-  max-width: 460px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-`;
-
-const BinHead = styled.div`
   display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--ink-faint);
-  span.b {
-    padding: 3px 8px;
-    border-radius: 6px;
-    border: 1px solid var(--line-strong);
-    background: var(--paper);
-  }
-  span.warn {
-    border-color: rgba(255, 61, 122, 0.35);
-    color: #c9346a;
-  }
+  flex-direction: column;
+  gap: 0;
 `;
 
-const BinCard = styled.div`
-  margin-top: 12px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r);
-  background: var(--paper-2);
-  padding: 16px 16px 14px;
-  box-shadow: var(--shadow-soft);
-`;
-
-const BinRow = styled.div<{ $i: number }>`
-  display: grid;
-  grid-template-columns: 46px 1fr;
-  gap: 10px;
+const Cap = styled.div<{ $ours?: boolean }>`
+  display: flex;
   align-items: baseline;
-  padding: 3px 0;
-  font-size: 12.5px;
-  animation: ${fadeUp} 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: ${({ $i }) => 0.1 + $i * 0.09}s;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: ${({ $ours }) => ($ours ? 'var(--accent)' : 'var(--ink-faint)')};
+`;
 
-  .reg {
+const seeIn = keyframes`
+  0%,10%{opacity:0;transform:translateY(8px)}
+  22%,100%{opacity:1;transform:none}`;
+
+const Box = styled.div<{ $ours?: boolean; $delay: string }>`
+  margin-top: 10px;
+  border-radius: 13px;
+  border: 1px solid ${({ $ours }) => ($ours ? 'rgba(91,67,241,0.3)' : 'var(--line)')};
+  background: ${({ $ours }) => ($ours ? 'var(--paper-2)' : 'var(--paper-3)')};
+  box-shadow: ${({ $ours }) => ($ours ? '0 14px 34px rgba(24,20,54,0.1)' : 'none')};
+  padding: 18px 20px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  animation: ${seeIn} 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation-delay: ${({ $delay }) => $delay};
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  .line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    font-size: clamp(13px, 1.2vw, 15px);
+    color: ${({ $ours }) => ($ours ? 'var(--ink)' : 'var(--ink-mute)')};
+  }
+  .line + .line {
+    margin-top: 10px;
+  }
+  .v {
     color: var(--accent);
+  }
+  .bad {
+    color: var(--hot-ink);
     font-weight: 600;
   }
-  .arrow {
+  .t {
     color: var(--ink-faint);
-  }
-  .type {
-    color: var(--ink);
-  }
-  .off {
-    color: var(--ink-faint);
-  }
-  .name {
-    color: var(--ink-mute);
-  }
-  .val {
-    color: var(--accent);
-  }
-  .val.out {
-    color: #d63a6f;
+    font-size: 12.5px;
   }
 `;
 
-const BinField = styled.div<{ $i: number }>`
-  display: grid;
-  grid-template-columns: 58px 74px 1fr;
-  gap: 8px;
-  padding: 2px 0 2px 18px;
-  font-size: 12px;
-  animation: ${fadeUp} 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: ${({ $i }) => 0.1 + $i * 0.09}s;
-  .off {
-    color: var(--ink-faint);
-  }
-  .name {
-    color: var(--ink-mute);
-  }
-  .val {
-    color: var(--accent);
-  }
-`;
-
-const BinRule = styled.div`
-  margin: 11px 0;
+const Edge = styled.div`
+  margin: 22px 0 6px;
+  position: relative;
   height: 1px;
-  background: var(--line);
-`;
+  background: repeating-linear-gradient(90deg, var(--line-strong) 0 6px, transparent 6px 12px);
 
-const BinFoot = styled.div`
-  margin-top: 12px;
-  font-size: 11.5px;
-  line-height: 1.5;
-  color: var(--signal-ink);
+  span {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 12px;
+    background: var(--paper-2);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
 `;
 
 export const BinaryVisual = () => (
-  <BinWrap>
-    <BinHead>
-      <span className='b'>checkout-svc</span>
-      <span className='b'>go1.22</span>
-      <span className='b warn'>stripped</span>
-      <span className='b warn'>no DWARF</span>
-    </BinHead>
+  <InWrap>
+    <Cap>
+      <span>everyone else stops here</span>
+      <span>the syscall</span>
+    </Cap>
+    <Box $delay='0s'>
+      <div className='line'>
+        <span>POST /orders</span>
+        <span className='t'>214ms · 200 OK</span>
+      </div>
+      <div className='line'>
+        <span className='t'>and that is the whole story they can tell</span>
+      </div>
+    </Box>
 
-    <BinCard>
-      <BinRow $i={0}>
-        <span className='reg'>uprobe</span>
-        <span>
-          <span className='off'>0x4a91c0</span> <span className='name'>applyPromo</span>
-        </span>
-      </BinRow>
-      <BinRule />
-      <BinRow $i={1}>
-        <span className='reg'>rdi</span>
-        <span>
-          <span className='arrow'>&rarr;</span> <span className='type'>*promo.Request</span>
-        </span>
-      </BinRow>
-      <BinField $i={2}>
-        <span className='off'>+0x00</span>
-        <span className='name'>id</span>
-        <span className='val'>&quot;BLACK50&quot;</span>
-      </BinField>
-      <BinField $i={3}>
-        <span className='off'>+0x18</span>
-        <span className='name'>userId</span>
-        <span className='val'>8843</span>
-      </BinField>
-      <BinRule />
-      <BinRow $i={4}>
-        <span className='reg'>rax</span>
-        <span>
-          <span className='arrow'>&larr;</span> <span className='type'>float64</span> <span className='val out'>0.00</span>
-        </span>
-      </BinRow>
-    </BinCard>
+    <Edge>
+      <span>the edge of your service</span>
+    </Edge>
 
-    <BinFoot>struct layout recovered from the binary. nothing loaded into the process.</BinFoot>
-  </BinWrap>
+    <Cap $ours>
+      <span>odigos reads here</span>
+      <span>inside the code</span>
+    </Cap>
+    <Box $ours $delay='0.7s'>
+      <div className='line'>
+        <span>
+          applyPromo(<span className='v'>&quot;BLACK50&quot;</span>, <span className='v'>$49.00</span>)
+        </span>
+      </div>
+      <div className='line'>
+        <span>
+          returned <span className='bad'>$0.00</span>
+        </span>
+        <span className='t'>on every call</span>
+      </div>
+    </Box>
+  </InWrap>
 );
 
 /* ---------------- 2. SAFE — overhead gauge ---------------- */
