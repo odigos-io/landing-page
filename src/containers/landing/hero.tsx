@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Runtime evidence for AI agents</Eyebrow>
+          <Eyebrow>Function-level evidence from live production</Eyebrow>
           <H1>
-            <span>Pinpoint the bug.</span>
+            <span>Any function.</span>
             <span>
-              <em>Not the service.</em>
+              <em>No SDK. No deploy.</em>
             </span>
           </H1>
-          <Sub>Your agents do not have a reasoning problem. They have an evidence problem. Odigos reads any function in a live service and returns the arguments it was called with and what it came back with, in about a second.</Sub>
+          <Sub>Point at a function in a running service, including a stripped Go binary nobody ever instrumented, and get back what it was called with and what it returned. Nothing is loaded into your process to do it.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

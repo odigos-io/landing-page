@@ -74,17 +74,17 @@ const Clean = styled.div<{ $kf: ReturnType<typeof keyframes> }>`
     gap: 7px;
     padding: 8px 12px;
     border-radius: 999px;
-    border: 1px solid var(--line-strong);
-    background: var(--paper);
+    border: 1px solid var(--line);
+    background: var(--paper-3);
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 12px;
-    color: var(--ink-mute);
+    color: var(--ink-faint);
   }
   .ok {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--signal);
+    background: var(--line-strong);
   }
 `;
 
@@ -159,6 +159,15 @@ const Returned = styled.div`
   }
 `;
 
+/* the line that makes it a scandal rather than a number */
+const Kicker = styled.div`
+  margin-top: 10px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: clamp(12.5px, 1.1vw, 14.5px);
+  letter-spacing: -0.01em;
+  color: #c9346a;
+`;
+
 const Blast = styled.div<{ $kf: ReturnType<typeof keyframes> }>`
   margin-top: 18px;
   display: flex;
@@ -207,7 +216,7 @@ export const HeroArt = () => {
   return (
     <Frame>
       <Panel>
-        <Cap>everything your tools saw</Cap>
+        <Cap>what every other tool saw</Cap>
         <Clean $kf={IN(2)}>
           <span>
             <i className='ok' /> errors 0.1%
@@ -225,7 +234,7 @@ export const HeroArt = () => {
 
         <Rule />
 
-        <Cap>what odigos read out of the running process</Cap>
+        <Cap>what odigos read out of the process</Cap>
         <Evidence $kf={IN(18)}>
           <div className='fn'>applyPromo(</div>
           <div className='arg'>
@@ -241,16 +250,16 @@ export const HeroArt = () => {
           <Returned>
             <span className='lbl'>returned</span>
             <span className='val'>0.00</span>
-            <span className='note'>on every call · no error · 4ms</span>
           </Returned>
+          <Kicker>on every call. no error. 4ms.</Kicker>
         </Evidence>
 
         <Blast $kf={countIn(46)}>
           <span className='cost'>
-            6 days · 1,284 carts · <b>$84k</b>
+            running for <b>six days</b> before anyone asked
           </span>
           <span className='how'>
-            <i className='dot' /> captured live · no code change · 1.2s
+            <i className='dot' /> captured live · nothing in the process · 1.2s
           </span>
         </Blast>
       </Panel>

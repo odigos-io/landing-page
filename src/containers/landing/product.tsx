@@ -118,11 +118,11 @@ export const LandingProduct = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>The console</Eyebrow>
+            <Eyebrow>What a capture actually is</Eyebrow>
             <h2>
-              Nothing gets captured <span className='mute'>that you did not name.</span>
+              Every capture is one line <span className='mute'>you can read.</span>
             </h2>
-            <p>Every capture rule is one line you can read, scoped per cluster and reversible. Shape the data while it is still in flight, then send it wherever you already send telemetry.</p>
+            <p>A capture names a workload and a function. It is scoped per cluster, reversible, and governed by RBAC, so reading a value out of production is an action somebody authorised rather than a side effect of an agent.</p>
           </Head>
         </Reveal>
 
@@ -143,8 +143,8 @@ export const LandingProduct = () => {
               <p>Mask PII, sample errors, add Kubernetes attributes. The data is shaped before it ever leaves your cluster.</p>
             </div>
             <div>
-              <h3>Destinations are yours</h3>
-              <p>Datadog, Splunk, Grafana, Clickhouse, Prometheus, and 40 more, as many at once as you want. It is OpenTelemetry, so you can leave whenever you like.</p>
+              <h3>The values are yours</h3>
+              <p>Captured values leave as OpenTelemetry, into whatever you already run. Nothing about them is proprietary and nothing is held here.</p>
             </div>
           </Notes>
         </Reveal>

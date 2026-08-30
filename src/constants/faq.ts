@@ -1,5 +1,10 @@
 export const FAQ = [
   {
+    title: 'How does an agent know which function to ask about?',
+    description:
+      'It does not have to guess from 40,000. Odigos already maps every service, the calls between them and the functions on the path of a request, so the agent narrows the way a person would: the failing endpoint, then the slow span, then the functions inside it. Capture is the last step, on a handful of candidates, not a fishing expedition across the fleet.',
+  },
+  {
     title: 'Where does the captured data go?',
     description:
       'Wherever you send it. Odigos runs inside your cluster and exports as OpenTelemetry to the destinations you configure, so captured data can stay entirely within your own infrastructure. Values are shaped before they leave: PII masking, attribute deletion and sampling all run in flight, in your cluster.',

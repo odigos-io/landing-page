@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Every tool in this category is making the model smarter. <b>None of them can produce a fact that was never recorded.</b>
+            Everything else that can read a value in production needs that service to have been prepared for it months ago. <b>Odigos reads the ones nobody prepared.</b>
           </Statement>
         </Reveal>
       </Inner>

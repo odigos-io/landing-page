@@ -259,9 +259,9 @@ export const LandingHowItWorks = () => {
               <StepDesc>Our own eBPF runtime reads what is actually happening inside each process: the functions running, the queries they make, the arguments they carry. Nothing is wired into your apps.</StepDesc>
               <Chips>
                 <span className='chip live'>eBPF probe attached</span>
-                <span className='chip'>trace</span>
-                <span className='chip'>profile</span>
-                <span className='chip'>logs</span>
+                <span className='chip'>arguments</span>
+                <span className='chip'>return values</span>
+                <span className='chip'>stacks</span>
               </Chips>
             </Card>
 
