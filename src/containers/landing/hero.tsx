@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Logs, metrics and traces were decided a year ago</Eyebrow>
+          <Eyebrow>Dynamic telemetry, decided at the moment you ask</Eyebrow>
           <H1>
-            <span>Fly over production.</span>
+            <span>Let your agents</span>
             <span>
-              <em>Then go all the way in.</em>
+              <em>interrogate production.</em>
             </span>
           </H1>
-          <Sub>Every signal you have today was chosen when the code was written, so it answers last year&rsquo;s questions. Odigos lets your team and your agents start at the whole cluster, pick a direction, go deeper, back out and go again, until they are looking at the value that actually broke it. About a second per move, with no code change.</Sub>
+          <Sub>Ask for telemetry that does not exist yet. Logs, metrics and traces were all decided when the code was written, so they answer last year&rsquo;s questions. Odigos takes an agent from the whole cluster down to the value that actually broke it, about a second per move, with no code change.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
