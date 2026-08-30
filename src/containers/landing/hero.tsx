@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>The last closed system in your stack</Eyebrow>
+          <Eyebrow>Logs, metrics and traces were decided a year ago</Eyebrow>
           <H1>
-            <span>AI got fast.</span>
+            <span>Fly over production.</span>
             <span>
-              <em>Production stayed closed.</em>
+              <em>Then go all the way in.</em>
             </span>
           </H1>
-          <Sub>Odigos opens it. Your agents can move from the whole cluster down to a single value inside a running service and back up again, as many times as it takes, with no code change. That is the difference between an AI SRE that writes a summary and one that closes the incident.</Sub>
+          <Sub>Every signal you have today was chosen when the code was written, so it answers last year&rsquo;s questions. Odigos lets your team and your agents start at the whole cluster, pick a direction, go deeper, back out and go again, until they are looking at the value that actually broke it. About a second per move, with no code change.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
