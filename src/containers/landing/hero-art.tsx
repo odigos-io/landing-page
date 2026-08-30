@@ -129,26 +129,44 @@ const Kind = styled.span<{ $win?: boolean }>`
 `;
 
 /* how much of production is still in play */
-const Scope = styled.div<{ $t: number; $w: number; $dead?: boolean; $win?: boolean }>`
+const Scope = styled.div<{ $t: number; $h: number; $pick: number; $dead?: boolean; $win?: boolean }>`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 3px;
-  width: ${({ $w }) => $w}%;
+  width: 100%;
   transform-origin: left center;
   animation: ${(x) => scan(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
   ${reduce}
 
   i {
+    position: relative;
     flex: 1;
-    height: ${({ $win }) => ($win ? '19px' : '13px')};
-    max-width: ${({ $win }) => ($win ? '10px' : '5px')};
-    border-radius: 2px;
-    background: ${({ $dead, $win }) => ($win ? 'var(--accent)' : $dead ? 'var(--line-strong)' : 'rgba(24,20,54,0.22)')};
+    height: ${({ $h }) => $h}px;
+    border-radius: 2.5px;
+    background: ${({ $dead }) => ($dead ? 'var(--line-strong)' : 'rgba(24,20,54,0.19)')};
+  }
+  /* the block the next row is a close-up of */
+  i:nth-child(${({ $pick }) => $pick}) {
+    background: ${({ $dead, $win }) => ($win ? 'var(--accent)' : $dead ? '#b3b0a8' : 'var(--accent)')};
+  }
+  i:nth-child(${({ $pick }) => $pick})::after {
+    content: '';
+    display: ${({ $win }) => ($win ? 'none' : 'block')};
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 4px);
+    width: 7px;
+    height: 7px;
+    margin-left: -3.5px;
+    border-right: 1.5px solid ${({ $dead }) => ($dead ? '#c2bfb7' : 'var(--accent)')};
+    border-bottom: 1.5px solid ${({ $dead }) => ($dead ? '#c2bfb7' : 'var(--accent)')};
+    transform: rotate(45deg);
   }
 `;
 
 const Got = styled.div<{ $t: number; $dead?: boolean; $win?: boolean }>`
-  margin-top: 9px;
+  margin-top: 16px;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: clamp(12px, 1.15vw, 13.5px);
   line-height: 1.5;
@@ -210,14 +228,14 @@ export const HeroArt = () => (
     <Panel>
       <Head>
         <span>asked for</span>
-        <span>what is still in play</span>
+        <span>what it can see at that resolution</span>
       </Head>
 
       <Rows>
         <Row $t={0.2}>
           <Kind>metrics</Kind>
           <div>
-            <Scope $t={0.5} $w={100}>
+            <Scope $t={0.5} $h={13} $pick={27}>
               {Array.from({ length: 40 }, (_, i) => (
                 <i key={i} />
               ))}
@@ -229,25 +247,25 @@ export const HeroArt = () => (
         <Row $t={1.7}>
           <Kind>traces</Kind>
           <div>
-            <Scope $t={2.0} $w={42}>
-              {Array.from({ length: 13 }, (_, i) => (
+            <Scope $t={2.0} $h={17} $pick={4}>
+              {Array.from({ length: 12 }, (_, i) => (
                 <i key={i} />
               ))}
             </Scope>
-            <Got $t={2.5}>checkout · POST /orders · 214ms, no error</Got>
+            <Got $t={2.5}>1 service · POST /orders · 214ms, no error</Got>
           </div>
         </Row>
 
         <Row $t={3.2}>
           <Kind>logs</Kind>
           <div>
-            <Scope $t={3.5} $w={16} $dead>
+            <Scope $t={3.5} $h={22} $pick={2} $dead>
               {Array.from({ length: 5 }, (_, i) => (
                 <i key={i} />
               ))}
             </Scope>
             <Got $t={4.0} $dead>
-              <s>nothing here about the discount</s> · back out
+              1 request · <s>nothing here about the discount</s> · back out
             </Got>
           </div>
         </Row>
@@ -255,11 +273,11 @@ export const HeroArt = () => (
         <Row $t={5.0}>
           <Kind $win>function values</Kind>
           <div>
-            <Scope $t={5.3} $w={6} $win>
+            <Scope $t={5.3} $h={30} $pick={1} $win>
               <i />
             </Scope>
             <Got $t={5.9} $win>
-              <span className='fn'>promo.Apply</span> returned <b>$0.00</b>, not $24.50
+              1 function · <span className='fn'>promo.Apply</span> returned <b>$0.00</b>, not $24.50
             </Got>
           </div>
         </Row>
@@ -267,7 +285,7 @@ export const HeroArt = () => (
 
       <Foot $t={6.9}>
         <i className='dot' />
-        four requests, a second each
+        four requests, seconds apart
         <span className='sep'>·</span>
         <span className='mute'>none of it existed before we asked</span>
       </Foot>

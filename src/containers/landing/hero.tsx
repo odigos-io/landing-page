@@ -89,18 +89,9 @@ const H1 = styled.h1`
   }
   em {
     font-style: normal;
-    position: relative;
-    white-space: nowrap;
   }
-  em::after {
-    content: '';
-    position: absolute;
-    left: -0.02em;
-    right: -0.02em;
-    bottom: -0.17em;
-    height: 0.075em;
-    background: linear-gradient(90deg, var(--accent), #8a74ff 60%, var(--signal-bright));
-    border-radius: 3px;
+  span:first-child {
+    color: var(--ink-faint);
   }
 `;
 
@@ -145,7 +136,7 @@ export const LandingHero = () => {
               <em>interrogate production.</em>
             </span>
           </H1>
-          <Sub>Ask for telemetry that does not exist yet. Any function in any running service, answered in about a second, with no code change.</Sub>
+          <Sub>Ask for telemetry that does not exist yet. Any function in any running service, answered in seconds, with no code change.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
