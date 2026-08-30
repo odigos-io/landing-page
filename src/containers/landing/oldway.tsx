@@ -225,28 +225,29 @@ export const LandingOldWay = () => {
             <h2>
               Your agent can rewrite the service. <span className='mute'>It cannot ask it anything.</span>
             </h2>
-            <p>It can read every function in the repo, open a pull request and ship the fix. What it cannot do is find out what one of those functions actually returned in production, because nobody recorded that value. So it does the only thing left and asks you to go record it.</p>
+            <p>It has the whole repository. It can form a theory, write the fix and open the pull request. What it cannot do is see what the code actually did in production, so it hands the work back to your team and waits for a release.</p>
           </Head>
         </Reveal>
 
         <Reveal delay={80}>
           <Stage>
             <Bar>
-              <span>what your agent asks you for</span>
-              <span>one more value</span>
+              <span>what your agent comes back with</span>
+              <span>every time</span>
             </Bar>
             <Body>
-              <Quote>&ldquo;I cannot see what applyPromo returned. Add a log line here and ship it, then wait for the failure to happen again.&rdquo;</Quote>
+              <Quote>&ldquo;Looks like the promo rule lookup is coming back empty for some carts, which would explain the missing discount. I cannot confirm it from the data I have. Open a pull request with this log line and deploy it, and I will validate once the failure happens again.&rdquo;</Quote>
 
               <Diff>
                 {'  func Apply(code string, cart float64) float64 {\n'}
-                {'      d := lookup(code)\n'}
+                {'      rule := rules.For(code)\n'}
                 <span className='add'>
                   {'+     '}
-                  <b>log.Info(&quot;promo&quot;, &quot;code&quot;, code, &quot;discount&quot;, d)</b>
+                  <b>log.Info(&quot;promo&quot;, &quot;code&quot;, code, &quot;rule&quot;, rule)</b>
                 </span>
-                {'      return d\n'}
-                {'  }'}
+                {'      if rule == nil {\n'}
+                {'          return 0\n'}
+                {'      }'}
               </Diff>
 
               <Train>

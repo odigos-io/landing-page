@@ -3,23 +3,24 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
-/* Hero art: the one system that will not answer.
+/* Hero art: the code, with production's answers sitting next to it.
 
-   An agent can already query everything a company owns and get an answer in
-   milliseconds. The running service is the exception, and the price of asking
-   it anything is a code change and a release. The second block is what
-   happens when that stops being true. */
+   Every competitor in this category puts a dashboard in the hero. None of
+   them show code. This shows the function, and beside each line the values
+   it actually ran with a minute ago in production. The bug is visible in the
+   picture: the rule lookup came back empty, so a valid zero went out as the
+   discount and nothing ever threw. */
 
-const T = 7.2;
+const T = 6.8;
 const p = (s: number) => Math.max(0, Math.min(100, (s / T) * 100));
 
-const fin = (s: number) => keyframes`
-  0%,${p(s)}%{opacity:0;transform:translateY(7px)}
-  ${p(s + 0.5)}%,100%{opacity:1;transform:translateY(0)}`;
+const arrive = (s: number) => keyframes`
+  0%,${p(s)}%{opacity:0;transform:translateX(-8px)}
+  ${p(s + 0.45)}%,100%{opacity:1;transform:none}`;
 
-const land = (s: number) => keyframes`
-  0%,${p(s)}%{opacity:0;transform:translateY(12px) scale(.97)}
-  ${p(s + 0.6)}%,100%{opacity:1;transform:none}`;
+const fin = (s: number) => keyframes`
+  0%,${p(s)}%{opacity:0}
+  ${p(s + 0.5)}%,100%{opacity:1}`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
@@ -47,137 +48,30 @@ const Panel = styled.div`
   overflow: hidden;
 `;
 
-const Head = styled.div`
-  padding: 20px 26px 0;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  @media (max-width: 1000px) {
-    padding: 16px 18px 0;
-  }
-`;
-
-const Open = styled.div`
-  padding: 14px 26px 20px;
-  @media (max-width: 1000px) {
-    padding: 12px 18px 16px;
-  }
-`;
-
-const Row = styled.div<{ $t: number; $shut?: boolean }>`
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--line);
-  animation: ${(x) => fin(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
-  ${reduce}
-  &:last-child {
-    border-bottom: none;
-  }
-
-  .what {
-    font-size: clamp(14.5px, 1.4vw, 16.5px);
-    letter-spacing: -0.01em;
-    color: ${({ $shut }) => ($shut ? 'var(--ink)' : 'var(--ink-mute)')};
-    font-weight: ${({ $shut }) => ($shut ? 600 : 400)};
-  }
-  .how {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    flex-shrink: 0;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(11.5px, 1.1vw, 13px);
-    color: ${({ $shut }) => ($shut ? 'var(--hot-ink)' : 'var(--ink-faint)')};
-    text-align: right;
-  }
-  .tick {
-    color: var(--signal);
-  }
-`;
-
-const Shut = styled.div<{ $t: number }>`
-  margin-top: 4px;
-  padding: 16px 18px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 93, 143, 0.36);
-  background: rgba(255, 93, 143, 0.05);
-  animation: ${(x) => fin(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
-  ${reduce}
-
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-
-  .what {
-    font-size: clamp(15px, 1.45vw, 17px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-  }
-  .how {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(11.5px, 1.1vw, 13px);
-    color: var(--hot-ink);
-  }
-`;
-
-const Split = styled.div`
-  height: 1px;
-  background: var(--line);
-`;
-
-const With = styled.div`
-  padding: 22px 26px 24px;
-  background: linear-gradient(180deg, #fbfaff, #f7f4fd);
-  @media (max-width: 1000px) {
-    padding: 18px 18px 20px;
-  }
-`;
-
-const WithCap = styled.div`
+const Bar = styled.div`
   display: flex;
   align-items: center;
-  gap: 9px;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 24px;
+  background: var(--paper-3);
+  border-bottom: 1px solid var(--line);
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-`;
-
-const Got = styled.div<{ $t: number }>`
-  margin-top: 14px;
-  animation: ${(x) => land(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
-  transform-origin: left bottom;
-  ${reduce}
-
-  .q {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 14px;
-    flex-wrap: wrap;
+  font-size: 11.5px;
+  color: var(--ink-mute);
+  @media (max-width: 1000px) {
+    padding: 13px 16px;
   }
-  .what {
-    font-size: clamp(15px, 1.45vw, 17px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-  }
-  .ms {
+
+  .live {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(11.5px, 1.1vw, 13px);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    font-size: 10.5px;
     color: var(--signal-ink);
+    white-space: nowrap;
   }
   .dot {
     width: 6px;
@@ -193,86 +87,184 @@ const Got = styled.div<{ $t: number }>`
   }
 `;
 
-const Val = styled.div<{ $t: number }>`
-  margin-top: 14px;
-  padding: 16px 18px;
-  border-radius: 12px;
-  background: var(--paper-2);
-  border: 1px solid rgba(91, 67, 241, 0.22);
-  box-shadow: 0 12px 30px rgba(24, 20, 54, 0.09);
+const Call = styled.div<{ $t: number }>`
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(91, 67, 241, 0.035);
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: clamp(12.5px, 1.2vw, 14.5px);
-  line-height: 1.7;
   color: var(--ink);
-  animation: ${(x) => land(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: ${(x) => arrive(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
   ${reduce}
+  @media (max-width: 1000px) {
+    padding: 12px 16px;
+  }
 
+  .lbl {
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
   .v {
     color: var(--accent);
   }
-  .bad {
-    color: var(--hot-ink);
-    font-weight: 600;
+`;
+
+const Code = styled.div`
+  padding: 24px 24px 10px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: clamp(13px, 1.25vw, 15px);
+  line-height: 2.15;
+  @media (max-width: 1000px) {
+    padding: 18px 16px 8px;
+    line-height: 2;
   }
-  .sub {
-    display: block;
-    margin-top: 6px;
+`;
+
+const Line = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  .c {
+    color: var(--ink);
+    white-space: pre;
+  }
+  .kw {
+    color: #8b6cf0;
+  }
+  .fn {
+    color: var(--ink);
+  }
+  .lit {
     color: var(--ink-faint);
   }
 `;
 
-const Tick = () => (
-  <svg width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden className='tick'>
-    <path d='M2 6.3 4.7 9 10 3' stroke='currentColor' strokeWidth='1.9' strokeLinecap='round' strokeLinejoin='round' />
-  </svg>
-);
+const Val = styled.span<{ $t: number; $bad?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 7px;
+  font-size: clamp(11.5px, 1.1vw, 13px);
+  line-height: 1.5;
+  background: ${({ $bad }) => ($bad ? 'rgba(255,93,143,0.1)' : 'rgba(91,67,241,0.07)')};
+  border: 1px solid ${({ $bad }) => ($bad ? 'rgba(255,93,143,0.34)' : 'rgba(91,67,241,0.18)')};
+  color: ${({ $bad }) => ($bad ? 'var(--hot-ink)' : 'var(--accent)')};
+  font-weight: ${({ $bad }) => ($bad ? 600 : 400)};
+  margin-left: auto;
+  animation: ${(x) => arrive(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
+  ${reduce}
+`;
 
-const ALREADY = [
-  ['every line of the repository', 'answered instantly'],
-  ['ten years of tickets', 'answered instantly'],
-  ['the runbooks and the wiki', 'answered instantly'],
-  ['every dashboard you pay for', 'answered instantly'],
-];
+const Foot = styled.div<{ $t: number }>`
+  margin-top: 6px;
+  padding: 16px 24px 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+  animation: ${(x) => fin(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) both;
+  ${reduce}
+  @media (max-width: 1000px) {
+    padding: 14px 16px 16px;
+  }
+
+  b {
+    color: var(--signal-ink);
+    font-weight: 500;
+  }
+  .sep {
+    color: var(--line-strong);
+  }
+`;
 
 export const HeroArt = () => (
   <Frame>
     <Panel>
-      <Head>what your agent can already ask</Head>
-      <Open>
-        {ALREADY.map(([what, how], i) => (
-          <Row key={what} $t={0.1 + i * 0.16}>
-            <span className='what'>{what}</span>
-            <span className='how'>
-              <Tick />
-              {how}
-            </span>
-          </Row>
-        ))}
+      <Bar>
+        <span>checkout-svc / promo.go</span>
+        <span className='live'>
+          <i className='dot' />
+          values from production
+        </span>
+      </Bar>
 
-        <Shut $t={1.2}>
-          <span className='what'>what the code actually returned</span>
-          <span className='how'>change the code, ship a release, wait</span>
-        </Shut>
-      </Open>
+      <Call $t={0.5}>
+        <span className='lbl'>the call we captured</span>
+        <span>
+          Apply(code <span className='v'>&quot;BLACK50&quot;</span>, cart <span className='v'>49.00</span>)
+        </span>
+      </Call>
 
-      <Split />
+      <Code>
+        <Line>
+          <span className='c'>
+            <span className='kw'>func</span> Apply(code <span className='kw'>string</span>, cart <span className='kw'>float64</span>) <span className='kw'>float64</span> {'{'}
+          </span>
+        </Line>
 
-      <With>
-        <WithCap>with odigos</WithCap>
-        <Got $t={2.4}>
-          <div className='q'>
-            <span className='what'>what the code actually returned</span>
-            <span className='ms'>
-              <i className='dot' />
-              1.2 seconds · no code change
-            </span>
-          </div>
-        </Got>
-        <Val $t={3.0}>
-          applyPromo(<span className='v'>&quot;BLACK50&quot;</span>, <span className='v'>$49.00</span>) returned <span className='bad'>$0.00</span>
-          <span className='sub'>on 41,208 orders over six days. no error. nobody was paged.</span>
-        </Val>
-      </With>
+        <Line>
+          <span className='c'>{'    '}rule := rules.For(code)</span>
+          <Val $t={1.4} $bad>
+            rule = nil
+          </Val>
+        </Line>
+
+        <Line>
+          <span className='c'>
+            {'    '}
+            <span className='kw'>if</span> rule == nil {'{'}
+          </span>
+        </Line>
+
+        <Line>
+          <span className='c'>
+            {'        '}
+            <span className='kw'>return</span> 0
+          </span>
+          <Val $t={2.3} $bad>
+            returned $0.00 to the customer
+          </Val>
+        </Line>
+
+        <Line>
+          <span className='c'>{'    }'}</span>
+        </Line>
+
+        <Line>
+          <span className='c'>
+            {'    '}
+            <span className='kw'>return</span> cart * rule.Pct
+          </span>
+          <Val $t={3.1}>never reached</Val>
+        </Line>
+
+        <Line>
+          <span className='c'>{'}'}</span>
+        </Line>
+      </Code>
+
+      <Foot $t={3.9}>
+        <b>read from 41,208 live calls</b>
+        <span className='sep'>·</span>
+        1.2 seconds
+        <span className='sep'>·</span>
+        no code change
+      </Foot>
     </Panel>
   </Frame>
 );

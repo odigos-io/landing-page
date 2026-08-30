@@ -145,7 +145,7 @@ export const LandingHero = () => {
               <em>Production stayed closed.</em>
             </span>
           </H1>
-          <Sub>Your agent can read every function in the repo and not one value those functions returned in production. Getting that value has always meant changing the code and shipping a release. Odigos asks the running service instead, and answers in about a second.</Sub>
+          <Sub>Odigos opens it. Ask any running service what a function was called with and what it returned, and get the real values in about a second, with no code change and nothing added to your application.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
