@@ -101,12 +101,42 @@ const Field = styled.div`
   position: relative;
   width: 100%;
   aspect-ratio: 1.42 / 1;
-  background-image: radial-gradient(circle, rgba(24, 20, 54, 0.19) 1.2px, transparent 1.2px);
-  background-size: 21px 21px;
-  background-position: 11px 11px;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 66% 36%, rgba(91, 67, 241, 0.09), transparent 62%),
+    linear-gradient(180deg, #fdfdff, #f8f6ff);
   @media (max-width: 560px) {
-    aspect-ratio: 1.15 / 1;
-    background-size: 17px 17px;
+    aspect-ratio: 1.2 / 1;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(24, 20, 54, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(24, 20, 54, 0.045) 1px, transparent 1px);
+    background-size: 34px 34px;
+    -webkit-mask-image: radial-gradient(90% 90% at 50% 50%, #000, transparent 88%);
+    mask-image: radial-gradient(90% 90% at 50% 50%, #000, transparent 88%);
+  }
+`;
+
+/* the estate, drawn once and deterministically so server and client agree */
+const Map = styled.svg`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  .link {
+    stroke: rgba(24, 20, 54, 0.13);
+    stroke-width: 0.28;
+  }
+  .node {
+    fill: rgba(24, 20, 54, 0.3);
+  }
+  .near {
+    fill: rgba(91, 67, 241, 0.5);
   }
 `;
 
@@ -212,6 +242,51 @@ const Halo = styled.i`
 `;
 
 /* the only words on the picture */
+
+/* one seeded pass, at module scope, so the picture never changes between
+   renders and hydration does not complain */
+const CLUSTERS: [number, number, number][] = [
+  [20, 23, 7],
+  [47, 14, 6],
+  [77, 19, 7],
+  [114, 25, 6],
+  [93, 37, 9],
+  [29, 52, 7],
+  [61, 47, 6],
+  [104, 60, 7],
+  [26, 79, 6],
+  [59, 79, 7],
+  [119, 76, 6],
+  [84, 88, 5],
+];
+
+const build = () => {
+  let s = 20260830;
+  const rnd = () => {
+    s = (s * 1103515245 + 12345) % 2147483648;
+    return s / 2147483648;
+  };
+  const nodes: { x: number; y: number; r: number; near: boolean }[] = [];
+  const links: { x1: number; y1: number; x2: number; y2: number }[] = [];
+
+  CLUSTERS.forEach(([cx, cy, n], ci) => {
+    for (let i = 0; i < n; i++) {
+      const a = rnd() * Math.PI * 2;
+      const d = 3 + rnd() * 9;
+      const x = cx + Math.cos(a) * d;
+      const y = cy + Math.sin(a) * d * 0.82;
+      nodes.push({ x, y, r: 0.75 + rnd() * 0.85, near: ci === 4 });
+      links.push({ x1: cx, y1: cy, x2: x, y2: y });
+    }
+    const next = CLUSTERS[(ci + 3) % CLUSTERS.length];
+    links.push({ x1: cx, y1: cy, x2: next[0], y2: next[1] });
+  });
+
+  return { nodes, links };
+};
+
+const MAP = build();
+
 const Asked = styled.div`
   position: absolute;
   left: 22px;
@@ -312,6 +387,15 @@ export const HeroArt = () => (
       </Bar>
 
       <Field>
+        <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid slice' aria-hidden>
+          {MAP.links.map((l, i) => (
+            <line key={i} className='link' x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+          ))}
+          {MAP.nodes.map((n, i) => (
+            <circle key={i} className={n.near ? 'node near' : 'node'} cx={n.x} cy={n.y} r={n.r} />
+          ))}
+        </Map>
+
         <Halo />
         <Target />
         <Reticle>
