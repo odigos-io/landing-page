@@ -8,8 +8,8 @@ import {
   LandingValue,
   LandingOldWay,
   LandingFeatures,
-  LandingProof,
   LandingProduct,
+  LandingProof,
   LandingOutcomes,
   LandingHowItWorks,
   LandingTestimonial,
@@ -29,8 +29,8 @@ const HomeContent = () => {
         <LandingValue />
         <LandingOldWay />
         <LandingFeatures />
-        <LandingProof />
         <LandingProduct />
+        <LandingProof />
         <LandingOutcomes />
         <LandingHowItWorks />
         <LandingTestimonial />

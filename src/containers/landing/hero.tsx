@@ -138,14 +138,14 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Function-level evidence from live production</Eyebrow>
+          <Eyebrow>Runtime context for AI agents</Eyebrow>
           <H1>
             <span>Any function.</span>
             <span>
               <em>No SDK. No deploy.</em>
             </span>
           </H1>
-          <Sub>Point at a function in a running service, including a stripped Go binary nobody ever instrumented, and get back what it was called with and what it returned. Nothing is loaded into your process to do it.</Sub>
+          <Sub>Your agents can only investigate the services somebody prepared for them. Odigos reads any function in any live service, including a stripped Go binary nobody instrumented, and returns what it was called with and what it returned. Nothing is loaded into your process.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
