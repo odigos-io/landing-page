@@ -145,7 +145,7 @@ export const LandingHero = () => {
               <em>interrogate production.</em>
             </span>
           </H1>
-          <Sub>Ask for telemetry that does not exist yet. Logs, metrics and traces were all decided when the code was written, so they answer last year&rsquo;s questions. Odigos takes an agent from the whole cluster down to the value that actually broke it, about a second per move, with no code change.</Sub>
+          <Sub>Ask for telemetry that does not exist yet. Any function in any running service, answered in about a second, with no code change.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
