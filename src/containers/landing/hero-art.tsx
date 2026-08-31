@@ -355,13 +355,16 @@ const Flame = styled.div`
     background: rgba(24, 20, 54, 0.2);
   }
   .row:nth-child(2) i {
-    background: rgba(24, 20, 54, 0.17);
+    background: rgba(24, 20, 54, 0.12);
   }
   .row:nth-child(3) i {
-    background: rgba(24, 20, 54, 0.14);
+    background: rgba(24, 20, 54, 0.15);
   }
   .row:nth-child(4) i {
-    background: rgba(24, 20, 54, 0.12);
+    background: rgba(24, 20, 54, 0.18);
+  }
+  .row:nth-child(5) i {
+    background: rgba(24, 20, 54, 0.22);
   }
   .row i.on {
     background: var(--accent);
@@ -661,16 +664,7 @@ export const HeroArt = () => (
             <div className='body'>
               <Flame>
                 <div className='row'>
-                  <i style={{ left: '0%', width: '100%' }} />
-                </div>
-                <div className='row'>
-                  <i style={{ left: '0%', width: '56%' }} />
-                  <i style={{ left: '58%', width: '36%' }} />
-                </div>
-                <div className='row'>
-                  <i style={{ left: '2%', width: '22%' }} />
-                  <i style={{ left: '26%', width: '26%' }} />
-                  <i style={{ left: '60%', width: '20%' }} />
+                  <i className='on' style={{ left: '34%', width: '14%' }} />
                 </div>
                 <div className='row'>
                   <i style={{ left: '6%', width: '14%' }} />
@@ -678,7 +672,16 @@ export const HeroArt = () => (
                   <i style={{ left: '62%', width: '12%' }} />
                 </div>
                 <div className='row'>
-                  <i className='on' style={{ left: '34%', width: '14%' }} />
+                  <i style={{ left: '2%', width: '22%' }} />
+                  <i style={{ left: '26%', width: '26%' }} />
+                  <i style={{ left: '60%', width: '20%' }} />
+                </div>
+                <div className='row'>
+                  <i style={{ left: '0%', width: '56%' }} />
+                  <i style={{ left: '58%', width: '36%' }} />
+                </div>
+                <div className='row'>
+                  <i style={{ left: '0%', width: '100%' }} />
                 </div>
               </Flame>
             </div>
