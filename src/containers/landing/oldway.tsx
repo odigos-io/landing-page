@@ -348,7 +348,7 @@ export const LandingOldWay = () => {
                 <span className='a'>→</span>
                 <span className='s'>wait for it to happen again</span>
                 <span className='cost'>
-                  <b>6 days</b> for one round of feedback
+                  <b>hours to days</b> for one round of feedback
                 </span>
               </Train>
 
