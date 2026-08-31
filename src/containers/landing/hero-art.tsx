@@ -517,7 +517,7 @@ export const HeroArt = () => (
             <s>nothing here</s> backing out, trying elsewhere
           </S3>
           <S4>correlated traces on the checkout path</S4>
-          <S5>reading applyDiscount() arguments and return</S5>
+          <S5>dynamically instrumenting applyDiscount()</S5>
         </Step>
         <Line>
         <Answer>
