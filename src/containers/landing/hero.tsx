@@ -101,6 +101,11 @@ const Sub = styled.p`
   font-size: 19px;
   line-height: 1.6;
   color: var(--ink-soft);
+
+  b {
+    font-weight: 600;
+    color: var(--ink);
+  }
   @media (max-width: 1000px) {
     font-size: 17px;
   }
@@ -136,7 +141,7 @@ export const LandingHero = () => {
               <em>interrogate production.</em>
             </span>
           </H1>
-          <Sub>Ask for telemetry that does not exist yet. Any function in any running service, answered in seconds, with no code change.</Sub>
+          <Sub>Other tools hand your agents a recording. Odigos lets them ask for <b>telemetry that does not exist yet</b>, on any function in any running service, in seconds, with no code change.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
