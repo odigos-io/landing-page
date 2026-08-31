@@ -336,20 +336,32 @@ const Bars = styled.div`
   }
 `;
 
+/* frames nest inside their parent and narrow on the way down, so the
+   silhouette tapers the way a flame graph does */
 const Flame = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 
   .row {
-    display: flex;
-    gap: 3px;
+    position: relative;
+    height: 6px;
   }
   .row i {
-    display: block;
-    height: 7px;
-    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    height: 6px;
+    border-radius: 1.5px;
+    background: rgba(24, 20, 54, 0.2);
+  }
+  .row:nth-child(2) i {
     background: rgba(24, 20, 54, 0.17);
+  }
+  .row:nth-child(3) i {
+    background: rgba(24, 20, 54, 0.14);
+  }
+  .row:nth-child(4) i {
+    background: rgba(24, 20, 54, 0.12);
   }
   .row i.on {
     background: var(--accent);
@@ -649,19 +661,24 @@ export const HeroArt = () => (
             <div className='body'>
               <Flame>
                 <div className='row'>
-                  <i style={{ width: '100%' }} />
+                  <i style={{ left: '0%', width: '100%' }} />
                 </div>
                 <div className='row'>
-                  <i style={{ width: '62%' }} />
-                  <i style={{ width: '34%' }} />
+                  <i style={{ left: '0%', width: '56%' }} />
+                  <i style={{ left: '58%', width: '36%' }} />
                 </div>
                 <div className='row'>
-                  <i style={{ width: '30%' }} />
-                  <i style={{ width: '26%' }} />
-                  <i style={{ width: '38%' }} />
+                  <i style={{ left: '2%', width: '22%' }} />
+                  <i style={{ left: '26%', width: '26%' }} />
+                  <i style={{ left: '60%', width: '20%' }} />
                 </div>
                 <div className='row'>
-                  <i className='on' style={{ width: '22%', marginLeft: '32%' }} />
+                  <i style={{ left: '6%', width: '14%' }} />
+                  <i style={{ left: '30%', width: '20%' }} />
+                  <i style={{ left: '62%', width: '12%' }} />
+                </div>
+                <div className='row'>
+                  <i className='on' style={{ left: '34%', width: '14%' }} />
                 </div>
               </Flame>
             </div>
