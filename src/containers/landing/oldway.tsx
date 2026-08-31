@@ -78,13 +78,56 @@ const Body = styled.div`
   }
 `;
 
+const breathe = keyframes`0%,100%{opacity:.6;transform:rotate(0deg) scale(.92)}50%{opacity:1;transform:rotate(45deg) scale(1)}`;
+
+const Msg = styled.div`
+  border-left: 2px solid rgba(91, 67, 241, 0.28);
+  padding-left: 20px;
+  margin-bottom: 26px;
+  @media (max-width: 640px) {
+    padding-left: 14px;
+  }
+`;
+
+const From = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+
+  svg {
+    flex-shrink: 0;
+    transform-origin: center;
+    animation: ${breathe} 3.2s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    svg {
+      animation: none;
+    }
+  }
+`;
+
 const Quote = styled.p`
-  margin: 0 0 26px;
+  margin: 0 0 18px;
   font-size: clamp(17px, 1.8vw, 21px);
-  line-height: 1.4;
+  line-height: 1.42;
   letter-spacing: -0.015em;
   color: var(--ink);
   max-width: 640px;
+`;
+
+const Attached = styled.div`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 9px;
 `;
 
 const typeIn = keyframes`
@@ -257,9 +300,16 @@ export const LandingOldWay = () => {
                 <span>and what it costs to take it</span>
             </Bar>
             <Body>
-              <Quote>&ldquo;The rule lookup inside applyDiscount is probably coming back empty. I cannot confirm that without a log line, so ship one and I will tell you after the next occurrence.&rdquo;</Quote>
-
-              <Diff>
+              <Msg>
+                <From>
+                  <svg width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
+                    <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
+                  </svg>
+                  your agent
+                </From>
+                <Quote>The rule lookup inside applyDiscount is probably coming back empty. I cannot confirm that without a log line, so ship one and I will tell you after the next occurrence.</Quote>
+                <Attached>suggested change · promo.go</Attached>
+                <Diff>
                 {'  func applyDiscount(code string, cart float64) float64 {\n'}
                 {'      rule := rules.For(code)\n'}
                 <span className='add'>
@@ -269,7 +319,8 @@ export const LandingOldWay = () => {
                 {'      if rule == nil {\n'}
                 {'          return 0\n'}
                 {'      }'}
-              </Diff>
+                </Diff>
+              </Msg>
 
               <Train>
                 <span className='s'>pull request</span>
