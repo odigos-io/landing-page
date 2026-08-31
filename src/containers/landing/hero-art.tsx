@@ -10,17 +10,17 @@ import styled, { keyframes, css } from 'styled-components';
    A node is violet only while it is inside the current scope, so the picture
    narrows, gives up, widens, and narrows again. Six stops, one wrong turn. */
 
-const T = 14;
+const T = 16;
 
 /* left / top / width / height at each stop, as a share of the field */
 const track = keyframes`
   0%,3%    { opacity:0; left:3%;    top:5%;  width:94%;  height:90%; }
-  6%,18%   { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
-  24%,34%  { opacity:1; left:12%;   top:36%; width:22%;  height:34%; }
-  40%,50%  { opacity:1; left:17%;   top:44%; width:10%;  height:16%; }
-  56%,64%  { opacity:1; left:6%;    top:18%; width:52%;  height:66%; }
-  70%,80%  { opacity:1; left:56%;   top:25%; width:16%;  height:20%; }
-  86%,100% { opacity:1; left:62.4%; top:32%; width:6.4%; height:8.4%; }
+  5%,16%   { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
+  22%,31%  { opacity:1; left:12%;   top:36%; width:22%;  height:34%; }
+  36%,45%  { opacity:1; left:17%;   top:44%; width:10%;  height:16%; }
+  50%,58%  { opacity:1; left:6%;    top:18%; width:52%;  height:66%; }
+  63%,71%  { opacity:1; left:56%;   top:25%; width:16%;  height:20%; }
+  77%,100% { opacity:1; left:62.4%; top:32%; width:6.4%; height:8.4%; }
 `;
 
 const GREY = 'rgba(24, 20, 54, 0.32)';
@@ -28,53 +28,53 @@ const LIT = '#5b43f1';
 
 /* never in scope */
 const d0 = keyframes`
-  0%,18%   { fill:${GREY}; opacity:1 }
-  25%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,14%   { fill:${GREY}; opacity:1 }
+  20%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* only in scope when it widens after the dead end */
 const mid = keyframes`
-  0%,18%   { fill:${GREY}; opacity:1 }
-  25%,52%  { fill:${GREY}; opacity:.24 }
-  59%,64%  { fill:${LIT};  opacity:1 }
-  71%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,14%   { fill:${GREY}; opacity:1 }
+  20%,45%  { fill:${GREY}; opacity:.24 }
+  52%,58%  { fill:${LIT};  opacity:1 }
+  65%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* the cluster it tries first */
 const a1 = keyframes`
-  0%,18%   { fill:${GREY}; opacity:1 }
-  26%,36%  { fill:${LIT};  opacity:1 }
-  42%,52%  { fill:${GREY}; opacity:.3 }
-  59%,64%  { fill:${LIT};  opacity:1 }
-  71%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,14%   { fill:${GREY}; opacity:1 }
+  23%,31%  { fill:${LIT};  opacity:1 }
+  37%,45%  { fill:${GREY}; opacity:.3 }
+  52%,58%  { fill:${LIT};  opacity:1 }
+  65%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* deeper inside that same wrong cluster */
 const a2 = keyframes`
-  0%,18%   { fill:${GREY}; opacity:1 }
-  26%,64%  { fill:${LIT};  opacity:1 }
-  71%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,14%   { fill:${GREY}; opacity:1 }
+  23%,58%  { fill:${LIT};  opacity:1 }
+  65%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* the cluster it goes to on the second attempt */
 const b1 = keyframes`
-  0%,18%   { fill:${GREY}; opacity:1 }
-  25%,64%  { fill:${GREY}; opacity:.24 }
-  72%,82%  { fill:${LIT};  opacity:1 }
-  89%,100% { fill:${GREY}; opacity:.32 }`;
+  0%,14%   { fill:${GREY}; opacity:1 }
+  20%,58%  { fill:${GREY}; opacity:.24 }
+  65%,71%  { fill:${LIT};  opacity:1 }
+  79%,100% { fill:${GREY}; opacity:.32 }`;
 
 /* the one it lands on */
 const b3 = keyframes`
-  0%,18%   { fill:${GREY}; opacity:1; transform:scale(1) }
-  25%,64%  { fill:${GREY}; opacity:.24; transform:scale(1) }
-  72%,84%  { fill:${LIT};  opacity:1; transform:scale(1.3) }
-  90%,100% { fill:${LIT};  opacity:1; transform:scale(2.4) }`;
+  0%,14%   { fill:${GREY}; opacity:1; transform:scale(1) }
+  20%,58%  { fill:${GREY}; opacity:.24; transform:scale(1) }
+  65%,73%  { fill:${LIT};  opacity:1; transform:scale(1.3) }
+  80%,100% { fill:${LIT};  opacity:1; transform:scale(2.4) }`;
 
 const linkDim = keyframes`
-  0%,18%   { opacity:1 }
-  26%,52%  { opacity:.38 }
-  59%,64%  { opacity:.7 }
-  72%,100% { opacity:.38 }`;
+  0%,14%   { opacity:1 }
+  22%,45%  { opacity:.38 }
+  52%,58%  { opacity:.7 }
+  65%,100% { opacity:.38 }`;
 
 const halo = keyframes`
-  0%,86%  { opacity:0; transform:scale(.4) }
-  93%     { opacity:.5; transform:scale(1) }
+  0%,77%  { opacity:0; transform:scale(.4) }
+  85%     { opacity:.5; transform:scale(1) }
   100%    { opacity:0; transform:scale(1.9) }`;
 
 const show = (a: number, b: number) => keyframes`
@@ -150,9 +150,6 @@ const Field = styled.div`
   aspect-ratio: 1.42 / 1;
   overflow: hidden;
   background: radial-gradient(120% 90% at 66% 36%, rgba(91, 67, 241, 0.07), transparent 62%), linear-gradient(180deg, #fdfdff, #f8f6ff);
-  @media (max-width: 560px) {
-    aspect-ratio: 1.2 / 1;
-  }
 
   &::before {
     content: '';
@@ -287,7 +284,7 @@ const Glow = styled.i`
   margin: -43px 0 0 -43px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(91, 67, 241, 0.22), transparent 68%);
-  animation: ${stay(86)} ${T}s ease infinite;
+  animation: ${stay(77)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -312,8 +309,8 @@ const Halo = styled.i`
 
 const Step = styled.div`
   position: relative;
-  height: 20px;
-  margin-bottom: 10px;
+  height: 22px;
+  margin-bottom: 7px;
 
   span {
     position: absolute;
@@ -334,27 +331,27 @@ const Step = styled.div`
 `;
 
 const S0 = styled.span`
-  animation: ${show(4, 19)} ${T}s ease infinite;
+  animation: ${show(3, 17)} ${T}s ease infinite;
   ${reduce}
 `;
 const S1 = styled.span`
-  animation: ${show(22, 36)} ${T}s ease infinite;
+  animation: ${show(20, 33)} ${T}s ease infinite;
   ${reduce}
 `;
 const S2 = styled.span`
-  animation: ${show(39, 51)} ${T}s ease infinite;
+  animation: ${show(35, 47)} ${T}s ease infinite;
   ${reduce}
 `;
 const S3 = styled.span`
-  animation: ${show(54, 65)} ${T}s ease infinite;
+  animation: ${show(49, 60)} ${T}s ease infinite;
   ${reduce}
 `;
 const S4 = styled.span`
-  animation: ${show(68, 82)} ${T}s ease infinite;
+  animation: ${show(62, 73)} ${T}s ease infinite;
   ${reduce}
 `;
 const S5 = styled.span`
-  animation: ${stay(85)} ${T}s ease infinite;
+  animation: ${stay(76)} ${T}s ease infinite;
   ${reduce}
   display: inline-flex;
   align-items: center;
@@ -378,11 +375,30 @@ const S5 = styled.span`
   }
 `;
 
+const Found = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  color: var(--signal-ink);
+  animation: ${stay(88)} ${T}s ease infinite;
+  ${reduce}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+`;
+
 const Answer = styled.span`
+  display: block;
+  min-height: 1.45em;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: clamp(12px, 1.2vw, 13.5px);
   color: var(--ink);
-  animation: ${stay(91)} ${T}s ease infinite;
+  animation: ${stay(83)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -395,7 +411,7 @@ const Answer = styled.span`
 `;
 
 const Foot = styled.div`
-  padding: 15px 22px 17px;
+  padding: 14px 22px 15px;
   border-top: 1px solid var(--line);
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 11.5px;
@@ -514,6 +530,12 @@ export const HeroArt = () => (
         </Step>
         <Answer>
           applyDiscount() returned <b>$0.00</b>, not $24.50
+          <Found>
+            <svg width='12' height='12' viewBox='0 0 14 14' fill='none' aria-hidden>
+              <path d='M2 7.4 5.2 10.5 12 3.5' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
+            </svg>
+            cause found
+          </Found>
         </Answer>
       </Foot>
     </Panel>

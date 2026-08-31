@@ -237,7 +237,7 @@ export const BinaryVisual = () => (
     <Box $ours $delay='0.35s'>
       <div className='line'>
         <span>
-          applyPromo(<span className='v'>&quot;BLACK50&quot;</span>, <span className='v'>$49.00</span>)
+          applyDiscount(<span className='v'>&quot;BLACK50&quot;</span>, <span className='v'>$49.00</span>)
         </span>
       </div>
       <div className='line'>
