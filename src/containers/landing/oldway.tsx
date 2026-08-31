@@ -221,22 +221,22 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>The price of asking production anything</Eyebrow>
+            <Eyebrow>The part AI did not make faster</Eyebrow>
             <h2>
-              Your agent can rewrite the service. <span className='mute'>It cannot ask it anything.</span>
+              Writing the fix was never the hard part. <span className='mute'>Knowing what to fix is.</span>
             </h2>
-            <p>It has the whole repository. It can form a theory, write the fix and open the pull request. What it cannot do is see what the code actually did in production, so it hands the work back to your team and waits for a release.</p>
+            <p>An agent can read every line of your repository, form a theory and open the pull request. What it cannot do is find out what the code actually did in production, because nobody recorded that value. So the work comes back to your team, and the answer waits for a release.</p>
           </Head>
         </Reveal>
 
         <Reveal delay={80}>
           <Stage>
             <Bar>
-              <span>what your agent comes back with</span>
-              <span>the same answer every time</span>
+              <span>what comes back instead of an answer</span>
+              <span>every time</span>
             </Bar>
             <Body>
-              <Quote>&ldquo;Looks like the rule lookup inside applyDiscount is coming back empty for some carts, which would explain the missing discount. I cannot confirm it from the data I have. Open a pull request with this log line and deploy it, and I will validate once the failure happens again.&rdquo;</Quote>
+              <Quote>&ldquo;The rule lookup inside applyDiscount is probably coming back empty for some carts. I cannot confirm that from the data I have. Add this log line, ship it, and I will tell you after the next occurrence.&rdquo;</Quote>
 
               <Diff>
                 {'  func applyDiscount(code string, cart float64) float64 {\n'}
@@ -259,15 +259,15 @@ export const LandingOldWay = () => {
                 <span className='a'>→</span>
                 <span className='s'>wait for it to happen again</span>
                 <span className='cost'>
-                  <b>6 days</b> to answer one question
+                  <b>6 days</b> before anyone knows if the theory was right
                 </span>
               </Train>
 
               <Payoff>
                 <span>
-                  Odigos answers that question <b>without touching the code.</b>
+                  Odigos answers it now, <b>without touching the code.</b>
                 </span>
-                <span className='t'>4 seconds</span>
+                <span className='t'>seconds</span>
               </Payoff>
             </Body>
           </Stage>
