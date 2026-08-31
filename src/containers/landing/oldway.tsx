@@ -158,6 +158,16 @@ const Diff = styled.pre`
     color: var(--signal-ink);
     font-weight: 600;
   }
+  .cmt {
+    color: #a5a29a;
+  }
+  .tel {
+    color: var(--ink-mute);
+  }
+  .add .why {
+    color: rgba(12, 122, 88, 0.72);
+    font-weight: 400;
+  }
   @media (prefers-reduced-motion: reduce) {
     .add {
       animation: none;
@@ -308,17 +318,23 @@ export const LandingOldWay = () => {
                   your agent
                 </From>
                 <Quote>The rule lookup inside applyDiscount is probably coming back empty. I cannot confirm that without a log line, so ship one and I will tell you after the next occurrence.</Quote>
-                <Attached>suggested change · promo.go</Attached>
+                <Attached>suggested change · promo.go · already instrumented since 2024</Attached>
                 <Diff>
-                {'  func applyDiscount(code string, cart float64) float64 {\n'}
-                {'      rule := rules.For(code)\n'}
-                <span className='add'>
-                  {'+     '}
-                  <b>log.Info(&quot;promo&quot;, &quot;code&quot;, code, &quot;rule&quot;, rule)</b>
-                </span>
-                {'      if rule == nil {\n'}
-                {'          return 0\n'}
-                {'      }'}
+                  {'  func applyDiscount(code string, cart float64) float64 {\n'}
+                  <span className='cmt'>{'      // telemetry somebody wrote when this shipped\n'}</span>
+                  <span className='tel'>{'      span := tracer.Start(ctx, "applyDiscount")\n'}</span>
+                  <span className='tel'>{'      metrics.Inc("discount.applied")\n'}</span>
+                  <span className='tel'>{'      log.Info("discount requested", "code", code)\n'}</span>
+                  {'\n'}
+                  {'      rule := rules.For(code)\n'}
+                  <span className='add'>
+                    {'+     '}
+                    <b>log.Info(&quot;promo&quot;, &quot;rule&quot;, rule)</b>
+                    <span className='why'>{'      // the only line that answers today'}</span>
+                  </span>
+                  {'      if rule == nil {\n'}
+                  {'          return 0\n'}
+                  {'      }'}
                 </Diff>
               </Msg>
 
