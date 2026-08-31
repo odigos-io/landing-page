@@ -88,7 +88,6 @@ const stay = (a: number) => keyframes`
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
-const think = keyframes`0%,100%{opacity:.25;transform:translateY(0)}45%{opacity:1;transform:translateY(-1.5px)}`;
 const breathe = keyframes`0%,100%{opacity:.55;transform:rotate(0deg) scale(.92)}50%{opacity:1;transform:rotate(45deg) scale(1)}`;
 
 const reduce = css`
@@ -130,39 +129,6 @@ const Bar = styled.div`
     font-size: 9.5px;
   }
 
-  .agent {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--accent);
-    white-space: nowrap;
-  }
-  .spark {
-    flex-shrink: 0;
-    transform-origin: center;
-    animation: ${breathe} 3.4s ease-in-out infinite;
-    ${reduce}
-  }
-  .dots {
-    display: inline-flex;
-    align-items: flex-end;
-    gap: 3px;
-    padding-bottom: 1px;
-  }
-  .dots i {
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: ${think} 1.35s ease-in-out infinite;
-    ${reduce}
-  }
-  .dots i:nth-child(2) {
-    animation-delay: 0.18s;
-  }
-  .dots i:nth-child(3) {
-    animation-delay: 0.36s;
-  }
   .live {
     display: inline-flex;
     align-items: center;
@@ -347,9 +313,19 @@ const Step = styled.div`
   height: 22px;
   margin-bottom: 7px;
 
+  .mark {
+    position: absolute;
+    left: 1px;
+    bottom: 4px;
+    color: var(--accent);
+    transform-origin: center;
+    animation: ${breathe} 3.2s ease-in-out infinite;
+    ${reduce}
+  }
+
   span {
     position: absolute;
-    left: 0;
+    left: 24px;
     bottom: 0;
     white-space: nowrap;
     font-family: var(--font-mono), ui-monospace, monospace;
@@ -392,19 +368,11 @@ const S5 = styled.span`
   align-items: center;
   gap: 8px;
   padding: 3px 11px 4px;
-  margin-left: -11px;
+  margin-left: -4px;
   border-radius: 999px;
   background: rgba(91, 67, 241, 0.08);
   border: 1px solid rgba(91, 67, 241, 0.22);
   font-weight: 500;
-  &::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
   }
@@ -524,20 +492,10 @@ export const HeroArt = () => (
   <Frame>
     <Panel>
       <Bar>
+        <span>production</span>
         <span className='live'>
           <i className='dot' />
-          production
-        </span>
-        <span className='agent'>
-          <svg className='spark' width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
-            <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
-          </svg>
-          agent working
-          <span className='dots'>
-            <i />
-            <i />
-            <i />
-          </span>
+          live
         </span>
       </Bar>
 
@@ -564,6 +522,9 @@ export const HeroArt = () => (
 
       <Foot>
         <Step>
+          <svg className='mark' width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
+            <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
+          </svg>
           <S0>examining RED metrics across 400 services</S0>
           <S1>pulling correlated traces on the slow path</S1>
           <S2>reading the logs that path already writes</S2>
