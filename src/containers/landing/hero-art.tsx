@@ -693,7 +693,7 @@ export const HeroArt = () => (
               <Vals>
                 code <em>&quot;BLACK50&quot;</em>
                 <br />
-                cart <em>49.00</em>
+                rule <b>nil</b>
                 <br />
                 returned <b>0.00</b>
               </Vals>
@@ -717,13 +717,13 @@ export const HeroArt = () => (
           <svg className='mark' width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
             <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
           </svg>
-          <S0>examining 400 services</S0>
-          <S1>following the slow path</S1>
+          <S0>checkout revenue is down 12%</S0>
+          <S1>following a checkout that completed</S1>
           <S2>whatever that path already records</S2>
           <S3 className='dead'>
             <s>nothing here</s> backing out, trying elsewhere
           </S3>
-          <S4>trying the checkout path</S4>
+          <S4>trying the promo path</S4>
           <S5>finding out which functions ran</S5>
           <S6>dynamically instrumenting applyDiscount()</S6>
         </Step>
@@ -734,7 +734,7 @@ export const HeroArt = () => (
             </svg>
             cause found
           </Found>
-          <span className='ctx'>should have been $24.50, for six days</span>
+          <span className='ctx'>the rule lookup came back empty</span>
         </Answer>
       </Foot>
     </Panel>
