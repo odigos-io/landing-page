@@ -243,9 +243,9 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>The going rate for one missing value</Eyebrow>
+            <Eyebrow>What one round of feedback costs</Eyebrow>
             <h2>
-              Your AI writes the fix in seconds. <span className='mute'>Then it asks you for a release.</span>
+              Your AI iterates in seconds. <span className='mute'>Every iteration costs you a deploy.</span>
             </h2>
           </Head>
         </Reveal>
@@ -253,8 +253,8 @@ export const LandingOldWay = () => {
         <Reveal delay={80}>
           <Stage>
             <Bar>
-              <span>what comes back instead of an answer</span>
-                <span>and what it costs</span>
+              <span>one turn of the loop</span>
+                <span>and what it costs to take it</span>
             </Bar>
             <Body>
               <Quote>&ldquo;The rule lookup inside applyDiscount is probably coming back empty. I cannot confirm that without a log line, so ship one and I will tell you after the next occurrence.&rdquo;</Quote>
@@ -280,7 +280,7 @@ export const LandingOldWay = () => {
                 <span className='a'>→</span>
                 <span className='s'>wait for it to happen again</span>
                 <span className='cost'>
-                  <b>6 days</b> before anyone knows if the theory was right
+                  <b>6 days</b> for one round of feedback
                 </span>
               </Train>
 
@@ -289,7 +289,7 @@ export const LandingOldWay = () => {
                 <span className='a'>&rarr;</span>
                 <span className='s'>read the value out of the running service</span>
                 <span className='cost'>
-                  <b>seconds</b> and you know
+                  <b>seconds</b> and it can ask the next one
                 </span>
               </Payoff>
             </Body>
