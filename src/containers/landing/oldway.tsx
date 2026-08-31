@@ -29,6 +29,7 @@ const Head = styled.div`
     color: var(--ink);
   }
   h2 .mute {
+    display: block;
     color: var(--ink-faint);
   }
   p {
@@ -122,8 +123,8 @@ const Diff = styled.pre`
 `;
 
 const step = keyframes`
-  0%,8%{opacity:.28}
-  16%,100%{opacity:1}`;
+  from{opacity:.28}
+  to{opacity:1}`;
 
 const Train = styled.div`
   margin-top: 26px;
@@ -141,7 +142,7 @@ const Train = styled.div`
     background: var(--paper);
     font-size: 14.5px;
     color: var(--ink-mute);
-    animation: ${step} 9s linear infinite;
+    animation: ${step} 1.6s linear both;
   }
   .s:nth-child(1) {
     animation-delay: 0.4s;
@@ -166,7 +167,7 @@ const Train = styled.div`
     gap: 9px;
     font-size: 15px;
     color: var(--ink-faint);
-    animation: ${step} 9s linear infinite;
+    animation: ${step} 1.6s linear both;
     animation-delay: 2.4s;
   }
   .cost b {
@@ -191,27 +192,48 @@ const Train = styled.div`
 `;
 
 const Payoff = styled.div`
-  margin-top: 30px;
-  padding-top: 24px;
+  margin-top: 18px;
+  padding-top: 20px;
   border-top: 1px solid var(--line);
   display: flex;
-  align-items: baseline;
-  gap: 14px;
+  align-items: center;
+  gap: 12px;
   flex-wrap: wrap;
-  font-size: clamp(17px, 1.7vw, 20px);
-  letter-spacing: -0.015em;
-  color: var(--ink);
 
-  b {
-    font-weight: 600;
-  }
-  .t {
-    font-family: var(--font-mono), monospace;
-    font-size: 14px;
-    color: var(--signal-ink);
-    padding: 5px 11px;
+  .s {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 15px;
     border-radius: 999px;
+    border: 1px solid rgba(17, 168, 119, 0.34);
     background: var(--signal-soft);
+    font-size: 14.5px;
+    color: var(--signal-ink);
+  }
+  .a {
+    color: rgba(17, 168, 119, 0.5);
+    font-size: 15px;
+  }
+  .cost {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 9px;
+    font-size: 15px;
+    color: var(--ink-faint);
+  }
+  .cost b {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--signal-ink);
+  }
+  @media (max-width: 780px) {
+    .cost {
+      margin-left: 0;
+      width: 100%;
+      margin-top: 6px;
+    }
   }
 `;
 
@@ -221,11 +243,10 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>The part AI did not make faster</Eyebrow>
+            <Eyebrow>The going rate for one missing value</Eyebrow>
             <h2>
-              Writing the fix was never the hard part. <span className='mute'>Knowing what to fix is.</span>
+              Your AI writes the fix in seconds. <span className='mute'>Then it asks you for a release.</span>
             </h2>
-            <p>An agent can read every line of your repository, form a theory and open the pull request. What it cannot do is find out what the code actually did in production, because nobody recorded that value. So the work comes back to your team, and the answer waits for a release.</p>
           </Head>
         </Reveal>
 
@@ -233,10 +254,10 @@ export const LandingOldWay = () => {
           <Stage>
             <Bar>
               <span>what comes back instead of an answer</span>
-              <span>every time</span>
+                <span>and what it costs</span>
             </Bar>
             <Body>
-              <Quote>&ldquo;The rule lookup inside applyDiscount is probably coming back empty for some carts. I cannot confirm that from the data I have. Add this log line, ship it, and I will tell you after the next occurrence.&rdquo;</Quote>
+              <Quote>&ldquo;The rule lookup inside applyDiscount is probably coming back empty. I cannot confirm that without a log line, so ship one and I will tell you after the next occurrence.&rdquo;</Quote>
 
               <Diff>
                 {'  func applyDiscount(code string, cart float64) float64 {\n'}
@@ -264,10 +285,12 @@ export const LandingOldWay = () => {
               </Train>
 
               <Payoff>
-                <span>
-                  Odigos answers it now, <b>without touching the code.</b>
+                <span className='s'>ask Odigos</span>
+                <span className='a'>&rarr;</span>
+                <span className='s'>read the value out of the running service</span>
+                <span className='cost'>
+                  <b>seconds</b> and you know
                 </span>
-                <span className='t'>seconds</span>
               </Payoff>
             </Body>
           </Stage>
