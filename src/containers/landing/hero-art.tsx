@@ -10,17 +10,18 @@ import styled, { keyframes, css } from 'styled-components';
    A node is violet only while it is inside the current scope, so the picture
    narrows, gives up, widens, and narrows again. Six stops, one wrong turn. */
 
-const T = 16;
+const T = 18;
 
 /* left / top / width / height at each stop, as a share of the field */
 const track = keyframes`
   0%,3%    { opacity:0; left:3%;    top:5%;  width:94%;  height:90%; }
-  5%,16%   { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
-  22%,31%  { opacity:1; left:12%;   top:36%; width:22%;  height:34%; }
-  36%,45%  { opacity:1; left:17%;   top:44%; width:10%;  height:16%; }
-  50%,58%  { opacity:1; left:6%;    top:18%; width:52%;  height:66%; }
-  63%,71%  { opacity:1; left:56%;   top:25%; width:16%;  height:20%; }
-  77%,100% { opacity:1; left:62.4%; top:32%; width:6.4%; height:8.4%; }
+  4%,14%   { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
+  19%,26%  { opacity:1; left:12%;   top:36%; width:22%;  height:34%; }
+  30%,38%  { opacity:1; left:17%;   top:44%; width:10%;  height:16%; }
+  42%,49%  { opacity:1; left:6%;    top:18%; width:52%;  height:66%; }
+  53%,60%  { opacity:1; left:56%;   top:25%; width:16%;  height:20%; }
+  64%,70%  { opacity:1; left:59.5%; top:29%; width:11%;  height:14%; }
+  74%,100% { opacity:1; left:62.4%; top:32%; width:6.4%; height:8.4%; }
 `;
 
 const GREY = 'rgba(24, 20, 54, 0.32)';
@@ -28,53 +29,53 @@ const LIT = '#5b43f1';
 
 /* never in scope */
 const d0 = keyframes`
-  0%,14%   { fill:${GREY}; opacity:1 }
-  20%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,12%   { fill:${GREY}; opacity:1 }
+  18%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* only in scope when it widens after the dead end */
 const mid = keyframes`
-  0%,14%   { fill:${GREY}; opacity:1 }
-  20%,45%  { fill:${GREY}; opacity:.24 }
-  52%,58%  { fill:${LIT};  opacity:1 }
-  65%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,12%   { fill:${GREY}; opacity:1 }
+  18%,38%  { fill:${GREY}; opacity:.24 }
+  44%,50%  { fill:${LIT};  opacity:1 }
+  57%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* the cluster it tries first */
 const a1 = keyframes`
-  0%,14%   { fill:${GREY}; opacity:1 }
-  23%,31%  { fill:${LIT};  opacity:1 }
-  37%,45%  { fill:${GREY}; opacity:.3 }
-  52%,58%  { fill:${LIT};  opacity:1 }
-  65%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,12%   { fill:${GREY}; opacity:1 }
+  20%,26%  { fill:${LIT};  opacity:1 }
+  32%,38%  { fill:${GREY}; opacity:.3 }
+  44%,50%  { fill:${LIT};  opacity:1 }
+  57%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* deeper inside that same wrong cluster */
 const a2 = keyframes`
-  0%,14%   { fill:${GREY}; opacity:1 }
-  23%,58%  { fill:${LIT};  opacity:1 }
-  65%,100% { fill:${GREY}; opacity:.24 }`;
+  0%,12%   { fill:${GREY}; opacity:1 }
+  20%,50%  { fill:${LIT};  opacity:1 }
+  57%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* the cluster it goes to on the second attempt */
 const b1 = keyframes`
-  0%,14%   { fill:${GREY}; opacity:1 }
-  20%,58%  { fill:${GREY}; opacity:.24 }
-  65%,71%  { fill:${LIT};  opacity:1 }
-  79%,100% { fill:${GREY}; opacity:.32 }`;
+  0%,12%   { fill:${GREY}; opacity:1 }
+  18%,50%  { fill:${GREY}; opacity:.24 }
+  55%,70%  { fill:${LIT};  opacity:1 }
+  78%,100% { fill:${GREY}; opacity:.32 }`;
 
 /* the one it lands on */
 const b3 = keyframes`
-  0%,14%   { fill:${GREY}; opacity:1; transform:scale(1) }
-  20%,58%  { fill:${GREY}; opacity:.24; transform:scale(1) }
-  65%,73%  { fill:${LIT};  opacity:1; transform:scale(1.3) }
-  80%,100% { fill:${LIT};  opacity:1; transform:scale(2.4) }`;
+  0%,12%   { fill:${GREY}; opacity:1; transform:scale(1) }
+  18%,50%  { fill:${GREY}; opacity:.24; transform:scale(1) }
+  55%,72%  { fill:${LIT};  opacity:1; transform:scale(1.3) }
+  78%,100% { fill:${LIT};  opacity:1; transform:scale(2.4) }`;
 
 const linkDim = keyframes`
-  0%,14%   { opacity:1 }
-  22%,45%  { opacity:.38 }
-  52%,58%  { opacity:.7 }
-  65%,100% { opacity:.38 }`;
+  0%,12%   { opacity:1 }
+  20%,38%  { opacity:.38 }
+  44%,50%  { opacity:.7 }
+  57%,100% { opacity:.38 }`;
 
 const halo = keyframes`
-  0%,77%  { opacity:0; transform:scale(.4) }
-  85%     { opacity:.5; transform:scale(1) }
+  0%,74%  { opacity:0; transform:scale(.4) }
+  82%     { opacity:.5; transform:scale(1) }
   100%    { opacity:0; transform:scale(1.9) }`;
 
 const show = (a: number, b: number) => keyframes`
@@ -267,7 +268,7 @@ const Glow = styled.i`
   margin: -43px 0 0 -43px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(91, 67, 241, 0.22), transparent 68%);
-  animation: ${stay(77)} ${T}s ease infinite;
+  animation: ${stay(74)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -331,6 +332,26 @@ const Bars = styled.div`
     background: rgba(24, 20, 54, 0.17);
   }
   i.on {
+    background: var(--accent);
+  }
+`;
+
+const Flame = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  .row {
+    display: flex;
+    gap: 3px;
+  }
+  .row i {
+    display: block;
+    height: 7px;
+    border-radius: 2px;
+    background: rgba(24, 20, 54, 0.17);
+  }
+  .row i.on {
     background: var(--accent);
   }
 `;
@@ -400,27 +421,32 @@ const Step = styled.div`
 `;
 
 const S0 = styled.span`
-  animation: ${show(3, 17)} ${T}s ease infinite;
+  animation: ${show(2, 15)} ${T}s ease infinite;
   ${reduce}
 `;
 const S1 = styled.span`
-  animation: ${show(20, 33)} ${T}s ease infinite;
+  animation: ${show(16, 27)} ${T}s ease infinite;
   ${reduce}
 `;
 const S2 = styled.span`
-  animation: ${show(35, 47)} ${T}s ease infinite;
+  animation: ${show(28, 39)} ${T}s ease infinite;
   ${reduce}
 `;
 const S3 = styled.span`
-  animation: ${show(49, 60)} ${T}s ease infinite;
+  animation: ${show(40, 50)} ${T}s ease infinite;
   ${reduce}
 `;
 const S4 = styled.span`
-  animation: ${show(62, 73)} ${T}s ease infinite;
+  animation: ${show(51, 61)} ${T}s ease infinite;
   ${reduce}
 `;
 const S5 = styled.span`
-  animation: ${stay(76)} ${T}s ease infinite;
+  animation: ${show(62, 71)} ${T}s ease infinite;
+  ${reduce}
+`;
+
+const S6 = styled.span`
+  animation: ${stay(73)} ${T}s ease infinite;
   ${reduce}
   display: inline-flex;
   align-items: center;
@@ -461,7 +487,7 @@ const Answer = styled.span`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: clamp(12px, 1.2vw, 13.5px);
   color: var(--ink);
-  animation: ${stay(83)} ${T}s ease infinite;
+  animation: ${stay(80)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -469,7 +495,7 @@ const Answer = styled.span`
 
   .ctx {
     color: var(--ink-faint);
-    animation: ${stay(86)} ${T}s ease infinite;
+    animation: ${stay(83)} ${T}s ease infinite;
     ${reduce}
   }
 `;
@@ -571,7 +597,7 @@ export const HeroArt = () => (
         </Map>
 
         <Scope>
-          <Sheet $a={3} $b={17}>
+          <Sheet $a={2} $b={15}>
             <div className='cap'>metrics</div>
             <div className='body'>
               <svg viewBox='0 0 120 34' width='100%' height='34' fill='none' aria-hidden>
@@ -582,7 +608,7 @@ export const HeroArt = () => (
             </div>
           </Sheet>
 
-          <Sheet $a={20} $b={32}>
+          <Sheet $a={16} $b={27}>
             <div className='cap'>traces</div>
             <div className='body'>
               <Bars>
@@ -594,7 +620,7 @@ export const HeroArt = () => (
             </div>
           </Sheet>
 
-          <Sheet $a={33} $b={46}>
+          <Sheet $a={28} $b={39}>
             <div className='cap'>logs</div>
             <div className='body'>
               <Bars>
@@ -606,7 +632,7 @@ export const HeroArt = () => (
             </div>
           </Sheet>
 
-          <Sheet $a={61} $b={72}>
+          <Sheet $a={51} $b={61}>
             <div className='cap'>traces</div>
             <div className='body'>
               <Bars>
@@ -618,7 +644,30 @@ export const HeroArt = () => (
             </div>
           </Sheet>
 
-          <Sheet $a={76}>
+          <Sheet $a={62} $b={71}>
+            <div className='cap'>profile</div>
+            <div className='body'>
+              <Flame>
+                <div className='row'>
+                  <i style={{ width: '100%' }} />
+                </div>
+                <div className='row'>
+                  <i style={{ width: '62%' }} />
+                  <i style={{ width: '34%' }} />
+                </div>
+                <div className='row'>
+                  <i style={{ width: '30%' }} />
+                  <i style={{ width: '26%' }} />
+                  <i style={{ width: '38%' }} />
+                </div>
+                <div className='row'>
+                  <i className='on' style={{ width: '22%', marginLeft: '32%' }} />
+                </div>
+              </Flame>
+            </div>
+          </Sheet>
+
+          <Sheet $a={73}>
             <div className='cap'>function values</div>
             <div className='body'>
               <Vals>
@@ -655,7 +704,8 @@ export const HeroArt = () => (
             <s>nothing here</s> backing out, trying elsewhere
           </S3>
           <S4>trying the checkout path</S4>
-          <S5>dynamically instrumenting applyDiscount()</S5>
+          <S5>finding out which functions ran</S5>
+          <S6>dynamically instrumenting applyDiscount()</S6>
         </Step>
         <Answer>
           <Found>
@@ -664,7 +714,7 @@ export const HeroArt = () => (
             </svg>
             cause found
           </Found>
-          <span className='ctx'>should have been $24.50, on every order for six days</span>
+          <span className='ctx'>should have been $24.50, for six days</span>
         </Answer>
       </Foot>
     </Panel>
