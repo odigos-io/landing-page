@@ -225,7 +225,7 @@ export const LandingHowItWorks = () => {
           <Head>
             <Eyebrow>How it works</Eyebrow>
             <h2>The first thing you ask it is something your stack has never answered.</h2>
-            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions nobody set your stack up to answer.</p>
+            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions nobody set your stack up to answer. It replaces nothing you run today.</p>
           </Head>
         </Reveal>
 
@@ -271,7 +271,7 @@ export const LandingHowItWorks = () => {
                 <StepTag>Ask</StepTag>
               </StepTop>
               <StepTitle>Ask, and keep asking</StepTitle>
-              <StepDesc>Your engineers and your agents query production directly. Anything missing is captured live, then exported as OpenTelemetry into whatever you already run.</StepDesc>
+              <StepDesc>What did that function return. Which arguments did the failing requests carry. Which query did the slow path actually run. Anything missing is captured live, then exported as OpenTelemetry into whatever you already run.</StepDesc>
               <Dests>
                 <span className='d'>Datadog</span>
                 <span className='d'>Grafana</span>

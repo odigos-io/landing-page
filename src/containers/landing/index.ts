@@ -8,7 +8,6 @@ export * from './product';
 export * from './features';
 export * from './proof';
 export * from './integrations';
-export * from './testimonial';
 export * from './blogs';
 export * from './prose';
 export * from './comparison';

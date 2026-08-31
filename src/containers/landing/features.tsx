@@ -179,7 +179,7 @@ const FEATURES = [
   },
   {
     cap: 'Captured on demand',
-    title: 'Ask for data nobody thought to collect.',
+    title: 'Decide what to capture while the incident is still open.',
     desc: 'Point at a function nobody ever set up to be watched, and Odigos starts capturing it inside running production: its arguments, what it returned, the calls underneath it. Seconds, not a deploy cycle. This is the whole difference between an agent that can investigate and a model that has to guess.',
     visual: <AiVisual />,
     tags: ['no redeploys', 'captured on demand', 'safe in production'],

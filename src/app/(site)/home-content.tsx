@@ -11,7 +11,6 @@ import {
   LandingProduct,
   LandingProof,
   LandingHowItWorks,
-  LandingTestimonial,
   LandingBlogs,
   LandingCTA,
   LandingFooter,
@@ -28,11 +27,10 @@ const HomeContent = () => {
         <LandingOldWay />
         <LandingFeatures />
         <LandingProduct />
-        <LandingProof />
         <LandingHowItWorks />
-        <LandingTestimonial />
-        <LandingBlogs />
+        <LandingProof />
         <LandingCTA />
+        <LandingBlogs />
       </main>
       <LandingFooter />
     </div>
