@@ -18,7 +18,7 @@ const track = keyframes`
   6%,18%   { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
   24%,34%  { opacity:1; left:12%;   top:36%; width:22%;  height:34%; }
   40%,50%  { opacity:1; left:17%;   top:44%; width:10%;  height:16%; }
-  56%,64%  { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
+  56%,64%  { opacity:1; left:8%;    top:20%; width:74%;  height:62%; }
   70%,80%  { opacity:1; left:56%;   top:25%; width:16%;  height:20%; }
   86%,100% { opacity:1; left:62.4%; top:32%; width:6.4%; height:8.4%; }
 `;
@@ -30,7 +30,7 @@ const LIT = '#5b43f1';
 const d0 = keyframes`
   0%,18%   { fill:${GREY}; opacity:1 }
   25%,52%  { fill:${GREY}; opacity:.24 }
-  58%,64%  { fill:${GREY}; opacity:1 }
+  58%,64%  { fill:${GREY}; opacity:.78 }
   71%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* the cluster it tries first */
@@ -38,21 +38,21 @@ const a1 = keyframes`
   0%,18%   { fill:${GREY}; opacity:1 }
   26%,36%  { fill:${LIT};  opacity:1 }
   42%,52%  { fill:${GREY}; opacity:.3 }
-  58%,64%  { fill:${GREY}; opacity:1 }
+  58%,64%  { fill:${GREY}; opacity:.78 }
   71%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* deeper inside that same wrong cluster */
 const a2 = keyframes`
   0%,18%   { fill:${GREY}; opacity:1 }
   26%,52%  { fill:${LIT};  opacity:1 }
-  58%,64%  { fill:${GREY}; opacity:1 }
+  58%,64%  { fill:${GREY}; opacity:.78 }
   71%,100% { fill:${GREY}; opacity:.24 }`;
 
 /* the cluster it goes to on the second attempt */
 const b1 = keyframes`
   0%,18%   { fill:${GREY}; opacity:1 }
   25%,52%  { fill:${GREY}; opacity:.24 }
-  58%,64%  { fill:${GREY}; opacity:1 }
+  58%,64%  { fill:${GREY}; opacity:.78 }
   72%,82%  { fill:${LIT};  opacity:1 }
   89%,100% { fill:${GREY}; opacity:.32 }`;
 
@@ -60,7 +60,7 @@ const b1 = keyframes`
 const b3 = keyframes`
   0%,18%   { fill:${GREY}; opacity:1; transform:scale(1) }
   25%,52%  { fill:${GREY}; opacity:.24; transform:scale(1) }
-  58%,64%  { fill:${GREY}; opacity:1; transform:scale(1) }
+  58%,64%  { fill:${GREY}; opacity:.78; transform:scale(1) }
   72%,84%  { fill:${LIT};  opacity:1; transform:scale(1.3) }
   90%,100% { fill:${LIT};  opacity:1; transform:scale(2.4) }`;
 
@@ -273,6 +273,22 @@ const Reticle = styled.div`
   }
 `;
 
+const Glow = styled.i`
+  position: absolute;
+  left: 65.6%;
+  top: 36.2%;
+  width: 86px;
+  height: 86px;
+  margin: -43px 0 0 -43px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91, 67, 241, 0.22), transparent 68%);
+  animation: ${stay(86)} ${T}s ease infinite;
+  ${reduce}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+  }
+`;
+
 const Halo = styled.i`
   position: absolute;
   left: 65.6%;
@@ -290,16 +306,9 @@ const Halo = styled.i`
 `;
 
 const Step = styled.div`
-  position: absolute;
-  left: 22px;
-  bottom: 20px;
-  right: 22px;
-  height: 22px;
-  @media (max-width: 1000px) {
-    left: 16px;
-    right: 16px;
-    bottom: 16px;
-  }
+  position: relative;
+  height: 20px;
+  margin-bottom: 10px;
 
   span {
     position: absolute;
@@ -342,6 +351,23 @@ const S4 = styled.span`
 const S5 = styled.span`
   animation: ${stay(85)} ${T}s ease infinite;
   ${reduce}
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 11px 4px;
+  margin-left: -11px;
+  border-radius: 999px;
+  background: rgba(91, 67, 241, 0.08);
+  border: 1px solid rgba(91, 67, 241, 0.22);
+  font-weight: 500;
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
   }
@@ -364,18 +390,13 @@ const Answer = styled.span`
 `;
 
 const Foot = styled.div`
-  padding: 14px 22px 17px;
+  padding: 15px 22px 17px;
   border-top: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 11.5px;
   color: var(--ink-faint);
   @media (max-width: 1000px) {
-    padding: 12px 16px 15px;
+    padding: 13px 16px 15px;
   }
 
   .sep {
@@ -385,6 +406,14 @@ const Foot = styled.div`
   .meta {
     white-space: nowrap;
   }
+`;
+
+const Line = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 `;
 
 /* the estate, drawn once from a fixed seed so hydration matches */
@@ -468,6 +497,7 @@ export const HeroArt = () => (
           ))}
         </Map>
 
+        <Glow />
         <Halo />
         <Reticle>
           <span />
@@ -476,6 +506,9 @@ export const HeroArt = () => (
           <span />
         </Reticle>
 
+      </Field>
+
+      <Foot>
         <Step>
           <S0>examining RED metrics across 400 services</S0>
           <S1>pulling correlated traces on the slow path</S1>
@@ -486,17 +519,16 @@ export const HeroArt = () => (
           <S4>correlated traces on the checkout path</S4>
           <S5>reading applyDiscount() arguments and return</S5>
         </Step>
-      </Field>
-
-      <Foot>
+        <Line>
         <Answer>
           applyDiscount() returned <b>$0.00</b>, not $24.50
         </Answer>
-        <span className='meta'>
-          seconds per step
-          <span className='sep'>·</span>
-          no code change
-        </span>
+          <span className='meta'>
+            seconds per step
+            <span className='sep'>·</span>
+            no code change
+          </span>
+        </Line>
       </Foot>
     </Panel>
   </Frame>
