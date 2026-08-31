@@ -317,7 +317,7 @@ export const LandingOldWay = () => {
                   </svg>
                   your agent
                 </From>
-                <Quote>The rule lookup inside applyDiscount is probably coming back empty. None of the telemetry in that function captures the rule, so ship one more line and I will tell you after the next occurrence.</Quote>
+                <Quote>applyDiscount may be returning zero for some carts. Nothing here records what it returned, so ship this and I will know after the next occurrence.</Quote>
                 <Attached>suggested change · promo.go · already instrumented since 2024</Attached>
                 <Diff>
                   {'  func applyDiscount(code string, cart float64) float64 {\n'}
@@ -327,14 +327,15 @@ export const LandingOldWay = () => {
                   <span className='tel'>{'      log.Info("discount requested", "code", code)\n'}</span>
                   {'\n'}
                   {'      rule := rules.For(code)\n'}
-                  <span className='add'>
-                    {'+     '}
-                    <b>log.Info(&quot;promo&quot;, &quot;rule&quot;, rule)</b>
-                    <span className='why'>{'      // the only line that answers today'}</span>
-                  </span>
                   {'      if rule == nil {\n'}
+                  <span className='add'>
+                    {'+         '}
+                    <b>log.Info(&quot;discount&quot;, &quot;code&quot;, code, &quot;returned&quot;, 0.0)</b>
+                    <span className='why'>{'   // the only line that answers today'}</span>
+                  </span>
                   {'          return 0\n'}
-                  {'      }'}
+                  {'      }\n'}
+                  {'      return cart * rule.Pct'}
                 </Diff>
               </Msg>
 

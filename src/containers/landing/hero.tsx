@@ -42,8 +42,8 @@ const Grid = styled(Container)`
   grid-template-columns: 1.12fr 1.08fr;
   align-items: center;
   gap: 56px;
-  padding-top: 84px;
-  padding-bottom: 100px;
+  padding-top: 64px;
+  padding-bottom: 52px;
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;
     gap: 44px;

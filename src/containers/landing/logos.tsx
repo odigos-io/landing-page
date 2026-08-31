@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { CUSTOMERS } from '@/constants';
-import { Container, Reveal } from './primitives';
+import { Container } from './primitives';
 
 const Section = styled.section`
   background: var(--paper);
@@ -12,8 +12,8 @@ const Section = styled.section`
 `;
 
 const Inner = styled(Container)`
-  padding-top: 40px;
-  padding-bottom: 44px;
+  padding-top: 30px;
+  padding-bottom: 40px;
 `;
 
 const Label = styled.p`
@@ -64,7 +64,6 @@ export const LandingLogos = () => {
   return (
     <Section>
       <Inner>
-        <Reveal>
           <Label>Running in production at</Label>
           <Wall>
             {CUSTOMERS.map(({ src, alt, width, height }) => (
@@ -73,7 +72,6 @@ export const LandingLogos = () => {
               </Logo>
             ))}
           </Wall>
-        </Reveal>
       </Inner>
     </Section>
   );
