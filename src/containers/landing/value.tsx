@@ -39,7 +39,7 @@ export const LandingValue = () => {
       <Inner>
         <Reveal>
           <Statement>
-            Your agent is only as good as the facts it can reach. <b>Odigos puts every one in reach.</b>
+            Logs, metrics and traces were all decided when the code was written. <b>Odigos is decided when you ask.</b>
           </Statement>
         </Reveal>
       </Inner>
