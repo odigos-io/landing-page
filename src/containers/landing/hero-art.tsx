@@ -3,66 +3,86 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
-/* Hero art: focusing.
+/* Hero art: an investigation, including the part that goes nowhere.
 
-   A field of production, and a focus box that racks in on it, four times,
-   until it is sitting on one function. The only words are the kind of
-   telemetry being asked for at each stop, and they change because the
-   question changed. One of them comes back empty, so the focus keeps going. */
+   The focus opens on the whole estate, closes on one cluster, goes deeper,
+   finds nothing, pulls all the way back out, and starts again somewhere else.
+   A node is violet only while it is inside the current scope, so the picture
+   narrows, gives up, widens, and narrows again. Six stops, one wrong turn. */
 
-const T = 9.2;
+const T = 14;
 
+/* left / top / width / height at each stop, as a share of the field */
 const track = keyframes`
-  0%,5%   { opacity:0; left:3%;    top:5%;  width:94%;  height:90%; }
-  9%,20%  { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
-  28%,38% { opacity:1; left:43%;   top:12%; width:35%;  height:42%; }
-  46%,58% { opacity:1; left:56%;   top:25%; width:16%;  height:20%; }
-  66%,100%{ opacity:1; left:62.4%; top:32%; width:6.4%; height:8.4%; }
+  0%,3%    { opacity:0; left:3%;    top:5%;  width:94%;  height:90%; }
+  6%,18%   { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
+  24%,34%  { opacity:1; left:12%;   top:36%; width:22%;  height:34%; }
+  40%,50%  { opacity:1; left:17%;   top:44%; width:10%;  height:16%; }
+  56%,64%  { opacity:1; left:3%;    top:5%;  width:94%;  height:90%; }
+  70%,80%  { opacity:1; left:56%;   top:25%; width:16%;  height:20%; }
+  86%,100% { opacity:1; left:62.4%; top:32%; width:6.4%; height:8.4%; }
 `;
-
-const show = (a: number, b: number) => keyframes`
-  0%,${a}% { opacity:0; transform:translateY(4px) }
-  ${a + 3}%,${b}% { opacity:1; transform:none }
-  ${b + 3}%,100% { opacity:0; transform:translateY(-4px) }`;
-
-const stay = (a: number) => keyframes`
-  0%,${a}% { opacity:0; transform:translateY(4px) }
-  ${a + 3}%,100% { opacity:1; transform:none }`;
-
-const halo = keyframes`
-  0%,70%  { opacity:0; transform:scale(.4) }
-  80%     { opacity:.5; transform:scale(1) }
-  100%    { opacity:0; transform:scale(1.9) }`;
 
 const GREY = 'rgba(24, 20, 54, 0.32)';
 const LIT = '#5b43f1';
 
-/* never in scope after the first pass: fades back and stays back */
-const outOfScope = keyframes`
-  0%,20%  { fill:${GREY}; opacity:1 }
-  32%,100%{ fill:${GREY}; opacity:.26 }`;
+/* never in scope */
+const d0 = keyframes`
+  0%,18%   { fill:${GREY}; opacity:1 }
+  25%,52%  { fill:${GREY}; opacity:.24 }
+  58%,64%  { fill:${GREY}; opacity:1 }
+  71%,100% { fill:${GREY}; opacity:.24 }`;
 
-/* in scope for step one only */
-const scope1 = keyframes`
-  0%,24%  { fill:${GREY}; opacity:1 }
-  31%,41% { fill:${LIT};  opacity:1 }
-  50%,100%{ fill:${GREY}; opacity:.3 }`;
+/* the cluster it tries first */
+const a1 = keyframes`
+  0%,18%   { fill:${GREY}; opacity:1 }
+  26%,36%  { fill:${LIT};  opacity:1 }
+  42%,52%  { fill:${GREY}; opacity:.3 }
+  58%,64%  { fill:${GREY}; opacity:1 }
+  71%,100% { fill:${GREY}; opacity:.24 }`;
 
-/* in scope until step three closes past it */
-const scope2 = keyframes`
-  0%,24%  { fill:${GREY}; opacity:1 }
-  31%,59% { fill:${LIT};  opacity:1 }
-  68%,100%{ fill:${GREY}; opacity:.34 }`;
+/* deeper inside that same wrong cluster */
+const a2 = keyframes`
+  0%,18%   { fill:${GREY}; opacity:1 }
+  26%,52%  { fill:${LIT};  opacity:1 }
+  58%,64%  { fill:${GREY}; opacity:1 }
+  71%,100% { fill:${GREY}; opacity:.24 }`;
+
+/* the cluster it goes to on the second attempt */
+const b1 = keyframes`
+  0%,18%   { fill:${GREY}; opacity:1 }
+  25%,52%  { fill:${GREY}; opacity:.24 }
+  58%,64%  { fill:${GREY}; opacity:1 }
+  72%,82%  { fill:${LIT};  opacity:1 }
+  89%,100% { fill:${GREY}; opacity:.32 }`;
 
 /* the one it lands on */
-const scope3 = keyframes`
-  0%,24%  { fill:${GREY}; opacity:1; transform:scale(1) }
-  31%,62% { fill:${LIT};  opacity:1; transform:scale(1.25) }
-  72%,100%{ fill:${LIT};  opacity:1; transform:scale(2.4) }`;
+const b3 = keyframes`
+  0%,18%   { fill:${GREY}; opacity:1; transform:scale(1) }
+  25%,52%  { fill:${GREY}; opacity:.24; transform:scale(1) }
+  58%,64%  { fill:${GREY}; opacity:1; transform:scale(1) }
+  72%,84%  { fill:${LIT};  opacity:1; transform:scale(1.3) }
+  90%,100% { fill:${LIT};  opacity:1; transform:scale(2.4) }`;
 
 const linkDim = keyframes`
-  0%,22%  { opacity:1 }
-  34%,100%{ opacity:.4 }`;
+  0%,18%   { opacity:1 }
+  26%,52%  { opacity:.38 }
+  58%,64%  { opacity:1 }
+  72%,100% { opacity:.38 }`;
+
+const halo = keyframes`
+  0%,86%  { opacity:0; transform:scale(.4) }
+  93%     { opacity:.5; transform:scale(1) }
+  100%    { opacity:0; transform:scale(1.9) }`;
+
+const show = (a: number, b: number) => keyframes`
+  0%,${a}% { opacity:0; transform:translateY(4px) }
+  ${a + 2}%,${b}% { opacity:1; transform:none }
+  ${b + 2}%,100% { opacity:0; transform:translateY(-4px) }`;
+
+const stay = (a: number) => keyframes`
+  0%,${a}% { opacity:0; transform:translateY(4px) }
+  ${a + 2}%,100% { opacity:1; transform:none }`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
@@ -127,9 +147,7 @@ const Field = styled.div`
   width: 100%;
   aspect-ratio: 1.42 / 1;
   overflow: hidden;
-  background:
-    radial-gradient(120% 90% at 66% 36%, rgba(91, 67, 241, 0.09), transparent 62%),
-    linear-gradient(180deg, #fdfdff, #f8f6ff);
+  background: radial-gradient(120% 90% at 66% 36%, rgba(91, 67, 241, 0.07), transparent 62%), linear-gradient(180deg, #fdfdff, #f8f6ff);
   @media (max-width: 560px) {
     aspect-ratio: 1.2 / 1;
   }
@@ -145,7 +163,6 @@ const Field = styled.div`
   }
 `;
 
-/* the estate, drawn once and deterministically so server and client agree */
 const Map = styled.svg`
   position: absolute;
   inset: 0;
@@ -159,38 +176,40 @@ const Map = styled.svg`
     animation: ${linkDim} ${T}s ease-in-out infinite;
   }
   circle {
-    fill: rgba(24, 20, 54, 0.32);
+    fill: ${GREY};
     transform-box: fill-box;
     transform-origin: center;
   }
-  .d0 {
-    animation: ${outOfScope} ${T}s ease-in-out infinite;
+  .n0 {
+    animation: ${d0} ${T}s ease-in-out infinite;
   }
-  .d1 {
-    animation: ${scope1} ${T}s ease-in-out infinite;
+  .n1 {
+    animation: ${a1} ${T}s ease-in-out infinite;
   }
-  .d2 {
-    animation: ${scope2} ${T}s ease-in-out infinite;
+  .n2 {
+    animation: ${a2} ${T}s ease-in-out infinite;
   }
-  .d3 {
-    animation: ${scope3} ${T}s ease-in-out infinite;
+  .n3 {
+    animation: ${b1} ${T}s ease-in-out infinite;
+  }
+  .n4 {
+    animation: ${b3} ${T}s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) {
     circle,
     .link {
       animation: none;
     }
-    .d3 {
-      fill: #5b43f1;
+    .n4 {
+      fill: ${LIT};
       transform: scale(2.4);
     }
   }
 `;
 
-/* the focus box */
 const Reticle = styled.div`
   position: absolute;
-  animation: ${track} ${T}s cubic-bezier(0.65, 0, 0.2, 1) infinite;
+  animation: ${track} ${T}s cubic-bezier(0.66, 0, 0.18, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     left: 62.4%;
@@ -234,12 +253,11 @@ const Reticle = styled.div`
     border-top: 0;
     border-radius: 0 0 3px 0;
   }
-  /* crosshairs */
   &::before,
   &::after {
     content: '';
     position: absolute;
-    background: rgba(91, 67, 241, 0.22);
+    background: rgba(91, 67, 241, 0.2);
   }
   &::before {
     left: 50%;
@@ -255,7 +273,6 @@ const Reticle = styled.div`
   }
 `;
 
-/* what it lands on */
 const Halo = styled.i`
   position: absolute;
   left: 65.6%;
@@ -272,85 +289,15 @@ const Halo = styled.i`
   }
 `;
 
-/* the only words on the picture */
-
-/* one seeded pass, at module scope, so the picture never changes between
-   renders and hydration does not complain */
-const CLUSTERS: [number, number, number][] = [
-  [20, 23, 7],
-  [47, 14, 6],
-  [77, 19, 7],
-  [114, 25, 6],
-  [93, 37, 9],
-  [29, 52, 7],
-  [61, 47, 6],
-  [104, 60, 7],
-  [26, 79, 6],
-  [59, 79, 7],
-  [119, 76, 6],
-  [84, 88, 5],
-];
-
-/* the reticle stops, in the same units the map is drawn in */
-const BOXES: [number, number, number, number][] = [
-  [43 * 1.42, 12, 35 * 1.42, 42],
-  [56 * 1.42, 25, 16 * 1.42, 20],
-  [62.4 * 1.42, 32, 6.4 * 1.42, 8.4],
-];
-
-const inBox = (x: number, y: number, b: [number, number, number, number]) => x >= b[0] && x <= b[0] + b[2] && y >= b[1] && y <= b[1] + b[3];
-
-const build = () => {
-  let s = 20260830;
-  const rnd = () => {
-    s = (s * 1103515245 + 12345) % 2147483648;
-    return s / 2147483648;
-  };
-  const nodes: { x: number; y: number; r: number; near: boolean }[] = [];
-  const links: { x1: number; y1: number; x2: number; y2: number }[] = [];
-
-  CLUSTERS.forEach(([cx, cy, n], ci) => {
-    for (let i = 0; i < n; i++) {
-      const a = rnd() * Math.PI * 2;
-      const d = 3 + rnd() * 9;
-      const x = cx + Math.cos(a) * d;
-      const y = cy + Math.sin(a) * d * 0.82;
-      nodes.push({ x, y, r: 0.75 + rnd() * 0.85, near: ci === 4 });
-      links.push({ x1: cx, y1: cy, x2: x, y2: y });
-    }
-    const next = CLUSTERS[(ci + 3) % CLUSTERS.length];
-    links.push({ x1: cx, y1: cy, x2: next[0], y2: next[1] });
-  });
-
-  /* the exact point the focus lands on */
-  nodes.push({ x: 93.2, y: 36.2, r: 1.5, near: true });
-
-  const depths = nodes.map((n) => {
-    let d = 0;
-    BOXES.forEach((b, i) => {
-      if (inBox(n.x, n.y, b)) d = i + 1;
-    });
-    return d;
-  });
-
-  /* exactly one node is allowed to be the landing point */
-  const last = depths.length - 1;
-  depths.forEach((d, i) => {
-    if (d === 3 && i !== last) depths[i] = 2;
-  });
-
-  return { nodes, links, depths };
-};
-
-const MAP = build();
-
-const Asked = styled.div`
+const Step = styled.div`
   position: absolute;
   left: 22px;
   bottom: 20px;
+  right: 22px;
   height: 22px;
   @media (max-width: 1000px) {
     left: 16px;
+    right: 16px;
     bottom: 16px;
   }
 
@@ -360,8 +307,8 @@ const Asked = styled.div`
     bottom: 0;
     white-space: nowrap;
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(12.5px, 1.25vw, 15px);
-    letter-spacing: 0.02em;
+    font-size: clamp(11.5px, 1.2vw, 14.5px);
+    letter-spacing: 0.01em;
     color: var(--accent);
   }
   .dead {
@@ -372,20 +319,28 @@ const Asked = styled.div`
   }
 `;
 
-const A1 = styled.span`
-  animation: ${show(6, 22)} ${T}s ease infinite;
+const S0 = styled.span`
+  animation: ${show(4, 19)} ${T}s ease infinite;
   ${reduce}
 `;
-const A2 = styled.span`
-  animation: ${show(25, 40)} ${T}s ease infinite;
+const S1 = styled.span`
+  animation: ${show(22, 36)} ${T}s ease infinite;
   ${reduce}
 `;
-const A3 = styled.span`
-  animation: ${show(43, 58)} ${T}s ease infinite;
+const S2 = styled.span`
+  animation: ${show(39, 51)} ${T}s ease infinite;
   ${reduce}
 `;
-const A4 = styled.span`
-  animation: ${stay(62)} ${T}s ease infinite;
+const S3 = styled.span`
+  animation: ${show(54, 65)} ${T}s ease infinite;
+  ${reduce}
+`;
+const S4 = styled.span`
+  animation: ${show(68, 82)} ${T}s ease infinite;
+  ${reduce}
+`;
+const S5 = styled.span`
+  animation: ${stay(85)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -396,7 +351,7 @@ const Answer = styled.span`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: clamp(12px, 1.2vw, 13.5px);
   color: var(--ink);
-  animation: ${stay(74)} ${T}s ease infinite;
+  animation: ${stay(91)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -432,6 +387,66 @@ const Foot = styled.div`
   }
 `;
 
+/* the estate, drawn once from a fixed seed so hydration matches */
+const CLUSTERS: [number, number, number][] = [
+  [20, 23, 7],
+  [47, 14, 6],
+  [77, 19, 7],
+  [114, 25, 6],
+  [93, 37, 9],
+  [29, 52, 8],
+  [61, 47, 6],
+  [104, 60, 7],
+  [26, 79, 6],
+  [59, 79, 7],
+  [119, 76, 6],
+  [84, 88, 5],
+];
+
+/* the reticle stops that matter, in map units */
+const A_OUT: [number, number, number, number] = [17.0, 36, 31.2, 34];
+const A_IN: [number, number, number, number] = [24.1, 44, 14.2, 16];
+const B_OUT: [number, number, number, number] = [79.5, 25, 22.7, 20];
+
+const inBox = (x: number, y: number, b: [number, number, number, number]) => x >= b[0] && x <= b[0] + b[2] && y >= b[1] && y <= b[1] + b[3];
+
+const build = () => {
+  let s = 20260830;
+  const rnd = () => {
+    s = (s * 1103515245 + 12345) % 2147483648;
+    return s / 2147483648;
+  };
+  const nodes: { x: number; y: number; r: number }[] = [];
+  const links: { x1: number; y1: number; x2: number; y2: number }[] = [];
+
+  CLUSTERS.forEach(([cx, cy, n], ci) => {
+    for (let i = 0; i < n; i++) {
+      const a = rnd() * Math.PI * 2;
+      const d = 3 + rnd() * 9;
+      nodes.push({ x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d * 0.82, r: 0.75 + rnd() * 0.85 });
+      links.push({ x1: cx, y1: cy, x2: cx + Math.cos(a) * d, y2: cy + Math.sin(a) * d * 0.82 });
+    }
+    const next = CLUSTERS[(ci + 3) % CLUSTERS.length];
+    links.push({ x1: cx, y1: cy, x2: next[0], y2: next[1] });
+  });
+
+  /* the point the second attempt lands on */
+  nodes.push({ x: 93.2, y: 36.2, r: 1.5 });
+  const target = nodes.length - 1;
+
+  const kind = nodes.map((n, i) => {
+    if (i === target) return 4;
+    if (inBox(n.x, n.y, A_IN)) return 2;
+    if (inBox(n.x, n.y, A_OUT)) return 1;
+    if (inBox(n.x, n.y, B_OUT)) return 3;
+    return 0;
+  });
+
+  return { nodes, links, kind };
+};
+
+const MAP = build();
+
 export const HeroArt = () => (
   <Frame>
     <Panel>
@@ -449,7 +464,7 @@ export const HeroArt = () => (
             <line key={i} className='link' x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
           ))}
           {MAP.nodes.map((n, i) => (
-            <circle key={i} className={`d${MAP.depths[i]}`} cx={n.x} cy={n.y} r={n.r} />
+            <circle key={i} className={`n${MAP.kind[i]}`} cx={n.x} cy={n.y} r={n.r} />
           ))}
         </Map>
 
@@ -461,20 +476,21 @@ export const HeroArt = () => (
           <span />
         </Reticle>
 
-        <Asked>
-          <A1>asking for metrics</A1>
-          <A2>asking for traces</A2>
-          <A3 className='dead'>
-            <s>asking for logs</s> nothing here
-          </A3>
-          <A4>asking for the function&rsquo;s values</A4>
-        </Asked>
-
+        <Step>
+          <S0>examining RED metrics across 400 services</S0>
+          <S1>pulling correlated traces on the slow path</S1>
+          <S2>reading the logs that path already writes</S2>
+          <S3 className='dead'>
+            <s>nothing here</s> backing out, trying elsewhere
+          </S3>
+          <S4>correlated traces on the checkout path</S4>
+          <S5>reading applyDiscount() arguments and return</S5>
+        </Step>
       </Field>
 
       <Foot>
         <Answer>
-          promo.Apply returned <b>$0.00</b>, not $24.50
+          applyDiscount() returned <b>$0.00</b>, not $24.50
         </Answer>
         <span className='meta'>
           seconds per step
