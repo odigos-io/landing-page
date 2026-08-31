@@ -141,7 +141,7 @@ export const LandingHero = () => {
               <em>interrogate production.</em>
             </span>
           </H1>
-          <Sub>Ask for <b>telemetry that does not exist yet</b>. Any function in any running service, answered in seconds, with no code change.</Sub>
+          <Sub>Ask for <b>telemetry nobody thought to collect</b>. Any function in any running service, answered in seconds, with no code change.</Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />
