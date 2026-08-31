@@ -256,24 +256,6 @@ const Reticle = styled.div`
     border-top: 0;
     border-radius: 0 0 3px 0;
   }
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    background: rgba(91, 67, 241, 0.2);
-  }
-  &::before {
-    left: 50%;
-    top: 12%;
-    bottom: 12%;
-    width: 1px;
-  }
-  &::after {
-    top: 50%;
-    left: 12%;
-    right: 12%;
-    height: 1px;
-  }
 `;
 
 const Glow = styled.i`
@@ -289,6 +271,82 @@ const Glow = styled.i`
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
+  }
+`;
+
+/* a loose sketch of whatever signal is being asked for right now */
+const Scope = styled.div`
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  width: 40%;
+  min-width: 168px;
+  height: 82px;
+  border-radius: 10px;
+  border: 1px solid rgba(24, 20, 54, 0.1);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 26px rgba(24, 20, 54, 0.1);
+  backdrop-filter: blur(3px);
+  overflow: hidden;
+  @media (max-width: 560px) {
+    right: 12px;
+    bottom: 12px;
+    width: 54%;
+    height: 74px;
+  }
+
+  .cap {
+    padding: 7px 10px 0;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .body {
+    padding: 7px 10px 10px;
+  }
+`;
+
+const Sheet = styled.div<{ $a: number; $b?: number }>`
+  position: absolute;
+  inset: 0;
+  animation: ${(x) => (x.$b === undefined ? stay(x.$a) : show(x.$a, x.$b))} ${T}s ease infinite;
+  ${reduce}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: ${(x) => (x.$b === undefined ? 1 : 0)};
+  }
+`;
+
+/* rows that stand in for a waterfall or for log lines */
+const Bars = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  i {
+    display: block;
+    height: 5px;
+    border-radius: 2px;
+    background: rgba(24, 20, 54, 0.17);
+  }
+  i.on {
+    background: var(--accent);
+  }
+`;
+
+const Vals = styled.div`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  line-height: 1.65;
+  color: var(--ink-mute);
+
+  b {
+    color: var(--hot-ink);
+  }
+  em {
+    font-style: normal;
+    color: var(--accent);
   }
 `;
 
@@ -382,7 +440,6 @@ const Found = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-left: 10px;
   color: var(--signal-ink);
   animation: ${stay(88)} ${T}s ease infinite;
   ${reduce}
@@ -396,7 +453,10 @@ const Found = styled.span`
 `;
 
 const Answer = styled.span`
-  display: block;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
   min-height: 1.45em;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: clamp(12px, 1.2vw, 13.5px);
@@ -407,9 +467,10 @@ const Answer = styled.span`
     opacity: 1;
   }
 
-  b {
-    color: var(--hot-ink);
-    font-weight: 600;
+  .ctx {
+    color: var(--ink-faint);
+    animation: ${stay(86)} ${T}s ease infinite;
+    ${reduce}
   }
 `;
 
@@ -509,6 +570,68 @@ export const HeroArt = () => (
           ))}
         </Map>
 
+        <Scope>
+          <Sheet $a={3} $b={17}>
+            <div className='cap'>metrics</div>
+            <div className='body'>
+              <svg viewBox='0 0 120 34' width='100%' height='34' fill='none' aria-hidden>
+                <path d='M0 22 L14 18 L28 21 L42 15 L56 19 L70 16 L84 20 L98 12 L112 26 L120 30' stroke='rgba(24,20,54,0.28)' strokeWidth='1.6' strokeLinejoin='round' />
+                <path d='M98 12 L112 26 L120 30' stroke='#5b43f1' strokeWidth='1.8' strokeLinejoin='round' />
+                <line x1='0' y1='33' x2='120' y2='33' stroke='rgba(24,20,54,0.1)' strokeWidth='1' />
+              </svg>
+            </div>
+          </Sheet>
+
+          <Sheet $a={20} $b={32}>
+            <div className='cap'>traces</div>
+            <div className='body'>
+              <Bars>
+                <i style={{ width: '92%' }} />
+                <i style={{ width: '58%', marginLeft: '8%' }} />
+                <i style={{ width: '34%', marginLeft: '16%' }} />
+                <i style={{ width: '46%', marginLeft: '12%' }} />
+              </Bars>
+            </div>
+          </Sheet>
+
+          <Sheet $a={33} $b={46}>
+            <div className='cap'>logs</div>
+            <div className='body'>
+              <Bars>
+                <i style={{ width: '88%' }} />
+                <i style={{ width: '96%' }} />
+                <i style={{ width: '71%' }} />
+                <i style={{ width: '83%' }} />
+              </Bars>
+            </div>
+          </Sheet>
+
+          <Sheet $a={61} $b={72}>
+            <div className='cap'>traces</div>
+            <div className='body'>
+              <Bars>
+                <i style={{ width: '94%' }} />
+                <i style={{ width: '40%', marginLeft: '6%' }} />
+                <i className='on' style={{ width: '22%', marginLeft: '14%' }} />
+                <i style={{ width: '66%', marginLeft: '10%' }} />
+              </Bars>
+            </div>
+          </Sheet>
+
+          <Sheet $a={76}>
+            <div className='cap'>function values</div>
+            <div className='body'>
+              <Vals>
+                code <em>&quot;BLACK50&quot;</em>
+                <br />
+                cart <em>49.00</em>
+                <br />
+                returned <b>0.00</b>
+              </Vals>
+            </div>
+          </Sheet>
+        </Scope>
+
         <Glow />
         <Halo />
         <Reticle>
@@ -525,23 +648,23 @@ export const HeroArt = () => (
           <svg className='mark' width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
             <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
           </svg>
-          <S0>examining RED metrics across 400 services</S0>
-          <S1>pulling correlated traces on the slow path</S1>
-          <S2>reading the logs that path already writes</S2>
+          <S0>examining 400 services</S0>
+          <S1>following the slow path</S1>
+          <S2>whatever that path already records</S2>
           <S3 className='dead'>
             <s>nothing here</s> backing out, trying elsewhere
           </S3>
-          <S4>correlated traces on the checkout path</S4>
+          <S4>trying the checkout path</S4>
           <S5>dynamically instrumenting applyDiscount()</S5>
         </Step>
         <Answer>
-          applyDiscount() returned <b>$0.00</b>, not $24.50
           <Found>
             <svg width='12' height='12' viewBox='0 0 14 14' fill='none' aria-hidden>
               <path d='M2 7.4 5.2 10.5 12 3.5' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
             </svg>
             cause found
           </Found>
+          <span className='ctx'>should have been $24.50, on every order for six days</span>
         </Answer>
       </Foot>
     </Panel>
