@@ -317,7 +317,7 @@ export const LandingOldWay = () => {
                   </svg>
                   your agent
                 </From>
-                <Quote>The rule lookup inside applyDiscount is probably coming back empty. I cannot confirm that without a log line, so ship one and I will tell you after the next occurrence.</Quote>
+                <Quote>The rule lookup inside applyDiscount is probably coming back empty. None of the telemetry in that function captures the rule, so ship one more line and I will tell you after the next occurrence.</Quote>
                 <Attached>suggested change · promo.go · already instrumented since 2024</Attached>
                 <Diff>
                   {'  func applyDiscount(code string, cart float64) float64 {\n'}
