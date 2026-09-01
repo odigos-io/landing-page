@@ -77,6 +77,10 @@ const Col = styled.nav`
     color: var(--ink-faint);
   }
   a {
+    /* 19px tall in a 32px pitch was under the 24px WCAG AA target floor.
+       Negative margin keeps the visual rhythm while growing the hit area. */
+    padding: 7px 0;
+    margin: -7px 0;
     font-size: 14.5px;
     color: var(--ink-soft);
     text-decoration: none;

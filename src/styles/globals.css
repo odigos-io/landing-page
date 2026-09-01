@@ -10,8 +10,9 @@ body {
   font-family: var(--font-body), 'Inter', sans-serif;
 }
 
-html,
-body {
+/* Only on html. Setting overflow-x on body computes overflow-y to auto, which
+   makes body a scroll container and stops the sticky header from sticking. */
+html {
   overflow-x: hidden;
   overscroll-behavior-x: none;
 }
@@ -148,5 +149,8 @@ input:-webkit-autofill:active {
    alone runs more than twenty infinite animations. */
 .landing-root > main > section:nth-of-type(n + 3) {
   content-visibility: auto;
-  contain-intrinsic-size: auto 900px;
+  /* "auto" remembers the real height after first render; the fallback only
+     applies before that, so it must not be wildly short or the page length
+     jumps under the reader's thumb as sections resolve. */
+  contain-intrinsic-size: auto 1600px;
 }

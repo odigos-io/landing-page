@@ -38,7 +38,7 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 4px;
-  @media (max-width: 900px) {
+  @media (max-width: 1240px) {
     display: none;
   }
 `;
@@ -62,14 +62,14 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  @media (max-width: 900px) {
+  @media (max-width: 1240px) {
     display: none;
   }
 `;
 
 const Burger = styled.button`
   display: none;
-  @media (max-width: 900px) {
+  @media (max-width: 1240px) {
     display: inline-flex;
   }
   align-items: center;

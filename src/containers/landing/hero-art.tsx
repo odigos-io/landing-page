@@ -247,7 +247,7 @@ const Scope = styled.div`
   bottom: 16px;
   width: 40%;
   min-width: 168px;
-  height: 82px;
+  min-height: 82px;
   border-radius: 10px;
   border: 1px solid rgba(24, 20, 54, 0.1);
   background: rgba(255, 255, 255, 0.94);
@@ -258,7 +258,7 @@ const Scope = styled.div`
     right: 12px;
     bottom: 12px;
     width: 54%;
-    height: 74px;
+    min-height: 74px;
   }
 
   .cap {
@@ -386,9 +386,8 @@ const Step = styled.div`
     position: absolute;
     left: 24px;
     bottom: 0;
-    white-space: nowrap;
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(11.5px, 1.2vw, 14.5px);
+    font-size: clamp(10.5px, 1.2vw, 14.5px);
     letter-spacing: 0.01em;
     color: var(--accent);
   }

@@ -199,8 +199,14 @@ const Hunk = styled.div`
   color: var(--ink-mute);
 
   .ln {
-    color: #b8b5ad;
+    color: var(--ink-mute);
     padding-right: 12px;
+  }
+  /* hanging indent so a wrapped code line lines up with the code, not the gutter */
+  .row,
+  .plus {
+    padding-left: 3.4ch;
+    text-indent: -3.4ch;
   }
   .plus {
     display: block;
