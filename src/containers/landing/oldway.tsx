@@ -150,12 +150,12 @@ const Diff = styled.pre`
     display: block;
     margin: 0 -22px;
     padding: 0 22px;
-    background: rgba(17, 168, 119, 0.09);
+    background: rgba(201, 52, 106, 0.07);
     color: var(--ink);
     animation: ${typeIn} 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
   }
   .add b {
-    color: var(--signal-ink);
+    color: var(--hot-ink);
     font-weight: 600;
   }
   .cmt {
@@ -165,7 +165,7 @@ const Diff = styled.pre`
     color: var(--ink-mute);
   }
   .add .why {
-    color: rgba(12, 122, 88, 0.72);
+    color: rgba(201, 52, 106, 0.72);
     font-weight: 400;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -306,8 +306,8 @@ export const LandingOldWay = () => {
         <Reveal delay={80}>
           <Stage>
             <Bar>
-              <span>one turn of the loop</span>
-                <span>and what it costs to take it</span>
+              <span>what you have to ship to answer it</span>
+                <span>and what that round costs</span>
             </Bar>
             <Body>
               <Msg>
@@ -318,7 +318,7 @@ export const LandingOldWay = () => {
                   your agent
                 </From>
                 <Quote>applyDiscount may be returning zero for some carts. Nothing here records what it returned, so ship this and I will know after the next occurrence.</Quote>
-                <Attached>suggested change · promo.go · already instrumented since 2024</Attached>
+                <Attached>the change it needs you to make · promo.go</Attached>
                 <Diff>
                   {'  func applyDiscount(code string, cart float64) float64 {\n'}
                   <span className='cmt'>{'      // telemetry somebody wrote when this shipped\n'}</span>
