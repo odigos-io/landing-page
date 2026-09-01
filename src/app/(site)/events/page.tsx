@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useEvents } from '@/contexts';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { EventsContent } from './events-content';
@@ -20,4 +20,10 @@ const Event = () => {
   return <EventsContent />;
 };
 
-export default Event;
+const EventPage = () => (
+  <Suspense fallback={null}>
+    <Event />
+  </Suspense>
+);
+
+export default EventPage;

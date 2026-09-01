@@ -38,7 +38,7 @@ const MobileProvider = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return <MobileContext.Provider value={{ isMobile, screenWidth }}>{screenWidth > 0 ? children : null}</MobileContext.Provider>;
+  return <MobileContext.Provider value={{ isMobile, screenWidth }}>{children}</MobileContext.Provider>;
 };
 
 const useMobile = () => {

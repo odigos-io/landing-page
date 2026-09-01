@@ -1,18 +1,21 @@
-import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import PlausibleProvider from 'next-plausible';
 import { getAllBlogs, getAllEvents } from '@/libs/markdown';
 
-const ThemeProvider = dynamic(() => import('@/styles/theme-provider'));
-const MobileProvider = dynamic(() => import('@/contexts/useMobile'));
-const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
-const EventsProvider = dynamic(() => import('@/contexts/useEvents'));
+/* These wrap the entire tree. Loading them through next/dynamic meant the
+   server rendered a placeholder and every page shipped an empty shell, so
+   nothing was in the HTML for crawlers or for first paint. */
+import ThemeProvider from '@/styles/theme-provider';
+import MobileProvider from '@/contexts/useMobile';
+import BlogsProvider from '@/contexts/useBlogs';
+import EventsProvider from '@/contexts/useEvents';
 
-const Header = dynamic(() => import('@/containers/header'));
-const Footer = dynamic(() => import('@/containers/footer'));
-const Modals = dynamic(() => import('@/containers/modals'));
-const HideOnHome = dynamic(() => import('@/containers/site-chrome/hide-on-home'));
+import Header from '@/containers/header';
+import Footer from '@/containers/footer';
+import Modals from '@/containers/modals';
+import HideOnHome from '@/containers/site-chrome/hide-on-home';
 
-const Scripts = dynamic(() => import('@/libs/scripts'));
+import Scripts from '@/libs/scripts';
 
 type SiteLayoutProps = Readonly<{ children: React.ReactNode }>;
 
@@ -33,7 +36,9 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
               <HideOnHome>
                 <Footer />
               </HideOnHome>
-              <Modals />
+              <Suspense fallback={null}>
+                <Modals />
+              </Suspense>
               <Scripts />
             </EventsProvider>
           </BlogsProvider>

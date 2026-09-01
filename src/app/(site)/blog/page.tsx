@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useBlogs } from '@/contexts';
 import { BlogContent } from './blog-content';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -20,4 +20,10 @@ const Blog = () => {
   return <BlogContent />;
 };
 
-export default Blog;
+const BlogPage = () => (
+  <Suspense fallback={null}>
+    <Blog />
+  </Suspense>
+);
+
+export default BlogPage;
