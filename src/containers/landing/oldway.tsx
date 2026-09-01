@@ -157,39 +157,122 @@ const Code = styled.pre`
 `;
 
 /* the agent calling Odigos itself */
+const ping = keyframes`0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.5);opacity:1}`;
+const stepIn = (d: number) => keyframes`
+  0%,${d}%{opacity:0;transform:translateY(5px)}
+  ${d + 9}%,100%{opacity:1;transform:none}`;
+
 const Calls = styled.div`
   border-radius: 11px;
-  border: 1px solid rgba(91, 67, 241, 0.18);
+  border: 1px solid rgba(91, 67, 241, 0.2);
   background: linear-gradient(180deg, #fdfcff, #f8f6ff);
-  padding: 15px 16px;
+  overflow: hidden;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 11.5px;
-  line-height: 1.75;
+`;
 
-  .call {
+const CallsBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(91, 67, 241, 0.14);
+  background: rgba(91, 67, 241, 0.045);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+
+  .n {
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: none;
+  }
+`;
+
+const CallList = styled.div`
+  padding: 13px 14px 14px;
+`;
+
+const Call = styled.div<{ $d: number }>`
+  animation: ${(p) => stepIn(p.$d)} 4.2s ease both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+  & + & {
+    margin-top: 13px;
+    padding-top: 13px;
+    border-top: 1px dashed rgba(91, 67, 241, 0.16);
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    animation: ${ping} 1.7s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
+    }
+  }
+  .fn {
     color: var(--accent);
+    font-weight: 500;
+  }
+  .ms {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--ink-faint);
+    font-size: 10.5px;
+  }
+  .ms svg {
+    color: var(--signal);
+  }
+  .args {
     display: block;
+    margin-top: 5px;
+    padding-left: 14px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+  .args em {
+    font-style: normal;
+    color: var(--accent);
   }
   .res {
     display: block;
+    margin-top: 5px;
     padding-left: 14px;
     color: var(--ink-mute);
+    line-height: 1.7;
   }
-  .call + .call {
-    margin-top: 11px;
+  .res .ar {
+    color: var(--signal);
   }
-  .out {
-    display: block;
-    margin-top: 13px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(91, 67, 241, 0.14);
-    color: var(--ink);
-  }
-  .out b {
+  .res b {
     color: var(--hot-ink);
     font-weight: 600;
   }
+  .res .val {
+    color: var(--ink);
+  }
 `;
+
+const Tick = () => (
+  <svg width='9' height='9' viewBox='0 0 14 14' fill='none' aria-hidden>
+    <path d='M2 7.4 5.2 10.5 12 3.5' stroke='currentColor' strokeWidth='2.4' strokeLinecap='round' strokeLinejoin='round' />
+  </svg>
+);
 
 const Train = styled.div`
   margin-top: 16px;
@@ -309,17 +392,56 @@ export const LandingOldWay = () => {
 
                 <Label>what it does instead, over MCP</Label>
                 <Calls>
-                  <span className='call'>
-                    &rarr; odigos.find_functions(&quot;checkout&quot;, &quot;discount&quot;)
-                    <span className='res'>84 functions · applyDiscount promo.go:41</span>
-                  </span>
-                  <span className='call'>
-                    &rarr; odigos.capture(&quot;applyDiscount&quot;, args, returns)
-                    <span className='res'>attached in 1.2s · nothing redeployed</span>
-                  </span>
-                  <span className='out'>
-                    code &quot;BLACK50&quot; · returned <b>0.00</b>
-                  </span>
+                  <CallsBar>
+                    <span>mcp · odigos</span>
+                    <span className='n'>3 calls · 2.4s</span>
+                  </CallsBar>
+                  <CallList>
+                    <Call $d={4}>
+                      <div className='head'>
+                        <i className='dot' />
+                        <span className='fn'>find_functions</span>
+                        <span className='ms'>
+                          0.4s <Tick />
+                        </span>
+                      </div>
+                      <span className='args'>
+                        service <em>&quot;checkout&quot;</em> · match <em>&quot;discount&quot;</em>
+                      </span>
+                      <span className='res'>
+                        <span className='ar'>&larr;</span> 84 functions · <span className='val'>applyDiscount</span> promo.go:41
+                      </span>
+                    </Call>
+
+                    <Call $d={26}>
+                      <div className='head'>
+                        <i className='dot' />
+                        <span className='fn'>capture</span>
+                        <span className='ms'>
+                          1.2s <Tick />
+                        </span>
+                      </div>
+                      <span className='args'>
+                        fn <em>&quot;applyDiscount&quot;</em> · args <em>true</em> · returns <em>true</em>
+                      </span>
+                      <span className='res'>
+                        <span className='ar'>&larr;</span> attached · nothing redeployed
+                      </span>
+                    </Call>
+
+                    <Call $d={48}>
+                      <div className='head'>
+                        <i className='dot' />
+                        <span className='fn'>read</span>
+                        <span className='ms'>
+                          0.8s <Tick />
+                        </span>
+                      </div>
+                      <span className='res'>
+                        <span className='ar'>&larr;</span> code <span className='val'>&quot;BLACK50&quot;</span> · returned <b>0.00</b>
+                      </span>
+                    </Call>
+                  </CallList>
                 </Calls>
 
                 <Cost $ours>
