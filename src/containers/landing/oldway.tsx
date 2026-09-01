@@ -61,7 +61,7 @@ const CardBar = styled.div<{ $ours?: boolean }>`
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 13px 22px;
+  padding: 13px 20px;
   border-bottom: 1px solid ${({ $ours }) => ($ours ? 'rgba(91,67,241,0.16)' : 'var(--line)')};
   background: ${({ $ours }) => ($ours ? 'rgba(91,67,241,0.05)' : 'var(--paper-3)')};
   font-family: var(--font-mono), monospace;
@@ -75,105 +75,43 @@ const CardBar = styled.div<{ $ours?: boolean }>`
   }
 `;
 
-const Body = styled.div`
+/* the session itself */
+const Term = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 24px 22px 20px;
+  padding: 20px 20px 18px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.72;
   @media (max-width: 560px) {
-    padding: 20px 16px 18px;
+    padding: 16px 14px 16px;
+    font-size: 11.5px;
   }
 `;
 
-const breathe = keyframes`0%,100%{opacity:.6;transform:rotate(0deg) scale(.92)}50%{opacity:1;transform:rotate(45deg) scale(1)}`;
-
-const From = styled.div`
+const Ask = styled.div`
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-
-  svg {
-    flex-shrink: 0;
-    transform-origin: center;
-    animation: ${breathe} 3.2s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    svg {
-      animation: none;
-    }
-  }
-`;
-
-const Quote = styled.p`
-  margin: 0 0 20px;
-  font-size: clamp(15.5px, 1.5vw, 17.5px);
-  line-height: 1.45;
-  letter-spacing: -0.012em;
+  gap: 9px;
   color: var(--ink);
-  min-height: 3.2em;
-`;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--line);
 
-const Label = styled.div`
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 9px;
-`;
-
-const Code = styled.pre`
-  margin: 0;
-  padding: 16px 16px;
-  border-radius: 11px;
-  background: #fbfaf7;
-  border: 1px solid var(--line);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 11.5px;
-  line-height: 1.85;
-  color: var(--ink-mute);
-  overflow-x: auto;
-
-  .cmt {
-    color: #a5a29a;
-  }
-  .add {
-    display: block;
-    margin: 0 -16px;
-    padding: 0 16px;
-    background: rgba(201, 52, 106, 0.07);
-    color: var(--ink);
-  }
-  .add b {
-    color: var(--hot-ink);
-    font-weight: 600;
+  span:first-child {
+    color: var(--ink-faint);
   }
 `;
 
-/* the agent calling Odigos itself */
-const ping = keyframes`0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.5);opacity:1}`;
+const ping = keyframes`0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.45);opacity:1}`;
 const stepIn = (d: number) => keyframes`
-  0%,${d}%{opacity:0;transform:translateY(5px)}
-  ${d + 9}%,100%{opacity:1;transform:none}`;
+  0%,${d}%{opacity:0;transform:translateY(4px)}
+  ${d + 8}%,100%{opacity:1;transform:none}`;
 
-const Calls = styled.div`
-  border-radius: 11px;
-  border: 1px solid rgba(91, 67, 241, 0.2);
-  background: linear-gradient(180deg, #fdfcff, #f8f6ff);
-  padding: 15px 15px 16px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 11.5px;
-  line-height: 1.6;
-`;
-
-const Call = styled.div<{ $d: number }>`
-  animation: ${(p) => stepIn(p.$d)} 4.6s ease both;
+const Turn = styled.div<{ $d: number }>`
+  display: flex;
+  gap: 10px;
+  animation: ${(p) => stepIn(p.$d)} 6s ease both;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -181,95 +119,110 @@ const Call = styled.div<{ $d: number }>`
     margin-top: 13px;
   }
 
-  .fn {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    color: var(--ink);
-  }
-  .fn i {
+  > i {
     flex-shrink: 0;
     width: 7px;
     height: 7px;
+    margin-top: 7px;
     border-radius: 50%;
     background: var(--accent);
-    transform: translateY(-1px);
+  }
+  &:last-of-type > i {
     animation: ${ping} 1.9s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) {
-    .fn i {
+    &:last-of-type > i {
       animation: none;
     }
   }
-  .fn b {
+
+  .body {
+    min-width: 0;
+    flex: 1;
+  }
+  .say {
+    display: block;
+    color: var(--ink-soft);
+  }
+  .say b {
     font-weight: 500;
+    color: var(--ink);
+  }
+  .call {
+    display: block;
+    color: var(--ink);
+  }
+  .call .srv {
     color: var(--accent);
   }
-  .fn .arg {
-    color: var(--ink-mute);
+  .call .arg {
+    color: var(--ink-faint);
   }
-  .fn .str {
+  .call .str {
     color: var(--signal-ink);
   }
 
-  /* the result branch, drawn rather than typed so it never depends on a glyph */
+  /* the result branch, drawn so it never depends on a glyph */
   .out {
+    display: block;
     position: relative;
-    margin: 4px 0 0 3px;
-    padding-left: 20px;
+    margin-top: 3px;
+    padding-left: 18px;
     color: var(--ink-mute);
   }
   .out::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 9px;
-    height: 9px;
-    border-left: 1.2px solid rgba(91, 67, 241, 0.4);
-    border-bottom: 1.2px solid rgba(91, 67, 241, 0.4);
+    left: 1px;
+    top: 2px;
+    width: 8px;
+    height: 8px;
+    border-left: 1.2px solid var(--line-strong);
+    border-bottom: 1.2px solid var(--line-strong);
     border-bottom-left-radius: 3px;
-  }
-  .out .val {
-    color: var(--ink);
   }
   .out b {
     color: var(--hot-ink);
     font-weight: 600;
   }
-  .out .ms {
-    color: var(--ink-faint);
+  .out .val {
+    color: var(--ink);
   }
 `;
 
-const Train = styled.div`
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-wrap: wrap;
+/* the inline diff, the way a coding agent shows one */
+const Hunk = styled.div`
+  margin-top: 7px;
+  margin-left: 18px;
+  border-left: 1px solid var(--line);
+  padding: 2px 0 2px 12px;
+  color: var(--ink-mute);
 
-  .s {
-    padding: 6px 11px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--paper);
-    font-size: 12.5px;
-    color: var(--ink-mute);
+  .ln {
+    color: #b8b5ad;
+    padding-right: 12px;
   }
-  .a {
-    color: var(--line-strong);
-    font-size: 13px;
+  .plus {
+    display: block;
+    margin: 0 -0px 0 -12px;
+    padding-left: 12px;
+    background: rgba(201, 52, 106, 0.07);
+    color: var(--ink);
+  }
+  .plus b {
+    color: var(--hot-ink);
+    font-weight: 600;
   }
 `;
 
 const Cost = styled.div<{ $ours?: boolean }>`
   margin-top: auto;
-  padding-top: 18px;
+  padding-top: 20px;
   display: flex;
   align-items: baseline;
   gap: 10px;
   flex-wrap: wrap;
+  font-family: var(--font-display), sans-serif;
   font-size: 14.5px;
   color: var(--ink-faint);
 
@@ -281,11 +234,8 @@ const Cost = styled.div<{ $ours?: boolean }>`
   }
 `;
 
-const Spark = () => (
-  <svg width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
-    <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
-  </svg>
-);
+const PROMPT = 'why is checkout revenue down 12%';
+const OPENER = 'Traces look clean. 200s across POST /orders, p99 flat. The only thing I cannot see into is the discount path.';
 
 export const LandingOldWay = () => {
   return (
@@ -307,43 +257,70 @@ export const LandingOldWay = () => {
                 <span>without Odigos</span>
                 <span>it opens a pull request</span>
               </CardBar>
-              <Body>
-                <From>
-                  <Spark />
-                  your agent
-                </From>
-                <Quote>I need what applyDiscount returned. Nothing records it, so here is a pull request that adds a log line. Ship it and I will know after the next occurrence.</Quote>
+              <Term>
+                <Ask>
+                  <span>&gt;</span>
+                  <span>{PROMPT}</span>
+                </Ask>
 
-                <Label>the pull request it opens</Label>
-                <Code>
-                  {'func applyDiscount(code string, cart float64) {\n'}
-                  <span className='cmt'>{'    // telemetry written in 2024\n'}</span>
-                  {'    span := tracer.Start(ctx, "applyDiscount")\n'}
-                  {'    metrics.Inc("discount.applied")\n'}
-                  {'\n'}
-                  {'    rule := rules.For(code)\n'}
-                  {'    if rule == nil {\n'}
-                  <span className='add'>
-                    {'+       '}
-                    <b>log.Info(&quot;returned&quot;, 0.0)</b>
-                  </span>
-                  {'        return 0'}
-                </Code>
+                <Turn $d={2}>
+                  <i />
+                  <div className='body'>
+                    <span className='say'>{OPENER}</span>
+                  </div>
+                </Turn>
 
-                <Train>
-                  <span className='s'>pull request</span>
-                  <span className='a'>→</span>
-                  <span className='s'>review</span>
-                  <span className='a'>→</span>
-                  <span className='s'>release</span>
-                  <span className='a'>→</span>
-                  <span className='s'>wait for it to happen again</span>
-                </Train>
+                <Turn $d={16}>
+                  <i />
+                  <div className='body'>
+                    <span className='call'>Read(promo.go)</span>
+                    <span className='out'>Read 84 lines</span>
+                  </div>
+                </Turn>
+
+                <Turn $d={30}>
+                  <i />
+                  <div className='body'>
+                    <span className='say'>applyDiscount returns early when the rule lookup misses, and nothing logs what it returned. I cannot confirm this from here.</span>
+                  </div>
+                </Turn>
+
+                <Turn $d={46}>
+                  <i />
+                  <div className='body'>
+                    <span className='call'>Update(promo.go)</span>
+                    <span className='out'>Updated promo.go with 1 addition</span>
+                    <Hunk>
+                      <span className='ln'>41</span>
+                      {'   rule := rules.For(code)'}
+                      <br />
+                      <span className='ln'>42</span>
+                      {'   if rule == nil {'}
+                      <br />
+                      <span className='plus'>
+                        <span className='ln'>43</span>
+                        {'+  '}
+                        <b>log.Info(&quot;discount&quot;, &quot;returned&quot;, 0.0)</b>
+                      </span>
+                      <span className='ln'>44</span>
+                      {'      return 0'}
+                    </Hunk>
+                  </div>
+                </Turn>
+
+                <Turn $d={64}>
+                  <i />
+                  <div className='body'>
+                    <span className='say'>
+                      Opened <b>PR #4471</b>. Once it is reviewed and deployed I will know after the next occurrence.
+                    </span>
+                  </div>
+                </Turn>
 
                 <Cost>
-                  <b>hours to days</b> for one round of feedback
+                  <b>hours to days</b> before it can answer
                 </Cost>
-              </Body>
+              </Term>
             </Card>
 
             <Card $ours>
@@ -351,67 +328,77 @@ export const LandingOldWay = () => {
                 <span>with Odigos</span>
                 <span>it queries production</span>
               </CardBar>
-              <Body>
-                <From>
-                  <Spark />
-                  your agent
-                </From>
-                <Quote>I need what applyDiscount returned. Nothing records it, so I am reading it out of production now.</Quote>
+              <Term>
+                <Ask>
+                  <span>&gt;</span>
+                  <span>{PROMPT}</span>
+                </Ask>
 
-                <Label>the query it runs instead, over MCP</Label>
-                <Calls>
-                  <Call $d={4}>
-                    <span className='fn'>
-                      <i />
-                      <span>
-                        <b>find_functions</b>
-                        <span className='arg'>(</span>
-                        <span className='str'>&quot;checkout&quot;</span>
-                        <span className='arg'>, </span>
-                        <span className='str'>&quot;discount&quot;</span>
-                        <span className='arg'>)</span>
-                      </span>
+                <Turn $d={2}>
+                  <i />
+                  <div className='body'>
+                    <span className='say'>{OPENER}</span>
+                  </div>
+                </Turn>
+
+                <Turn $d={16}>
+                  <i />
+                  <div className='body'>
+                    <span className='call'>
+                      <span className='srv'>odigos</span>
+                      <span className='arg'> - find_functions(</span>
+                      <span className='str'>&quot;checkout&quot;</span>
+                      <span className='arg'>, </span>
+                      <span className='str'>&quot;discount&quot;</span>
+                      <span className='arg'>)</span>
                     </span>
                     <span className='out'>
-                      84 functions · <span className='val'>applyDiscount</span> promo.go:41
+                      84 functions, <span className='val'>applyDiscount</span> at promo.go:41
                     </span>
-                  </Call>
+                  </div>
+                </Turn>
 
-                  <Call $d={26}>
-                    <span className='fn'>
-                      <i />
-                      <span>
-                        <b>capture</b>
-                        <span className='arg'>(</span>
-                        <span className='str'>&quot;applyDiscount&quot;</span>
-                        <span className='arg'>, args, returns)</span>
-                      </span>
+                <Turn $d={32}>
+                  <i />
+                  <div className='body'>
+                    <span className='call'>
+                      <span className='srv'>odigos</span>
+                      <span className='arg'> - capture(</span>
+                      <span className='str'>&quot;applyDiscount&quot;</span>
+                      <span className='arg'>, args, returns)</span>
+                    </span>
+                    <span className='out'>attached in 1.2s, nothing redeployed</span>
+                  </div>
+                </Turn>
+
+                <Turn $d={48}>
+                  <i />
+                  <div className='body'>
+                    <span className='call'>
+                      <span className='srv'>odigos</span>
+                      <span className='arg'> - read(</span>
+                      <span className='str'>&quot;applyDiscount&quot;</span>
+                      <span className='arg'>)</span>
                     </span>
                     <span className='out'>
-                      attached <span className='ms'>in 1.2s</span> · nothing redeployed
+                      code <span className='val'>&quot;BLACK50&quot;</span>, cart <span className='val'>49.00</span>, returned <b>0.00</b>
                     </span>
-                  </Call>
+                  </div>
+                </Turn>
 
-                  <Call $d={48}>
-                    <span className='fn'>
-                      <i />
-                      <span>
-                        <b>read</b>
-                        <span className='arg'>(</span>
-                        <span className='str'>&quot;applyDiscount&quot;</span>
-                        <span className='arg'>)</span>
-                      </span>
+                <Turn $d={64}>
+                  <i />
+                  <div className='body'>
+                    <span className='say'>
+                      Found it. <b>BLACK50 is missing from the rules table</b>, so applyDiscount returns 0 and every order using it paid full price.
                     </span>
-                    <span className='out'>
-                      code <span className='val'>&quot;BLACK50&quot;</span> · returned <b>0.00</b>
-                    </span>
-                  </Call>
-                </Calls>
+                  </div>
+                </Turn>
 
                 <Cost $ours>
                   <b>seconds</b> and it can ask the next one
                 </Cost>
-              </Body>
+              </Term>
             </Card>
           </Pair>
         </Reveal>
