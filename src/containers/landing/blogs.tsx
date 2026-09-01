@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styled from 'styled-components';
 import { useBlogs } from '@/contexts';
 import { calculateReadingTime, getPlaceholderImage, isValidImageSrc } from '@/functions';
@@ -83,13 +84,16 @@ const CardLink = styled(Link)`
   }
 `;
 
-const Cover = styled.div<{ $src: string }>`
+const Cover = styled.div`
+  position: relative;
   aspect-ratio: 16 / 9;
-  background-image: url(${({ $src }) => $src});
-  background-size: cover;
-  background-position: center;
   background-color: var(--paper-3);
   border-bottom: 1px solid var(--line);
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
 `;
 
 const CardBody = styled.div`
@@ -177,7 +181,9 @@ export const LandingBlogs = ({ exclude, title = 'Latest from the blog.' }: { exc
             return (
               <Reveal key={b.slug} delay={i * 70}>
                 <CardLink href={`/blog/${b.slug}`}>
-                  <Cover $src={cover} />
+                  <Cover>
+                    <Image src={cover} alt='' fill loading='lazy' sizes='(max-width: 900px) 100vw, (max-width: 1200px) 33vw, 400px' />
+                  </Cover>
                   <CardBody>
                     <Meta>
                       {b.content && <span>{calculateReadingTime(b.content)}</span>}
