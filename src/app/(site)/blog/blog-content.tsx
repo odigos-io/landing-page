@@ -285,7 +285,7 @@ const CtaActions = styled.div`
 /* ----------------------------------------------------------------
    Card with image-error fallback
 ----------------------------------------------------------------- */
-const PostCard = ({ slug, image, title, description, content, pubDate, boldTag }: BlogPost) => {
+const PostCard = ({ slug, image, title, description, content, readingTime, pubDate, boldTag }: BlogPost) => {
   const [imageInvalid, setImageInvalid] = useState(false);
   const [placeholder] = useState(getPlaceholderImage);
   const cover = !imageInvalid && image && isValidImageSrc(image) ? image : placeholder;
@@ -299,7 +299,7 @@ const PostCard = ({ slug, image, title, description, content, pubDate, boldTag }
       </div>
       <div className='body'>
         <div className='meta'>
-          {content && <span>{calculateReadingTime(content)}</span>}
+          {readingTime && <span>{readingTime}</span>}
           {content && pubDate && <span className='dot' />}
           {pubDate && <span>{new Date(pubDate).toDateString()}</span>}
           {boldTag && <span className='bold'>{boldTag}</span>}

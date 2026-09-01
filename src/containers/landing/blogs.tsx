@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useBlogs } from '@/contexts';
-import { calculateReadingTime, getPlaceholderImage, isValidImageSrc } from '@/functions';
+import { getPlaceholderImage, isValidImageSrc } from '@/functions';
 import { Container, Eyebrow, Reveal } from './primitives';
 
 const Section = styled.section`
@@ -186,7 +186,7 @@ export const LandingBlogs = ({ exclude, title = 'Latest from the blog.' }: { exc
                   </Cover>
                   <CardBody>
                     <Meta>
-                      {b.content && <span>{calculateReadingTime(b.content)}</span>}
+                      {b.readingTime && <span>{b.readingTime}</span>}
                       {b.pubDate && <span className='dot' />}
                       {b.pubDate && <span>{new Date(b.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>}
                     </Meta>

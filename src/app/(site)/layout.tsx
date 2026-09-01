@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import PlausibleProvider from 'next-plausible';
 import { getAllBlogs, getAllEvents } from '@/libs/markdown';
+import { calculateReadingTime } from '@/functions';
 
 /* These wrap the entire tree. Loading them through next/dynamic meant the
    server rendered a placeholder and every page shipped an empty shell, so
@@ -20,7 +21,12 @@ import Scripts from '@/libs/scripts';
 type SiteLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 export default async function SiteLayout({ children }: SiteLayoutProps) {
-  const blogs = await getAllBlogs();
+  // Listing components only need the metadata. Passing full article bodies into
+  // a client context serialised every post into every route's payload.
+  const blogs = (await getAllBlogs()).map(({ content, customHtml, ...meta }) => ({
+    ...meta,
+    readingTime: content ? calculateReadingTime(content) : undefined,
+  }));
   const events = await getAllEvents();
 
   return (

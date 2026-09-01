@@ -16,6 +16,8 @@ export interface BlogPost {
   buttonLink?: string;
   content?: string;
   customHtml?: string;
+  /* precomputed server side so article bodies stay out of the client payload */
+  readingTime?: string;
 }
 
 export interface EventPost {

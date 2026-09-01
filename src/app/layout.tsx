@@ -15,18 +15,19 @@ const URI = 'https://odigos.io',
 export const metadata: Metadata = {
   metadataBase: new URL(URI),
   title: TITLE,
-  applicationName: TITLE,
+  applicationName: 'Odigos',
   description: DESCRIPTION,
   icons: { icon: ICON, apple: '/apple-icon.png' },
   keywords: KEYWORDS,
   robots: 'index, follow',
+  alternates: { types: { 'application/rss+xml': `${URI}/feed.xml` } },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
     images: [{ url: OG, width: 1200, height: 630, alt: TITLE }],
     type: 'website',
     url: URI,
-    siteName: TITLE,
+    siteName: 'Odigos',
     locale: 'en_US',
   },
   twitter: {
@@ -42,12 +43,18 @@ type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en' suppressHydrationWarning className={`${display.variable} ${mono.variable}`}>
-      <head>
-        <link rel='icon' href={ICON} type='image/png' />
-        <meta content='width=device-width, initial-scale=1' name='viewport' />
-        <meta name='description' content={metadata.description as string} />
-        <title>{metadata.title as string}</title>
-
+      <body
+        suppressHydrationWarning={true}
+        style={{
+          width: '100%',
+          maxWidth: '100vw',
+          overflowX: 'clip',
+          minHeight: '100vh',
+          margin: 0,
+          padding: 0,
+          backgroundColor: '#0F0F0F',
+        }}
+      >
         <Script
           id='consent-defaults'
           strategy='beforeInteractive'
@@ -83,20 +90,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             `,
           }}
         />
-      </head>
-
-      <body
-        suppressHydrationWarning={true}
-        style={{
-          width: '100%',
-          maxWidth: '100vw',
-          overflowX: 'clip',
-          minHeight: '100vh',
-          margin: 0,
-          padding: 0,
-          backgroundColor: '#0F0F0F',
-        }}
-      >
         {children}
       </body>
     </html>
