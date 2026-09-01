@@ -1,7 +1,6 @@
 export * from './header';
 export * from './hero';
 export * from './logos';
-export * from './value';
 export * from './oldway';
 export * from './howitworks';
 export * from './product';
