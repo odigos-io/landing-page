@@ -293,9 +293,9 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>The same incident, twice</Eyebrow>
+            <Eyebrow>When your agent hits missing data</Eyebrow>
             <h2>
-              Same agent. Same theory. <span className='mute'>Only one of them can check it.</span>
+              Both agents need the same value. <span className='mute'>Only one can go and get it.</span>
             </h2>
           </Head>
         </Reveal>
@@ -305,16 +305,16 @@ export const LandingOldWay = () => {
             <Card>
               <CardBar>
                 <span>without Odigos</span>
-                <span>it asks you</span>
+                <span>it opens a pull request</span>
               </CardBar>
               <Body>
                 <From>
                   <Spark />
                   your agent
                 </From>
-                <Quote>applyDiscount may be returning zero for some carts. Nothing here records what it returned, so ship this and I will know after the next occurrence.</Quote>
+                <Quote>I need what applyDiscount returned. Nothing records it, so here is a pull request that adds a log line. Ship it and I will know after the next occurrence.</Quote>
 
-                <Label>the change it needs you to make</Label>
+                <Label>the pull request it opens</Label>
                 <Code>
                   {'func applyDiscount(code string, cart float64) {\n'}
                   <span className='cmt'>{'    // telemetry written in 2024\n'}</span>
@@ -349,16 +349,16 @@ export const LandingOldWay = () => {
             <Card $ours>
               <CardBar $ours>
                 <span>with Odigos</span>
-                <span>it checks for itself</span>
+                <span>it queries production</span>
               </CardBar>
               <Body>
                 <From>
                   <Spark />
                   your agent
                 </From>
-                <Quote>applyDiscount may be returning zero for some carts. Nothing here records what it returned, so I will read it out of production myself.</Quote>
+                <Quote>I need what applyDiscount returned. Nothing records it, so I am reading it out of production now.</Quote>
 
-                <Label>what it does instead, over MCP</Label>
+                <Label>the query it runs instead, over MCP</Label>
                 <Calls>
                   <Call $d={4}>
                     <span className='fn'>
