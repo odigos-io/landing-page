@@ -68,6 +68,11 @@ export const Reveal = ({ children, delay = 0, as }: { children: React.ReactNode;
     if (!el) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // Anything already on screen at load stays painted. Arming it would hide
+    // server-rendered content until hydration, which pushes out LCP badly on
+    // a throttled phone.
+    if (el.getBoundingClientRect().top < window.innerHeight) return;
+
     el.classList.add('is-armed');
     const io = new IntersectionObserver(
       (entries) => {
