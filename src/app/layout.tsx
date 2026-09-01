@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Inter } from 'next/font/google';
 
 const display = Geist({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-display', display: 'swap' });
 const mono = Geist_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-mono', display: 'swap' });
+const body = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-body', display: 'swap' });
 
 const URI = 'https://odigos.io',
   ICON = '/icon.png',
@@ -42,7 +43,7 @@ type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang='en' suppressHydrationWarning className={`${display.variable} ${mono.variable}`}>
+    <html lang='en' suppressHydrationWarning className={`${display.variable} ${mono.variable} ${body.variable}`}>
       <body
         suppressHydrationWarning={true}
         style={{

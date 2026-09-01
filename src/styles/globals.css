@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 * {
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
@@ -9,7 +7,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body), 'Inter', sans-serif;
 }
 
 html,
@@ -142,4 +140,13 @@ input:-webkit-autofill:active {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* Sections below the fold do not need layout, paint or their looping
+   animations computed until the reader is near them. This is the difference
+   between a scroll that stutters and one that does not, because the hero art
+   alone runs more than twenty infinite animations. */
+.landing-root > main > section:nth-of-type(n + 3) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
 }

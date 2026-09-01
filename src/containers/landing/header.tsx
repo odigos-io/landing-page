@@ -12,7 +12,9 @@ const Bar = styled.header<{ $scrolled: boolean }>`
   top: 0;
   z-index: 60;
   background: ${({ $scrolled }) => ($scrolled ? 'rgba(251, 250, 247, 0.82)' : 'rgba(251, 250, 247, 0)')};
-  backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'saturate(160%) blur(14px)' : 'none')};
+  /* saturate() forces a full-viewport repaint behind a sticky element on
+     every scroll frame. A plain blur composites far more cheaply. */
+  backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(10px)' : 'none')};
   border-bottom: 1px solid ${({ $scrolled }) => ($scrolled ? 'var(--line)' : 'transparent')};
   transition: background 0.3s ease, border-color 0.3s ease;
 `;
