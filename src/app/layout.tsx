@@ -6,27 +6,34 @@ const display = Geist({ subsets: ['latin'], weight: ['400', '500', '600', '700']
 const mono = Geist_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-mono', display: 'swap' });
 
 const URI = 'https://odigos.io',
-  LOGO = '/assets/odigos/logo_white_filled.svg',
-  TITLE = 'Odigos - Ask Production Anything',
-  DESCRIPTION = 'Odigos is the runtime context platform. Your engineers and your AI agents ask production a question, and our own eBPF runtime captures the exact data that answers it, live, with no code change and no redeploy. Any function, any query, any language, in seconds instead of a deploy cycle. Under 1% overhead, exported as OpenTelemetry, never locked in.',
-  KEYWORDS = ['runtime context', 'runtime context platform', 'AI observability', 'production context', 'eBPF', 'OpenTelemetry', 'observability', 'distributed tracing', 'runtime security', 'AI SRE', 'incident resolution'];
+  ICON = '/icon.png',
+  OG = '/og.png',
+  TITLE = 'Odigos · Dynamic telemetry for AI agents',
+  DESCRIPTION = 'Ask production a question nobody set it up to answer. Odigos reads the arguments and return values of any function in a live service, in seconds, with no code change.',
+  KEYWORDS = ['dynamic telemetry', 'dynamic instrumentation', 'eBPF', 'AI SRE', 'AI agents', 'production debugging', 'OpenTelemetry', 'observability', 'distributed tracing', 'incident resolution', 'runtime context'];
 
 export const metadata: Metadata = {
   metadataBase: new URL(URI),
   title: TITLE,
   applicationName: TITLE,
   description: DESCRIPTION,
-  icons: LOGO,
+  icons: { icon: ICON, apple: '/apple-icon.png' },
   keywords: KEYWORDS,
   robots: 'index, follow',
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    images: LOGO,
+    images: [{ url: OG, width: 1200, height: 630, alt: TITLE }],
     type: 'website',
     url: URI,
     siteName: TITLE,
     locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [OG],
   },
 };
 
@@ -36,7 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en' suppressHydrationWarning className={`${display.variable} ${mono.variable}`}>
       <head>
-        <link rel='icon' href={LOGO} type='image/svg+xml' />
+        <link rel='icon' href={ICON} type='image/png' />
         <meta content='width=device-width, initial-scale=1' name='viewport' />
         <meta name='description' content={metadata.description as string} />
         <title>{metadata.title as string}</title>

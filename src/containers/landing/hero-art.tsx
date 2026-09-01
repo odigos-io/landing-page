@@ -88,7 +88,6 @@ const stay = (a: number) => keyframes`
   ${a + 2}%,100% { opacity:1; transform:none }`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
-const blink = keyframes`0%,100%{opacity:.35}50%{opacity:1}`;
 const breathe = keyframes`0%,100%{opacity:.55;transform:rotate(0deg) scale(.92)}50%{opacity:1;transform:rotate(45deg) scale(1)}`;
 
 const reduce = css`
@@ -110,40 +109,6 @@ const Panel = styled.div`
   background: var(--paper-2);
   box-shadow: var(--shadow-panel);
   overflow: hidden;
-`;
-
-const Bar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 14px 22px;
-  background: var(--paper-3);
-  border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  @media (max-width: 1000px) {
-    padding: 12px 16px;
-    font-size: 9.5px;
-  }
-
-  .live {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: var(--signal-ink);
-  }
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--signal);
-    animation: ${blink} 1.9s ease-in-out infinite;
-    ${reduce}
-  }
 `;
 
 const Field = styled.div`
@@ -593,14 +558,6 @@ const MAP = build();
 export const HeroArt = () => (
   <Frame>
     <Panel>
-      <Bar>
-        <span>production</span>
-        <span className='live'>
-          <i className='dot' />
-          live
-        </span>
-      </Bar>
-
       <Field>
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid slice' aria-hidden>
           {MAP.links.map((l, i) => (
