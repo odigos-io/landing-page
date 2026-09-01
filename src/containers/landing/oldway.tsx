@@ -166,113 +166,81 @@ const Calls = styled.div`
   border-radius: 11px;
   border: 1px solid rgba(91, 67, 241, 0.2);
   background: linear-gradient(180deg, #fdfcff, #f8f6ff);
-  overflow: hidden;
+  padding: 15px 15px 16px;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 11.5px;
-`;
-
-const CallsBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 14px;
-  border-bottom: 1px solid rgba(91, 67, 241, 0.14);
-  background: rgba(91, 67, 241, 0.045);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-
-  .n {
-    color: var(--ink-faint);
-    letter-spacing: 0.1em;
-    text-transform: none;
-  }
-`;
-
-const CallList = styled.div`
-  padding: 13px 14px 14px;
+  line-height: 1.6;
 `;
 
 const Call = styled.div<{ $d: number }>`
-  animation: ${(p) => stepIn(p.$d)} 4.2s ease both;
+  animation: ${(p) => stepIn(p.$d)} 4.6s ease both;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
   & + & {
     margin-top: 13px;
-    padding-top: 13px;
-    border-top: 1px dashed rgba(91, 67, 241, 0.16);
   }
 
-  .head {
+  .fn {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 8px;
+    color: var(--ink);
   }
-  .dot {
-    width: 6px;
-    height: 6px;
+  .fn i {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--accent);
-    flex-shrink: 0;
-    animation: ${ping} 1.7s ease-in-out infinite;
+    transform: translateY(-1px);
+    animation: ${ping} 1.9s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) {
-    .dot {
+    .fn i {
       animation: none;
     }
   }
-  .fn {
-    color: var(--accent);
+  .fn b {
     font-weight: 500;
-  }
-  .ms {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    color: var(--ink-faint);
-    font-size: 10.5px;
-  }
-  .ms svg {
-    color: var(--signal);
-  }
-  .args {
-    display: block;
-    margin-top: 5px;
-    padding-left: 14px;
-    color: var(--ink-faint);
-    line-height: 1.7;
-  }
-  .args em {
-    font-style: normal;
     color: var(--accent);
   }
-  .res {
-    display: block;
-    margin-top: 5px;
-    padding-left: 14px;
+  .fn .arg {
     color: var(--ink-mute);
-    line-height: 1.7;
   }
-  .res .ar {
-    color: var(--signal);
+  .fn .str {
+    color: var(--signal-ink);
   }
-  .res b {
+
+  /* the result branch, drawn rather than typed so it never depends on a glyph */
+  .out {
+    position: relative;
+    margin: 4px 0 0 3px;
+    padding-left: 20px;
+    color: var(--ink-mute);
+  }
+  .out::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 9px;
+    height: 9px;
+    border-left: 1.2px solid rgba(91, 67, 241, 0.4);
+    border-bottom: 1.2px solid rgba(91, 67, 241, 0.4);
+    border-bottom-left-radius: 3px;
+  }
+  .out .val {
+    color: var(--ink);
+  }
+  .out b {
     color: var(--hot-ink);
     font-weight: 600;
   }
-  .res .val {
-    color: var(--ink);
+  .out .ms {
+    color: var(--ink-faint);
   }
 `;
-
-const Tick = () => (
-  <svg width='9' height='9' viewBox='0 0 14 14' fill='none' aria-hidden>
-    <path d='M2 7.4 5.2 10.5 12 3.5' stroke='currentColor' strokeWidth='2.4' strokeLinecap='round' strokeLinejoin='round' />
-  </svg>
-);
 
 const Train = styled.div`
   margin-top: 16px;
@@ -392,56 +360,52 @@ export const LandingOldWay = () => {
 
                 <Label>what it does instead, over MCP</Label>
                 <Calls>
-                  <CallsBar>
-                    <span>mcp · odigos</span>
-                    <span className='n'>3 calls · 2.4s</span>
-                  </CallsBar>
-                  <CallList>
-                    <Call $d={4}>
-                      <div className='head'>
-                        <i className='dot' />
-                        <span className='fn'>find_functions</span>
-                        <span className='ms'>
-                          0.4s <Tick />
-                        </span>
-                      </div>
-                      <span className='args'>
-                        service <em>&quot;checkout&quot;</em> · match <em>&quot;discount&quot;</em>
+                  <Call $d={4}>
+                    <span className='fn'>
+                      <i />
+                      <span>
+                        <b>find_functions</b>
+                        <span className='arg'>(</span>
+                        <span className='str'>&quot;checkout&quot;</span>
+                        <span className='arg'>, </span>
+                        <span className='str'>&quot;discount&quot;</span>
+                        <span className='arg'>)</span>
                       </span>
-                      <span className='res'>
-                        <span className='ar'>&larr;</span> 84 functions · <span className='val'>applyDiscount</span> promo.go:41
-                      </span>
-                    </Call>
+                    </span>
+                    <span className='out'>
+                      84 functions · <span className='val'>applyDiscount</span> promo.go:41
+                    </span>
+                  </Call>
 
-                    <Call $d={26}>
-                      <div className='head'>
-                        <i className='dot' />
-                        <span className='fn'>capture</span>
-                        <span className='ms'>
-                          1.2s <Tick />
-                        </span>
-                      </div>
-                      <span className='args'>
-                        fn <em>&quot;applyDiscount&quot;</em> · args <em>true</em> · returns <em>true</em>
+                  <Call $d={26}>
+                    <span className='fn'>
+                      <i />
+                      <span>
+                        <b>capture</b>
+                        <span className='arg'>(</span>
+                        <span className='str'>&quot;applyDiscount&quot;</span>
+                        <span className='arg'>, args, returns)</span>
                       </span>
-                      <span className='res'>
-                        <span className='ar'>&larr;</span> attached · nothing redeployed
-                      </span>
-                    </Call>
+                    </span>
+                    <span className='out'>
+                      attached <span className='ms'>in 1.2s</span> · nothing redeployed
+                    </span>
+                  </Call>
 
-                    <Call $d={48}>
-                      <div className='head'>
-                        <i className='dot' />
-                        <span className='fn'>read</span>
-                        <span className='ms'>
-                          0.8s <Tick />
-                        </span>
-                      </div>
-                      <span className='res'>
-                        <span className='ar'>&larr;</span> code <span className='val'>&quot;BLACK50&quot;</span> · returned <b>0.00</b>
+                  <Call $d={48}>
+                    <span className='fn'>
+                      <i />
+                      <span>
+                        <b>read</b>
+                        <span className='arg'>(</span>
+                        <span className='str'>&quot;applyDiscount&quot;</span>
+                        <span className='arg'>)</span>
                       </span>
-                    </Call>
-                  </CallList>
+                    </span>
+                    <span className='out'>
+                      code <span className='val'>&quot;BLACK50&quot;</span> · returned <b>0.00</b>
+                    </span>
+                  </Call>
                 </Calls>
 
                 <Cost $ours>
