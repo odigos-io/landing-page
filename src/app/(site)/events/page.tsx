@@ -5,25 +5,28 @@ import { useEvents } from '@/contexts';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { EventsContent } from './events-content';
 
-const Event = () => {
+/* Boundary scoped to the query-string reader only, so the listing still
+   server-renders. */
+const LatestRedirect = () => {
   const { events } = useEvents();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const shouldGoToLatest = searchParams?.get('latest') != null && events.length > 0;
+  const goToLatest = searchParams?.get('latest') != null && events.length > 0;
 
   useEffect(() => {
-    if (shouldGoToLatest) router.push(`/events/${events[0].slug}`);
-  }, [router, shouldGoToLatest, events]);
+    if (goToLatest) router.push(`/events/${events[0].slug}`);
+  }, [router, goToLatest, events]);
 
-  if (shouldGoToLatest) return null;
-
-  return <EventsContent />;
+  return null;
 };
 
 const EventPage = () => (
-  <Suspense fallback={null}>
-    <Event />
-  </Suspense>
+  <>
+    <Suspense fallback={null}>
+      <LatestRedirect />
+    </Suspense>
+    <EventsContent />
+  </>
 );
 
 export default EventPage;
