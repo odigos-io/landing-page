@@ -54,7 +54,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           minHeight: '100vh',
           margin: 0,
           padding: 0,
-          backgroundColor: '#0F0F0F',
         }}
       >
         <script type='application/ld+json' dangerouslySetInnerHTML={ldScript(ORGANIZATION_LD)} />

@@ -19,6 +19,13 @@ html {
 
 /* the light pages paint their own box, so without this the document behind them
    stays black and rubber-band overscroll shows it */
+/* The dark default lives here rather than as an inline style on <body>, so the
+   light rule below can actually win. As an inline style it could not, and every
+   landing page painted dark for a frame before the content covered it. */
+body {
+  background: #0f0f0f;
+}
+
 html:has(.landing-root),
 html:has(.landing-root) body {
   background: #fbfaf7;
