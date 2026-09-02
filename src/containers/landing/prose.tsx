@@ -89,5 +89,9 @@ export const Prose = styled.div`
 
 export const Markdown = ({ content }: { content?: string }) => {
   if (!content) return null;
-  return <Preview source={content} wrapperElement={{ 'data-color-mode': 'light' }} style={{ background: 'transparent' }} />;
+  /* The page already renders the post title as the h1. A markdown body that
+     opens with "# Title" would emit a second one, which splits the page's
+     topic signal for search engines and for anything extracting structure. */
+  const demoted = content.replace(/^#\s+/gm, '## ');
+  return <Preview source={demoted} wrapperElement={{ 'data-color-mode': 'light' }} style={{ background: 'transparent' }} />;
 };
