@@ -1,0 +1,1660 @@
+# Odigos: OpenTelemetry guides
+
+> Full text of the Odigos engineering guides on OpenTelemetry, eBPF instrumentation
+> and distributed tracing. Odigos is an open source, eBPF-based OpenTelemetry
+> distribution that produces OpenTelemetry from any service with no code change.
+> https://odigos.io
+
+## Getting Started with OpenTelemetry
+
+Source: https://odigos.io/blog/getting-started-with-opentelemetry
+
+### Getting started with OpenTelemetry
+
+In today's modern, complex, distributed, and cloud-native environment, observability turns quite important with respect to ensuring the reliability of a system, performing optimization, and effective troubleshooting. OpenTelemetry has been central in creating a unified standard for collection, processing, and exporting telemetry data around traces, metrics, and logs. However, it can be hard to get started with OpenTelemetry because of its flexibility and depth.
+
+This document aims to guide experienced developers and those new to the industry in configuring and using OpenTelemetry. We'll cover the fundamentals, advanced configurations, and different tools which can be used to streamline the OpenTelemetry experience.
+
+### What is OpenTelemetry
+
+OpenTelemetry, being the Cloud Native Computing Foundation (CNCF)-related project, is an open-source project aimed at providing a single set of APIs, libraries, agents, and instrumentation to collect telemetry data out of your services. Such data helps developers and operators gain deep insights into application performance and health.
+
+**Core OpenTelemetry Components**
+
+- **APIs & SDKs:** Libraries in Java, Python, Node.js, Go, and many other languages to instrument applications for generation of telemetry data-traces, metrics, and logs.
+- **Instrumentation libraries:** Out-of-the-box libraries for popular frameworks and libraries, which provide automatic instrumentation to avoid the manual work associated with setting up observability.
+- **OpenTelemetry Collector:** A configurable and flexible telemetry data service that receives, processes, and exports it. It may perform transformations, filtering, aggregations, or enrichments prior to exporting to observability back-ends.
+- **Exporters:** Plugins that send out telemetry data to observability backends, including but not limited to Prometheus, Grafana, Jaeger, Datadog.
+
+### Challenges in Setting up OpenTelemetry
+
+While OpenTelemetry is feature-rich and highly configurable, high configurability goes hand in hand with complexity-especially for those who are inexperienced in observability or handling complex infrastructure settings. For example, the OpenTelemetry Collector can become too much to configure with the vast number of processors, receivers, and exporters to select from.
+
+**Example of setup**
+
+To deploy OpenTelemetry in Kubernetes you will need to deploy the OpenTelemetry Collector using Kubernetes resources like ConfigMaps, Deployments, and Services.
+
+### Step 1: Create a ConfigMap for OpenTelemetry Collector Configuration
+
+1. **Create a Configuration File for the OpenTelemetry Collector**
+
+   Create a YAML file (`otel-collector-config.yaml`) that contains the configuration for the OpenTelemetry Collector. This configuration defines the receivers, processors, and exporters that the collector will use.
+
+   Here's an example configuration file:
+
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: otel-collector-config
+     namespace: default
+   data:
+     otel-collector-config.yaml: |
+       receivers:
+         otlp:
+           protocols:
+             grpc:
+             http:
+
+       processors:
+         batch:
+           timeout: 10s
+           send_batch_size: 512
+         memory_limiter:
+           check_interval: 1s
+           limit_percentage: 75
+           spike_limit_percentage: 10
+
+       exporters:
+         logging:
+           loglevel: debug
+         jaeger:
+           endpoint: "jaeger-collector.default.svc:14250"  # Replace with your Jaeger endpoint
+           tls:
+             insecure: true  # Set to false for production with proper TLS setup
+
+       service:
+         pipelines:
+           traces:
+             receivers: [otlp]
+             processors: [batch, memory_limiter]
+             exporters: [logging, jaeger]
+   ```
+
+2. **Apply the ConfigMap to Your Kubernetes Cluster**
+
+   ```bash
+   kubectl apply -f otel-collector-config.yaml
+
+   ```
+
+### Step 2: Deploy the OpenTelemetry Collector as a Kubernetes Deployment
+
+1. **Create a Deployment for the OpenTelemetry Collector**
+
+   Create a YAML file (`otel-collector-deployment.yaml`) for the OpenTelemetry Collector deployment. This deployment will use the ConfigMap created in Step 1 to configure the Collector.
+
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: otel-collector
+     namespace: default
+   spec:
+     replicas: 1
+     selector:
+       matchLabels:
+         app: otel-collector
+     template:
+       metadata:
+         labels:
+           app: otel-collector
+       spec:
+         containers:
+           - name: otel-collector
+             image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector:0.84.0
+             command:
+               - '/otelcol'
+               - '--config=/etc/otel/config/otel-collector-config.yaml'
+             volumeMounts:
+               - name: otel-collector-config-vol
+                 mountPath: /etc/otel/config
+         volumes:
+           - name: otel-collector-config-vol
+             configMap:
+               name: otel-collector-config
+   ```
+
+   This Deployment specifies:
+
+   - The OpenTelemetry Collector container image.
+   - A volume mount to mount the ConfigMap as a file inside the container.
+
+2. **Apply the Deployment to Your Kubernetes Cluster**
+
+   ```bash
+   kubectl apply -f otel-collector-deployment.yaml
+
+   ```
+
+### Step 3: Create a Service to Expose the OpenTelemetry Collector
+
+1. **Create a Service for the OpenTelemetry Collector**
+
+   Create a YAML file (`otel-collector-service.yaml`) to expose the OpenTelemetry Collector via a Kubernetes Service:
+
+   ```yaml
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: otel-collector
+     namespace: default
+   spec:
+     selector:
+       app: otel-collector
+     ports:
+       - protocol: TCP
+         port: 4317 # OTLP gRPC port
+         targetPort: 4317
+       - protocol: TCP
+         port: 4318 # OTLP HTTP port
+         targetPort: 4318
+   ```
+
+   This Service exposes the OTLP gRPC and HTTP ports (4317 and 4318) to enable applications to send telemetry data to the OpenTelemetry Collector.
+
+2. **Apply the Service to Your Kubernetes Cluster**
+
+   ```bash
+   kubectl apply -f otel-collector-service.yaml
+
+   ```
+
+### Step 4: Instrument Your Applications to Send Telemetry to OpenTelemetry Collector
+
+1. **Install OpenTelemetry SDKs in Your Applications**:
+   - Install the appropriate OpenTelemetry SDK for your application’s programming language (e.g., Java, Python, Node.js).
+2. **Configure the Application to Send Telemetry Data**:
+
+   - Set the OTLP endpoint to the OpenTelemetry Collector service you created (`otel-collector.default.svc:4317` for gRPC or `otel-collector.default.svc:4318` for HTTP).
+
+   Example environment variables configuration:
+
+   ```bash
+   OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector.default.svc:4317
+
+   ```
+
+3. **Instrument Code Using OpenTelemetry SDK**:
+   - Use the OpenTelemetry SDK to add tracing, metrics, and logs to your application code. Ensure the SDK sends the telemetry data to the OpenTelemetry Collector.
+
+### Step 5: Verify Deployment and Monitor the OpenTelemetry Collector
+
+1. **Check the Status of the OpenTelemetry Collector Pods**
+
+   Ensure that the OpenTelemetry Collector pods are running without errors:
+
+   ```bash
+   kubectl get pods -n default
+
+   ```
+
+2. **Check Logs for Errors and Data Processing**
+
+   View the logs of the OpenTelemetry Collector pod to check for any errors and confirm that it is receiving and exporting telemetry data:
+
+   ```bash
+   kubectl logs  -n default
+
+   ```
+
+3. **Monitor Resource Usage**
+
+   Monitor CPU, memory usage, and other metrics for the OpenTelemetry Collector to ensure it is running efficiently and adjust resource requests and limits as needed.
+
+### Making the Setup of OpenTelemetry Simple: The Core Tools and Features
+
+There are numerous tools and features that can be found to use OpenTelemetry, while some of the tools facilitating accessibility include ways of setting up, configuring, and managing it in a given environment. Now, let's go over these tools and best practices in deploying OpenTelemetry.
+
+### **Odigos: Rationalizing OpenTelemetry**
+
+A tool to ease OpenTelemetry configuration is Odigos.
+
+- **Automated Instrumentation:** Automatically discovers the applications running in your environment and injects the right instrumentation from OpenTelemetry without code changes.
+- **Dynamic deployment management:** This will automatically configure the topology for OpenTelemetry Collectors to maximize performance with minimum resources.
+- **Integrated UI:** Provides an intuitive user interface to configure telemetry collection, apply processing rules, and integrate with multiple observability backends.
+
+**Getting Started with Odigos:**
+
+- Install Odigos on your Kubernetes cluster by using Homebrew or any other deployment method.
+- Use the Odigos UI to select what telemetry data you want to collect and to configure export rules for multiple backends of observability.
+
+### **Auto-Instrumentation Libraries and Agents**
+
+OpenTelemetry provides auto-instrumentation libraries and agents for popular languages like Java, Python, Node.js, and .NET. These libraries simplify instrumentation, enabling automatic collection of telemetry data from common frameworks and libraries.
+
+- **Java Agent:** We can attach a Java agent to the JVM without changing the code for the application.
+- **Python Instrumentation:** An instrumentation library for Python that automatically instruments Flask, Django, FastAPI, and other frameworks.
+- **Node.js SDK:** Supports automatic instrumentation to Express, HTTP, and other core libraries.
+
+**Sample Java Auto-Instrumentation**
+
+Download the OpenTelemetry Java agent:
+
+```bash
+curl -L 
+
+```
+
+Run your Java application with the agent:
+
+```bash
+java -javaagent:path/to/opentelemetry-javaagent.jar -jar myapp.jar
+
+```
+
+This configuration automatically collects traces and sends them to the OpenTelemetry Collector after setup.
+
+### **Observability Platforms and OpenTelemetry**
+
+This is easy to do because exporters and the OpenTelemetry Collector are very flexible in their configuration and can be added to popular observability platforms such as Prometheus, Grafana, Datadog, and Jaeger.
+
+- **Prometheus Remote Write Exporter:** Ingesting the metrics into Prometheus with the Prometheus remote write exporter from the OpenTelemetry collector.
+- **Grafana Tempo:** One can configure Grafana Tempo as a trace exporter.
+- **Jaeger** is an open-source tool for distributed tracing that you can easily integrate with OpenTelemetry as a backend.
+
+### Sample OpenTelemetry Collector Configuration with Jaeger Exporter
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 1024
+
+exporters:
+  jaeger:
+    endpoint: 'jaeger-collector.default.svc:14250' # Replace with your Jaeger Collector endpoint
+    tls:
+      insecure: true # Set to false for production with proper TLS setup
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [jaeger]
+```
+
+1. **Receivers**: The `receivers` section defines how the OpenTelemetry Collector receives telemetry data. In this example:
+   - The `otlp` receiver is enabled with both `grpc` and `http` protocols, which means the collector will accept OTLP (OpenTelemetry Protocol) data over gRPC and HTTP.
+2. **Processors**: The `processors` section includes a `batch` processor:
+   - The `batch` processor is used to batch trace data before sending it to the exporter. This improves performance and reduces network load by sending data in batches rather than individually.
+3. **Exporters**: The `exporters` section defines how the telemetry data is sent to Jaeger:
+   - The `jaeger` exporter sends trace data to a Jaeger backend. The `endpoint` is set to the Jaeger Collector's gRPC endpoint (`jaeger-collector.default.svc:14250`), which you need to replace with your actual Jaeger Collector endpoint.
+   - The `tls` section's `insecure` field is set to `true` for development purposes, allowing communication without TLS. For production environments, you should configure proper TLS settings and set `insecure` to `false`.
+4. **Service**: The `service` section defines the pipelines that process telemetry data:
+   - The `traces` pipeline is defined with `otlp` as the receiver, `batch` as the processor, and `jaeger` as the exporter. This means the pipeline will receive OTLP trace data, batch process it, and export it to Jaeger.
+
+### Simplify the Process with Odigos
+
+While the manual configuration of OpenTelemetry Collector offers flexibility, it can be cumbersome and error-prone, especially in dynamic environments. **Odigos** is a powerful tool that simplifies the entire process of setting up observability. With Odigos, you can easily configure observability backends without manually writing or managing complex configuration files.
+
+Here's how to use Odigos to send traces to a variety of backends, including Jaeger:
+
+1. **Add a Destination in Odigos**:
+   - In the Odigos UI, navigate to the "Destinations" tab.
+2. **Select Jaeger as the Destination**:
+   - Click "Add Destination" and select "Jaeger" from the list of supported observability backends.
+3. **Provide Jaeger Configuration Details**:
+   - **Endpoint**: The URL or IP address of the Jaeger Collector or All-in-One instance. For example, `http://jaeger-collector.default.svc:14268/api/traces` for HTTP or `jaeger-collector.default.svc:14250` for gRPC.
+   - **Protocol**: Choose between HTTP or gRPC. Typically, you would use gRPC for better performance and security.
+
+Odigos automatically handles the creation and management of OpenTelemetry Collectors, applying the necessary configurations to your environment. This makes it significantly easier to set up and maintain observability for your applications, reducing the manual overhead and potential for configuration errors. By leveraging Odigos, you can quickly achieve robust observability with minimal effort, keeping your focus on application development and performance tuning.
+
+## **Best Practices for Configuration and Deployment**
+
+- **Start with Minimal Setup:** Begin with minimum instrumentation and build on top of it gradually as you come to understand your observability needs better.
+- **Leverage semantic conventions:** Utilize OpenTelemetry semantic conventions as part of your design to ensure consistent telemetry data across different services and environments.
+- **Optimize Collector Performance:** Implement batch processing and retry mechanisms to provide an optimal balance between performance and granularity of data.
+- **Secure Telemetry Data:** Data in transit should be encrypted, and sensitive data should be masked or purged at the collection point.
+
+### Troubleshooting and Common Pitfalls
+
+Given that OpenTelemetry setup is a learning curve, these are some of the common pitfalls and how to overcome them:
+
+- **Misconfigured Collector:** Double check YAMLs for errors. Use tools like kubectl describe to examine resources for configuration errors.
+- **Data Not Appearing in Observability Back-Ends:** Make sure you have the right endpoints and exporters set in your configuration, check connectivity, and check your authorization settings.
+- **High Latency or Overhead:** Go check the configuration, if it is really for aggressive sampling rates, or the processor is inefficient and causing performance bottlenecks.
+
+### Conclusion
+
+OpenTelemetry is a very strong and flexible observability framework, but it may be hard to get started with. If you are an experienced developer, these tools are just a walk in the park. If you're starting out, though, with the existence of tools like the OpenTelemetry Operator, Odigos, and auto-instrumentation libraries, this becomes easy for developers at both beginner and experienced levels. With the help of those tools and following best practices, one can come up with a well-configured observability pipeline, providing deep insights into health and performance for your applications.
+
+### Further Reading
+
+- [OpenTelemetry Official Docs](https://opentelemetry.io/docs/)
+- [OpenTelemetry Operator GitHub repository](https://github.com/open-telemetry/opentelemetry-operator)
+- [Odigos Documentation](https://docs.odigos.io/overview)
+- [Prometheus and Grafana Integration – Tutorials](https://grafana.com/docs/grafana/latest/getting-started/get-started-grafana-prometheus/)
+
+---
+
+## Migrating from Proprietary Tools to OpenTelemetry with Odigos
+
+Source: https://odigos.io/blog/migrating-from-propietary-tools-to-opentelemetry
+
+## Executive Summary
+
+This guide offers a helpful roadmap for organizations ready to move from proprietary observability tools to OpenTelemetry. Here’s what you can expect:
+
+- OpenTelemetry provides vendor-neutral, standardized observability.
+- Transitioning can come with a few challenges, like learning curves and code adjustments.
+- A phased approach-starting with an initial assessment and working toward full implementation-is the way to go.
+- Odigos makes the journey easier with automated instrumentation and streamlined configuration.
+- Best practices? Start small, bring in all stakeholders, and keep an eye on performance.
+
+Ideal for IT leaders, developers, and ops teams, this guide will help you modernize your observability stack, boosting flexibility, efficiency, and cost-effectiveness.
+
+## Quick Start Guide
+
+Want to get started with OpenTelemetry and Odigos right away? Follow these steps:
+
+1. **Assess Your Current State**
+   - List your current observability tools
+   - Identify key metrics and traces you need to maintain
+2. **Set Up Odigos**
+   - Install Odigos in your Kubernetes cluster:
+   - Access the Odigos UI and follow the setup wizard
+3. **Start Small**
+
+- Choose a non-critical service for initial implementation
+- Use Odigos to automatically instrument this service
+
+1. **Validate Data**
+   - Compare data from OpenTelemetry with your historical data
+   - Ensure all critical metrics and traces are captured
+2. **Expand and Optimize**
+   - Gradually instrument more services using Odigos
+   - Continuously monitor and optimize your setup
+
+For a more detailed approach, continue reading this guide.
+
+## Introduction to OpenTelemetry
+
+In today’s complex world of distributed software, observability is essential for keeping applications running smoothly. Traditionally, organizations have used a mix of proprietary tools to monitor their systems, each with its own APIs, agents, and data formats. This patchwork approach often creates issues with data consistency, locks teams into specific vendors, and drives up costs.
+
+### What is OpenTelemetry?
+
+OpenTelemetry is an open-source observability framework designed for cloud-native software. It provides a unified set of APIs, libraries, agents, and collector services to capture distributed traces and metrics from your applications. As a vendor-neutral solution, it's rapidly becoming the industry standard for instrumenting, generating, collecting, and exporting telemetry data.
+
+### Brief History of OpenTelemetry
+
+OpenTelemetry emerged as a merger between two open-source projects: OpenCensus (initiated by Google) and OpenTracing (started by LightStep). Here are the key milestones:
+
+- 2016: OpenTracing project launched
+- 2018: OpenCensus project announced by Google
+- May 2019: OpenTelemetry project announced, merging OpenTracing and OpenCensus
+- March 2020: First beta release of OpenTelemetry
+- September 2021: OpenTelemetry tracing specification reaches 1.0 status
+- 2022-2023: Rapid adoption across the industry
+
+Today, OpenTelemetry is under the Cloud Native Computing Foundation (CNCF) and has gained significant traction and support from major cloud providers and tech companies.
+
+### Key Features of OpenTelemetry
+
+- **Cross-language support**: OpenTelemetry supports multiple programming languages, making it versatile for diverse tech stacks.
+- **Unified data model**: It uses a consistent data model across different types of telemetry data (traces, metrics, and logs).
+- **Pluggable architecture**: OpenTelemetry can integrate with various backends and analysis tools.
+- **Auto-instrumentation**: Many common libraries and frameworks can be automatically instrumented with minimal code changes.
+
+> Did You Know? OpenTelemetry is the second most active CNCF project after Kubernetes, with over 2000 contributors from more than 200 organizations.
+
+## Benefits of Transitioning to OpenTelemetry
+
+Making the switch from proprietary observability tools to OpenTelemetry offers numerous advantages. Let's explore these benefits in detail, supported by industry data where available:
+
+1. **Vendor Neutrality**:
+   OpenTelemetry frees you from vendor lock-in. With a standardized approach to telemetry data, you can easily switch between different observability backends or use multiple solutions simultaneously.
+
+   _Industry Insight: According to a 2022 CNCF survey, 64% of respondents cited vendor neutrality as a key factor in adopting open-source observability tools._
+
+2. **Standardization**:
+   By adopting OpenTelemetry, you establish a single, consistent approach for instrumentation across your entire technology stack. This uniformity simplifies development, reduces cognitive load for your teams, and makes it easier to correlate data across different services and applications.
+3. **Future-Proofing**:
+   As an industry-standard backed by major cloud providers and tech giants, OpenTelemetry is positioned to be supported and developed for the long term. By adopting it now, you're aligning with the future direction of observability practices.
+
+   _Adoption Trend: OpenTelemetry's GitHub repository has seen a 300% increase in contributors over the past two years, indicating strong community growth and long-term viability._
+
+4. **Cost-Effectiveness**:
+   Proprietary solutions often come with significant licensing costs. OpenTelemetry, being open-source, can help reduce these direct costs. Moreover, the ability to switch providers easily can lead to more competitive pricing from observability vendors.
+
+   _Cost Saving Potential: Organizations have reported up to 40% reduction in observability-related costs after transitioning to open-source solutions like OpenTelemetry._
+
+5. **Community Support**:
+   OpenTelemetry benefits from a large, active community of developers and users. This translates to rapid development of new features, quick bug fixes, and a wealth of resources for troubleshooting and best practices.
+6. **Improved Data Quality**:
+   With OpenTelemetry's consistent data model and instrumentation practices, you can achieve higher quality, more consistent telemetry data across your entire stack.
+7. **Easier Integration**:
+   As more tools and services adopt OpenTelemetry, integration becomes simpler. You'll spend less time writing and maintaining custom exporters or data translators.
+8. **Scalability**:
+   OpenTelemetry is designed to handle high-volume, high-cardinality data, making it suitable for applications of all sizes, from small projects to large-scale distributed systems.
+
+### Potential ROI
+
+Switching to OpenTelemetry can bring a solid return on investment:
+
+- **Lower Tooling Costs**: By consolidating multiple proprietary tools into one open-source framework, companies can save directly on licensing fees.
+- **Better Operational Efficiency**: Standardized observability helps resolve issues faster, reducing downtime.
+- **Higher Developer Productivity**: Consistent instrumentation across the stack means developers spend less time switching between tools and formats.
+
+## Challenges in the Transition Process
+
+Transitioning to OpenTelemetry brings big benefits, but it also comes with a few challenges. Knowing these potential hurdles upfront can make your move much smoother. Let’s look at what to expect, strategies for tackling them, and the key factors that can set you up for success:
+
+| Challenge                  | Description                                                         | Potential Impact                                     | Mitigation Strategy                                                          | Success Factor                                              |
+| -------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Learning Curve             | New concepts, terminology, and best practices                       | Slower initial adoption, potential misconfigurations | Invest in team training, start with a pilot project                          | Dedicated learning time, hands-on workshops                 |
+| Code Refactoring           | Existing applications may need updates to use OpenTelemetry APIs    | Time-consuming, risk of introducing bugs             | Use automated instrumentation tools like Odigos, phase the refactoring       | Clear refactoring guidelines, code review processes         |
+| Ensuring Complete Coverage | Replicating all existing metrics and traces in OpenTelemetry format | Risk of losing critical observability data           | Careful mapping of current telemetry, thorough testing                       | Comprehensive inventory of existing metrics and traces      |
+| Minimal Disruption         | Transitioning without impacting ongoing operations                  | Potential service disruptions, inconsistent data     | Run OpenTelemetry in parallel with existing solutions initially              | Robust testing environment, gradual rollout plan            |
+| Data Consistency           | Ensuring new data matches previously collected metrics              | Inconsistent reporting, false alerts                 | Rigorous validation and comparison of old and new data                       | Automated data consistency checks                           |
+| Performance Considerations | Potential impact on application performance                         | Slower application response times                    | Optimize instrumentation, use sampling techniques                            | Regular performance testing, optimization sprints           |
+| Adapting Existing Tools    | Updating current alerting rules and dashboards                      | Temporary loss of monitoring capabilities            | Gradually update tools, maintain backward compatibility                      | Clear mapping between old and new data models               |
+| Team Alignment             | Ensuring all stakeholders support the change                        | Resistance to adoption, inconsistent implementation  | Clear communication of benefits, involve all teams in planning               | Executive sponsorship, cross-team working groups            |
+| Legacy System Integration  | Some systems may not easily support OpenTelemetry                   | Incomplete observability coverage                    | Use OpenTelemetry's various ingestion methods, consider middleware solutions | Detailed inventory of systems, prioritized integration plan |
+
+> Pro Tip: Prioritize these challenges based on your organization's specific context. Address the most critical ones first to build momentum and confidence in the transition process.
+
+## How Odigos Simplifies the Transition
+
+Odigos is an open-source, automated observability platform that uses eBPF to make transitioning to OpenTelemetry much easier. Let’s dive into how Odigos tackles key challenges and see how it stacks up against a manual OpenTelemetry setup:
+
+### Addressing Transition Challenges with Odigos
+
+| Challenge                  | How Odigos Helps                                                                    |
+| -------------------------- | ----------------------------------------------------------------------------------- |
+| Learning Curve             | Reduces the need for deep OpenTelemetry expertise through automated instrumentation |
+| Code Refactoring           | Minimizes code changes by automatically instrumenting applications                  |
+| Ensuring Complete Coverage | Provides comprehensive instrumentation across various languages and frameworks      |
+| Minimal Disruption         | Allows for easy rollback and gradual implementation                                 |
+| Data Consistency           | Ensures consistent data collection across your entire stack                         |
+| Performance Considerations | Optimizes instrumentation for minimal performance impact                            |
+| Adapting Existing Tools    | Simplifies export configuration to various backends                                 |
+
+### Odigos vs Manual OpenTelemetry Implementation
+
+| Aspect                      | Odigos                        | Manual Implementation          |
+| --------------------------- | ----------------------------- | ------------------------------ |
+| Setup Time                  | Minutes to hours              | Days to weeks                  |
+| Code Changes Required       | Minimal to none               | Extensive                      |
+| Learning Curve              | Shallow                       | Steep                          |
+| Consistency Across Services | High                          | Varies based on implementation |
+| Maintenance Overhead        | Low                           | High                           |
+| Flexibility                 | High, with easy configuration | High, but requires more effort |
+| Performance Optimization    | Automated                     | Manual                         |
+| Update to New OTel Versions | Automated                     | Manual                         |
+
+### Key Features of Odigos
+
+1. **Automatic Instrumentation**:
+   - Odigos can automatically instrument your applications without requiring code changes.
+   - This dramatically reduces the manual effort needed to adopt OpenTelemetry, especially in large, complex environments.
+2. **Unified Configuration**:
+   - Manage all your OpenTelemetry configurations from a single, centralized location.
+   - This simplifies the process of maintaining consistency across your entire application stack.
+3. **Multiple Language Support**:
+   - Odigos supports various programming languages, making it ideal for polyglot environments.
+   - This eliminates the need to learn and implement language-specific instrumentation for each part of your stack.
+4. **Easy Kubernetes Integration**:
+   - Seamlessly integrates with existing Kubernetes environments.
+   - Simplifies the process of instrumenting containerized applications at scale.
+5. **Scalability**:
+   - Designed to handle large-scale deployments, making it suitable for enterprises with complex infrastructures.
+   - Helps maintain performance as you scale up your OpenTelemetry implementation.
+6. **Flexible Export Options**:
+   - Easily configure data export to various backends, maintaining your flexibility in choosing observability tools.
+7. **Continuous Updates**:
+   - Odigos is regularly updated to stay current with the latest OpenTelemetry standards and best practices.
+   - This ensures your instrumentation remains up-to-date without constant manual intervention.
+
+With Odigos, organizations can speed up their transition to OpenTelemetry, cut down on errors, and lessen the load on development teams. Up next, we’ll go over best practices and tips to help make your transition as smooth and successful as possible.
+
+## Best Practices and Tips
+
+To ensure a smooth transition to OpenTelemetry using Odigos, consider the following best practices and tips, categorized for different aspects of the transition process:
+
+### Technical Best Practices
+
+Here are some practical tips for a smooth transition to OpenTelemetry with Odigos:
+
+1. **Start Small and Iterate**
+
+   - Kick off with a pilot project to get comfortable with both OpenTelemetry and Odigos.
+   - Apply the insights from this project to refine your strategy before rolling it out to larger systems.
+
+2. **Comprehensive Testing**
+
+   - Test thoroughly in a staging environment before moving to production.
+   - Confirm that critical metrics and traces are captured and exported accurately.
+
+3. **Performance Monitoring**
+
+   - Keep an eye on how OpenTelemetry instrumentation affects performance.
+   - Use Odigos’s optimization features to fine-tune instrumentation as needed.
+
+4. **Data Consistency Checks**
+
+   - Compare data from OpenTelemetry with your existing tools regularly during the transition.
+   - Automate consistency checks where possible for reliable monitoring.
+
+5. **Leverage Auto-Instrumentation**
+   - Make the most of Odigos’s auto-instrumentation to save time and effort.
+   - Use manual instrumentation only for specific, custom cases.
+
+Following these best practices can make your transition smoother, more efficient, and tailored to your specific needs.
+
+### Long-term Maintenance Tips
+
+1. **Documentation**:
+   - Keep detailed records of your transition process, including configuration changes and any custom instrumentation.
+   - Document your new observability architecture for future reference and onboarding.
+2. **Regular Updates**:
+   - Keep Odigos and your OpenTelemetry components updated to benefit from the latest features and security patches.
+   - Establish a process for testing and rolling out updates.
+3. **Monitoring and Optimization**:
+   - Continuously monitor the health and performance of your OpenTelemetry setup.
+   - Regularly optimize your instrumentation based on actual usage and needs.
+4. **Knowledge Sharing**:
+   - Encourage knowledge sharing within your organization about OpenTelemetry best practices.
+   - Consider contributing your experiences back to the OpenTelemetry and Odigos communities.
+
+### Role-Specific Tips
+
+### For Developers:
+
+- Familiarize yourself with OpenTelemetry semantic conventions.
+- Use Odigos's auto-instrumentation but be prepared to add custom instrumentation when necessary.
+- Integrate observability into your development process, considering it from the design phase.
+
+### For Operations Teams:
+
+- Learn how to effectively use OpenTelemetry data in your monitoring and alerting systems.
+- Understand how to troubleshoot OpenTelemetry instrumentation issues.
+- Develop runbooks for common OpenTelemetry-related operational tasks.
+
+### For Managers:
+
+- Understand the long-term benefits of OpenTelemetry to justify the transition.
+- Allocate sufficient resources and time for the transition process.
+- Foster a culture of observability within your teams.
+
+> Pro Tip: Create a central repository of lessons learned, tips, and tricks specific to your organization's OpenTelemetry implementation. This knowledge base will be invaluable as you scale your observability efforts.
+
+By following these best practices and tips, you can significantly smooth your transition to OpenTelemetry and maximize the benefits of using Odigos in your observability strategy.
+
+## Conclusion and Next Steps
+
+### Recap of Key Points
+
+1. **OpenTelemetry Benefits**:
+   - Vendor neutrality and flexibility
+   - Standardized instrumentation across the entire stack
+   - Reduced costs and improved efficiency
+   - Future-proof observability infrastructure
+2. **Transition Process**:
+   - Involves challenges such as learning curves and code refactoring
+   - Requires a phased approach, from assessment to full implementation
+   - Can be significantly simplified with tools like Odigos
+3. **Odigos Advantages**:
+   - Automated instrumentation
+   - Unified configuration
+   - Seamless integration with existing systems
+   - Reduced learning curve and faster implementation
+4. **Best Practices**:
+   - Start small and iterate
+   - Involve all stakeholders
+   - Provide adequate training
+   - Continuously monitor and optimize
+
+### The Future of OpenTelemetry
+
+As we look ahead, several trends are shaping the future of OpenTelemetry:
+
+1. **Increased Adoption**: As more organizations recognize the benefits, OpenTelemetry is likely to become the de facto standard for observability.
+2. **Enhanced AI/ML Integration**: Expect to see more AI-driven analysis tools built on top of OpenTelemetry data, providing deeper insights and predictive capabilities.
+3. **Expanded Scope**: While currently focused on traces, metrics, and logs, OpenTelemetry may expand to cover more aspects of observability and monitoring.
+4. **Deeper Cloud Integration**: Major cloud providers are likely to offer more native support for OpenTelemetry, simplifying implementation in cloud environments.
+5. **Continuous Improvement**: The open-source nature of OpenTelemetry ensures ongoing enhancements and optimizations driven by a global community of contributors.
+
+### Next Steps for Your Organization
+
+To get started with your transition to OpenTelemetry using Odigos:
+
+1. **Assess Your Current State**:
+   - Evaluate your existing observability tools and practices
+   - Identify key pain points and areas for improvement
+2. **Build Internal Knowledge**:
+   - Provide OpenTelemetry training to key team members
+   - Set up a small-scale test environment to experiment with OpenTelemetry and Odigos
+3. **Develop a Transition Plan**:
+   - Create a phased approach tailored to your organization's needs
+   - Set clear goals and metrics for each phase of the transition
+4. **Start Small**:
+   - Begin with a pilot project on a non-critical system
+   - Use this as an opportunity to learn and refine your approach
+5. **Leverage Odigos**:
+   - Implement Odigos to automate much of the instrumentation process
+   - Utilize its features to simplify configuration and management
+6. **Iterate and Expand**:
+   - Gradually expand your OpenTelemetry implementation across your infrastructure
+   - Continuously gather feedback and optimize your approach
+7. **Foster a Culture of Observability**:
+   - Encourage teams to leverage the rich data provided by OpenTelemetry
+   - Integrate observability considerations into your development and operations processes
+
+Remember, the transition to OpenTelemetry is not just a technical change, but a strategic move towards more efficient, flexible, and future-proof observability. With careful planning, the right tools like Odigos, and a commitment to best practices, your organization can successfully navigate this transition and reap the long-term benefits of OpenTelemetry.
+
+## Further Reading
+
+For those seeking more in-depth information on specific topics related to OpenTelemetry and observability:
+
+1. "Mastering Distributed Tracing" by Yuri Shkuro - A comprehensive guide to distributed tracing, including OpenTelemetry concepts.
+2. "Cloud Native Observability with OpenTelemetry" by Alex Boten - Provides detailed insights into implementing OpenTelemetry in cloud-native environments.
+3. OpenTelemetry Official Documentation: [https://opentelemetry.io/docs/](https://opentelemetry.io/docs/)
+4. Odigos GitHub Repository: [https://github.com/keyval-dev/odigos](https://github.com/keyval-dev/odigos)
+5. "Observability Engineering" by Charity Majors, Liz Fong-Jones, and George Miranda - Offers a broader perspective on observability practices and culture.
+6. CNCF Webinar Series: [https://www.cncf.io/webinars/](https://www.cncf.io/webinars/) - Often features talks on OpenTelemetry and related technologies.
+7. "Distributed Systems Observability" by Cindy Sridharan - A holistic approach to observability in distributed systems.
+
+---
+
+## Overcoming OpenTelemetry Challenges in Microservices Without the Headache
+
+Source: https://odigos.io/blog/otel-challenges
+
+## **The Reality of OpenTelemetry in Microservices**
+
+Getting observability right in a microservices world isn’t optional-it’s table stakes. OpenTelemetry (OTel) has become the standard for capturing traces, metrics, and logs, but actually implementing it? That’s where teams hit roadblocks.
+
+Instrumentation overhead, performance trade-offs, and managing huge volumes of telemetry data are some of the biggest friction points. Too much data slows everything down. Too little, and you’re flying blind. Finding the right balance is the challenge.
+
+This guide covers the real-world obstacles developers face when rolling out OpenTelemetry in microservices and the solutions that make it easier-including zero-code instrumentation, eBPF-based tracing, and smarter data collection strategies.
+
+## **Why is OpenTelemetry Harder in Microservices?**
+
+Microservices complicate observability. Unlike monolithic applications, where logs and traces live in one place, distributed services create an explosion of telemetry data across multiple runtimes, environments, and dependencies.
+
+Three major challenges tend to come up:
+
+| Challenge                    | Why It Happens                                                            | Impact                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| **Instrumentation Overhead** | Manual SDK-based tracing requires modifying application code.             | Increases developer workload and slows adoption.                             |
+| **Data Volume & Management** | Each microservice generates massive amounts of logs, traces, and metrics. | Leads to high storage costs, slow queries, and noise that hides real issues. |
+| **Performance Overhead**     | Poorly optimized tracing adds latency and consumes system resources.      | Slows down applications, reducing efficiency and responsiveness.             |
+
+Let’s break these down and look at how to solve them.
+
+## **Challenge \#1: Instrumentation Without Losing Your Mind**
+
+### The Problem:
+
+Traditional OpenTelemetry instrumentation requires developers to manually inject tracing code into their applications. Every new microservice needs custom instrumentation, adding friction to development.
+
+### The Fix: Zero-Code Instrumentation
+
+Instead of modifying every service manually, zero-code instrumentation automatically detects and traces applications without requiring changes to the codebase.
+
+We designed [Odigos](https://odigos.io/) as a zero-code solution so that you can:
+
+- **Instantly enable tracing** without modifying application code.
+- **Autodetect programming languages** and apply the right instrumentation automatically.
+- **Reduce developer effort** while ensuring consistent observability across services.
+
+### **How It Works in Practice**
+
+Here’s the process flow when zero-code instrumentation is deployed:
+
+![](/assets/blogs/otel-challenges/image1.png)
+
+Instead of developers adding tracing logic to each microservice, the instrumentation layer detects services and attaches telemetry automatically. This eliminates time-consuming manual work and makes scaling OpenTelemetry much easier.
+
+![](/assets/blogs/otel-challenges/image2.png)
+
+When to Use It: If your team is spending too much time on manual OpenTelemetry SDK implementation or struggling with polyglot environments (Go, Python, Java, Node.js, etc.), zero-code instrumentation is the answer.
+
+## **Challenge \#2: Managing Telemetry Data Without Drowning in It**
+
+### The Problem:
+
+Microservices generate a massive volume of telemetry data. If you collect everything, costs explode, and queries become sluggish. But if you collect too little, you lose critical insights.
+
+### The Fix: Smarter Data Sampling & Aggregation
+
+Instead of collecting every trace and log, use adaptive sampling and intelligent aggregation to keep only what matters.
+
+| Strategy            | How It Works                                                            | Why It Helps                                |
+| ------------------- | ----------------------------------------------------------------------- | ------------------------------------------- |
+| Head-Based Sampling | Decides whether to trace a request at the start.                        | Reduces load but may miss important traces. |
+| Tail-Based Sampling | Keeps traces only if an anomaly occurs (like errors or latency spikes). | Captures only the most valuable data.       |
+| Dynamic Sampling    | Adjusts sampling rates based on service load and request types.         | Ensures better coverage with less noise.    |
+
+### **Example: Tail-Based Sampling in Action**
+
+![](/assets/blogs/otel-challenges/image3.png)
+
+Instead of collecting every request, only slow or failing requests get traced, keeping telemetry data meaningful and manageable.
+
+![](/assets/blogs/otel-challenges/image4.png)
+
+Tail-based or adaptive sampling is especially helpful as you start to see storage costs are getting out of hand, queries slowing down, and you’re drowning in unhelpful data.
+
+## **Challenge \#3: Getting Tracing Without Hurting Performance**
+
+### The Problem:
+
+Adding observability shouldn’t slow down your application. But if you’re using traditional tracing methods, you’re injecting latency and CPU overhead into every request.
+
+### The Fix: eBPF-Based Tracing
+
+Instead of tracing at the application level, eBPF (Extended Berkeley Packet Filter) traces at the kernel level with almost zero overhead.
+
+Here’s why eBPF-based tracing provides a significant advantage:
+
+- **No application modifications**-traces without injecting SDKs.
+- **Low latency**-traces syscalls directly, minimizing performance impact.
+- **Deep insights**-captures system-level data without disrupting application code.
+
+### **Quick View of How eBPF Tracing Works**
+
+![](/assets/blogs/otel-challenges/image5.png)
+
+(source: https://ebpf.io/what-is-ebpf/)
+
+With eBPF, telemetry data is collected passively without modifying applications, ensuring minimal performance hit while gaining deep visibility into system behavior.
+
+![](/assets/blogs/otel-challenges/image6.png)
+
+eBPF-based tracing is optimal because applications shouldn’t have to incur tracing overhead but still need full observability, Using eBPF gives insights into query-level and code-level activity gives the context we need to really have end-to-end observability.
+
+![](/assets/blogs/otel-challenges/image7.png)
+
+## **Making OpenTelemetry Work Without the Pain**
+
+Rolling out OpenTelemetry in a microservices environment isn’t always smooth, but the right approach makes a huge difference. We’ve worked extensively with the open source community to build Odigos to solve these challenges.
+
+| Challenge                    | Best Fix                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------ |
+| **Manual Instrumentation**   | Zero-Code Instrumentation (automatic language detection, no SDK changes) |
+| **Overwhelming Data Volume** | Tail-Based & Dynamic Sampling (capture only critical traces)             |
+| **Performance Overhead**     | eBPF Tracing (low-latency kernel-level tracing)                          |
+
+With zero-code instrumentation, smart sampling, and eBPF-based tracing, teams can implement OpenTelemetry without the usual struggles-getting the visibility they need while keeping applications fast and scalable.
+
+For more hands-on OpenTelemetry insights, check out [Odigos' blog](https://odigos.io/blog) or dive into the [OpenTelemetry documentation](https://opentelemetry.io/docs/).
+
+---
+
+## Managing collectors on K8s – why we chose the OpenTelemetry collector for Odigos
+
+Source: https://odigos.io/blog/collectors-overview
+
+As organizations deploy and maintain modern applications and microservices, Observability technologies (eBPF & OpenTelemetry) are needed to expose their health & security. If you’re using these technologies for Tracing, Metrics or Logs in a production software system, you’re either sending telemetry data directly from you application or using a collector.
+
+Configuring OpenTelemetry to send traces and metrics directly from your app to your desired destination has the benefit of not running any additional software (no ports to configure, no processes to manage). The downside is that your application must manage the entire workload of sending your data in a production environment (running resource-intensive services), as well as the **need to continuously configure and update your code** as you scale (or add new applications).
+
+Offloading the job of sending data directly from the application can be a huge help. Deploying collectors allows you to process telemetry and send it out to any destination. The OpenTelemetry Collector, an open-source project backed by the CNCF, offers a vendor-agnostic implementation that uses pipelines to receive, process, and export trace data. It is a stand-alone service chaining together plugins to form an observability pipeline that buffers data, scrubs it, and sends to one or more open-source or commercial back-ends.
+
+The OpenTelemetry Collector is configurable. When tasked with deploying Collectors in a production environment, Devops team will find two repositories containing dozens of modules, with many integration possibilities. The problem is that it’s hard to know what module will best fit your changing requirements. Without proper implementation and continuous configuration of your collectors, observability tools will be limited at best and many times ineffectual
+
+![Collectors Figure 1](/assets/blogs/collectors-overview/collectors_figure1.png)
+
+There are solutions out there. Many of the large commercial observability tool vendors provide different open-source solutions that will ease implementation. Often, implementation will include vendor specific API’s that are not compatible with other tools, further complicating any efforts of working with more than one vendor.  
+Actual implementation and integration are still a lengthy process that requires knowledge and experience to get done right. It’s enough to take a quick look at the “getting started” pages of the different observability vendors out there to see how complicated this integration still is.
+
+Odigos, an open-source observability control plane just released in July ’22, provides auto-instrumentation as well as a collector management capabilities. The platform is actually comprised of four fundamental parts: an Instrumentor, Scheduler, Auto-scaler & the UI.
+
+![Collectors Figure 2](/assets/blogs/collectors-overview/collectors_figure2.png)
+
+This is the way it works:
+
+- First, Odigos **recognizes** the different programming languages used in each application
+- Then it **auto-instruments** each application using different (open-source) tools for each programming language
+- The **auto-scaler** deploys and configures the OpenTelemetry collectors
+- The **scheduler** assigns applications discovered by the instrumentor to the collector’s pipeline create by the auto-scaler
+- Finally, a **UI** provides a simple interface to manage the whole process
+
+Odigos’s advantages include its easy installation and its ability to continuously adapt as well as scale to size. The auto-instrumentation will allow Odigos to recognize new application the minute it starts running on your system, and automatically deploy the appropriate collectors. **No changes to the code, no developer action needed and no Devops team required!** A new application will produce signals without any additional interventions needed.
+
+## Summary
+
+Integrating Observability Tools require companies to make several changes and configurations to their applications and infrastructure. Current solutions still demand tech teams to continuously deploy, configure and update collectors, as well as learn SDK’s, add auto-instrumentation, change application code – all requiring new and different developer skillsets.
+
+With the latest advancements in observability technologies (eBPF & OpenTelemetry), companies can now build their observability pipeline with complete end-to-end open-source solution. Using open-source (Jaeger, Grafana, etc.) or commercial back-ends together with the open-source Odigos observability control plane, companies can get full end-to-end visibility. Ultimately, Odigos provides a simple installation that allows companies to get traces, metrics, and logs within minutes – and takes care of managing (configuring, deploying and scaling) your OpenTelemetry collectors.
+
+---
+
+## Building Dynamic Data Streams with OpenTelemetry: Smarter Telemetry Routing with a Custom Connector
+
+Source: https://odigos.io/blog/building-dynamic-data-streams-with-opentelemetry
+
+## Introduction – Why We Developed the Ability for Users to Create More Than One Data Stream
+
+Before we introduced the **Data Streams** concept, Odigos supported a fairly standard observability setup — all telemetry data (traces, metrics, and logs) from every source was sent to one or more destinations. Each new destination you added simply received the same full stream of data.
+
+For example, if you configured both **Datadog** and **ClickHouse** as destinations, Odigos would duplicate all telemetry and send it to both.
+
+This approach worked, but it lacked flexibility. Many of our users wanted finer control — for instance, sending telemetry from one set of services (what we call _sources_ in Odigos) to Datadog, while routing another set to ClickHouse.
+
+Without native support for this, customers were forced to implement **complex, manual routing logic** to filter data before it reached the backend. These setups were difficult to maintain and inefficient, as filtering happened very late in the pipeline.
+
+Our users clearly needed a simpler, configuration-based way to **group sources and control where each group’s telemetry goes**. That’s how the idea of **Data Streams** was born — a dynamic, human-readable solution that allows users to define routing at a high level without writing custom logic.
+
+When exploring how to implement this, we looked into the **OpenTelemetry Collector** for a built-in solution. The `routingconnector` seemed like the perfect fit at first — but it quickly became clear that it wasn’t.
+
+Building dynamic OTTL (OpenTelemetry Transformation Language) condition tables for large numbers of services turned out to be painful. The conditions needed to identify a service — such as its name, namespace, or workload kind — became unreadable and hard to maintain.
+
+In some cases, the same service even needed to send data to **multiple destinations**, which made the configuration nearly impossible to express cleanly. Debugging these setups was a nightmare.
+
+Performance was another problem. For every span, the `routingconnector` had to iterate through all condition sets — and in large customer environments, this could mean hundreds or thousands of checks per signal. Clearly, this approach wouldn’t scale.
+
+We realized we needed a **custom OpenTelemetry connector** purpose-built for Odigos — one that could:
+
+- Understand Odigos’s configuration model directly
+- Route telemetry to the correct data stream in **O(1) time**
+- Produce configurations that were **human-readable and easy to debug**
+
+This decision completely changed how Odigos manages telemetry pipelines and led us to design a **three-layer data stream architecture**, which I’ll describe in the next section.
+
+## The 3-Layer Pipeline Architecture
+
+Why did Odigos even need multiple pipeline layers?
+
+We wanted a design where each layer has a **clear responsibility** — routing, processing, and exporting — isolated from the others.
+
+This separation allows every layer to be reused independently in different scenarios.
+
+For example, the **destination pipeline** is responsible for holding the configuration for a given backend.
+
+Multiple data streams can forward telemetry to the same destination pipeline, which means we can **reuse configurations** instead of duplicating them for each stream.
+
+Similarly, processors can be placed at any level — globally in the root layer, specifically per data stream, or at the destination — depending on whether we want them to affect all telemetry or just a subset.
+
+In practice, the architecture is made up of **three layers**:
+
+1. **Root Signal Pipeline** (e.g., `traces/in`)
+
+   This is the entry point for all incoming telemetry. Every trace first lands here.
+
+   Its exporter is the **OdigosRouterConnector**, which decides which data stream pipeline to forward each trace to, based on user configuration defined in the Odigos UI or via CRDs.
+
+2. **Datastream Layer** (e.g., `datastream/teamB`)
+
+   This is a dynamically generated pipeline created for each data stream.
+
+   Here, the **router connector** acts as a receiver and forwards telemetry to the appropriate **destination pipeline** using the built-in **forwardconnector**, a simple OpenTelemetry connector responsible only for sending data from one pipeline (exporter) to another (receiver).
+
+3. **Destination Layer**
+
+   The final step before telemetry leaves the Odigos system.
+
+   Each destination pipeline contains backend-specific configuration (Odigos currently supports more than **80 destinations**) and any additional processors needed before export.
+
+**How the O(1) Lookup Works**
+
+To make routing both **fast and scalable**, we built a **Signal Routing Map** — an in-memory structure that indexes all sources and namespaces by a unique `SourceKey` and provides routing information per signal type.
+
+For each incoming telemetry item — for example, a trace — we construct the key from its attributes (namespace, workload kind, service name, etc.).
+
+The connector then performs a **direct key lookup**, instantly finding the relevant data stream pipelines in **O(1) time**, regardless of how many streams or sources are configured.
+
+## Challenges and Lessons Learned
+
+Building the connector from scratch was far from trivial.
+
+The OpenTelemetry Collector’s internal design is powerful but complex, and the lack of detailed documentation made it difficult to make our connector behave exactly like a native one.
+
+Although we already had experience developing custom processors, receivers, and exporters, this was the **first time we built a custom connector** — and it came with a unique set of challenges.
+
+We needed to balance **user flexibility** with **runtime performance**.
+
+To achieve that, we decided to **build the routing maps during connector initialization**, before any spans were processed.
+
+At runtime, the connector simply uses these maps for constant-time lookups, avoiding any heavy computation or configuration parsing while data is flowing.
+
+Earlier designs involved more complex data structures and re-parsing configurations — which we quickly realized would hurt performance.
+
+Debugging the system during development was another tough part.
+
+It wasn’t always clear where a specific span was being routed, so we added **debug logging** directly into the connector and built a **debug exporter** to help trace what was happening internally.
+
+We also exposed **routing metrics in the Odigos UI**, allowing both users and our team to easily see how much data flowed through each destination pipeline — making it clear if data wasn’t being routed as expected.
+
+**Configuration management** was also challenging.
+
+When users add or remove data streams, we need to handle these changes dynamically without losing telemetry.
+
+We spent significant effort minimizing pipeline reloads and adding **retry logic** to ensure no data is lost if the collector temporarily becomes unavailable during reconfiguration.
+
+In the process, we learned several important lessons:
+
+1. **Keep configuration human-readable** — no one wants to debug 200-line OTTL conditions.
+2. **Sometimes building your own component is the right choice** when existing tools can’t scale to your needs.
+
+## What We Achieved and Where We’re Heading
+
+After introducing the **Data Streams** feature, users can now route telemetry with **complete flexibility** — different sources, different destinations, and no manual filters required.
+
+This capability unlocks a variety of powerful use cases:
+
+1. **Cost optimization** – Route lower-priority services (like internal or back-office apps) to more cost-effective destinations such as Parquet files in S3.
+2. **Targeted processing** – Apply custom processors (e.g., sampling, enrichment) to only a subset of services.
+3. **Gradual migration** – Test new destinations on specific services before committing to a full rollout.
+4. **Organizational segmentation** – Split telemetry based on teams, products, or environments for better control and visibility.
+
+Looking ahead, there’s still more to refine based on user feedback.
+
+Some existing **Odigos Actions** — another feature that allows users to perform transformations on telemetry in an abstracted way — still operate on the older global model, meaning each action is currently applied across all data streams.
+
+We’re working on updating this so that actions can be applied **per data stream**, along with improving pipeline reload behavior to make configuration changes **seamless and non-disruptive**.
+
+In the end, this journey of building the Data Streams feature taught us how far thoughtful architecture can take flexibility and performance together.
+
+It’s exciting to see how something that started as a limitation in the OpenTelemetry routing connector evolved into a core capability that makes observability simpler, faster, and smarter for Odigos users.
+
+---
+
+## Sending OpenTelemetry data to AWS S3
+
+Source: https://odigos.io/blog/sending-otel-to-s3
+
+In this blog post, we will show you how to generate and send OpenTelemetry data to Amazon Web Services S3 using Odigos.
+
+Since version v0.1.46, Odigos supports sending OpenTelemetry data to AWS S3. For the first time, you can use S3 to store your OpenTelemetry data, and build custom solutions on top of it.
+
+## Creating an S3 bucket
+
+First, you need to create an S3 bucket. You can do it using the [AWS Console](https://console.aws.amazon.com/s3) or using the [aws](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) command line tool. For example, to create a bucket named **otel-data** in the **us-east-1** region, run the following command:
+
+```console
+aws s3api create-bucket \
+--bucket otel-data \
+--region us-east-1
+```
+
+## Creating an EKS cluster
+
+Next, you need to create an EKS cluster. You can do it using the [AWS Console](https://console.aws.amazon.com/eks) or using the [eksctl](https://eksctl.io/) command line tool. For example, to create a cluster named **otel-cluster** in the **us-east-1** region, run the following command:
+
+```console
+eksctl create cluster \
+--name otel-cluster \
+--region us-east-1 \
+--version 1.24 \
+--nodegroup-name standard-workers \
+--node-type t3.medium \
+--nodes 3 \
+--nodes-min 1 \
+--nodes-max 4 \
+--managed
+
+eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=otel-cluster --approve
+```
+
+## Installing demo application
+
+For this demo, we will use the [emojivoto](https://github.com/BuoyantIO/emojivoto) application. You can install it by running the following command:
+
+```console
+kubectl apply -k github.com/odigos-io/opentelemetry-go-instrumentation/docs/getting-started/emojivoto
+```
+
+## Installing Odigos
+
+After installing the demo application, you need to install Odigos to send data to S3.
+The simplest way to install Odigos is via the helm chart by executing the following commands:
+
+```console
+helm repo add odigos https://odigos-io.github.io/odigos-charts/
+helm install my-odigos odigos/odigos --namespace odigos-system --create-namespace
+```
+
+## Configuring IAM and RBAC
+
+In order to send data to S3, Odigos needs to have the right permissions. Create a new IAM policy named **odigos-s3** with the following content:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:PutObjectAcl", "s3:GetObject", "s3:GetObjectAcl", "s3:DeleteObject"],
+      "Resource": ["arn:aws:s3:::otel-data", "arn:aws:s3:::otel-data/*"]
+    }
+  ]
+}
+```
+
+Next, you need to configure the IAM role to be used by Odigos. You can do it by creating a service account and attaching the IAM role to it (replace the account ID with your own):
+
+```console
+eksctl create iamserviceaccount \
+--name default \
+--namespace odigos-system \
+--cluster otel-cluster \
+--attach-policy-arn arn:aws:iam::123456789012:policy/odigos-s3 \
+--override-existing-serviceaccounts \
+--region=us-east-1 \
+--approve
+```
+
+## Sending data to S3
+
+The last step is to configure Odigos to send data to S3. This can be done easily by accessing the Odigos UI and creating a new AWS S3 destination. Make sure to specify the bucket name you created earlier.
+
+## Summary
+
+In this blog post, we showed you how to send OpenTelemetry data to AWS S3 using Odigos, an open-source observability control plane. Odigos supports more that 20 different destinations, including cloud providers like Azure and Google Cloud, as well as open-source solutions like Loki, Elasticsearch, and Prometheus.
+
+---
+
+## Metrics and Tools for Effective Observability and Distributed Tracing in Distributed Systems
+
+Source: https://odigos.io/blog/distributed-tracing
+
+### **Understanding Distributed Tracing**
+
+In the era of microservices, serverless architectures, and distributed systems, maintaining visibility into application performance has become increasingly complex. Traditional monitoring approaches, which work well in monolithic environments, fall short in providing comprehensive insights into modern distributed systems. This is where **distributed tracing** comes into play. By providing a clear picture of how requests flow through various services and components, distributed tracing empowers developers to diagnose performance bottlenecks, identify the root causes of errors, and optimize system performance.
+
+---
+
+### **What is Distributed Tracing?**
+
+Distributed tracing is a technique for monitoring and observing requests as they traverse through multiple services or components in a distributed system. Unlike traditional logging or tracing that captures operations within a single process, distributed tracing provides a comprehensive, end-to-end view across service boundaries.
+
+**Key Concepts of Distributed Tracing**:
+
+- **Traces**: A trace captures the entire journey of a request, from its entry point to its completion, as it moves across different services and components in a distributed system.
+- **Spans**: A span represents a single unit of work in a trace, such as an HTTP request, a function call, or a database query. Spans have a start time, a duration, and metadata, such as tags and logs, to provide context.
+  - **Root Span**: The first span in a trace, which represents the entry point of a request.
+  - **Child Span**: Represents subsequent operations triggered by the root span, forming a hierarchy.
+  - **Annotations and Logs**: Provide additional information or events occurring at a specific point in a span’s lifecycle, such as errors or checkpoints.
+- **Parent-Child Relationships**: Spans are organized hierarchically, with parent-child relationships indicating how operations are nested or sequenced.
+- **Trace Context Propagation**: Ensures trace continuity across service boundaries by carrying trace-related metadata (e.g., trace ID, span ID) with each request.
+
+---
+
+### **Why Distributed Tracing is Important**
+
+As applications shift from monolithic to microservices architectures, the ability to observe and understand complex interactions across distributed systems becomes critical. Some key reasons why distributed tracing is important include:
+
+1. **Debugging and Troubleshooting**: In distributed systems, debugging is more challenging because a single request might pass through several services. Distributed tracing helps developers see the entire path, pinpointing where errors or performance bottlenecks occur.
+2. **Performance Optimization**: Distributed tracing provides granular insights into the latency of each service or component involved in processing a request. This enables teams to identify and optimize slow operations.
+3. **Improved Reliability and User Experience**: With distributed tracing, teams can identify and proactively address issues that impact user experience, such as slow page loads, timeouts, or service unavailability.
+4. **Enhanced Service Dependencies Understanding**: Distributed tracing helps map dependencies between services, making it easier to understand how services interact and depend on one another. This is crucial for change management, impact analysis, and architecture reviews.
+5. **Real-World Examples:**
+   - **Netflix** uses distributed tracing extensively to monitor their microservices architecture, allowing them to scale efficiently and handle high volumes of traffic while maintaining performance.
+   - **Uber** uses Jaeger, a popular distributed tracing tool, to optimize latency and improve fault tolerance across their global services.
+
+---
+
+### **How Distributed Tracing Works**
+
+To understand how distributed tracing works, it's essential to grasp the underlying architecture and flow:
+
+1. **Instrumentation**:
+   - Instrumentation involves adding code to the application to generate spans for key operations (e.g., HTTP requests, database queries).
+   - Instrumentation libraries (e.g., OpenTelemetry SDK) automatically capture spans and propagate trace context across service boundaries.
+2. **Trace Context Propagation**:
+   - Trace context includes metadata like trace ID, span ID, and sampling flags. It is typically propagated through HTTP headers (e.g., `traceparent` in W3C Trace Context) or messaging protocols.
+3. **Collection and Export**:
+   - Collected spans are exported to a backend system for storage, analysis, and visualization. Exporters and agents (e.g., Jaeger Agent) are used to forward spans to backends.
+4. **Storage and Analysis**:
+   - A tracing backend (e.g., Jaeger, Datadog APM) stores traces in a database (e.g., Elasticsearch, Cassandra) and provides a UI to visualize traces, analyze performance, and debug issues.
+5. **Visualization**:
+   - Visualizing traces helps developers see the flow of requests, identify bottlenecks, and understand service dependencies.
+
+**Architecture Example**:
+
+- A user initiates a request that hits a frontend service. The frontend service generates a root span.
+- The frontend service calls a backend service. The trace context is propagated, and a new child span is created in the backend service.
+- The backend service queries a database. Another child span is created for the database query.
+- The spans are collected and sent to a tracing backend like Jaeger, where they are stored and visualized as a single trace.
+
+---
+
+### **Code Examples: Trace Context Propagation Across Multiple Languages**
+
+To better illustrate trace context propagation, here's how it's implemented in several programming languages using **OpenTelemetry**:
+
+1. **Python (Using OpenTelemetry)**
+
+   ```python
+   from opentelemetry import trace
+   from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+   from opentelemetry.sdk.trace import TracerProvider
+   from opentelemetry.sdk.trace.export import BatchSpanProcessor
+   from opentelemetry.instrumentation.requests import RequestsInstrumentor
+
+   # Set up tracing
+   trace.set_tracer_provider(TracerProvider())
+   tracer = trace.get_tracer(__name__)
+
+   # Configure Jaeger exporter
+   jaeger_exporter = JaegerExporter(
+       agent_host_name='localhost',
+       agent_port=6831,
+   )
+
+   # Add Span processor
+   span_processor = BatchSpanProcessor(jaeger_exporter)
+   trace.get_tracer_provider().add_span_processor(span_processor)
+
+   # Instrument requests library for automatic context propagation
+   RequestsInstrumentor().instrument()
+
+   # Example usage
+   with tracer.start_as_current_span("example-request"):
+       # Your application logic here
+       print("Tracing an example request...")
+
+   ```
+
+2. **Java (Using OpenTelemetry)**
+
+   ```java
+   import io.opentelemetry.api.GlobalOpenTelemetry;
+   import io.opentelemetry.api.trace.Span;
+   import io.opentelemetry.api.trace.Tracer;
+   import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
+   import io.opentelemetry.sdk.OpenTelemetrySdk;
+   import io.opentelemetry.sdk.trace.SdkTracerProvider;
+   import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
+
+   public class DistributedTracingExample {
+
+       public static void main(String[] args) {
+           // Set up Jaeger Exporter
+           JaegerGrpcSpanExporter jaegerExporter = JaegerGrpcSpanExporter.builder()
+                   .setEndpoint("")
+                   .build();
+
+           // Set up OpenTelemetry Tracer
+           SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+                   .addSpanProcessor(BatchSpanProcessor.builder(jaegerExporter).build())
+                   .build();
+
+           OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
+           Tracer tracer = GlobalOpenTelemetry.getTracer("example-tracer");
+
+           // Example Span
+           Span span = tracer.spanBuilder("example-span").startSpan();
+           span.setAttribute("http.method", "GET");
+           span.addEvent("Starting example span...");
+
+           // Application logic here
+           System.out.println("Tracing with OpenTelemetry in Java!");
+
+           span.end();
+       }
+   }
+
+   ```
+
+3. **Node.js (Using OpenTelemetry)**
+
+   ```jsx
+   const opentelemetry = require('@opentelemetry/api');
+   const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+   const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
+   const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
+
+   // Set up tracing
+   const provider = new NodeTracerProvider();
+   const exporter = new JaegerExporter({
+     endpoint: '',
+   });
+
+   provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+   provider.register();
+
+   const tracer = opentelemetry.trace.getTracer('example-tracer');
+
+   // Example usage
+   const span = tracer.startSpan('example-span');
+   span.setAttribute('example', 'Node.js Distributed Tracing Example');
+
+   console.log('Distributed tracing in Node.js with OpenTelemetry!');
+
+   span.end;
+   ```
+
+### **Popular Distributed Tracing Tools and Frameworks**
+
+To implement distributed tracing, developers have a variety of tools and frameworks at their disposal. Here’s a more detailed look at some of the most popular ones:
+
+1. **Jaeger**:
+   - Jaeger, developed by Uber, is a popular open-source tracing system. It supports advanced features like adaptive sampling, baggage propagation, and service dependency graphs.
+   - **Pros**: Scalable, flexible, and integrates well with cloud-native environments like Kubernetes.
+   - **Cons**: May require significant setup and tuning for large-scale deployments.
+2. **OpenTelemetry**:
+   - OpenTelemetry is a unified framework for collecting traces, metrics, and logs. It is quickly becoming the de facto standard for observability.
+   - **Pros**: Vendor-neutral, wide language support, strong community backing.
+   - **Cons**: Still evolving, and some components are in the experimental or alpha stage.
+3. **Datadog APM**:
+   - A commercial tracing solution that provides distributed tracing as part of its broader Application Performance Monitoring (APM) suite.
+   - **Pros**: Rich UI, advanced analytics, and strong integration with other observability tools.
+   - **Cons**: Cost can be high for large environments.
+4. **AWS X-Ray**:
+   - AWS X-Ray is a managed service for tracing applications running on AWS.
+   - **Pros**: Seamless integration with AWS services, easy setup for AWS-based environments.
+   - **Cons**: Limited to AWS, less flexible than open-source solutions.
+5. **Odigos**:
+   - **Odigos** is a relatively new entrant in the distributed tracing ecosystem that aims to simplify observability by offering **auto-instrumentation** capabilities. With Odigos, developers can get tracing data without modifying their application code, making it a non-intrusive solution for adding observability to existing applications.
+   - **Pros**: Automatic instrumentation reduces the need for manual code changes, supports various tracing backends, and provides a quick way to gain visibility into distributed systems.
+   - **Cons**: As a newer tool, it may still be evolving in terms of community support and integrations.
+
+Each of these tools offers unique features and benefits. Selecting the right tool depends on your organization’s requirements, tech stack, and existing infrastructure.
+
+### **Implementing Distributed Tracing in Your Application**
+
+Implementing distributed tracing involves several steps, from setting up the instrumentation libraries to configuring a backend. Here’s a more detailed implementation guide using **OpenTelemetry**:
+
+1. **Set Up OpenTelemetry SDK**:
+
+   Install the SDK and required exporters. For example, to use OpenTelemetry with Jaeger in a Python application:
+
+   ```bash
+   pip install opentelemetry-sdk opentelemetry-exporter-jaeger
+   ```
+
+2. **Initialize Tracer and Configure Exporters**:
+
+   Set up the tracer provider and configure an exporter to send spans to the backend:
+
+   ```python
+
+   from opentelemetry import trace
+   from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+   from opentelemetry.sdk.trace import TracerProvider
+   from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+   # Set up tracing
+   trace.set_tracer_provider(TracerProvider())
+   tracer = trace.get_tracer(__name__)
+
+   # Configure Jaeger exporter
+   jaeger_exporter = JaegerExporter(
+       agent_host_name='localhost',
+       agent_port=6831,
+   )
+
+   # Add Span processor
+   span_processor = BatchSpanProcessor(jaeger_exporter)
+   trace.get_tracer_provider().add_span_processor(span_processor)
+
+   ```
+
+3. **Instrument Code**:
+
+   Instrument your application to create spans for critical operations:
+
+   ```python
+   python
+   Copy code
+   with tracer.start_as_current_span("example-request"):
+       # Application logic here
+       print("Tracing an example request...")
+
+   ```
+
+4. **Test and Validate**:
+
+   Validate the instrumentation by triggering requests and checking the tracing backend for the generated traces.
+
+5. **Deploy and Monitor**:
+
+   Deploy the instrumented application to your environment and monitor the trace data to gain insights into application performance.
+
+---
+
+### **Best Practices for Effective Distributed Tracing**
+
+To make the most out of distributed tracing, follow these best practices:
+
+1. **Start Small and Expand Gradually**: Begin by instrumenting the most critical services or workflows, and gradually expand to cover more services as needed. This iterative approach helps in managing performance overhead and complexity.
+2. **Leverage Automated Instrumentation**: Where possible, use automated instrumentation provided by frameworks or libraries to reduce manual effort. OpenTelemetry, for example, offers automatic instrumentation for popular libraries like Flask, Spring, and Express. Tools like **Odigos** can further simplify this by automatically instrumenting your applications with minimal changes.
+3. **Combine Tracing with Other Observability Signals**: Integrate traces with logs and metrics to provide a more comprehensive view of the system’s health. Many tools offer this integration natively or through plugins.
+4. **Regularly Review and Optimize Sampling Rates**: Regularly review the sampling rates and adjust them based on the application's needs. For example, during an incident or for critical services, increase the sampling rate temporarily to gather more data.
+5. **Train and Enable Teams**: Make sure your development and operations teams are trained in using tracing tools effectively. Regular training sessions, documentation, and knowledge sharing can enhance the overall observability strategy.
+6. **Consider Performance Impacts**: Understand that distributed tracing can add overhead to applications. Use techniques like adaptive sampling, async processing of traces, and minimizing instrumentation in performance-critical paths to manage the impact.
+7. **Secure Your Tracing Data**: Be mindful of sensitive data being captured in traces. Use data redaction, encryption, and access controls to protect trace data in transit and at rest.
+
+---
+
+### **Challenges in Distributed Tracing**
+
+- **Tooling and Vendor Lock-In**: With several distributed tracing tools available, there's a risk of vendor lock-in, especially with commercial solutions.
+  - **Solution**: Prefer open standards like OpenTelemetry to avoid vendor lock-in and ensure flexibility.
+- **Inter-Service Communication Complexity**: As the number of microservices grows, maintaining context propagation and instrumentation consistency becomes harder.
+  - **Solution**: Use sidecars or middleware to handle context propagation uniformly across services.
+- **Data Management Challenges**:
+- Distributed tracing generates a significant amount of data, which can lead to storage and cost management issues.
+- **Solution**: Implement data retention policies, sampling strategies, and data aggregation to balance observability needs with resource constraints.
+
+---
+
+A comprehensive observability strategy integrates distributed tracing with metrics, logs, and other observability data to provide a unified view of system health. Here’s how to achieve that:
+
+1. **Correlate Traces with Logs and Metrics**:
+
+- Enable correlation by embedding trace IDs in logs and using the same trace context across tracing and metric systems.
+
+2. **Automate Incident Response**:
+
+- Leverage observability data to automate alerting and incident response. For example, when latency crosses a threshold, automatically trigger alerts and correlate trace data to suggest possible root causes.
+
+3. **Build Dashboards and Reports**:
+
+- Use observability data to create dashboards and reports that provide insights into service performance, reliability, and user experience.
+
+### **How to Choose the Right Distributed Tracing Tool for Your Needs**:
+
+1. **Understand Your Environment Compatibility**:
+
+- Start by assessing whether your environment is cloud-native, hybrid, or on-premises. Consider your current infrastructure, microservices setup, deployment methods, and potential multi-cloud or edge computing requirements.
+- **Key Insight**: For cloud-native environments (e.g., AWS, Azure, Google Cloud), select tools like AWS X-Ray that provide deep integration, lower latency, and potential cost savings. However, be aware of potential vendor lock-in. For hybrid or multi-cloud environments, choose versatile tools like OpenTelemetry, which work across various environments and avoid lock-in.
+- **Trade-offs**: Native tools may offer better performance but can limit flexibility if you decide to change platforms. Vendor-agnostic tools provide more flexibility but may require additional setup and configuration.
+- **Next Steps**: Create a compatibility matrix that aligns your environment's specific needs with the capabilities of various tools. Include integration points, supported languages, frameworks, and potential trade-offs.
+
+2. **Evaluate Ease of Integration**:
+
+- Analyze the integration process for each tool with your current tech stack. Consider factors like API compatibility, SDK availability, support for multiple languages, and frameworks.
+- **Key Insight**: Tools like Odigos offer auto-instrumentation, reducing manual setup and minimizing risk in large or frequently updated codebases. This is particularly valuable for organizations looking to save engineering time and avoid configuration errors.
+- **Integration Considerations**: Understand the long-term maintenance effort post-integration. Some tools may require regular updates or adjustments to stay compatible with evolving systems.
+- **Next Steps**: Conduct a pilot integration with 2-3 services to assess the time and effort needed. Document potential challenges and evaluate the risk of scaling the integration across your entire system.
+
+3. **Assess the Feature Set**:
+
+- Identify and prioritize the key features that align with your observability goals. Categorize them into "Core Features" (must-have) and "Advanced Features" (nice-to-have).
+- **Key Insight**: Opt for tools that offer full-stack observability by integrating tracing with logs, metrics, and profiling. This comprehensive approach allows for better cross-data correlation and faster issue resolution.
+- **Emerging Features**: Consider cutting-edge capabilities like AI-driven root cause analysis, service dependency mapping, or real-time user experience monitoring, which could provide a competitive advantage.
+- **Next Steps**: Develop a comparison table that scores tools against your feature requirements. This visual tool will help you quickly identify the strengths and weaknesses of each option.
+
+4.  Examine Community and Support\*\*:
+
+- Evaluate both community and vendor support available for each tool. Join relevant forums, Slack channels, and review the quality and frequency of documentation updates.
+- **Key Insight**: Open-source tools like OpenTelemetry often have strong community support, frequent updates, and extensive documentation, making them valuable for customization and troubleshooting. Vendor-specific tools, such as Datadog, may offer more direct support but at a cost.
+- **Metrics for Evaluation**: Use metrics like the number of contributors, frequency of updates, and responsiveness in community forums to gauge the strength and sustainability of support.
+- **Next Steps**: Engage with the community by participating in discussions or asking questions to measure responsiveness and the level of expertise. Consider testimonials or case studies where community support has made a significant difference.
+
+5. **Analyze Cost and Scalability**:
+
+- Perform a Total Cost of Ownership (TCO) analysis that includes upfront costs, ongoing fees, infrastructure requirements, data storage, and human resources for maintenance.
+- **Key Insight**: Different pricing models (e.g., per host, per usage, flat rate) can significantly impact costs as you scale. Commercial solutions like Datadog APM might offer robust features but can become expensive. In contrast, self-hosted options might require more internal resources but provide cost benefits in the long run.
+- **Cost Modeling Framework**: Use a framework that considers all potential costs, including hidden ones like data egress fees, training, or extended downtime during implementation.
+- **Next Steps**: Create a cost-benefit analysis comparing several tools, factoring in both immediate expenses and future scalability. Include growth projections to understand the long-term financial impact. Refer to benchmark data or real-world case studies to visualize potential financial outcomes.
+
+Distributed tracing is indispensable for modern applications, providing deep insights into request flows and enabling faster troubleshooting and optimization. By leveraging the right tools, implementing best practices, and integrating distributed tracing into a broader observability strategy, developers can ensure their systems are reliable, performant, and scalable.
+
+If you're looking to simplify your observability setup without the hassle of code changes, explore how Odigos can help you achieve seamless integration and better insights.
+
+---
+
+## eBPF based instrumentation
+
+Source: https://odigos.io/blog/ebpf-instrumentation
+
+Extended Berkeley Packet Filter (eBPF) has become a cornerstone of modern Linux observability, evolving far beyond its origins as a simple packet-filtering mechanism. Originally developed as BPF at the University of California, Berkeley, for network packet capture, eBPF is now one of the most powerful and flexible instrumentation technologies in modern Linux systems, providing safe, real-time insights at the kernel level.
+
+The shift from classical BPF, limited to network packet filtering, to eBPF represents a revolutionary approach to system observability. With eBPF, engineers can run sandboxed programs within the Linux kernel, enabling efficient and safe kernel-level monitoring, tracing, and control without modifying kernel source code. This capability has transformed how Linux systems are observed and optimized in production environments across industries, from security monitoring in financial services to latency optimization in telecom.
+
+### Why eBPF?
+
+With minimal overhead and unparalleled flexibility, eBPF has become indispensable for use cases like network monitoring, security, and performance optimization. Unlike traditional monitoring tools that often require modifying kernel code or adding significant overhead, eBPF offers a unique, low-overhead way to observe systems directly from within the kernel.
+
+**Key Takeaways**:
+
+- **Efficient, Real-Time Kernel-Level Monitoring**: eBPF allows custom programs to run in the kernel with minimal performance impact.
+- **Broad Observability and Security**: eBPF covers a wide range of observability needs, from system calls to network traffic.
+- **Safe and Isolated Execution**: eBPF programs operate in a sandboxed environment, ensuring security without kernel code changes.
+
+## eBPF Architecture Fundamentals
+
+Understanding eBPF's architecture requires examining the interaction between user space and kernel space and the essential data structures that enable efficient data handling.
+
+### Kernel and User Space Interaction
+
+At its core, eBPF operates through a sophisticated interaction between user space and kernel space components. The architecture involves user space programs that load, manage, and communicate with eBPF programs within the kernel, facilitated by three main components:
+
+1. **User Space Programs**:
+   - **Purpose**: Load eBPF programs into the kernel, configure maps and settings, read and process collected data, and manage the lifecycle of eBPF programs.
+2. **Kernel Verifier**:
+   - **Role**: Ensures program safety by performing static analysis, preventing infinite loops, validating memory access, and checking stack bounds. This process guarantees the stability and security of programs running within the kernel.
+
+### Maps and Data Sharing
+
+Maps provide the foundation for eBPF’s high efficiency, enabling it to handle large volumes of data with minimal resource usage. eBPF maps are essential data structures that facilitate:
+
+- **Data sharing between eBPF programs**
+- **Communication between kernel and user space**
+- **State maintenance across executions**
+- **Efficient data collection and aggregation**
+
+Various map types support different eBPF use cases, each optimized for specific real-world scenarios.
+
+### Common Map Types with Real-World Scenarios
+
+1. **Hash Maps**:
+   - **Use**: Storing key-value pairs, useful for tracking unique items.
+   - **Example**: In a network monitoring scenario, hash maps can track active connections per IP address, providing insight into network behavior patterns and potential anomalies.
+2. **Ring Buffers**:
+   - **Use**: Real-time event streaming with minimal overhead.
+   - **Example**: In high-throughput logging applications, ring buffers can continuously record recent events without overwriting, commonly used in real-time packet analysis tools for continuous monitoring without memory issues.
+3. **Perf Maps**:
+   - **Use**: Specialized data sharing for performance events, particularly in tracing applications, allowing efficient data handling for performance monitoring.
+
+### Comparison of eBPF vs. Traditional Methods
+
+Traditional monitoring tools like `strace` (for system calls) and `tcpdump` (for packet capture) offer essential insights but are limited in modern, dynamic environments. The table below highlights how eBPF surpasses these limitations with efficiency and versatility:
+
+| **Feature**                   | **Traditional Methods**                                              | **eBPF**                                                                                                 |
+| ----------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Performance Overhead**      | High, due to frequent context switching and process interruptions.   | Low, as eBPF programs run in the kernel and are optimized with JIT compilation.                          |
+| **Observability Flexibility** | Limited to specific functionalities (e.g., system calls or packets). | High; can trace system calls, functions, network events, and custom metrics.                             |
+| **Data Collection Scope**     | Limited and often requires separate tools for different metrics.     | Broad, with the ability to monitor a wide range of kernel and user-space events from a single interface. |
+| **Impact on Production**      | Often intrusive, as they can disrupt live environments.              | Minimal, due to eBPF’s lightweight and efficient sandboxed programs.                                     |
+| **Deployment**                | Requires modifying or adding agents for new functionalities.         | Seamless, with no need to modify code or add agents; programs can be deployed and removed dynamically.   |
+
+By running directly in the kernel, eBPF programs have low performance overhead, offer greater observability depth, and provide broader functionality than traditional tools, making eBPF a more versatile choice for today’s complex systems.
+
+## Instrumentation Capabilities
+
+The types of instrumentation points in eBPF enable a high level of adaptability, making it suitable for diverse monitoring scenarios. Here’s a breakdown, with practical examples:
+
+1. **Kprobes (Kernel Probes)**:
+   - **Use Case**: Dynamic kernel function instrumentation, used to monitor function entry and exit points, internal kernel operations, and system call handling.
+   - **Example**: Kprobes can trace low-level kernel calls to detect bottlenecks in system calls, which is useful for debugging high-traffic applications.
+2. **Uprobes (User Probes)**:
+   - **Use Case**: Instrumenting user-space functions, allowing for application-level tracing, library function monitoring, and dynamic analysis of applications.
+   - **Example**: Uprobes can track user-space events like application-specific function calls, which is useful for analyzing application performance.
+3. **Tracepoints**:
+   - **Use Case**: Static kernel instrumentation points. They provide a stable API to monitor performance events and analyze system behavior, making it possible to capture insights across stable kernel APIs.
+   - **Example**: Tracepoints help monitor disk I/O operations, providing insights on I/O bottlenecks affecting application performance.
+
+## How Odigos Leverages eBPF
+
+Odigos leverages eBPF instrumentation to provide a highly effective, low-overhead observability solution, focusing on efficient and safe in-kernel data collection and processing. Here’s a breakdown of how Odigos employs eBPF for various observability tasks:
+
+1. **Application and System Call Tracing**:
+   - Using **Uprobes**, Odigos captures real-time events from kernel and user-space applications, offering fine-grained visibility into system calls and application function executions. This tracing helps identify latency bottlenecks, optimize resource allocation, and troubleshoot performance issues in complex distributed systems without requiring intrusive agents.
+2. **Event Aggregation and Real-Time Analytics**:
+   - By employing **Ring Buffers** and **Hash Maps** within eBPF, Odigos continuously collects and aggregates real-time data. This mechanism allows Odigos to generate low-latency metrics and event streams, which feed into dashboards and automated alerting systems for proactive monitoring.
+3. **Dynamic Observability and Adaptive Instrumentation**:
+   - Odigos dynamically attaches and detaches eBPF programs across distributed environments, making it ideal for cloud-native, containerized workloads. This flexibility enables scalable observability that adapts to workload fluctuations, providing a consistent and comprehensive view of performance across transient, short-lived services typical in microservices architectures.
+
+## Conclusion
+
+eBPF has redefined modern observability, offering unprecedented insights with minimal impact on system performance. Its ability to provide in-depth insights with minimal overhead makes it invaluable for managing complex infrastructure. As adoption increases across industries, eBPF's role in AI-driven observability, edge computing, and cloud-native monitoring will only expand.
+
+**Looking Ahead**:
+With broader adoption across industries, eBPF is expected to play an even more significant role in AI-driven observability and cloud-native monitoring, especially in edge computing and microservices environments.
+
+### Further Learning Resources
+
+To explore eBPF’s capabilities further, consult the following resources for comprehensive documentation and guidance:
+
+- [Linux Kernel BPF Documentation](https://www.kernel.org/doc/html/latest/bpf/index.html)
+- [libbpf Documentation](https://libbpf.readthedocs.io/)
+
+---
+
+## eBPF-Based Auto-Instrumentation Outperforms Manual Instrumentation
+
+Source: https://odigos.io/blog/ebpf-instrumentation-faster-than-manual
+
+We're developing Odigos, an open-source project for effortless distributed tracing. See more at [https://github.com/odigos-io/odigos](https://github.com/odigos-io/odigos).
+
+Distributed tracing tracks the journey of requests as they move through a distributed system, offering insights for debugging, performance optimization, and end-to-end visibility. It is crucial for gaining in-depth insights into request flows within complex distributed systems.
+
+However, there are two ways in which it can suck: extensive code changes (requires manual instrumentation), and a significant performance impact.
+
+Odigos addresses the code change challenge by using eBPF for automating tracing without any manual effort or code changes. We generate traces in OpenTelemetry format, ensuring compatibility and avoiding vendor lock-in. You can read more [here](https://news.ycombinator.com/item?id=34442603)
+
+That leaves the performance issues, which we’ve been working on. Our performance tests, which we’ll go into below, show that eBPF-based automatic instrumentation is over 20x faster than manually instrumenting code. This is achieved by separating data recording and data processing, eliminating extra workload, object allocation, and network calls during application runtime.
+
+As a result, you can have the best of both worlds: automated distributed tracing with minimal performance overhead.
+
+## How we tested
+
+Benchmarking latency is not a trivial task. Latency can be measured in many different ways, each with its own advantages and disadvantages. Our testing is inspired by this excellent talk by Gil Tene called [How NOT to Measure Latency](https://www.youtube.com/watch?v=lJ8ydIuPFeU). We are using a [High Dynamic Range Histogram](http://hdrhistogram.org/) to visualize the results and [wrk2](https://github.com/giltene/wrk2) to generate load.
+
+In order to reduce noise as much as possible, we are running each test on a dedicated AWS bare metal instance (c5n.metal) with Intel Xeon Platinum 8000 series (Skylake-SP) processor.
+
+For the target application, we are using a simple Go HTTP server written in Go 1.21 that returns a simple JSON response.
+
+## Test results
+
+Each test is run for 5 minutes and generates 10,000 requests per second.
+First, we ran the test without any instrumentation. Then we ran the test with manual instrumentation using [OpenTelemetry Go SDK](https://github.com/open-telemetry/opentelemetry-go) and finally, we ran the test with [eBPF-based automatic instrumentation](https://github.com/open-telemetry/opentelemetry-go-instrumentation).
+
+![Test Results](/assets/blogs/ebpf-instrumentation-faster-than-manual/results.png)
+
+At the lower percentiles (up to the 99.9th percentile), the overhead of not having instrumentation, manual instrumentation, and eBPF-based automatic instrumentation is similar
+
+However, at the higher percentiles (99.9th percentile and above), manual instrumentation has a significantly higher overhead than eBPF-based automatic instrumentation, which is over 20x faster.
+
+If you're wondering whether the top of the spectrum matters, the answer is yes, especially in distributed environments. The following table shows how many clients will experience the 99th percentile latency according to the number of different services involved in the request (taken from Gil's talk)
+
+![p99 is a lie](/assets/blogs/ebpf-instrumentation-faster-than-manual/p99_is_a_lie.png)
+
+For maximum precision and isolation, we are generating traces containing a single span. In a production environment, we anticipate the performance difference to be even greater.
+
+## **The performance impact of generating distributed traces**
+
+Let's see what happens inside our application when we generate distributed traces, either manually via SDKs or automatically via something like a Java agent or monkey patching:
+
+1. **Recording data** - Spans objects that contain the relevant data are being created
+2. **Maintaining a queue of data** - Spans are being batched in a queue before being sent to the external system
+3. **Delivering data to the external system** - The application sends the data in the queue to the external system by making network calls, serializing the data, and sending it over the network.
+
+Another consideration to keep in mind is that the application runtime must now manage more objects, which can negatively impact heap size and GC performance, especially in languages with stop-the-world GC like Java. All this can lead to longer GC pauses and decreased performance. We'll dive deeper and explore this topic in a separate blog post. Stay tuned.
+
+Unlike metrics and logs, distributed tracing is a stateful signal. Logs are typically written to a file, and metrics are typically pulled from an HTTP endpoint by the monitoring system (for example `/metrics` endpoint when exposing Prometheus metrics). Distributed tracing is different. It requires the application to actively send batched data to an external system.
+
+## Separation between recording and processing
+
+When using eBPF to generate distributed traces, we are separating the recording of the data from the processing of the data. The recording of the data is done by the eBPF program and the processing and delivery of the data is done by a different process. This means that the application runtime does no additional work, creates no additional objects, and makes no additional network calls. The only additional overhead (compared to not having any instrumentation) is the overhead of invoking eBPF programs (context switching from user space to kernel space).
+
+## Conclusion
+
+Traditionally, there has been a tradeoff between automated distributed tracing and performance.
+
+Odigos solves this problem by providing a way to automate distributed tracing that actually improves performance. This is because we use eBPF-based automatic instrumentation to reduce the overhead of generating distributed tracing data.
+
+**As a result, you can now have the best of both worlds: automated distributed tracing without any performance overhead**.
+
+## More updates coming soon
+
+eBPF-based automatic instrumentation is a game-changer, enabling us to generate distributed traces **without code changes** or **performance impact**. We're just getting started and will bring this to more programming languages soon. Stay tuned!
+
+## Try it out
+
+The easiest way to try eBPF-based distributed tracing today is to use our [open-source project, Odigos](https://github.com/odigos-io/odigos). Please support us by starring ⭐ the project on [GitHub](https://github.com/odigos-io/odigos).
+
+---
+
+## Odigos Instrumentation Engines: Offering flexibility and choice in your observability approach
+
+Source: https://odigos.io/blog/instrumentation-engines
+
+Observability requirements vary across applications, runtimes, and
+deployment environments. A single instrumentation approach rarely
+meets the needs of every workload.
+
+Odigos provides a flexible instrumentation framework that allows
+organizations to choose the most appropriate instrumentation engine
+for each application. Our platform supports multiple approaches,
+including Odigos userspace eBPF instrumentation, OpenTelemetry eBPF
+Instrumentation (OBI), and OpenTelemetry language agents. This enables
+teams to instrument Kubernetes, VMs, and environments where eBPF is
+not available, such as managed serverless platforms.
+
+By abstracting the instrumentation method behind a single platform,
+Odigos lets customers adopt the right technology for each workload
+while maintaining a consistent operational experience and
+OpenTelemetry-native telemetry across their environment.
+
+## Different layers to choose from
+
+Instrumentation options each offer different benefits. Based on your
+application and environment, either Odigos eBPF, OBI, OTel Agents, or
+a combination can provide the best visibility.
+
+* **Odigos eBPF** provides deep instrumentation of userspace
+functions. This method is built on eBPF uprobes which allow Odigos to
+attach to application functions (including custom libraries). This is
+the most granular level of visibility into an application because it
+allows auto-instrumentation of real business logic, including specific
+method arguments and return values. That data is what enriches
+telemetry with the most semantically relevant attributes.
+
+* **OpenTelemetry eBPF Instrumentation (OBI)** is an open source project
+maintained by the [OpenTelemetry
+community](https://opentelemetry.io/docs/zero-code/obi/). OBI's
+approach focuses on eBPF syscall and network monitoring. This behavior
+emphasizes network flow visibility and language-agnostic
+instrumentation.
+
+* **OpenTelemetry Agents** are a non-eBPF approach which often rely on
+injecting auto-instrumentation into an application runtime, for
+example with Java bytecode instrumentation. The OpenTelemetry
+community maintains agents for many different languages, however each
+agent has its own language-specific deployment requirements and
+usually incur higher overhead than eBPF.
+
+Below is a brief comparison of these approaches in Odigos:
+
+All of these engines are compatible thanks to the OpenTelemetry
+standard for telemetry data, meaning that it is safe to combine them
+as needed. Their main differences come from how they work, what they
+target, and the environments they can run in.
+
+## Which engine for you?
+
+Deciding which engine fits best for your use case depends on multiple
+factors such as your language, environment, and overall observability
+needs, but regardless of the implementation the outcome is the same:
+OpenTelemetry standard data supported by any observability
+backend. While different instrumentation options may expose different
+logic and metadata, the goal is to optimize getting the most
+visibility with the highest relevance and the lowest burden.
+
+---
+

@@ -225,7 +225,7 @@ export const LandingHowItWorks = () => {
           <Head>
             <Eyebrow>How it works</Eyebrow>
             <h2>The first thing you ask it is something your stack has never answered.</h2>
-            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions nobody set your stack up to answer. It replaces nothing you run today.</p>
+            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions nobody set your stack up to answer. It produces OpenTelemetry from every service with no code change and sends it to any backend you already run, replacing nothing.</p>
           </Head>
         </Reveal>
 

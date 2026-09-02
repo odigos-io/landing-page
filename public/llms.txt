@@ -1,38 +1,74 @@
 # Odigos
 
-> Odigos captures the arguments and return values of any function in a live production
-> service, in seconds, with no code change and no redeploy, and exports the result as
-> OpenTelemetry that you own.
+> Odigos generates OpenTelemetry from any service with no code change, and captures
+> the arguments and return values of any function in live production in seconds,
+> without a redeploy. It exports to any OpenTelemetry backend you already run.
 
-Conventional observability can only answer questions somebody anticipated when the code was
-written. Logs, metrics and traces are fixed at deploy time, so when an incident turns on a
-value nobody recorded, the only way to get it is to change the code and ship a release.
+## What Odigos is
 
-Odigos decides what to capture at the moment you ask. An AI agent or an engineer can point at
-a function, a query or a service that nothing was ever set up to watch, and Odigos attaches
-the capture to the running process and returns the values in about a second. That closes the
-loop for agents: instead of opening a pull request and waiting for a deploy to get one more
-fact, the agent queries production directly and keeps investigating.
+Odigos is an open source, eBPF-based OpenTelemetry distribution. Point it at a Kubernetes
+cluster and every service starts producing OpenTelemetry traces, metrics and logs without
+anyone editing code, adding an SDK, or redeploying. It detects each service's language
+automatically and instruments Go, Java, Python, .NET, JavaScript, PHP and Ruby, including
+compiled Go binaries that are stripped and statically linked.
 
-It runs out of process in eBPF at under 1% CPU and never loads into the application, so an
-Odigos failure cannot take a customer application down. It detects each service's language
-automatically and supports Go, Java, Python, .NET, JavaScript, PHP and Ruby, including
-compiled binaries that are stripped and statically linked.
+Because the data is OpenTelemetry, it goes wherever you already send telemetry: Datadog,
+New Relic, Honeycomb, Grafana Cloud, Splunk, Jaeger, Tempo, Loki, SigNoz, S3, or any other
+OTLP endpoint. There is no proprietary format and no lock-in. Odigos runs alongside your
+existing observability stack rather than replacing it.
 
-Captured data is governed. RBAC controls who may capture what and on which workloads, and PII
-masking, attribute deletion and sampling run inside the customer's own cluster before anything
-leaves it. Odigos runs alongside Datadog, New Relic, Honeycomb, Grafana and the open source
-stack rather than replacing them.
+## What makes it different
+
+Conventional OpenTelemetry instrumentation is decided when the code is written. Whatever
+spans, metrics and log lines exist today were chosen months ago by someone who did not know
+which incident was coming, so when a question turns on a value nobody recorded, the only way
+to answer it is to change the code and ship a release.
+
+Odigos decides what to capture at the moment you ask. An engineer or an AI agent can point
+at any function in a running service and get back the arguments it was called with and the
+value it returned, in about a second, with nothing redeployed. That closes the investigation
+loop for agents: instead of opening a pull request and waiting for a deploy to obtain one
+more fact, the agent queries production directly and keeps going.
+
+## How it runs
+
+Capture runs out of process in eBPF at under 1% CPU overhead. Nothing is loaded into the
+application, so an Odigos failure cannot take a customer application down with it. Data is
+governed inside the customer's own cluster: RBAC controls who may capture what and on which
+workloads, and PII masking, attribute deletion and sampling run in flight before anything
+leaves the cluster.
+
+## Common questions
+
+- Does it require code changes? No. No SDK, no annotations, no redeploy.
+- What does it produce? OpenTelemetry, exported to any OTLP destination you configure.
+- What is the overhead? Under 1% CPU, measured out of process across 1.04 million cores.
+- Which languages? Go, Java, Python, .NET, JavaScript, PHP and Ruby, detected automatically.
+- Does it replace Datadog or Grafana? No. It feeds them.
+- Is it open source? Yes, Apache 2.0, with a commercial Enterprise tier.
 
 ## Docs
 - [Documentation](https://docs.odigos.io): Full product documentation
 - [Quickstart](https://docs.odigos.io/quickstart/introduction): Install and capture in minutes
-- [GitHub](https://github.com/odigos-io/odigos): Open source repository
+- [GitHub](https://github.com/odigos-io/odigos): Open source repository, Apache 2.0
 
 ## Product
 - [Product](https://odigos.io/product): Capabilities and pipeline governance
 - [Pricing](https://odigos.io/pricing): Open source and Enterprise plans, plus FAQ
 - [Odigos vs OBI](https://odigos.io/comparisons/odigos-vs-obi): How the approaches differ
+
+## Full text
+- [llms-full.txt](https://odigos.io/llms-full.txt): Complete text of the OpenTelemetry and eBPF guides below
+
+## OpenTelemetry guides
+- [Getting started with OpenTelemetry](https://odigos.io/blog/getting-started-with-opentelemetry)
+- [Migrating from proprietary tools to OpenTelemetry](https://odigos.io/blog/migrating-from-propietary-tools-to-opentelemetry)
+- [OpenTelemetry challenges](https://odigos.io/blog/otel-challenges)
+- [OpenTelemetry collectors overview](https://odigos.io/blog/collectors-overview)
+- [Building dynamic data streams with OpenTelemetry](https://odigos.io/blog/building-dynamic-data-streams-with-opentelemetry)
+- [Sending OpenTelemetry data to S3](https://odigos.io/blog/sending-otel-to-s3)
+- [Distributed tracing](https://odigos.io/blog/distributed-tracing)
+- [eBPF instrumentation](https://odigos.io/blog/ebpf-instrumentation)
 
 ## Company
 - [About](https://odigos.io/about): Team and company background
