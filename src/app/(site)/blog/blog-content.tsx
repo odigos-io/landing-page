@@ -301,7 +301,7 @@ const PostCard = ({ slug, image, title, description, content, readingTime, pubDa
         <div className='meta'>
           {readingTime && <span>{readingTime}</span>}
           {content && pubDate && <span className='dot' />}
-          {pubDate && <span>{new Date(pubDate).toDateString()}</span>}
+          {pubDate && <span>{new Date(pubDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</span>}
           {boldTag && <span className='bold'>{boldTag}</span>}
         </div>
         <h3>{title}</h3>

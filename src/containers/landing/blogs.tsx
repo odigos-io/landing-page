@@ -188,7 +188,7 @@ export const LandingBlogs = ({ exclude, title = 'Latest from the blog.' }: { exc
                     <Meta>
                       {b.readingTime && <span>{b.readingTime}</span>}
                       {b.pubDate && <span className='dot' />}
-                      {b.pubDate && <span>{new Date(b.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>}
+                      {b.pubDate && <span>{new Date(b.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</span>}
                     </Meta>
                     <CardTitle>{b.title}</CardTitle>
                     <CardDesc>{b.description}</CardDesc>

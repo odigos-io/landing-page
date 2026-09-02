@@ -22,36 +22,32 @@ export const formatEventDateRange = (eventStartDate?: string, eventEndDate?: str
     return startDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-    });
+      day: 'numeric', timeZone: 'UTC' });
   }
 
   // If same day, return single date
-  if (startDate.toDateString() === endDate.toDateString()) {
+  if (startDate.toISOString().slice(0, 10) === endDate.toISOString().slice(0, 10)) {
     return startDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-    });
+      day: 'numeric', timeZone: 'UTC' });
   }
 
-  const startYear = startDate.getFullYear();
-  const endYear = endDate.getFullYear();
-  const startMonth = startDate.getMonth();
-  const endMonth = endDate.getMonth();
+  const startYear = startDate.getUTCFullYear();
+  const endYear = endDate.getUTCFullYear();
+  const startMonth = startDate.getUTCMonth();
+  const endMonth = endDate.getUTCMonth();
 
   // Different years
   if (startYear !== endYear) {
     const startFormatted = startDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-    });
+      day: 'numeric', timeZone: 'UTC' });
     const endFormatted = endDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-    });
+      day: 'numeric', timeZone: 'UTC' });
     return `${startFormatted} - ${endFormatted}`;
   }
 
@@ -59,20 +55,18 @@ export const formatEventDateRange = (eventStartDate?: string, eventEndDate?: str
   if (startMonth !== endMonth) {
     const startFormatted = startDate.toLocaleDateString('en-US', {
       month: 'long',
-      day: 'numeric',
-    });
+      day: 'numeric', timeZone: 'UTC' });
     const endFormatted = endDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-    });
+      day: 'numeric', timeZone: 'UTC' });
     return `${startFormatted} - ${endFormatted}`;
   }
 
   // Same year, same month, different days
-  const monthName = startDate.toLocaleDateString('en-US', { month: 'long' });
-  const startDay = startDate.getDate();
-  const endDay = endDate.getDate();
+  const monthName = startDate.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
+  const startDay = startDate.getUTCDate();
+  const endDay = endDate.getUTCDate();
   const year = startYear;
 
   return `${monthName} ${startDay}-${endDay}, ${year}`;

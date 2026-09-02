@@ -124,7 +124,7 @@ const fmt = (d?: string) => {
   if (!d) return null;
   const parsed = new Date(d);
   if (Number.isNaN(parsed.getTime())) return null;
-  return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 };
 
 export const LandingBlogPost = ({ blog }: { blog: BlogPost }) => {

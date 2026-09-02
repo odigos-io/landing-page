@@ -206,11 +206,11 @@ const fmtRange = (a?: string, b?: string) => {
   const s = one(a);
   const e = one(b);
   if (!s) return null;
-  const month = s.toLocaleDateString('en-US', { month: 'long' });
+  const month = s.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
   if (e && e.getMonth() === s.getMonth() && e.getFullYear() === s.getFullYear() && e.getDate() !== s.getDate()) {
     return `${month} ${s.getDate()}-${e.getDate()}, ${s.getFullYear()}`;
   }
-  return s.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return s.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 };
 
 export const LandingEventPost = ({ event }: { event: EventPost }) => {
