@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBlogBySlug } from '@/libs/markdown';
 import { LandingHeader, LandingBlogPost, LandingBlogs, LandingCTA, LandingFooter } from '@/containers/landing';
+import { ldScript } from '@/constants';
 
 interface BlogPageProps {
   params: Promise<{
@@ -76,8 +77,38 @@ const Blog = async ({ params }: BlogPageProps) => {
     const blog = await getBlogBySlug(slug);
     if (!blog) notFound();
 
+    const url = `https://odigos.io/blog/${slug}`;
+    const published = blog.pubDate ? new Date(blog.pubDate).toISOString() : undefined;
+
+    const articleLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      '@id': `${url}#article`,
+      headline: blog.title,
+      description: blog.metadata || blog.description,
+      image: blog.image ? `https://odigos.io${blog.image}` : 'https://odigos.io/og.png',
+      author: blog.author ? { '@type': 'Person', name: blog.author } : { '@id': 'https://odigos.io/#organization' },
+      publisher: { '@id': 'https://odigos.io/#organization' },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      inLanguage: 'en-US',
+      ...(published ? { datePublished: published, dateModified: published } : {}),
+      ...(blog.tags?.length ? { keywords: blog.tags.join(', ') } : {}),
+    };
+
+    const breadcrumbLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Odigos', item: 'https://odigos.io' },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://odigos.io/blog' },
+        { '@type': 'ListItem', position: 3, name: blog.title, item: url },
+      ],
+    };
+
     return (
       <div className='landing-root'>
+        <script type='application/ld+json' dangerouslySetInnerHTML={ldScript(articleLd)} />
+        <script type='application/ld+json' dangerouslySetInnerHTML={ldScript(breadcrumbLd)} />
         <LandingHeader />
         <main>
           <LandingBlogPost blog={blog} />

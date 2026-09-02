@@ -12,3 +12,4 @@ export * from './plans';
 export * from './principles';
 export * from './team';
 export * from './testimonial';
+export * from './structured-data';

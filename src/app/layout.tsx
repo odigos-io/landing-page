@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
+import { ORGANIZATION_LD, WEBSITE_LD, ldScript } from '@/constants';
 
 const display = Geist({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-display', display: 'swap' });
 const mono = Geist_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-mono', display: 'swap' });
@@ -56,6 +57,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           backgroundColor: '#0F0F0F',
         }}
       >
+        <script type='application/ld+json' dangerouslySetInnerHTML={ldScript(ORGANIZATION_LD)} />
+        <script type='application/ld+json' dangerouslySetInnerHTML={ldScript(WEBSITE_LD)} />
+
         <Script
           id='consent-defaults'
           strategy='beforeInteractive'
