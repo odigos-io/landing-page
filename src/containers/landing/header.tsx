@@ -16,7 +16,9 @@ const Bar = styled.header<{ $scrolled: boolean }>`
      every scroll frame. A plain blur composites far more cheaply. */
   backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(10px)' : 'none')};
   border-bottom: 1px solid ${({ $scrolled }) => ($scrolled ? 'var(--line)' : 'transparent')};
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
 `;
 
 const Row = styled.div`
@@ -51,7 +53,9 @@ const NavLink = styled(Link)`
   font-weight: 450;
   color: var(--ink-soft);
   text-decoration: none;
-  transition: color 0.18s ease, background 0.18s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
   &:hover {
     color: var(--ink);
     background: rgba(18, 18, 21, 0.045);
@@ -182,31 +186,37 @@ export const LandingHeader = () => {
   }, [open]);
 
   return (
-    <Bar $scrolled={scrolled}>
-      <Container>
-        <Row>
-          <Brand href='/' aria-label='Odigos home'>
-            <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={128} height={29} priority />
-          </Brand>
+    /* The sheet must not live inside Bar. Bar gets a backdrop-filter once
+       scrolled, and a backdrop-filter becomes the containing block for
+       position:fixed descendants, which clamped the open menu to the height
+       of the header instead of the viewport. */
+    <>
+      <Bar $scrolled={scrolled}>
+        <Container>
+          <Row>
+            <Brand href='/' aria-label='Odigos home'>
+              <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={128} height={29} priority />
+            </Brand>
 
-          <Nav>
-            {NAVIGATION.map(({ label, href }) => (
-              <NavLink key={label} href={href}>
-                {label}
-              </NavLink>
-            ))}
-          </Nav>
+            <Nav>
+              {NAVIGATION.map(({ label, href }) => (
+                <NavLink key={label} href={href}>
+                  {label}
+                </NavLink>
+              ))}
+            </Nav>
 
-          <Right>
-            <DemoCTA size='sm' />
-            <TrialCTA size='sm' />
-          </Right>
+            <Right>
+              <DemoCTA size='sm' />
+              <TrialCTA size='sm' />
+            </Right>
 
-          <Burger aria-label='Open menu' aria-expanded={open} aria-controls='mobile-nav' onClick={() => setOpen(true)}>
-            <span />
-          </Burger>
-        </Row>
-      </Container>
+            <Burger aria-label='Open menu' aria-expanded={open} aria-controls='mobile-nav' onClick={() => setOpen(true)}>
+              <span />
+            </Burger>
+          </Row>
+        </Container>
+      </Bar>
 
       <Sheet id='mobile-nav' $open={open}>
         <SheetTop>
@@ -219,7 +229,9 @@ export const LandingHeader = () => {
           {NAVIGATION.map(({ label, href }) => (
             <SheetLink key={label} href={href} onClick={() => setOpen(false)}>
               {label}
-              <span aria-hidden style={{ color: 'var(--ink-faint)' }}>→</span>
+              <span aria-hidden style={{ color: 'var(--ink-faint)' }}>
+                →
+              </span>
             </SheetLink>
           ))}
         </SheetLinks>
@@ -227,6 +239,6 @@ export const LandingHeader = () => {
           <TrialCTA />
         </SheetCtas>
       </Sheet>
-    </Bar>
+    </>
   );
 };
