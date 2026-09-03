@@ -112,6 +112,15 @@ const HeroSub = styled.p`
   }
 `;
 
+const HeroWhat = styled.p`
+  margin: 22px 0 0;
+  max-width: 520px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--ink-faint);
+`;
+
 const HeroCtas = styled.div`
   margin-top: 32px;
   display: flex;
@@ -414,7 +423,7 @@ const DiffBody = styled.div`
   }
 `;
 
-const TraceRow = styled.div<{ $depth: number; $new?: boolean; $slow?: boolean }>`
+const TraceRow = styled.div<{ $depth: number; $new?: boolean; $slow?: boolean; $ghost?: boolean }>`
   display: flex;
   align-items: center;
   gap: 9px;
@@ -445,6 +454,12 @@ const TraceRow = styled.div<{ $depth: number; $new?: boolean; $slow?: boolean }>
     margin-left: auto;
     flex-shrink: 0;
     color: ${({ $slow }) => ($slow ? 'var(--hot-ink)' : 'var(--ink-faint)')};
+  }
+  .gap {
+    display: block;
+    width: 132px;
+    height: 1px;
+    border-top: 1px dashed var(--line-strong, var(--line));
   }
 `;
 
@@ -559,65 +574,6 @@ const Verdict = styled.div`
 `;
 
 /* ---------------- how it works ---------------- */
-const Flow = styled.div`
-  margin-top: 46px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  > * {
-    min-width: 0;
-  }
-  gap: 18px;
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    > * {
-      min-width: 0;
-    }
-  }
-`;
-
-const Stage = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 26px 24px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  background: var(--paper-2);
-  box-shadow: var(--shadow-soft);
-
-  .n {
-    font-family: var(--font-mono), monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  h3 {
-    margin: 12px 0 0;
-    font-size: 21px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  p {
-    margin: 12px 0 0;
-    font-size: 15.5px;
-    line-height: 1.55;
-    color: var(--ink-mute);
-  }
-  .tag {
-    margin-top: auto;
-    padding-top: 18px;
-    display: inline-block;
-    padding: 5px 11px;
-    border-radius: 999px;
-    background: var(--paper-3);
-    border: 1px solid var(--line);
-    font-family: var(--font-mono), monospace;
-    font-size: 11.5px;
-    color: var(--ink-soft);
-  }
-`;
-
 /* ---------------- close ---------------- */
 const CloseInner = styled(Container)`
   padding-top: 96px;
@@ -679,7 +635,7 @@ const CloseCtas = styled.div`
 const FACTS = [
   {
     h: 'It will not drown your analysts.',
-    p: 'One deviation on its own is expected noise and is scored as noise. A trace only ranks critical when classes co-occur on a privileged path: a new egress, plus a library that route has never reached, plus a tenant mismatch, in the same request. Millions of traces become a handful of ranked incidents.',
+    p: 'One deviation on its own is noise, and it is scored as noise. Nothing reaches an analyst until several classes line up on one privileged request: a new egress, plus a library that route has never reached, plus a tenant mismatch.',
   },
   {
     h: 'There is nothing to tune.',
@@ -687,7 +643,11 @@ const FACTS = [
   },
   {
     h: 'It learns relations, not your data.',
-    p: 'For a check like tenant identity against the row that came back, Odigos stores the relation and how often the two agree. The values themselves are never kept.',
+    p: 'For a check like tenant identity against the row that came back, Odigos stores the relation and how often the two agree. The values themselves are never kept. What may be captured, and by whom, is governed by RBAC and policy, and every capture is scoped to the workload you point it at.',
+  },
+  {
+    h: 'Under 1% CPU.',
+    p: 'Measured out of process across 1.04 million cores, with effectively no added latency. The capture never loads into your process, so a bad release of ours cannot take your application down with it.',
   },
   {
     h: 'It attaches to what is already running.',
@@ -709,6 +669,8 @@ const BASELINE = [
   { fn: 'POST /api/tickets', ms: '12ms', d: 0 },
   { fn: 'TicketController.create', ms: '3ms', d: 1 },
   { fn: 'ExpressionResolver.resolve', ms: '1ms', d: 2 },
+  { fn: '', ms: '', d: 3, ghost: true },
+  { fn: '', ms: '', d: 3, ghost: true },
   { fn: 'TicketRepository.save', ms: '6ms', d: 1 },
 ];
 
@@ -730,26 +692,6 @@ const EVIDENCE = [
   { k: 'reached by', v: 'POST /api/tickets · unauthenticated' },
 ];
 
-const STAGES = [
-  {
-    n: '01 · baseline',
-    h: 'Learn what is normal.',
-    p: 'Every route gets a fingerprint of its own steady state. Which functions it calls, and what those calls carry. Learned from production, not written into a config file.',
-    tag: 'one fingerprint per route',
-  },
-  {
-    n: '02 · detect',
-    h: 'Catch what diverges.',
-    p: 'A call edge that never existed before. An identity that does not match the object it was handed. No rule fired, because no rule was written.',
-    tag: 'no signatures · no rules',
-  },
-  {
-    n: '03 · remediate',
-    h: 'Stop it at the call.',
-    p: 'The policy sits on the function, not the perimeter. It blocks the call or rewrites what it returns. No proxy, no sidecar, no extra network hop.',
-    tag: 'blocked in place',
-  },
-];
 
 export const SecurityContent = () => {
   return (
@@ -770,8 +712,8 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                An agent went from a public job listing to another customer&rsquo;s account, a statement full of everyone else&rsquo;s, and an <b>$8.5M wire past a green sanctions screen</b>. No shell, and no failed request anywhere in the
-                trace. The only evidence was in the calls between the services, and in what those calls carried.
+                An AI agent read a public job listing, then read another customer&rsquo;s account. No shell, and no failed request anywhere in the trace. Every service returned 200 because every service did
+                exactly what it was told. The only evidence was in the calls between them, and in what those calls carried.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
@@ -779,6 +721,7 @@ export const SecurityContent = () => {
                 <TrialCTA />
                 <DemoCTA />
               </HeroCtas>
+              <HeroWhat>One eBPF runtime on the node. It sees every function call in every service, and it learns what each route is supposed to do.</HeroWhat>
             </Reveal>
             </div>
             <Reveal delay={140}>
@@ -795,7 +738,7 @@ export const SecurityContent = () => {
                 <h2>
                   The exploit is two function calls that were not there yesterday.
                 </h2>
-                <p>You cannot write a rule for that, so Odigos does not. It learns the call graph each route normally produces, then surfaces the edges that have never appeared on it.</p>
+                <p>Nobody had a signature for this call graph, and nobody needed one. It learns the call graph each route normally produces, then surfaces the edges that have never appeared on it.</p>
               </Head>
             </Reveal>
 
@@ -807,9 +750,9 @@ export const SecurityContent = () => {
                     <span className='n'>2.1M renders · 14 days</span>
                   </DiffBar>
                   <DiffBody>
-                    {BASELINE.map((r) => (
-                      <TraceRow key={r.fn} $depth={r.d}>
-                        <span className='fn'>{r.fn}</span>
+                    {BASELINE.map((r, i) => (
+                      <TraceRow key={r.fn || `gap-${i}`} $depth={r.d} $ghost={r.ghost}>
+                        {r.ghost ? <span className='gap' /> : <span className='fn'>{r.fn}</span>}
                         <span className='ms'>{r.ms}</span>
                       </TraceRow>
                     ))}
@@ -854,7 +797,7 @@ export const SecurityContent = () => {
                 <h2>The fraud service never set that flag. The attacker typed it.</h2>
                 <p>
                   Every payment is supposed to pass fraud screening, which sets an internal <code>fraud_checked</code> flag. The settlement worker trusts that flag and skips re-screening. The API copies every field of
-                  the request body onto the payment, so the attacker simply sent the flag themselves.
+                  the request body onto the payment, so the attacker sent the flag himself.
                 </p>
               </Head>
             </Reveal>
@@ -875,45 +818,13 @@ export const SecurityContent = () => {
                   ))}
                 </WireBody>
                 <WireFoot>
-                  Odigos flags two things at once. <b>fraud_checked arrived in the user&rsquo;s HTTP body</b>, where it has never once appeared before, and the <b>FraudCheck.run span is missing</b> from a
-                  trace that always contains it.
+                  Two things are wrong at once, and both are in the trace. <b>fraud_checked arrived in the user&rsquo;s HTTP body</b>, where it has never once appeared before, and the{' '}
+                  <b>FraudCheck.run span is missing</b> from a trace that always contains it. Both services behaved correctly on their own. Both logged 200. The flag&rsquo;s origin is in neither service&rsquo;s
+                  logs. The agent never wrote an exploit. It filled in a field.
                 </WireFoot>
               </Wire>
             </Reveal>
 
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  Both services behaved correctly on their own. Both logged 200. The bug lives in the gap between them, and the flag&rsquo;s origin is in neither service&rsquo;s logs. Only a trace that carries the
-                  field out of the HTTP body, across the queue, into the worker <span className='q'>sees it at all</span>.
-                </p>
-              </Verdict>
-            </Reveal>
-          </Inner>
-        </Section>
-
-        <Section $alt>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>How runtime defense works</Eyebrow>
-                <h2>
-                  Learned from your traffic. <span className='mute'>Enforced on your functions.</span>
-                </h2>
-              </Head>
-            </Reveal>
-            <Reveal delay={70}>
-              <Flow>
-                {STAGES.map((s) => (
-                  <Stage key={s.n}>
-                    <div className='n'>{s.n}</div>
-                    <h3>{s.h}</h3>
-                    <p>{s.p}</p>
-                    <span className='tag'>{s.tag}</span>
-                  </Stage>
-                ))}
-              </Flow>
-            </Reveal>
           </Inner>
         </Section>
 
@@ -985,7 +896,7 @@ export const SecurityContent = () => {
         <Section>
           <CloseInner>
             <Reveal>
-              <Eyebrow>Security</Eyebrow>
+              <Eyebrow>Bring us one</Eyebrow>
             </Reveal>
             <Reveal delay={60}>
               <h2>Do not buy another alert. Demand the execution path.</h2>
@@ -995,13 +906,14 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>
-                <TrialCTA />
-                <DemoCTA />
+                <DemoCTA label='Send us the incident' variant='primary' />
+                <TrialCTA variant='secondary' />
               </CloseCtas>
             </Reveal>
             <Reveal delay={230}>
               <CloseNote>
-                One service, one command, no redeploy. <a href='https://docs.odigos.io'>Read the deployment guide</a>.
+                One service, one command, no redeploy. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a> or see{' '}
+                <a href='https://trust.odigos.io'>what the probe reads and what it stores</a>.
               </CloseNote>
             </Reveal>
           </CloseInner>
