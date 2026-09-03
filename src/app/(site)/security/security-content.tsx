@@ -706,6 +706,10 @@ const CloseCtas = styled.div`
 
 const FACTS = [
   {
+    h: 'You already have tracing. This sits underneath it.',
+    p: 'A trace tells you a request touched four services and how long each one took. It does not tell you which function ran inside them, what it was handed, or that the call had never appeared on that route before. Odigos captures the calls underneath the span.',
+  },
+  {
     h: 'It will not drown your analysts.',
     p: 'One deviation on its own is noise, and it is scored as noise. Nothing reaches an analyst until several classes line up on one privileged request: a new egress, plus a library that route has never reached, plus a tenant mismatch.',
   },
@@ -714,11 +718,11 @@ const FACTS = [
     p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you own. Redaction is configured before anything is written, and there is no path that sends your payloads to us.',
   },
   {
-    h: 'It has no tuning phase.',
-    p: 'The signals are structural rather than statistical. A call edge, a peer or a library either appears on that route or it does not. Baselines are learned per route, so a normal deploy that adds one edge barely registers.',
+    h: 'Nobody writes rules for it.',
+    p: 'There is a learning window, not a tuning phase. It watches a route for two weeks and forms the baseline itself. The signals are structural rather than statistical: a call edge, a peer or a library either appears on that route or it does not, so a normal deploy that adds one edge barely registers.',
   },
   {
-    h: 'The baseline holds the relation. It does not hold the value.',
+    h: 'The baseline keeps the relation, never the value.',
     p: 'For a check like tenant identity against the row that came back, Odigos keeps the relation and how often the two agree. The values are not kept in the baseline. Where a finding needs the value itself, as in the capture above, it is scoped to that function on that workload, governed by RBAC and policy, and redacted by default.',
   },
   {
@@ -747,15 +751,15 @@ const GAPS = [
     p: 'What crosses the network is opaque, and the keys cannot ship to a sensor. The payload is only in the clear inside the process that handles it.',
   },
   {
-    h: 'Nothing records what actually ran.',
-    p: 'Which function executed, with which arguments, along which path. That is the layer the attack lived in, and it is the one layer nothing in the estate captures.',
+    h: 'No sensor records what actually ran.',
+    p: 'Which function executed, with which arguments, along which path. That is the layer the attack lived in, and nothing in your estate writes it down.',
   },
 ];
 
 const BASELINE = [
   { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', d: 0 },
   { fn: 'create the record', sym: 'TicketController.create', d: 1 },
-  { fn: 'render the template', sym: 'ExpressionResolver.resolve', d: 2 },
+  { fn: 'render the template', sym: 'TemplateRenderer.render', d: 2 },
   { fn: '', sym: '', d: 3, ghost: true },
   { fn: '', sym: '', d: 3, ghost: true },
   { fn: 'write to the database', sym: 'TicketRepository.save', d: 1 },
@@ -764,7 +768,7 @@ const BASELINE = [
 const OBSERVED = [
   { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', d: 0 },
   { fn: 'create the record', sym: 'TicketController.create', d: 1 },
-  { fn: 'render the template', sym: 'ExpressionResolver.resolve', d: 2, slow: true },
+  { fn: 'render the template', sym: 'TemplateRenderer.render', d: 2, slow: true },
   { fn: 'read the text as code', sym: 'SpelExpressionParser.parse', d: 3, isNew: true },
   { fn: 'run whatever it read', sym: 'ReflectiveMethodExecutor.execute', d: 3, isNew: true },
   { fn: 'write to the database', sym: 'TicketRepository.save', d: 1 },
@@ -774,7 +778,7 @@ const EVIDENCE = [
   { k: 'service', v: 'tickets-api · java' },
   { k: 'function', v: 'SpelExpressionParser.parse' },
   { k: 'called with', v: '"${T(java.lang.System).getenv(\'DATABASE_URL\')}"', hot: true },
-  { k: 'would have returned', v: '"postgres://svc_settle@prod-db-01/led\u2022\u2022\u2022\u2022\u2022\u2022"', hot: true },
+  { k: 'returned', v: '"postgres://svc_settle@prod-db-01/led\u2022\u2022\u2022\u2022\u2022\u2022"', hot: true },
   { k: 'reached by', v: 'POST /api/tickets · unauthenticated' },
 ];
 
@@ -798,7 +802,7 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                One operator with an AI chains three findings your scanner ranked low and one nobody had seen into a single path across four services, without tripping a single control. Odigos records which functions actually ran in
+                One operator with an AI chains three weaknesses your scanner ranked low and one nobody had seen into a single path across four services, without tripping a single control. Odigos records which functions actually ran in
                 live production, <b>so when you are asked what happened, the answer already exists</b>.
               </HeroSub>
             </Reveal>
@@ -848,7 +852,7 @@ export const SecurityContent = () => {
               <Verdict>
                 <p>
                   Every one of these is a property of where the sensor sits, not of how well it is configured. The attack ran <b>inside the application, in the gaps between your services</b>, and the only place
-                  it was ever visible <span className='q'>is the one nothing was watching</span>.
+                  it was ever visible <span className='q'>had no sensor on it</span>.
                 </p>
               </Verdict>
             </Reveal>
@@ -872,7 +876,7 @@ export const SecurityContent = () => {
                 <DiffCol>
                   <DiffBar>
                     <span>baseline · example</span>
-                    <span className='n'>14 days of ordinary traffic</span>
+                    <span className='n'>two weeks of ordinary traffic</span>
                   </DiffBar>
                   <DiffBody>
                     {BASELINE.map((r, i) => (
@@ -925,8 +929,8 @@ export const SecurityContent = () => {
                     The exact function, the argument it was handed and the value it gave back. Everything a responder would otherwise spend the night reconstructing was written down while it was still running.
                   </p>
                   <p>
-                    And because the finding names the function, so can the policy. A FunctionPolicy scopes enforcement to that one call on that one route, and it stops the attempt before the effect lands.
-                    No proxy in front of the service, and no redeploy.
+                    And because the finding names the function, so can the policy. A FunctionPolicy scopes to that one call on that one route. The first attempt is what you are reading above. The next one
+                    does not get that far. No proxy in front of the service, and no redeploy.
                   </p>
                 </Head>
               </Reveal>
@@ -935,7 +939,7 @@ export const SecurityContent = () => {
                 <Finding>
                   <FindingBar>
                     <span>finding · example</span>
-                    <span className='hot'>secret read · blocked</span>
+                    <span className='hot'>secret read · recorded</span>
                   </FindingBar>
                   <FindingBody>
                     {EVIDENCE.map((r) => (
@@ -946,8 +950,8 @@ export const SecurityContent = () => {
                     ))}
                   </FindingBody>
                   <FindingFoot>
-                    <span className='act'>blocked at the function</span>
-                    <span>no redeploy</span>
+                    <span className='act'>policy written from this finding</span>
+                    <span>scoped to one call</span>
                   </FindingFoot>
                 </Finding>
               </Reveal>
@@ -1001,7 +1005,7 @@ export const SecurityContent = () => {
                 <Eyebrow>Why now</Eyebrow>
                 <h2>Baselines are earned, not installed.</h2>
                 <p>
-                  Odigos learns what each route normally does across about two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
+                  Odigos learns what each route normally does across two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
                   January.
                 </p>
               </Head>
@@ -1029,7 +1033,7 @@ export const SecurityContent = () => {
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  A probe deployed the day after an incident can tell you what the system is doing. <b>It cannot tell you what changed.</b> Evidence is the one thing in your security program that{' '}
+                  Deploy a probe the day after an incident and all you get is a picture of a system that has <b>already been rearranged</b>. Evidence is the one thing in your security program that{' '}
                   <span className='q'>cannot be bought retroactively</span>.
                 </p>
               </Verdict>
@@ -1056,7 +1060,7 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={230}>
               <CloseNote>
-                One command, one service, no code change. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
+                One command, one service, no code change. Two weeks is how long the baseline takes, which is why the trial is fourteen days. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
               </CloseNote>
             </Reveal>
           </CloseInner>

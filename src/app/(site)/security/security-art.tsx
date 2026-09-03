@@ -24,13 +24,13 @@ const AGENT = { x: 12, y: 88 };
 /* the four steps, named by technique, in viewBox units (142 x 100) */
 const STOPS = [
   { x: 36, y: 76, name: '01 ssrf', on: 1.0, side: 'right' },
-  { x: 63, y: 58, name: '02 known cve', on: 1.5, side: 'right' },
+  { x: 63, y: 58, name: '02 known cve', on: 1.5, side: 'left' },
   { x: 86, y: 43, name: '03 zero-day', on: 2.05, side: 'right' },
   { x: 110, y: 26, name: '04 forged token', on: 2.6, side: 'left' },
 ];
 
 /* the control that should have run and never did */
-const SKIPPED_ON_SEG = 2; /* the control sits on the route between 03 and 04 */
+const SKIPPED_ON_SEG = 2; /* the control sits on the route between 02 and 03 */
 
 /* from, to, bow off the straight line. -1 is the agent */
 const PATH: [number, number, number][] = [
@@ -514,7 +514,7 @@ export const SecurityArt = () => (
       <VerdictWrap>
         <Calm>
           <span className='pill'>triaged</span>
-          <span>four findings, every one closed on its own merits</span>
+          <span>three closed on their merits, one never filed</span>
           <span className='lab'>
             <span className='dot' />
             no alert raised
