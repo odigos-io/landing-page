@@ -23,10 +23,10 @@ const AGENT = { x: 12, y: 88 };
 
 /* the four steps, named by technique, in viewBox units (142 x 100) */
 const STOPS = [
-  { x: 36, y: 76, name: '01 ssrf', on: 1.75, side: 'right' },
-  { x: 63, y: 58, name: '02 known cve', on: 2.65, side: 'right' },
-  { x: 90, y: 40, name: '03 zero-day', on: 3.55, side: 'right' },
-  { x: 116, y: 22, name: '04 forged trust', on: 4.45, side: 'left' },
+  { x: 36, y: 76, name: '01 ssrf', on: 1.0, side: 'right' },
+  { x: 63, y: 58, name: '02 known cve', on: 1.5, side: 'right' },
+  { x: 90, y: 40, name: '03 zero-day', on: 2.05, side: 'right' },
+  { x: 116, y: 22, name: '04 forged trust', on: 2.6, side: 'left' },
 ];
 
 /* the control that should have run and never did */
@@ -39,7 +39,7 @@ const PATH: [number, number, number][] = [
   [1, 2, 5],
   [2, 3, -5],
 ];
-const SEG_AT = [1.0, 1.9, 2.8, 3.7];
+const SEG_AT = [0.5, 1.05, 1.6, 2.15];
 
 const PROBES: [number, number][] = [
   [34, 30],
@@ -49,11 +49,11 @@ const PROBES: [number, number][] = [
   [78, 88],
   [116, 62],
 ];
-const PROBE_AT = 0.15;
+const PROBE_AT = 0.05;
 
-const SKIP_AT = 4.1;
-const FLARE = 5.1;
-const VERDICT = 5.45;
+const SKIP_AT = 2.85;
+const FLARE = 3.05;
+const VERDICT = 3.4;
 
 /* ---------------- geometry ---------------- */
 
@@ -92,14 +92,14 @@ const fieldIn = keyframes`
 
 const probe = (s: number) => keyframes`
   0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
-  ${p(s + 0.04)}%{opacity:.5}
-  ${p(s + 0.3)}%{stroke-dashoffset:0;opacity:.5}
-  ${p(s + 0.9)}%,100%{stroke-dashoffset:0;opacity:.1}`;
+  ${p(s + 0.03)}%{opacity:.5}
+  ${p(s + 0.22)}%{stroke-dashoffset:0;opacity:.5}
+  ${p(s + 0.7)}%,100%{stroke-dashoffset:0;opacity:.1}`;
 
 const draw = (s: number) => keyframes`
   0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
   ${p(s + 0.06)}%{opacity:1}
-  ${p(s + 0.72)}%,${p(FLARE)}%{stroke-dashoffset:0;opacity:1;stroke-width:1.35}
+  ${p(s + 0.55)}%,${p(FLARE)}%{stroke-dashoffset:0;opacity:1;stroke-width:1.35}
   ${p(FLARE + 0.4)}%{stroke-dashoffset:0;opacity:1;stroke-width:2.9}
   ${p(FLARE + 1)}%,100%{stroke-dashoffset:0;opacity:1;stroke-width:1.8}`;
 
@@ -109,7 +109,7 @@ const glow = (s: number) => keyframes`
   ${p(FLARE + 1)}%,100%{opacity:.26;stroke-width:6}`;
 
 const ride = (s: number, pts: Pt[]) => {
-  const dur = 0.7;
+  const dur = 0.55;
   const frames = pts.map((pt, i) => `${p(s + (i / (pts.length - 1)) * dur)}%{transform:translate(${pt.x.toFixed(2)}px,${pt.y.toFixed(2)}px)}`).join('\n  ');
   return keyframes`
   0%,${p(s)}%{opacity:0;transform:translate(${pts[0].x.toFixed(2)}px,${pts[0].y.toFixed(2)}px)}
@@ -121,7 +121,7 @@ const ride = (s: number, pts: Pt[]) => {
 const stopOn = (s: number) => keyframes`
   0%,${p(s)}%{fill:${GREY};r:2}
   ${p(s + 0.2)}%{fill:${HOT};r:4}
-  ${p(s + 0.5)}%,${p(FLARE)}%{fill:${HOT};r:2.9}
+  ${p(s + 0.42)}%,${p(FLARE)}%{fill:${HOT};r:2.9}
   ${p(FLARE + 0.4)}%{fill:${HOT};r:4.3}
   ${p(FLARE + 1)}%,100%{fill:${HOT};r:3.1}`;
 
@@ -394,7 +394,11 @@ const Calm = styled.div`
   ${rowBase};
   color: var(--ink-faint);
   animation: ${calmOut} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${reduce}
+
+  /* the two bars are stacked, so reduced motion shows the resting end state only */
+  @media (prefers-reduced-motion: reduce) {
+    display: none;
+  }
 
   .pill {
     padding: 3px 9px;
@@ -464,7 +468,7 @@ export const SecurityArt = () => (
           ))}
 
           {PROBES.map(([x, y], i) => (
-            <Probe key={`pr${i}`} x1={AGENT.x} y1={AGENT.y} x2={x} y2={y} pathLength={1} $t={PROBE_AT + i * 0.08} />
+            <Probe key={`pr${i}`} x1={AGENT.x} y1={AGENT.y} x2={x} y2={y} pathLength={1} $t={PROBE_AT + i * 0.05} />
           ))}
 
 
@@ -496,7 +500,7 @@ export const SecurityArt = () => (
 
           {/* the control the route passed straight through */}
           <SkipMark $x={SKIP.x} $y={SKIP.y} />
-          <SkipLabel x={SKIP.x - 5} y={SKIP.y - 3.4}>
+          <SkipLabel x={SKIP.x - 4} y={SKIP.y - 6}>
             control never fired
           </SkipLabel>
 

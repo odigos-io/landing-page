@@ -714,8 +714,8 @@ const FACTS = [
     p: 'The signals are structural rather than statistical. A call edge, a peer or a library either appears on that route or it does not. Baselines are learned per route, so a normal deploy that adds one edge barely registers.',
   },
   {
-    h: 'It learns relations, not your data.',
-    p: 'For a check like tenant identity against the row that came back, Odigos stores the relation and how often the two agree. The values themselves are never kept. What may be captured, and by whom, is governed by RBAC and policy, and every capture is scoped to the workload you point it at.',
+    h: 'Baselines learn relations, not values.',
+    p: 'For a check like tenant identity against the row that came back, Odigos keeps the relation and how often the two agree. The values are not kept in the baseline. Where a finding needs the value itself, as in the capture above, it is scoped to that function on that workload, governed by RBAC and policy, and redacted by default.',
   },
   {
     h: 'Under 1% CPU.',
@@ -749,21 +749,21 @@ const GAPS = [
 ];
 
 const BASELINE = [
-  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', ms: '12ms', d: 0 },
-  { fn: 'create the record', sym: 'TicketController.create', ms: '3ms', d: 1 },
-  { fn: 'render the template', sym: 'ExpressionResolver.resolve', ms: '1ms', d: 2 },
-  { fn: '', sym: '', ms: '', d: 3, ghost: true },
-  { fn: '', sym: '', ms: '', d: 3, ghost: true },
-  { fn: 'write to the database', sym: 'TicketRepository.save', ms: '6ms', d: 1 },
+  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', d: 0 },
+  { fn: 'create the record', sym: 'TicketController.create', d: 1 },
+  { fn: 'render the template', sym: 'ExpressionResolver.resolve', d: 2 },
+  { fn: '', sym: '', d: 3, ghost: true },
+  { fn: '', sym: '', d: 3, ghost: true },
+  { fn: 'write to the database', sym: 'TicketRepository.save', d: 1 },
 ];
 
 const OBSERVED = [
-  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', ms: '95ms', d: 0 },
-  { fn: 'create the record', sym: 'TicketController.create', ms: '5ms', d: 1 },
-  { fn: 'render the template', sym: 'ExpressionResolver.resolve', ms: '80ms', d: 2, slow: true },
-  { fn: 'read the text as code', sym: 'SpelExpressionParser.parse', ms: '2ms', d: 3, isNew: true },
-  { fn: 'run whatever it read', sym: 'ReflectiveMethodExecutor.execute', ms: '60ms', d: 3, isNew: true },
-  { fn: 'write to the database', sym: 'TicketRepository.save', ms: '6ms', d: 1 },
+  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', d: 0 },
+  { fn: 'create the record', sym: 'TicketController.create', d: 1 },
+  { fn: 'render the template', sym: 'ExpressionResolver.resolve', d: 2, slow: true },
+  { fn: 'read the text as code', sym: 'SpelExpressionParser.parse', d: 3, isNew: true },
+  { fn: 'run whatever it read', sym: 'ReflectiveMethodExecutor.execute', d: 3, isNew: true },
+  { fn: 'write to the database', sym: 'TicketRepository.save', d: 1 },
 ];
 
 const EVIDENCE = [
@@ -794,8 +794,8 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                One operator with a model chains findings your scanner ranked low into a single path across four services, without doing anything a normal request does not do. Odigos records which functions
-                actually ran in live production, <b>so when you are asked what happened, the answer already exists</b>.
+                One operator with an AI chains four findings your scanner ranked low into a single path across four services, without tripping a single control. Odigos records which functions actually ran in
+                live production, <b>so when you are asked what happened, the answer already exists</b>.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
@@ -803,7 +803,7 @@ export const SecurityContent = () => {
                 <TrialCTA />
                 <DemoCTA />
               </HeroCtas>
-              <HeroWhat>One eBPF runtime on the node. It sees every function call in every service, and it learns what each route is supposed to do.</HeroWhat>
+              <HeroWhat>One eBPF runtime on the node. It reads the calls your services actually make across a request, and it learns what each route is supposed to do.</HeroWhat>
             </Reveal>
             </div>
             <Reveal delay={140}>
@@ -821,8 +821,7 @@ export const SecurityContent = () => {
                   Nothing you own was misconfigured. <span className='mute'>Everything you own was looking somewhere else.</span>
                 </h2>
                 <p>
-                  The controls in your estate watch the effects an attack leaves behind. This one left none, because it never did anything a normal request does not do. Four structural gaps, and no amount of
-                  tuning closes any of them.
+                  The controls in your estate watch the effects an attack leaves behind. This one left none. Four structural gaps, and no amount of tuning closes any of them.
                 </p>
               </Head>
             </Reveal>
@@ -844,8 +843,51 @@ export const SecurityContent = () => {
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  Every one of these is a property of where the sensor sits, not of how well it is configured. The attack ran <b>inside the application, in the gap between two services</b>, and the only place
+                  Every one of these is a property of where the sensor sits, not of how well it is configured. The attack ran <b>inside the application, in the gaps between your services</b>, and the only place
                   it was ever visible <span className='q'>is the one nothing was watching</span>.
+                </p>
+              </Verdict>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Why now</Eyebrow>
+                <h2>Baselines are earned, not installed.</h2>
+                <p>
+                  Odigos learns what each route normally does across about two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
+                  January.
+                </p>
+              </Head>
+            </Reveal>
+
+            <Reveal delay={70}>
+              <Clock>
+                <ClockLine>
+                  <span className='seg cold'>
+                    <b>nothing deployed</b>
+                    no comparison is possible
+                  </span>
+                  <span className='seg warm'>
+                    <b>two weeks of traffic</b>
+                    the baseline forms
+                  </span>
+                  <span className='seg hot'>
+                    <b>the incident</b>
+                    you can say what changed
+                  </span>
+                </ClockLine>
+              </Clock>
+            </Reveal>
+
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  A probe deployed the day after an incident can tell you what the system is doing. <b>It cannot tell you what changed.</b> Evidence is the one thing in your security program that{' '}
+                  <span className='q'>cannot be bought retroactively</span>.
                 </p>
               </Verdict>
             </Reveal>
@@ -906,14 +948,6 @@ export const SecurityContent = () => {
               </Diff>
             </Reveal>
 
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  The exploit only <b>read memory</b>. It never leaves the heap, so there is <span className='q'>no syscall</span> for a kernel or endpoint sensor to trip on. Odigos sees the function call itself:
-                  the expression it was handed, and the secret it returned.
-                </p>
-              </Verdict>
-            </Reveal>
           </Inner>
         </Section>
 
@@ -931,7 +965,8 @@ export const SecurityContent = () => {
                     happened, because it was captured as it happened.
                   </p>
                   <p>
-                    And because the finding sits at the function, so does the fix. A FunctionPolicy blocks that call inside the process, with nothing in front of it and no redeploy.
+                    And because the finding sits at the function, so does the fix. A FunctionPolicy acts at the same kernel probe that saw the call, so nothing of ours has to be loaded into your process to
+                    stop it, and there is no proxy in front of the service and no redeploy.
                   </p>
                 </Head>
               </Reveal>
@@ -965,7 +1000,7 @@ export const SecurityContent = () => {
             <Reveal>
               <Head>
                 <Eyebrow>Running it</Eyebrow>
-                <h2>What it does to your environment.</h2>
+                <h2>Nothing of ours loads into your application.</h2>
               </Head>
             </Reveal>
 
@@ -978,49 +1013,6 @@ export const SecurityContent = () => {
                   </Fact>
                 ))}
               </Facts>
-            </Reveal>
-          </Inner>
-        </Section>
-
-        <Section>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Why now</Eyebrow>
-                <h2>Baselines are earned, not installed.</h2>
-                <p>
-                  Odigos learns what each route normally does across about two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
-                  January.
-                </p>
-              </Head>
-            </Reveal>
-
-            <Reveal delay={70}>
-              <Clock>
-                <ClockLine>
-                  <span className='seg cold'>
-                    <b>nothing deployed</b>
-                    no comparison is possible
-                  </span>
-                  <span className='seg warm'>
-                    <b>two weeks of traffic</b>
-                    the baseline forms
-                  </span>
-                  <span className='seg hot'>
-                    <b>the incident</b>
-                    you can say what changed
-                  </span>
-                </ClockLine>
-              </Clock>
-            </Reveal>
-
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  A probe deployed the day after an incident can tell you what the system is doing. <b>It cannot tell you what changed.</b> Evidence is the one thing in your security program that{' '}
-                  <span className='q'>cannot be bought retroactively</span>.
-                </p>
-              </Verdict>
             </Reveal>
           </Inner>
         </Section>
