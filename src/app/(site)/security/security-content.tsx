@@ -171,6 +171,133 @@ const Fact = styled.div`
   }
 `;
 
+/* ---------------- deviation classes ---------------- */
+const Classes = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  > * {
+    min-width: 0;
+  }
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Cls = styled.div`
+  padding: 22px 22px 24px;
+  background: var(--paper-2);
+
+  h3 {
+    margin: 0;
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  p {
+    margin: 11px 0 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .e {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-mono), monospace;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ink-faint);
+  }
+`;
+
+/* ---------------- what you already run ---------------- */
+const Compare = styled.div`
+  margin-top: 46px;
+  border-top: 1px solid var(--line);
+`;
+
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: 190px 1fr 1.15fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 28px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .k {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .w {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-faint);
+  }
+  .m {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-mute);
+  }
+`;
+
+/* ---------------- response ---------------- */
+const Responses = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  > * {
+    min-width: 0;
+  }
+  gap: 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Resp = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 24px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--paper-2);
+
+  h3 {
+    margin: 0;
+    font-size: 17.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  p {
+    margin: 11px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+`;
+
 /* ---------------- why now ---------------- */
 const Clock = styled.div`
   margin-top: 44px;
@@ -718,16 +845,20 @@ const FACTS = [
     p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you own. Redaction is configured before anything is written, and there is no path that sends your payloads to us.',
   },
   {
-    h: 'Nobody writes rules for it.',
-    p: 'There is a learning window, not a tuning phase. It watches a route for two weeks and forms the baseline itself. The signals are structural rather than statistical: a call edge, a peer or a library either appears on that route or it does not, so a normal deploy that adds one edge barely registers.',
+    h: 'The record leaves the host while the attack is still running.',
+    p: 'Captures export as OpenTelemetry to a destination you control, so the evidence is off the box before an attacker who owns it knows there was anything to remove. Retention and access are your destination policy. We never hold a copy.',
   },
   {
-    h: 'The baseline keeps the relation, never the value.',
+    h: 'Nobody writes rules for it.',
+    p: 'It watches a route for two weeks and forms the baseline itself. The signals are structural rather than statistical: a call edge, a peer or a library either appears on that route or it does not, so a normal deploy that adds one edge barely registers.',
+  },
+  {
+    h: 'The baseline never stores a value.',
     p: 'For a check like tenant identity against the row that came back, Odigos keeps the relation and how often the two agree. The values are not kept in the baseline. Where a finding needs the value itself, as in the capture above, it is scoped to that function on that workload, governed by RBAC and policy, and redacted by default.',
   },
   {
     h: 'Under 1% CPU.',
-    p: 'Measured out of process across 1.04 million cores, with effectively no added latency. The capture never loads into your process, so a bad release of ours cannot take your application down with it.',
+    p: 'Measured out of process across 1.04 million cores, with effectively no added latency. The capture never loads into your process, so a bad release of ours cannot take your application down with it. The probe fires in the kernel the moment your function is called, which is the moment the value is already in the clear.',
   },
   {
     h: 'It attaches to what is already running.',
@@ -736,6 +867,33 @@ const FACTS = [
 ];
 
 
+
+/* the six deviation classes, from the detection model */
+const CLASSES = [
+  { n: 'new call edge', p: 'A caller and a callee that have never run together on this route.', e: 'a template helper reaching an auth lookup' },
+  { n: 'new egress', p: 'A service reaching a destination it has never reached before.', e: 'a first request to an external host' },
+  { n: 'timing anomaly', p: 'A span far outside the latency shape that route has always had.', e: '240ms where the baseline is 8ms' },
+  { n: 'argument anomaly', p: 'An argument or a return value carrying something its type never carried.', e: 'an injected bearer token in arg 0' },
+  { n: 'new library', p: 'Code reaching a package or version that route has never touched.', e: 'a text library on a path that never used it' },
+  { n: 'attribute mismatch', p: 'Two values that always agreed, now disagreeing.', e: 'the caller tenant against the tenant on the row' },
+];
+
+/* what a bank already runs, and why each one was blind to this */
+const OTHERS = [
+  { k: 'endpoint detection', w: 'processes, files and shells on a host', m: 'No new process. No shell. Nothing was written to disk.' },
+  { k: 'cloud posture', w: 'images, configuration and known CVEs', m: 'No known CVE in the image, and the flaw is in how two services trust each other.' },
+  { k: 'kernel sensors', w: 'syscalls: execve, connect, open', m: 'The read never left the heap, so there was no syscall to trip on.' },
+  { k: 'web firewall', w: 'request payloads at the edge', m: 'The request was well formed and matched no signature.' },
+  { k: 'siem', w: 'what your services choose to log', m: 'Every service logged 200. Nothing logged where the field came from.' },
+  { k: 'tracing', w: 'which services a request touched, and how long each took', m: 'Not which function ran inside them, what it was handed, or that the call was new.' },
+];
+
+/* what a policy can do once the finding names the function */
+const RESPONSES = [
+  { h: 'Block the call.', p: 'The function is refused for the route and the caller you scoped it to. Everything else on that service keeps serving.' },
+  { h: 'Rewrite what it returns.', p: 'Where refusing the call would break the request, the value that comes back is replaced instead.' },
+  { h: 'Leave it recording.', p: 'A policy can watch and report only, which is where most of them start and where many of them stay.' },
+];
 
 const GAPS = [
   {
@@ -778,7 +936,8 @@ const EVIDENCE = [
   { k: 'service', v: 'tickets-api · java' },
   { k: 'function', v: 'SpelExpressionParser.parse' },
   { k: 'called with', v: '"${T(java.lang.System).getenv(\'DATABASE_URL\')}"', hot: true },
-  { k: 'returned', v: '"postgres://svc_settle@prod-db-01/led\u2022\u2022\u2022\u2022\u2022\u2022"', hot: true },
+  { k: 'then', v: 'ReflectiveMethodExecutor.execute' },
+  { k: 'returned', v: '"postgres://svc_settle:\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022@prod-db-01/ledger"', hot: true },
   { k: 'reached by', v: 'POST /api/tickets · unauthenticated' },
 ];
 
@@ -802,8 +961,8 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                One operator with an AI chains three weaknesses your scanner ranked low and one nobody had seen into a single path across four services, without tripping a single control. Odigos records which functions actually ran in
-                live production, <b>so when you are asked what happened, the answer already exists</b>.
+                The attack crosses four services. No single service looks wrong. Odigos learns what every function normally does, catches the execution that never happened before, and names the line of
+                code it came from.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
@@ -811,7 +970,7 @@ export const SecurityContent = () => {
                 <DemoCTA label='Talk to our security team' variant='primary' />
                 <TrialCTA variant='secondary' />
               </HeroCtas>
-              <HeroWhat>One eBPF runtime on the node. It reads the calls your services actually make across a request, and it learns what each route is supposed to do.</HeroWhat>
+              <HeroWhat>One eBPF runtime on the node. No agent in your process, no code change, no signatures to write.</HeroWhat>
             </Reveal>
             </div>
             <Reveal delay={140}>
@@ -863,11 +1022,34 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
+                <Eyebrow>Against what you already run</Eyebrow>
+                <h2>Six controls. None of them wrong. All of them blind.</h2>
+                <p>This is not a tooling gap you can close by buying more of what you have. Each of these does its job correctly and none of them is looking at the layer the attack used.</p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Compare>
+                {OTHERS.map((x) => (
+                  <Row key={x.k}>
+                    <span className='k'>{x.k}</span>
+                    <span className='w'>{x.w}</span>
+                    <span className='m'>{x.m}</span>
+                  </Row>
+                ))}
+              </Compare>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section $alt>
+          <Inner>
+            <Reveal>
+              <Head>
                 <Eyebrow>Detection without signatures</Eyebrow>
                 <h2>
                   The exploit is two function calls that were not there yesterday.
                 </h2>
-                <p>Nobody had a signature for this call graph, and nobody needed one. It learns the call graph each route normally produces, then surfaces the edges that have never appeared on it.</p>
+                <p>Nobody had a signature for this call graph, and none was needed. It learns the call graph each route normally produces, then surfaces the edges that have never appeared on it.</p>
               </Head>
             </Reveal>
 
@@ -918,6 +1100,32 @@ export const SecurityContent = () => {
 
         <Section>
           <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>What it watches for</Eyebrow>
+                <h2>Six ways a request can be structurally wrong.</h2>
+                <p>
+                  No signatures, because there is nothing to write a signature against. Each class is a shape the route has never produced before, learned from your own traffic. A single one is expected noise.
+                  A request only reaches an analyst when several of them land together on a privileged path.
+                </p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Classes>
+                {CLASSES.map((c) => (
+                  <Cls key={c.n}>
+                    <h3>{c.n}</h3>
+                    <p>{c.p}</p>
+                    <span className='e'>{c.e}</span>
+                  </Cls>
+                ))}
+              </Classes>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section>
+          <Inner>
             <Split>
               <Reveal>
                 <Head>
@@ -950,12 +1158,45 @@ export const SecurityContent = () => {
                     ))}
                   </FindingBody>
                   <FindingFoot>
-                    <span className='act'>policy written from this finding</span>
+                    <span className='act'>write a policy from this finding</span>
                     <span>scoped to one call</span>
                   </FindingFoot>
                 </Finding>
               </Reveal>
             </Split>
+          </Inner>
+        </Section>
+
+        <Section $alt>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Response</Eyebrow>
+                <h2>The blast radius of a policy is one function.</h2>
+                <p>
+                  A rule at the perimeter is a decision about all of your traffic. A FunctionPolicy is a decision about one call on one route, so the worst case if you get it wrong is that one call behaves
+                  differently, not that a service stops serving.
+                </p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Responses>
+                {RESPONSES.map((r) => (
+                  <Resp key={r.h}>
+                    <h3>{r.h}</h3>
+                    <p>{r.p}</p>
+                  </Resp>
+                ))}
+              </Responses>
+            </Reveal>
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  And the blast radius of the capture is smaller still. It runs outside your application, so <b>a bad release of ours cannot take your service down with it</b>, and what may be captured, on which
+                  workload, by whom, <span className='q'>is governed by policy before anything is written</span>.
+                </p>
+              </Verdict>
+            </Reveal>
           </Inner>
         </Section>
 
@@ -970,7 +1211,7 @@ export const SecurityContent = () => {
               <TrustLinks>
                 <a href='https://github.com/odigos-io/odigos'>Read the source</a>
                 <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
-                <a href='https://docs.odigos.io/quickstart/introduction'>What it attaches to</a>
+                <a href='https://docs.odigos.io/quickstart/introduction'>The probe, in the docs</a>
               </TrustLinks>
             </Trust>
           </Inner>
@@ -981,7 +1222,7 @@ export const SecurityContent = () => {
             <Reveal>
               <Head>
                 <Eyebrow>Running it</Eyebrow>
-                <h2>It runs beside your application, never inside it.</h2>
+                <h2>Nothing of ours runs in your address space.</h2>
               </Head>
             </Reveal>
 
@@ -1060,7 +1301,7 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={230}>
               <CloseNote>
-                One command, one service, no code change. Two weeks is how long the baseline takes, which is why the trial is fourteen days. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
+                One command, one service, no code change. The map is readable in the first hour. The baseline closes at day fourteen, which is why the trial runs that long. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
               </CloseNote>
             </Reveal>
           </CloseInner>
