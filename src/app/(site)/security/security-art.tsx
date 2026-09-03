@@ -62,7 +62,16 @@ const SKIP_AT = 3.0;
 const FLARE = 3.2;
 const VERDICT = 3.55;
 
-const CHAIN = ['ssrf', 'known cve', 'zero-day', 'weak token check'];
+/* the loop held a static frame for four seconds. spend it going inside the box. */
+const OPEN_AT = 4.5;
+const FN_ORIGIN = { x: 54, y: 26 };
+const FNS = [
+  { dx: -21, dy: -1, name: 'render', hot: false },
+  { dx: -18, dy: -9, name: 'parse', hot: true },
+  { dx: -8, dy: -15, name: 'execute', hot: true },
+];
+
+const CHAIN = ['ssrf', 'trusted internal call', 'template injection', 'weak token check'];
 
 /* ---------------- geometry ---------------- */
 
@@ -124,6 +133,20 @@ const verdictIn = keyframes`
 const calmOut = keyframes`
   0%,${p(VERDICT)}%{opacity:1;transform:none}
   ${p(VERDICT + 0.32)}%,100%{opacity:0;transform:translateY(-8px)}`;
+
+
+
+const zoomIn = (i: number) => keyframes`
+  0%,${p(OPEN_AT + i * 0.18)}%{opacity:0;transform:translate(0,0) scale(.4)}
+  ${p(OPEN_AT + i * 0.18 + 0.4)}%,100%{opacity:1;transform:none}`;
+
+const stalkIn = (i: number) => keyframes`
+  0%,${p(OPEN_AT + i * 0.18)}%{opacity:0;stroke-dashoffset:1}
+  ${p(OPEN_AT + i * 0.18 + 0.4)}%,100%{opacity:1;stroke-dashoffset:0}`;
+
+const insideIn = keyframes`
+  0%,${p(OPEN_AT)}%{opacity:0}
+  ${p(OPEN_AT + 0.5)}%,100%{opacity:1}`;
 
 const agentPulse = keyframes`
   0%,100%{opacity:.28;transform:scale(.85)}
@@ -264,6 +287,32 @@ const Label = styled.text<{ $t?: number }>`
   ${reduce}
 `;
 
+/* the functions inside one service, which no service map contains */
+const FnStalk = styled.line<{ $i: number }>`
+  stroke: rgba(201, 52, 106, 0.4);
+  stroke-width: 0.4;
+  stroke-dasharray: 1;
+  animation: ${(x) => stalkIn(x.$i)} ${T}s ease-out infinite both;
+  ${reduce}
+`;
+
+const FnG = styled.g<{ $i: number }>`
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ${(x) => zoomIn(x.$i)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  ${reduce}
+`;
+
+const InsideNote = styled.text`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 2.9px;
+  text-anchor: middle;
+  letter-spacing: 0.05px;
+  fill: rgba(24, 20, 54, 0.45);
+  animation: ${insideIn} ${T}s linear infinite both;
+  ${reduce}
+`;
+
 const AgentHalo = styled.circle`
   fill: ${HOT};
   transform-box: fill-box;
@@ -349,6 +398,7 @@ const Verdict = styled.div`
     color: var(--ink-faint);
     padding: 0 5px;
   }
+
 `;
 
 export const SecurityArt = () => (
@@ -361,8 +411,8 @@ export const SecurityArt = () => (
           ))}
 
           <SkipEdge d={arc(at(SKIP[0]), at(SKIP[1]), SKIP[2])} />
-          <SkipNote x={(at('pm').x + at('fr').x) / 2 + 13} y={(at('pm').y + at('fr').y) / 2 - 1}>
-            never called
+          <SkipNote x={(at('pm').x + at('fr').x) / 2 - 6} y={(at('pm').y + at('fr').y) / 2 + 7}>
+            not called on this request
           </SkipNote>
 
           {HOPS.map((h, i) => (
@@ -386,6 +436,29 @@ export const SecurityArt = () => (
               </Label>
             </g>
           ))}
+
+          {/* inside node 2: the calls a service map has no way to show */}
+          {FNS.map((fn, i) => (
+            <FnStalk key={`fs${fn.name}`} x1={FN_ORIGIN.x} y1={FN_ORIGIN.y} x2={FN_ORIGIN.x + fn.dx} y2={FN_ORIGIN.y + fn.dy} pathLength={1} $i={i} />
+          ))}
+          {FNS.map((fn, i) => (
+            <FnG key={`fn${fn.name}`} $i={i}>
+              <circle cx={FN_ORIGIN.x + fn.dx} cy={FN_ORIGIN.y + fn.dy} r={2.1} fill={fn.hot ? HOT : '#fff'} stroke={fn.hot ? HOT : LINE} strokeWidth={0.5} />
+              <text
+                x={FN_ORIGIN.x + fn.dx - 3.6}
+                y={FN_ORIGIN.y + fn.dy + 1}
+                fontSize='2.9px'
+                textAnchor='end'
+                fontFamily='var(--font-mono), monospace'
+                fill={fn.hot ? HOT : 'rgba(24,20,54,0.5)'}
+              >
+                {fn.name}
+              </text>
+            </FnG>
+          ))}
+          <InsideNote x={FN_ORIGIN.x - 10} y={FN_ORIGIN.y - 20}>
+            two calls that never ran here before
+          </InsideNote>
 
           <AgentHalo cx={AGENT.x} cy={AGENT.y} r={8} />
           <circle cx={AGENT.x} cy={AGENT.y} r={2.9} fill={DEEP} />
