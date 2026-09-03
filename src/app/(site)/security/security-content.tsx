@@ -707,13 +707,13 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={60}>
               <HeroH1>
-                Every service returned 200. <em>The screen said cleared.</em>
+                Nation-state firepower <em>is now a subscription.</em>
               </HeroH1>
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                An AI agent read a public job listing, then read another customer&rsquo;s account. No shell, and no failed request anywhere in the trace. Every service returned 200 because every service did
-                exactly what it was told. The only evidence was in the calls between them, and in what those calls carried.
+                One operator with a model now chains findings your scanner ranked low into a path that crosses four services inside a single transaction. <b>The attack no longer lives in a process</b>, so
+                nothing that watches a process can see it.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
