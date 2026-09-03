@@ -5,9 +5,45 @@ import styled from 'styled-components';
 import { LandingHeader, LandingFooter } from '@/containers/landing';
 import { Container, Eyebrow, Reveal, DemoCTA } from '@/containers/landing/primitives';
 
-/* ----------------------------------------------------------------
-   Hero
------------------------------------------------------------------ */
+/* ---------------- shared ---------------- */
+const Section = styled.section<{ $alt?: boolean }>`
+  background: ${({ $alt }) => ($alt ? 'var(--paper-3)' : 'var(--paper)')};
+  border-bottom: 1px solid var(--line);
+`;
+
+const Inner = styled(Container)`
+  padding-top: 92px;
+  padding-bottom: 92px;
+  @media (max-width: 1000px) {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+`;
+
+const Head = styled.div`
+  max-width: 840px;
+  h2 {
+    margin: 18px 0 0;
+    font-size: clamp(28px, 3.6vw, 46px);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+  h2 .mute {
+    display: block;
+    color: var(--ink-faint);
+  }
+  p {
+    margin: 20px 0 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 640px;
+  }
+`;
+
+/* ---------------- hero ---------------- */
 const HeroSection = styled.section`
   position: relative;
   overflow: hidden;
@@ -27,19 +63,18 @@ const HeroBackdrop = styled.div`
 
 const HeroInner = styled(Container)`
   position: relative;
-  padding-top: 84px;
-  padding-bottom: 72px;
-  text-align: center;
+  padding-top: 86px;
+  padding-bottom: 76px;
   @media (max-width: 1000px) {
     padding-top: 56px;
-    padding-bottom: 52px;
+    padding-bottom: 54px;
   }
 `;
 
 const HeroH1 = styled.h1`
-  margin: 18px auto 0;
-  max-width: 17ch;
-  font-size: clamp(34px, 5vw, 62px);
+  margin: 18px 0 0;
+  max-width: 18ch;
+  font-size: clamp(34px, 5.1vw, 62px);
   line-height: 1.03;
   font-weight: 600;
   letter-spacing: -0.038em;
@@ -47,36 +82,40 @@ const HeroH1 = styled.h1`
 
   em {
     font-style: normal;
+    display: block;
     color: var(--ink-faint);
   }
 `;
 
 const HeroSub = styled.p`
-  margin: 24px auto 0;
-  max-width: 60ch;
+  margin: 26px 0 0;
+  max-width: 62ch;
   font-size: clamp(17px, 1.75vw, 20px);
   line-height: 1.55;
   color: var(--ink-soft);
+
+  b {
+    font-weight: 600;
+    color: var(--ink);
+  }
 `;
 
 const HeroCtas = styled.div`
   margin-top: 32px;
   display: flex;
   gap: 12px;
-  justify-content: center;
   flex-wrap: wrap;
 `;
 
 const Caps = styled.div`
-  margin-top: 60px;
+  margin-top: 58px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
-  text-align: left;
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
     gap: 14px;
-    margin-top: 44px;
+    margin-top: 42px;
   }
 `;
 
@@ -96,73 +135,171 @@ const Cap = styled.div`
   .d {
     margin-top: 8px;
     font-family: var(--font-mono), monospace;
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1.6;
     color: var(--ink-mute);
   }
 `;
 
-/* ----------------------------------------------------------------
-   Scenarios
------------------------------------------------------------------ */
-const Section = styled.section<{ $alt?: boolean }>`
-  background: ${({ $alt }) => ($alt ? 'var(--paper-3)' : 'var(--paper)')};
-  border-bottom: 1px solid var(--line);
-`;
+/* ---------------- numbered list ---------------- */
+const Points = styled.ol`
+  margin: 44px 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 900px;
+  border-top: 1px solid var(--line);
 
-const Inner = styled(Container)`
-  padding-top: 92px;
-  padding-bottom: 92px;
-  @media (max-width: 1000px) {
-    padding-top: 60px;
-    padding-bottom: 60px;
+  li {
+    display: flex;
+    gap: 20px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 17.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .n {
+    flex-shrink: 0;
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
   }
 `;
 
-const Head = styled.div`
-  max-width: 820px;
-  h2 {
-    margin: 18px 0 0;
-    font-size: clamp(28px, 3.6vw, 46px);
-    line-height: 1.05;
+/* ---------------- the attack ---------------- */
+const Chain = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  @media (max-width: 980px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Path = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--paper-2);
+  box-shadow: var(--shadow-soft);
+`;
+
+const PathBar = styled.div`
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-3);
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+`;
+
+const PathBody = styled.div`
+  padding: 22px 20px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    margin: 0;
+    font-size: 19px;
     font-weight: 600;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.02em;
     color: var(--ink);
   }
-  h2 .mute {
+  p {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-mute);
+  }
+  .ev {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line-strong);
+    font-family: var(--font-mono), monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .ev .k {
     display: block;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .blind {
+    margin-top: auto;
+    padding-top: 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
     color: var(--ink-faint);
   }
-  p {
-    margin: 20px 0 0;
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--ink-soft);
-    max-width: 620px;
+  .blind b {
+    color: var(--hot-ink);
+    font-weight: 600;
   }
 `;
 
-const Cards = styled.div`
+const Verdict = styled.div`
+  margin-top: 34px;
+  padding: 26px 26px;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 52, 106, 0.3);
+  background: rgba(201, 52, 106, 0.045);
+  max-width: 900px;
+
+  p {
+    margin: 0;
+    font-size: clamp(17px, 1.8vw, 21px);
+    line-height: 1.5;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+  }
+  b {
+    font-weight: 600;
+  }
+  .q {
+    color: var(--hot-ink);
+  }
+`;
+
+/* ---------------- how it works ---------------- */
+const Flow = styled.div`
   margin-top: 46px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    gap: 14px;
   }
 `;
 
-const ScenarioCard = styled.div`
+const Stage = styled.div`
   padding: 26px 24px;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   background: var(--paper-2);
   box-shadow: var(--shadow-soft);
 
+  .n {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
   h3 {
-    margin: 0;
-    font-size: 20px;
+    margin: 12px 0 0;
+    font-size: 21px;
     font-weight: 600;
     letter-spacing: -0.02em;
     color: var(--ink);
@@ -173,185 +310,33 @@ const ScenarioCard = styled.div`
     line-height: 1.55;
     color: var(--ink-mute);
   }
-`;
-
-/* ----------------------------------------------------------------
-   The attack walkthrough
------------------------------------------------------------------ */
-const Flow = styled.div`
-  margin-top: 46px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--paper-2);
-  box-shadow: var(--shadow-soft);
-`;
-
-const FlowBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 13px 22px;
-  background: var(--paper-3);
-  border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-`;
-
-const Steps = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Step = styled.div`
-  padding: 22px 20px;
-  border-right: 1px solid var(--line);
-  &:last-child {
-    border-right: none;
-  }
-  @media (max-width: 900px) {
-    border-right: none;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .n {
+  .tag {
+    margin-top: 18px;
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--paper-3);
+    border: 1px solid var(--line);
     font-family: var(--font-mono), monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  .svc {
-    margin-top: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-  }
-  .code {
-    margin-top: 8px;
-    font-family: var(--font-mono), monospace;
-    font-size: 12.5px;
-    color: var(--ink);
-    word-break: break-word;
-  }
-  .note {
-    margin-top: 8px;
-    font-size: 13.5px;
-    line-height: 1.5;
-    color: var(--ink-mute);
+    font-size: 11.5px;
+    color: var(--ink-soft);
   }
 `;
 
-const Missing = styled.div`
-  padding: 22px;
-  border-top: 1px solid var(--line);
-  background: rgba(201, 52, 106, 0.05);
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  flex-wrap: wrap;
-
-  .lbl {
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--hot-ink);
-  }
-  .fn {
-    font-family: var(--font-mono), monospace;
-    font-size: clamp(15px, 1.6vw, 19px);
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .state {
-    font-family: var(--font-mono), monospace;
-    font-size: 13.5px;
-    color: var(--hot-ink);
-  }
-`;
-
-const Takeaway = styled.p`
-  margin: 28px 0 0;
-  max-width: 760px;
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--ink-soft);
+const Rule = styled.p`
+  margin: 34px 0 0;
+  max-width: 820px;
+  font-size: clamp(18px, 1.9vw, 22px);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: var(--ink);
 
   b {
     font-weight: 600;
-    color: var(--ink);
   }
 `;
 
-/* ----------------------------------------------------------------
-   Comparison
------------------------------------------------------------------ */
-const Table = styled.div`
-  margin-top: 46px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--paper-2);
-  box-shadow: var(--shadow-soft);
-  overflow-x: auto;
-`;
-
-const Row = styled.div<{ $head?: boolean; $ours?: boolean }>`
-  display: grid;
-  grid-template-columns: 1.1fr 1.3fr 1.3fr;
-  gap: 20px;
-  padding: ${({ $head }) => ($head ? '13px 24px' : '22px 24px')};
-  border-bottom: 1px solid var(--line);
-  background: ${({ $head, $ours }) => ($head ? 'var(--paper-3)' : $ours ? 'rgba(91,67,241,0.04)' : 'transparent')};
-  box-shadow: ${({ $ours }) => ($ours ? 'inset 3px 0 0 var(--accent)' : 'none')};
-  min-width: 680px;
-  &:last-child {
-    border-bottom: none;
-  }
-
-  .h {
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .who {
-    font-size: 16.5px;
-    font-weight: ${({ $ours }) => ($ours ? 600 : 500)};
-    letter-spacing: -0.01em;
-    color: ${({ $ours }) => ($ours ? 'var(--ink)' : 'var(--ink-mute)')};
-  }
-  .c {
-    font-size: 15.5px;
-    line-height: 1.5;
-    color: ${({ $ours }) => ($ours ? 'var(--ink)' : 'var(--ink-mute)')};
-  }
-`;
-
-const Foot = styled.p`
-  margin: 18px 0 0;
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
-  color: var(--ink-faint);
-`;
-
-/* ----------------------------------------------------------------
-   Close
------------------------------------------------------------------ */
-const CloseSection = styled.section`
-  background: var(--paper);
-`;
-
+/* ---------------- close ---------------- */
 const CloseInner = styled(Container)`
   padding-top: 96px;
   padding-bottom: 110px;
@@ -385,32 +370,73 @@ const CloseCtas = styled.div`
   justify-content: center;
 `;
 
+/* ---------------- content ---------------- */
 const CAPS = [
   { h: 'Function-level evidence', d: 'arguments · return values · execution paths' },
   { h: 'One connected execution path', d: 'follow identity and data across services' },
-  { h: 'Under 1% CPU overhead', d: 'out-of-process eBPF instrumentation' },
+  { h: 'Under 1% CPU overhead', d: 'out of process · no SDK · no redeploy' },
 ];
 
-const SCENARIOS = [
-  { h: "Wrong customer's data.", p: "A valid caller reaches another customer's record. Connect identity to ownership." },
-  { h: 'No shell. Still an exploit.', p: 'No new process. No suspicious socket. The secret leaves through a function return.' },
-  { h: 'The fraud check never ran.', p: 'A forged flag crosses Kafka. A worker trusts it. The required control is bypassed.' },
+const THREAT = [
+  'Recon, exploit chaining and lateral movement now run at machine speed.',
+  'Autonomous agents find zero-days before human researchers do.',
+  'Signatures and CVE feeds arrive after the exploit has already executed.',
+  'The window between disclosure and weaponisation has collapsed to hours.',
 ];
 
-const STEPS = [
-  { n: '01 / caller', svc: 'Client request', code: 'fraud_checked: true', note: 'Untrusted input' },
-  { n: '02 / java', svc: 'payments-api', code: 'publish(payment)', note: 'Copies the client field' },
-  { n: '03 / kafka', svc: 'payments.queued', code: 'flag: true', note: 'Carries it across the boundary' },
-  { n: '04 / python', svc: 'settlement-worker', code: 'settle(payment)', note: 'Trusts the flag' },
+const GAP = [
+  'Endpoint, cloud and web tooling observe side effects: packets, syscalls, audit logs. All of it downstream of the application logic.',
+  'A per-process view is blind to a chained attack that traverses services.',
+  'Encrypted traffic is opaque on the network, and the keys cannot ship to a sensor.',
+  'Nothing shows which function ran, with which arguments, along which control-flow path.',
 ];
 
-/* Competitors are described by approach rather than by name, deliberately. */
-const APPROACHES = [
-  { who: 'Application detection and response', start: 'Application threat detection', ask: 'Function-to-function continuity across services' },
-  { who: 'Runtime application self-protection', start: 'Inline application protection', ask: 'The attack path beyond a single process' },
-  { who: 'Kernel-event tooling', start: 'Kernel events and user-space hooks', ask: 'The business meaning behind permitted operations' },
-  { who: 'Cloud and workload platforms', start: 'Cloud, workload and application context', ask: 'Who accessed which data, through which execution path' },
-  { who: 'Odigos', start: 'Functions, arguments and return values', ask: 'Identity, function and data across services', ours: true },
+const PATHS = [
+  {
+    bar: 'broken authorisation',
+    h: 'A read behind the gateway.',
+    p: 'The front door held. An internal service is trusted to read any account, so a request forwarded through it returned a customer the session never authenticated as.',
+    k: 'the evidence',
+    ev: 'authenticated 1001\nreturned  owner 1002',
+    blind: 'A normal, authorised database read. Nothing at the edge, and nothing in the process, looks wrong.',
+  },
+  {
+    bar: 'expression injection',
+    h: 'A secret with no syscall.',
+    p: 'A template expression hidden in an uploaded file reached a process-wide cache and printed other customers into the attacker’s own document.',
+    k: 'the evidence',
+    ev: 'arg.0    "${T(...).DB_PASSWORD}"\nreturn   "prod-db: Pa$$w0rd..."',
+    blind: 'No new process. No socket. No file. The read never leaves the heap, so there is nothing for a kernel sensor to trip on.',
+  },
+  {
+    bar: 'cross-service trust',
+    h: 'One wire, read two ways.',
+    p: 'A single payment message was parsed by two services using two JSON libraries that disagree on duplicate keys. The screener cleared one beneficiary; settlement paid another.',
+    k: 'the evidence',
+    ev: 'screener  payee = clean name\nsettled   payee = sanctioned',
+    blind: 'Both services behaved correctly in isolation. The flaw lives in the gap between them, which no single-service view contains.',
+  },
+];
+
+const STAGES = [
+  {
+    n: '01 · baseline',
+    h: 'Learn what is normal.',
+    p: 'Odigos observes how each service actually behaves and distils it into a compact behavioural fingerprint of steady state, learned per route.',
+    tag: 'a compact fingerprint',
+  },
+  {
+    n: '02 · detect',
+    h: 'Catch what diverges.',
+    p: 'New activity is matched against that fingerprint. An unfamiliar call edge, a new egress, an argument that carries something it never carried, an identity that does not match the object returned.',
+    tag: 'no signatures · no rules',
+  },
+  {
+    n: '03 · remediate',
+    h: 'Stop it where it happens.',
+    p: 'A policy acts at the function itself, blocking the call or rewriting the response, in milliseconds, with nothing in the data path and no redeploy.',
+    tag: 'blocked in place',
+  },
 ];
 
 export const SecurityContent = () => {
@@ -426,11 +452,14 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={60}>
               <HeroH1>
-                AI accelerates the attack. <em>Odigos exposes the execution.</em>
+                Every service returned 200. <em>The screen said cleared.</em>
               </HeroH1>
             </Reveal>
             <Reveal delay={120}>
-              <HeroSub>See which functions ran, what data moved, and where trust broke across services.</HeroSub>
+              <HeroSub>
+                An agent went from a public job listing to another customer&rsquo;s account, a statement full of everyone else&rsquo;s, and an <b>$8.5M wire past a green sanctions screen</b>. No shell. No syscall. No failed
+                request. The only evidence lived in the shape of the calls across services.
+              </HeroSub>
             </Reveal>
             <Reveal delay={180}>
               <HeroCtas>
@@ -454,21 +483,21 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Valid requests. Malicious outcomes.</Eyebrow>
+                <Eyebrow>The threat</Eyebrow>
                 <h2>
-                  The breach hides <span className='mute'>in legitimate activity.</span>
+                  Every attacker now has <span className='mute'>nation-state firepower.</span>
                 </h2>
               </Head>
             </Reveal>
             <Reveal delay={70}>
-              <Cards>
-                {SCENARIOS.map((s) => (
-                  <ScenarioCard key={s.h}>
-                    <h3>{s.h}</h3>
-                    <p>{s.p}</p>
-                  </ScenarioCard>
+              <Points>
+                {THREAT.map((t, i) => (
+                  <li key={t}>
+                    <span className='n'>{String(i + 1).padStart(2, '0')}</span>
+                    <span>{t}</span>
+                  </li>
                 ))}
-              </Cards>
+              </Points>
             </Reveal>
           </Inner>
         </Section>
@@ -477,41 +506,21 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Follow an attack</Eyebrow>
+                <Eyebrow>The gap</Eyebrow>
                 <h2>
-                  Four normal steps. <span className='mute'>One broken security control.</span>
+                  Today&rsquo;s tools watch the symptoms. <span className='mute'>By then the exploit already ran.</span>
                 </h2>
               </Head>
             </Reveal>
-
             <Reveal delay={70}>
-              <Flow>
-                <FlowBar>
-                  <span>the path the request took</span>
-                  <span>every step permitted</span>
-                </FlowBar>
-                <Steps>
-                  {STEPS.map((s) => (
-                    <Step key={s.n}>
-                      <div className='n'>{s.n}</div>
-                      <div className='svc'>{s.svc}</div>
-                      <div className='code'>{s.code}</div>
-                      <div className='note'>{s.note}</div>
-                    </Step>
-                  ))}
-                </Steps>
-                <Missing>
-                  <span className='lbl'>required step</span>
-                  <span className='fn'>FraudCheck.run</span>
-                  <span className='state'>expected &rarr; missing</span>
-                </Missing>
-              </Flow>
-            </Reveal>
-
-            <Reveal delay={110}>
-              <Takeaway>
-                The workflow settled without its mandatory check. This is the difference: not just a message sent or a process running, but <b>the origin, propagation and consequence of the attacker&rsquo;s input</b>.
-              </Takeaway>
+              <Points>
+                {GAP.map((t, i) => (
+                  <li key={t}>
+                    <span className='n'>{String(i + 1).padStart(2, '0')}</span>
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </Points>
             </Reveal>
           </Inner>
         </Section>
@@ -520,36 +529,94 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Compare the evidence, not the label</Eyebrow>
+                <Eyebrow>Three silent paths, one session</Eyebrow>
                 <h2>
-                  Application protection <span className='mute'>should not stop at the application boundary.</span>
+                  Nothing was broken. <span className='mute'>Everything was permitted.</span>
                 </h2>
+                <p>Each of these is a real class of attack. None of them trips a rule, raises an error, or leaves a mark on any single service.</p>
               </Head>
             </Reveal>
 
             <Reveal delay={70}>
-              <Table>
-                <Row $head>
-                  <span className='h'>approach</span>
-                  <span className='h'>starting point</span>
-                  <span className='h'>evidence to demand</span>
-                </Row>
-                {APPROACHES.map((a) => (
-                  <Row key={a.who} $ours={a.ours}>
-                    <span className='who'>{a.who}</span>
-                    <span className='c'>{a.start}</span>
-                    <span className='c'>{a.ask}</span>
-                  </Row>
+              <Chain>
+                {PATHS.map((p) => (
+                  <Path key={p.h}>
+                    <PathBar>{p.bar}</PathBar>
+                    <PathBody>
+                      <h3>{p.h}</h3>
+                      <p>{p.p}</p>
+                      <div className='ev'>
+                        <span className='k'>{p.k}</span>
+                        {p.ev.split('\n').map((l) => (
+                          <div key={l}>{l}</div>
+                        ))}
+                      </div>
+                      <div className='blind'>{p.blind}</div>
+                    </PathBody>
+                  </Path>
                 ))}
-              </Table>
+              </Chain>
             </Reveal>
+
             <Reveal delay={110}>
-              <Foot>// CPU figure applies to instrumentation. Measurement scope and coverage available on request.</Foot>
+              <Verdict>
+                <p>
+                  None of these is a bug in one service. <b>Each is a gap that only shows up across two.</b> A read behind the gateway, an expression that dumps a shared cache, a wire two parsers disagree on.
+                  Only a trace that crosses both services <span className='q'>sees it at all</span>.
+                </p>
+              </Verdict>
             </Reveal>
           </Inner>
         </Section>
 
-        <CloseSection>
+        <Section $alt>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>How runtime defence works</Eyebrow>
+                <h2>
+                  Learn what is normal. <span className='mute'>Stop what is not.</span>
+                </h2>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Flow>
+                {STAGES.map((s) => (
+                  <Stage key={s.n}>
+                    <div className='n'>{s.n}</div>
+                    <h3>{s.h}</h3>
+                    <p>{s.p}</p>
+                    <span className='tag'>{s.tag}</span>
+                  </Stage>
+                ))}
+              </Flow>
+            </Reveal>
+            <Reveal delay={110}>
+              <Rule>
+                Learn the baseline, catch what diverges, and shut it down in place. <b>No signatures, no rules, no redeploy.</b>
+              </Rule>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>When something lands</Eyebrow>
+                <h2>
+                  We name the line of code. <span className='mute'>Not the alert.</span>
+                </h2>
+                <p>
+                  Exact function, package and process executing the attack, with the arguments it was called with and the value it returned. Blocking happens at the function, not the firewall, in milliseconds,
+                  with no agent in the data path.
+                </p>
+              </Head>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section>
           <CloseInner>
             <Reveal>
               <Eyebrow>Security</Eyebrow>
@@ -566,7 +633,7 @@ export const SecurityContent = () => {
               </CloseCtas>
             </Reveal>
           </CloseInner>
-        </CloseSection>
+        </Section>
       </main>
       <LandingFooter />
     </div>
