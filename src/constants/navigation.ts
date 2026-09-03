@@ -15,6 +15,10 @@ export const NAVIGATION: NavItem[] = [
     href: '/product',
   },
   {
+    label: 'Security',
+    href: '/security',
+  },
+  {
     label: 'About',
     href: '/about',
   },
