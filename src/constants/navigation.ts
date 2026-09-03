@@ -47,3 +47,41 @@ export const NAVIGATION: NavItem[] = [
     href: DOCS_LINK,
   },
 ];
+
+export interface NavGroup {
+  label: string;
+  href?: string;
+  items?: { label: string; href: string; blurb: string; external?: boolean }[];
+}
+
+/* Ten flat items pushed the burger breakpoint out to 1240px. Grouped into
+   four, the bar fits on a laptop again. */
+export const NAV_GROUPS: NavGroup[] = [
+  {
+    label: 'Product',
+    items: [
+      { label: 'Overview', href: '/product', blurb: 'What Odigos captures, and how' },
+      { label: 'Security', href: '/security', blurb: 'Function-level evidence for an attack path' },
+      { label: 'Comparisons', href: '/comparisons', blurb: 'How the approaches actually differ' },
+    ],
+  },
+  {
+    label: 'Pricing',
+    href: '/pricing',
+  },
+  {
+    label: 'Resources',
+    items: [
+      { label: 'Documentation', href: DOCS_LINK, blurb: 'Install, configure and operate', external: true },
+      { label: 'Blog', href: '/blog', blurb: 'eBPF, OpenTelemetry and production debugging' },
+      { label: 'Events', href: '/events', blurb: 'Where to find us' },
+    ],
+  },
+  {
+    label: 'Company',
+    items: [
+      { label: 'About', href: '/about', blurb: 'Who we are and what we are building' },
+      { label: 'Careers', href: CAREERS_LINK, blurb: 'Open roles', external: true },
+    ],
+  },
+];

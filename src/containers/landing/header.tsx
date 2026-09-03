@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { NAVIGATION } from '@/constants';
+import { NAV_GROUPS } from '@/constants';
 import { Container, TrialCTA, DemoCTA } from './primitives';
 
 const Bar = styled.header<{ $scrolled: boolean }>`
@@ -40,8 +40,74 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 4px;
-  @media (max-width: 1240px) {
+  @media (max-width: 940px) {
     display: none;
+  }
+`;
+
+const NavGroupWrap = styled.div`
+  position: relative;
+`;
+
+const NavTrigger = styled.button<{ $open: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border: none;
+  border-radius: 9px;
+  background: ${({ $open }) => ($open ? 'rgba(18, 18, 21, 0.045)' : 'transparent')};
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 450;
+  color: ${({ $open }) => ($open ? 'var(--ink)' : 'var(--ink-soft)')};
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+  &:hover {
+    color: var(--ink);
+    background: rgba(18, 18, 21, 0.045);
+  }
+
+  svg {
+    transition: transform 0.18s ease;
+    transform: rotate(${({ $open }) => ($open ? '180deg' : '0deg')});
+  }
+`;
+
+const Menu = styled.div`
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 306px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  box-shadow: var(--shadow-lift);
+  z-index: 70;
+`;
+
+const MenuItem = styled(Link)`
+  display: block;
+  padding: 11px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.16s ease;
+  &:hover {
+    background: var(--paper-3);
+  }
+
+  .l {
+    font-size: 15px;
+    font-weight: 550;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .b {
+    margin-top: 3px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-mute);
   }
 `;
 
@@ -66,14 +132,14 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  @media (max-width: 1240px) {
+  @media (max-width: 940px) {
     display: none;
   }
 `;
 
 const Burger = styled.button`
   display: none;
-  @media (max-width: 1240px) {
+  @media (max-width: 940px) {
     display: inline-flex;
   }
   align-items: center;
@@ -170,6 +236,24 @@ const SheetCtas = styled.div`
 export const LandingHeader = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!menu) return;
+    const onDown = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setMenu(null);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenu(null);
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [menu]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -198,12 +282,44 @@ export const LandingHeader = () => {
               <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={128} height={29} priority />
             </Brand>
 
-            <Nav>
-              {NAVIGATION.map(({ label, href }) => (
-                <NavLink key={label} href={href}>
-                  {label}
-                </NavLink>
-              ))}
+            <Nav ref={navRef}>
+              {NAV_GROUPS.map((g) =>
+                g.items ? (
+                  <NavGroupWrap key={g.label}>
+                    <NavTrigger
+                      $open={menu === g.label}
+                      aria-expanded={menu === g.label}
+                      aria-haspopup='true'
+                      onClick={() => setMenu(menu === g.label ? null : g.label)}
+                    >
+                      {g.label}
+                      <svg width='10' height='10' viewBox='0 0 12 12' fill='none' aria-hidden>
+                        <path d='M2.5 4.5 6 8l3.5-3.5' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' strokeLinejoin='round' />
+                      </svg>
+                    </NavTrigger>
+                    {menu === g.label && (
+                      <Menu role='menu'>
+                        {g.items.map((it) => (
+                          <MenuItem
+                            key={it.label}
+                            href={it.href}
+                            role='menuitem'
+                            onClick={() => setMenu(null)}
+                            {...(it.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                          >
+                            <div className='l'>{it.label}</div>
+                            <div className='b'>{it.blurb}</div>
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    )}
+                  </NavGroupWrap>
+                ) : (
+                  <NavLink key={g.label} href={g.href as string}>
+                    {g.label}
+                  </NavLink>
+                ),
+              )}
             </Nav>
 
             <Right>
@@ -226,14 +342,25 @@ export const LandingHeader = () => {
           </Close>
         </SheetTop>
         <SheetLinks>
-          {NAVIGATION.map(({ label, href }) => (
-            <SheetLink key={label} href={href} onClick={() => setOpen(false)}>
-              {label}
-              <span aria-hidden style={{ color: 'var(--ink-faint)' }}>
-                →
-              </span>
-            </SheetLink>
-          ))}
+          {NAV_GROUPS.flatMap((g) =>
+            g.items
+              ? g.items.map((it) => (
+                  <SheetLink key={it.label} href={it.href} onClick={() => setOpen(false)} {...(it.external ? { target: '_blank', rel: 'noreferrer' } : {})}>
+                    {it.label}
+                    <span aria-hidden style={{ color: 'var(--ink-faint)' }}>
+                      →
+                    </span>
+                  </SheetLink>
+                ))
+              : [
+                  <SheetLink key={g.label} href={g.href as string} onClick={() => setOpen(false)}>
+                    {g.label}
+                    <span aria-hidden style={{ color: 'var(--ink-faint)' }}>
+                      →
+                    </span>
+                  </SheetLink>,
+                ],
+          )}
         </SheetLinks>
         <SheetCtas onClick={() => setOpen(false)}>
           <TrialCTA />
