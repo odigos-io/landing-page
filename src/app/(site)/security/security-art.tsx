@@ -339,8 +339,11 @@ const Verdict = styled.div`
   .chain {
     color: var(--ink);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+    @media (max-width: 560px) {
+      white-space: normal;
+      line-height: 1.5;
+    }
   }
   .arw {
     color: var(--ink-faint);
