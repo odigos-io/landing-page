@@ -770,14 +770,14 @@ const FACTS = [
   },
   {
     h: 'It will not drown your analysts.',
-    p: 'One deviation on its own is noise, and it is scored as noise. Nothing reaches an analyst until several classes land on one privileged request: the two call edges above, plus the latency shape they pushed that route into, on a path that ends at the ledger.',
+    p: 'Three of the six landed on one request in the attack above: two new call edges, and the latency shape they pushed that route into, on a path that ends at the ledger. Any one of them on its own would have been scored as noise and gone no further.',
   },
   {
     h: 'The record leaves the host while the attack is still running.',
     p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you control, so the evidence is off the box before an attacker who owns it knows there was anything to remove. Redaction is configured before anything is written. Retention and access are your destination policy, and we never hold a copy.',
   },
   {
-    h: 'Nobody writes rules for it.',
+    h: 'You do not tune it.',
     p: 'It watches a route for two weeks and forms the baseline itself. Most of the signals are structural: a call edge, a peer or a library either appears on that route or it does not. The two that are not, latency shape and how often two values agree, are learned from that route\'s own history and never from a global threshold. A normal deploy that adds one edge barely registers.',
   },
   {
@@ -994,8 +994,7 @@ export const SecurityContent = () => {
                 <Eyebrow>What it watches for</Eyebrow>
                 <h2>Six ways a request can be structurally wrong.</h2>
                 <p>
-                  No signatures, because there is nothing to write a signature against. Each class is a shape the route has never produced before, learned from your own traffic. A single one is expected noise.
-                  A request only reaches an analyst when several of them land together on a privileged path.
+                  No signatures, because there is nothing to write a signature against. Each class is a shape the route has never produced before, learned from your own traffic.
                 </p>
               </Head>
             </Reveal>
