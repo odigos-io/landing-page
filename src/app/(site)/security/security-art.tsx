@@ -25,8 +25,8 @@ const AGENT = { x: 12, y: 88 };
 const STOPS = [
   { x: 36, y: 76, name: '01 ssrf', on: 1.0, side: 'right' },
   { x: 63, y: 58, name: '02 known cve', on: 1.5, side: 'right' },
-  { x: 90, y: 40, name: '03 zero-day', on: 2.05, side: 'right' },
-  { x: 116, y: 22, name: '04 forged trust', on: 2.6, side: 'left' },
+  { x: 86, y: 43, name: '03 zero-day', on: 2.05, side: 'right' },
+  { x: 110, y: 26, name: '04 forged token', on: 2.6, side: 'left' },
 ];
 
 /* the control that should have run and never did */
@@ -45,7 +45,7 @@ const PROBES: [number, number][] = [
   [34, 30],
   [63, 58],
   [52, 68],
-  [90, 40],
+  [86, 43],
   [78, 88],
   [116, 62],
 ];
@@ -175,8 +175,8 @@ const reduce = css`
 const CLUSTERS: [number, number, number, number, number][] = [
   [36, 76, 7, 10, 0.9],
   [63, 58, 7, 11, 0.9],
-  [90, 40, 7, 11, 0.9],
-  [116, 22, 6, 9, 0.8],
+  [86, 43, 7, 11, 0.9],
+  [110, 26, 6, 9, 0.8],
   [34, 30, 5, 9, 0.45],
   [52, 68, 5, 8, 0.4],
   [78, 88, 5, 9, 0.35],

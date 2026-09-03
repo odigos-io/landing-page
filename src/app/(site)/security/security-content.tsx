@@ -710,11 +710,15 @@ const FACTS = [
     p: 'One deviation on its own is noise, and it is scored as noise. Nothing reaches an analyst until several classes line up on one privileged request: a new egress, plus a library that route has never reached, plus a tenant mismatch.',
   },
   {
-    h: 'There is nothing to tune.',
+    h: 'The capture does not leave your estate.',
+    p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you own. Redaction is configured before anything is written, and there is no path that sends your payloads to us.',
+  },
+  {
+    h: 'It has no tuning phase.',
     p: 'The signals are structural rather than statistical. A call edge, a peer or a library either appears on that route or it does not. Baselines are learned per route, so a normal deploy that adds one edge barely registers.',
   },
   {
-    h: 'Baselines learn relations, not values.',
+    h: 'The baseline holds the relation. It does not hold the value.',
     p: 'For a check like tenant identity against the row that came back, Odigos keeps the relation and how often the two agree. The values are not kept in the baseline. Where a finding needs the value itself, as in the capture above, it is scoped to that function on that workload, governed by RBAC and policy, and redacted by default.',
   },
   {
@@ -769,8 +773,8 @@ const OBSERVED = [
 const EVIDENCE = [
   { k: 'service', v: 'tickets-api · java' },
   { k: 'function', v: 'SpelExpressionParser.parse' },
-  { k: 'called with', v: '"${T(java.lang.System).getenv(\'DB_PASSWORD\')}"', hot: true },
-  { k: 'returned', v: '"postgres://svc_settle@prod-db-01/ledger"', hot: true },
+  { k: 'called with', v: '"${T(java.lang.System).getenv(\'DATABASE_URL\')}"', hot: true },
+  { k: 'would have returned', v: '"postgres://svc_settle@prod-db-01/led\u2022\u2022\u2022\u2022\u2022\u2022"', hot: true },
   { k: 'reached by', v: 'POST /api/tickets · unauthenticated' },
 ];
 
@@ -794,14 +798,14 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                One operator with an AI chains four findings your scanner ranked low into a single path across four services, without tripping a single control. Odigos records which functions actually ran in
+                One operator with an AI chains three findings your scanner ranked low and one nobody had seen into a single path across four services, without tripping a single control. Odigos records which functions actually ran in
                 live production, <b>so when you are asked what happened, the answer already exists</b>.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
               <HeroCtas>
-                <TrialCTA />
-                <DemoCTA />
+                <DemoCTA label='Talk to our security team' variant='primary' />
+                <TrialCTA variant='secondary' />
               </HeroCtas>
               <HeroWhat>One eBPF runtime on the node. It reads the calls your services actually make across a request, and it learns what each route is supposed to do.</HeroWhat>
             </Reveal>
@@ -845,49 +849,6 @@ export const SecurityContent = () => {
                 <p>
                   Every one of these is a property of where the sensor sits, not of how well it is configured. The attack ran <b>inside the application, in the gaps between your services</b>, and the only place
                   it was ever visible <span className='q'>is the one nothing was watching</span>.
-                </p>
-              </Verdict>
-            </Reveal>
-          </Inner>
-        </Section>
-
-        <Section>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Why now</Eyebrow>
-                <h2>Baselines are earned, not installed.</h2>
-                <p>
-                  Odigos learns what each route normally does across about two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
-                  January.
-                </p>
-              </Head>
-            </Reveal>
-
-            <Reveal delay={70}>
-              <Clock>
-                <ClockLine>
-                  <span className='seg cold'>
-                    <b>nothing deployed</b>
-                    no comparison is possible
-                  </span>
-                  <span className='seg warm'>
-                    <b>two weeks of traffic</b>
-                    the baseline forms
-                  </span>
-                  <span className='seg hot'>
-                    <b>the incident</b>
-                    you can say what changed
-                  </span>
-                </ClockLine>
-              </Clock>
-            </Reveal>
-
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  A probe deployed the day after an incident can tell you what the system is doing. <b>It cannot tell you what changed.</b> Evidence is the one thing in your security program that{' '}
-                  <span className='q'>cannot be bought retroactively</span>.
                 </p>
               </Verdict>
             </Reveal>
@@ -961,12 +922,11 @@ export const SecurityContent = () => {
                     The finding is the function.
                   </h2>
                   <p>
-                    The exact function, the argument it was handed and the value it gave back. Everything a responder would otherwise spend the night reconstructing is already there, at the moment it
-                    happened, because it was captured as it happened.
+                    The exact function, the argument it was handed and the value it gave back. Everything a responder would otherwise spend the night reconstructing was written down while it was still running.
                   </p>
                   <p>
-                    And because the finding sits at the function, so does the fix. A FunctionPolicy acts at the same kernel probe that saw the call, so nothing of ours has to be loaded into your process to
-                    stop it, and there is no proxy in front of the service and no redeploy.
+                    And because the finding names the function, so can the policy. A FunctionPolicy scopes enforcement to that one call on that one route, and it stops the attempt before the effect lands.
+                    No proxy in front of the service, and no redeploy.
                   </p>
                 </Head>
               </Reveal>
@@ -995,12 +955,29 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
+        <Section>
+          <Inner>
+            <Trust>
+              <div>
+                <Eyebrow>Before you run it</Eyebrow>
+                <h2>The probe is open source.</h2>
+                <p>Your team can read exactly what it attaches to and what it reads before it goes anywhere near production. No closed agent, no proprietary format, and the telemetry stays yours.</p>
+              </div>
+              <TrustLinks>
+                <a href='https://github.com/odigos-io/odigos'>Read the source</a>
+                <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
+                <a href='https://docs.odigos.io/quickstart/introduction'>What it attaches to</a>
+              </TrustLinks>
+            </Trust>
+          </Inner>
+        </Section>
+
         <Section $alt>
           <Inner>
             <Reveal>
               <Head>
                 <Eyebrow>Running it</Eyebrow>
-                <h2>Nothing of ours loads into your application.</h2>
+                <h2>It runs beside your application, never inside it.</h2>
               </Head>
             </Reveal>
 
@@ -1017,20 +994,46 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
-        <Section $alt>
+        <Section>
           <Inner>
-            <Trust>
-              <div>
-                <Eyebrow>Before you run it</Eyebrow>
-                <h2>The probe is open source.</h2>
-                <p>Your team can read exactly what it attaches to and what it reads before it goes anywhere near production. No closed agent, no proprietary format, and the telemetry stays yours.</p>
-              </div>
-              <TrustLinks>
-                <a href='https://github.com/odigos-io/odigos'>Read the source</a>
-                <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
-                <a href='https://docs.odigos.io/quickstart/introduction'>What it attaches to</a>
-              </TrustLinks>
-            </Trust>
+            <Reveal>
+              <Head>
+                <Eyebrow>Why now</Eyebrow>
+                <h2>Baselines are earned, not installed.</h2>
+                <p>
+                  Odigos learns what each route normally does across about two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
+                  January.
+                </p>
+              </Head>
+            </Reveal>
+
+            <Reveal delay={70}>
+              <Clock>
+                <ClockLine>
+                  <span className='seg cold'>
+                    <b>nothing deployed</b>
+                    no comparison is possible
+                  </span>
+                  <span className='seg warm'>
+                    <b>two weeks of traffic</b>
+                    the baseline forms
+                  </span>
+                  <span className='seg hot'>
+                    <b>the incident</b>
+                    you can say what changed
+                  </span>
+                </ClockLine>
+              </Clock>
+            </Reveal>
+
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  A probe deployed the day after an incident can tell you what the system is doing. <b>It cannot tell you what changed.</b> Evidence is the one thing in your security program that{' '}
+                  <span className='q'>cannot be bought retroactively</span>.
+                </p>
+              </Verdict>
+            </Reveal>
           </Inner>
         </Section>
 
@@ -1053,7 +1056,7 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={230}>
               <CloseNote>
-                One command, one service, and nothing loads into your process. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
+                One command, one service, no code change. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
               </CloseNote>
             </Reveal>
           </CloseInner>
