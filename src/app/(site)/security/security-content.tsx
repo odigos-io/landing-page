@@ -130,98 +130,6 @@ const HeroCtas = styled.div`
 
 /* ---------------- numbered list ---------------- */
 /* ---------------- one trace, three services ---------------- */
-const Wire = styled.div`
-  margin-top: 44px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--paper-2);
-  box-shadow: var(--shadow-lift);
-`;
-
-const WireBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 13px 20px;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper-3);
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-
-  .hot {
-    color: var(--hot-ink);
-  }
-`;
-
-const WireBody = styled.div`
-  padding: 10px 0;
-
-  @media (max-width: 640px) {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    > * {
-      width: max-content;
-      min-width: 100%;
-    }
-  }
-`;
-
-const WireRow = styled.div<{ $depth: number; $state?: string }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 20px;
-  padding-left: ${({ $depth }) => 20 + $depth * 22}px;
-  background: ${({ $state }) => ($state ? 'rgba(201,52,106,0.06)' : 'transparent')};
-  font-family: var(--font-mono), monospace;
-  font-size: clamp(11px, 1.05vw, 13px);
-
-  .svc {
-    flex-shrink: 0;
-    width: 108px;
-    color: var(--ink-faint);
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .fn {
-    color: ${({ $state }) => ($state === 'gone' ? 'var(--ink-faint)' : $state ? 'var(--ink)' : 'var(--ink-mute)')};
-    text-decoration: ${({ $state }) => ($state === 'gone' ? 'line-through' : 'none')};
-    white-space: nowrap;
-  }
-  .tag {
-    flex-shrink: 0;
-    margin-left: auto;
-    padding: 2px 8px;
-    border-radius: 999px;
-    background: rgba(201, 52, 106, 0.12);
-    color: var(--hot-ink);
-    font-size: 9.5px;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-  }
-`;
-
-const WireFoot = styled.div`
-  padding: 16px 20px;
-  border-top: 1px solid var(--line);
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--ink-mute);
-
-  b {
-    font-family: var(--font-mono), monospace;
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--ink);
-  }
-`;
-
 /* ---------------- running it ---------------- */
 const Facts = styled.div`
   margin-top: 44px;
@@ -364,6 +272,54 @@ const FindingFoot = styled.div`
   }
 `;
 
+/* ---------------- the structural gaps ---------------- */
+const Gaps = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--line);
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Gap = styled.div`
+  display: flex;
+  gap: 16px;
+  padding: 26px 24px;
+  background: var(--paper-2);
+
+  .n {
+    flex-shrink: 0;
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+  h3 {
+    margin: 0;
+    font-size: 17.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  p {
+    margin: 9px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+`;
+
 /* ---------------- baseline vs observed ---------------- */
 const Diff = styled.div`
   margin-top: 46px;
@@ -435,7 +391,16 @@ const TraceRow = styled.div<{ $depth: number; $new?: boolean; $slow?: boolean; $
   font-size: clamp(11px, 1.05vw, 12.5px);
 
   .fn {
+    flex-shrink: 0;
+    font-family: var(--font-display), 'Geist', sans-serif;
+    font-size: 14px;
     color: ${({ $new, $slow }) => ($new || $slow ? 'var(--ink)' : 'var(--ink-mute)')};
+    white-space: nowrap;
+  }
+  .sym {
+    min-width: 0;
+    color: var(--ink-faint);
+    font-size: 10.5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -655,32 +620,43 @@ const FACTS = [
   },
 ];
 
-const WIRE = [
-  { svc: 'payments-api', fn: 'POST /api/payments  {amount, payee, fraud_checked}', d: 0, tag: 'user field', state: 'new' },
-  { svc: 'java', fn: 'PaymentController.create', d: 1 },
-  { svc: 'kafka', fn: 'payments.queued  publish', d: 1 },
-  { svc: 'fraud-svc · go', fn: 'FraudCheck.run', d: 2, tag: 'not called', state: 'gone' },
-  { svc: 'settlement', fn: 'payments.queued  process', d: 1 },
-  { svc: 'python', fn: 'Settlement.execute  \u2192 PAID', d: 2, tag: 'unscreened', state: 'new' },
+
+
+const GAPS = [
+  {
+    h: 'Your sensors watch side effects.',
+    p: 'Endpoint, cloud and network tools read packets, syscalls and audit logs. All of it sits downstream of the application logic, and this attack never reached any of it.',
+  },
+  {
+    h: 'They watch one process at a time.',
+    p: 'A chain that crosses four services inside one transaction is, to a per-process sensor, four unremarkable requests on four healthy hosts.',
+  },
+  {
+    h: 'The traffic is encrypted.',
+    p: 'What crosses the network is opaque, and the keys cannot ship to a sensor. The payload is only in the clear inside the process that handles it.',
+  },
+  {
+    h: 'Nothing records what actually ran.',
+    p: 'Which function executed, with which arguments, along which path. That is the layer the attack lived in, and it is the one layer nothing in the estate captures.',
+  },
 ];
 
-
 const BASELINE = [
-  { fn: 'POST /api/tickets', ms: '12ms', d: 0 },
-  { fn: 'TicketController.create', ms: '3ms', d: 1 },
-  { fn: 'ExpressionResolver.resolve', ms: '1ms', d: 2 },
-  { fn: '', ms: '', d: 3, ghost: true },
-  { fn: '', ms: '', d: 3, ghost: true },
-  { fn: 'TicketRepository.save', ms: '6ms', d: 1 },
+  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', ms: '12ms', d: 0 },
+  { fn: 'create the record', sym: 'TicketController.create', ms: '3ms', d: 1 },
+  { fn: 'render the template', sym: 'ExpressionResolver.resolve', ms: '1ms', d: 2 },
+  { fn: '', sym: '', ms: '', d: 3, ghost: true },
+  { fn: '', sym: '', ms: '', d: 3, ghost: true },
+  { fn: 'write to the database', sym: 'TicketRepository.save', ms: '6ms', d: 1 },
 ];
 
 const OBSERVED = [
-  { fn: 'POST /api/tickets', ms: '95ms', d: 0 },
-  { fn: 'TicketController.create', ms: '5ms', d: 1 },
-  { fn: 'ExpressionResolver.resolve', ms: '80ms', d: 2, slow: true },
-  { fn: 'SpelExpressionParser.parse', ms: '2ms', d: 3, isNew: true },
-  { fn: 'ReflectiveMethodExecutor.execute', ms: '60ms', d: 3, isNew: true },
-  { fn: 'TicketRepository.save', ms: '6ms', d: 1 },
+  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', ms: '95ms', d: 0 },
+  { fn: 'create the record', sym: 'TicketController.create', ms: '5ms', d: 1 },
+  { fn: 'render the template', sym: 'ExpressionResolver.resolve', ms: '80ms', d: 2, slow: true },
+  { fn: 'read the text as code', sym: 'SpelExpressionParser.parse', ms: '2ms', d: 3, isNew: true },
+  { fn: 'run whatever it read', sym: 'ReflectiveMethodExecutor.execute', ms: '60ms', d: 3, isNew: true },
+  { fn: 'write to the database', sym: 'TicketRepository.save', ms: '6ms', d: 1 },
 ];
 
 const EVIDENCE = [
@@ -730,6 +706,46 @@ export const SecurityContent = () => {
           </HeroInner>
         </HeroSection>
 
+        <Section>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Why the stack missed it</Eyebrow>
+                <h2>
+                  Nothing you own was misconfigured. <span className='mute'>Everything you own was looking somewhere else.</span>
+                </h2>
+                <p>
+                  The controls in your estate watch the effects an attack leaves behind. This one left none, because it never did anything a normal request does not do. Four structural gaps, and no amount of
+                  tuning closes any of them.
+                </p>
+              </Head>
+            </Reveal>
+
+            <Reveal delay={70}>
+              <Gaps>
+                {GAPS.map((g, i) => (
+                  <Gap key={g.h}>
+                    <span className='n'>{String(i + 1).padStart(2, '0')}</span>
+                    <div>
+                      <h3>{g.h}</h3>
+                      <p>{g.p}</p>
+                    </div>
+                  </Gap>
+                ))}
+              </Gaps>
+            </Reveal>
+
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  Every one of these is a property of where the sensor sits, not of how well it is configured. The attack ran <b>inside the application, in the gap between two services</b>, and the only place
+                  it was ever visible <span className='q'>is the one nothing was watching</span>.
+                </p>
+              </Verdict>
+            </Reveal>
+          </Inner>
+        </Section>
+
         <Section $alt>
           <Inner>
             <Reveal>
@@ -752,7 +768,14 @@ export const SecurityContent = () => {
                   <DiffBody>
                     {BASELINE.map((r, i) => (
                       <TraceRow key={r.fn || `gap-${i}`} $depth={r.d} $ghost={r.ghost}>
-                        {r.ghost ? <span className='gap' /> : <span className='fn'>{r.fn}</span>}
+                        {r.ghost ? (
+                          <span className='gap' />
+                        ) : (
+                          <>
+                            <span className='fn'>{r.fn}</span>
+                            <span className='sym'>{r.sym}</span>
+                          </>
+                        )}
                         <span className='ms'>{r.ms}</span>
                       </TraceRow>
                     ))}
@@ -770,6 +793,7 @@ export const SecurityContent = () => {
                         <span className='fn'>{r.fn}</span>
                         {r.isNew && <span className='tag'>new</span>}
                         {r.slow && <span className='tag'>80x slower</span>}
+                        <span className='sym'>{r.sym}</span>
                         <span className='ms'>{r.ms}</span>
                       </TraceRow>
                     ))}
@@ -786,45 +810,6 @@ export const SecurityContent = () => {
                 </p>
               </Verdict>
             </Reveal>
-          </Inner>
-        </Section>
-
-        <Section>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Cross-service trust</Eyebrow>
-                <h2>The fraud service never set that flag. The attacker typed it.</h2>
-                <p>
-                  Every payment is supposed to pass fraud screening, which sets an internal <code>fraud_checked</code> flag. The settlement worker trusts that flag and skips re-screening. The API copies every field of
-                  the request body onto the payment, so the attacker sent the flag himself.
-                </p>
-              </Head>
-            </Reveal>
-
-            <Reveal delay={70}>
-              <Wire>
-                <WireBar>
-                  <span>one trace · three services · three languages</span>
-                  <span className='hot'>fraud check never ran</span>
-                </WireBar>
-                <WireBody>
-                  {WIRE.map((r) => (
-                    <WireRow key={r.fn} $depth={r.d} $state={r.state}>
-                      <span className='svc'>{r.svc}</span>
-                      <span className='fn'>{r.fn}</span>
-                      {r.tag && <span className='tag'>{r.tag}</span>}
-                    </WireRow>
-                  ))}
-                </WireBody>
-                <WireFoot>
-                  Two things are wrong at once, and both are in the trace. <b>fraud_checked arrived in the user&rsquo;s HTTP body</b>, where it has never once appeared before, and the{' '}
-                  <b>FraudCheck.run span is missing</b> from a trace that always contains it. Both services behaved correctly on their own. Both logged 200. The flag&rsquo;s origin is in neither service&rsquo;s
-                  logs. The agent never wrote an exploit. It filled in a field.
-                </WireFoot>
-              </Wire>
-            </Reveal>
-
           </Inner>
         </Section>
 
