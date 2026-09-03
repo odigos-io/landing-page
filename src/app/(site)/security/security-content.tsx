@@ -765,8 +765,12 @@ const CloseCtas = styled.div`
 
 const FACTS = [
   {
+    h: 'It attaches to what is already running.',
+    p: 'Kernel-attached uprobes into the JVM, V8, CPython and the Go runtime, on Kubernetes and on bare-metal VMs. It reads cleartext request and response payloads including TLS-terminated traffic. No SDK, no code change, no redeploy.',
+  },
+  {
     h: 'It will not drown your analysts.',
-    p: 'One deviation on its own is noise, and it is scored as noise. Nothing reaches an analyst until several classes land on one privileged request: two call edges that route has never produced, plus a library it has never reached, on a path that handles money.',
+    p: 'One deviation on its own is noise, and it is scored as noise. Nothing reaches an analyst until several classes land on one privileged request: the two call edges above, plus the latency shape they pushed that route into, on a path that ends at the ledger.',
   },
   {
     h: 'The record leaves the host while the attack is still running.',
@@ -782,11 +786,7 @@ const FACTS = [
   },
   {
     h: 'Under 1% CPU.',
-    p: 'Measured out of process across 1.04 million cores, with effectively no added latency. The probe fires in the kernel the moment your function is called, which is the moment the value is already in the clear.',
-  },
-  {
-    h: 'It attaches to what is already running.',
-    p: 'Kernel-attached uprobes into the JVM, V8, CPython and the Go runtime, on Kubernetes and on bare-metal VMs. It reads cleartext request and response payloads including TLS-terminated traffic. No SDK, no code change, no redeploy.',
+    p: 'Measured across 1.04 million cores under production load, with effectively no added latency. The probe fires in the kernel the moment your function is called, which is the moment the value is already in the clear.',
   },
 ];
 
@@ -839,7 +839,7 @@ const EVIDENCE = [
   { k: 'called with', v: '"${T(java.lang.System).getenv(\'DATABASE_URL\')}"', hot: true },
   { k: 'then', v: 'ReflectiveMethodExecutor.execute' },
   { k: 'returned', v: '"postgres://svc_settle:\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022@prod-db-01/ledger"', hot: true },
-  { k: 'reached by', v: 'POST /api/tickets · unauthenticated' },
+  { k: 'reached by', v: 'POST /api/tickets · an ordinary customer session' },
 ];
 
 
@@ -899,8 +899,7 @@ export const SecurityContent = () => {
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  Every one of these is a property of where the sensor sits, not of how well it is configured. The attack ran <b>inside the application, in the gaps between your services</b>, and the only place
-                  it was ever visible <span className='q'>had no sensor on it</span>.
+                  The attack ran <b>inside the application, in the gaps between your services</b>, and the only place it was ever visible <span className='q'>had no sensor on it</span>.
                 </p>
               </Verdict>
             </Reveal>
@@ -968,13 +967,14 @@ export const SecurityContent = () => {
                 <DiffCol $hot>
                   <DiffBar $hot>
                     <span>observed · example</span>
-                    <span className='n'>two calls that were never there</span>
+                    <span className='n'>two new calls, and a route that got slower</span>
                   </DiffBar>
                   <DiffBody>
                     {OBSERVED.map((r) => (
                       <TraceRow key={r.fn} $depth={r.d} $new={r.isNew} $slow={r.slow}>
                         <span className='fn'>{r.fn}</span>
                         {r.isNew && <span className='tag'>new</span>}
+                        {r.slow && <span className='tag'>slower</span>}
                         
                         <span className='sym'>{r.sym}</span>
                       </TraceRow>
@@ -1074,8 +1074,7 @@ export const SecurityContent = () => {
                   that comes back instead. Most policies start by doing neither, watching and reporting only, and a great many of them stay there.
                 </p>
                 <p>
-                  That is the whole difference. A rule at the perimeter is a decision you make about every request that will ever arrive. A FunctionPolicy is a decision about one call on one route, so the worst
-                  case when you get it wrong is that one call behaves differently, not that a service stops serving.
+                  A policy names one function on one workload, so the review it needs is the review that workload&rsquo;s changes already get. Who may write one, and against which services, is your RBAC.
                 </p>
               </Prose>
             </Reveal>
@@ -1099,9 +1098,9 @@ export const SecurityContent = () => {
                 <p>Your team can read exactly what it attaches to and what it reads before it goes anywhere near production. No closed agent, no proprietary format, and the telemetry stays yours.</p>
               </div>
               <TrustLinks>
-                <a href='https://github.com/odigos-io/odigos'>Read the source</a>
+                <a href='https://github.com/odigos-io/odigos/tree/main/odiglet'>Read the node agent source</a>
                 <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
-                <a href='https://docs.odigos.io/quickstart/introduction'>The probe, in the docs</a>
+                <a href='https://docs.odigos.io'>The probe, in the docs</a>
               </TrustLinks>
             </Trust>
           </Inner>

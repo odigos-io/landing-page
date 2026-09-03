@@ -66,12 +66,12 @@ const VERDICT = 3.55;
 const OPEN_AT = 4.5;
 const FN_ORIGIN = { x: 54, y: 26 };
 const FNS = [
-  { dx: -21, dy: -1, name: 'render', hot: false },
+  { dx: -21, dy: -1, name: 'render', hot: false, slow: true },
   { dx: -18, dy: -9, name: 'parse', hot: true },
   { dx: -8, dy: -15, name: 'execute', hot: true },
 ];
 
-const CHAIN = ['ssrf', 'trusted internal call', 'template injection', 'weak token check'];
+const CHAIN = ['ssrf', 'trusted internal call', 'template injection', 'service token reused'];
 
 /* ---------------- geometry ---------------- */
 
@@ -443,14 +443,14 @@ export const SecurityArt = () => (
           ))}
           {FNS.map((fn, i) => (
             <FnG key={`fn${fn.name}`} $i={i}>
-              <circle cx={FN_ORIGIN.x + fn.dx} cy={FN_ORIGIN.y + fn.dy} r={2.1} fill={fn.hot ? HOT : '#fff'} stroke={fn.hot ? HOT : LINE} strokeWidth={0.5} />
+              <circle cx={FN_ORIGIN.x + fn.dx} cy={FN_ORIGIN.y + fn.dy} r={2.1} fill={fn.hot ? HOT : fn.slow ? 'rgba(201,52,106,0.22)' : '#fff'} stroke={fn.hot ? HOT : fn.slow ? 'rgba(201,52,106,0.5)' : LINE} strokeWidth={0.5} />
               <text
                 x={FN_ORIGIN.x + fn.dx - 3.6}
                 y={FN_ORIGIN.y + fn.dy + 1}
                 fontSize='2.9px'
                 textAnchor='end'
                 fontFamily='var(--font-mono), monospace'
-                fill={fn.hot ? HOT : 'rgba(24,20,54,0.5)'}
+                fill={fn.hot ? HOT : fn.slow ? 'rgba(201,52,106,0.7)' : 'rgba(24,20,54,0.5)'}
               >
                 {fn.name}
               </text>
