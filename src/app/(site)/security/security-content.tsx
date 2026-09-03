@@ -171,6 +171,113 @@ const Fact = styled.div`
   }
 `;
 
+/* ---------------- why now ---------------- */
+const Clock = styled.div`
+  margin-top: 44px;
+`;
+
+const ClockLine = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1.1fr 1fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 2px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+
+  .seg {
+    display: block;
+    padding: 20px 20px 22px;
+    border-top: 3px solid var(--line-strong);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink-faint);
+  }
+  .seg b {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .warm {
+    border-top-color: var(--accent);
+  }
+  .warm b {
+    color: var(--accent);
+  }
+  .hot {
+    border-top-color: var(--hot);
+  }
+  .hot b {
+    color: var(--hot-ink);
+  }
+  .hot {
+    color: var(--ink);
+  }
+`;
+
+/* ---------------- proof of vendor ---------------- */
+const Trust = styled.div`
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 48px;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  h2 {
+    margin: 14px 0 0;
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    color: var(--ink);
+  }
+  p {
+    margin: 14px 0 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-mute);
+  }
+`;
+
+const TrustLinks = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+
+  a {
+    padding: 18px 20px;
+    background: var(--paper-2);
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  a:hover {
+    background: var(--paper-3);
+    color: var(--accent);
+  }
+`;
+
 /* ---------------- the finding ---------------- */
 const Split = styled.div`
   display: grid;
@@ -660,11 +767,10 @@ const OBSERVED = [
 ];
 
 const EVIDENCE = [
-  { k: 'process', v: 'tickets-api · pid 4417 · java' },
-  { k: 'package', v: 'org.springframework.expression.spel' },
+  { k: 'service', v: 'tickets-api · java' },
   { k: 'function', v: 'SpelExpressionParser.parse' },
   { k: 'called with', v: '"${T(java.lang.System).getenv(\'DB_PASSWORD\')}"', hot: true },
-  { k: 'returned', v: '"prod-db-01: Pa$$w0rd-9f2c..."', hot: true },
+  { k: 'returned', v: '"postgres://svc_settle@prod-db-01/ledger"', hot: true },
   { k: 'reached by', v: 'POST /api/tickets · unauthenticated' },
 ];
 
@@ -688,8 +794,8 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                One operator with a model now chains findings your scanner ranked low into a path that crosses four services inside a single transaction. <b>The attack no longer lives in a process</b>, so
-                nothing that watches a process can see it.
+                One operator with a model chains findings your scanner ranked low into a single path across four services, without doing anything a normal request does not do. Odigos records which functions
+                actually ran in live production, <b>so when you are asked what happened, the answer already exists</b>.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
@@ -762,8 +868,8 @@ export const SecurityContent = () => {
               <Diff>
                 <DiffCol>
                   <DiffBar>
-                    <span>baseline</span>
-                    <span className='n'>2.1M renders · 14 days</span>
+                    <span>baseline · example</span>
+                    <span className='n'>14 days of ordinary traffic</span>
                   </DiffBar>
                   <DiffBody>
                     {BASELINE.map((r, i) => (
@@ -776,7 +882,6 @@ export const SecurityContent = () => {
                             <span className='sym'>{r.sym}</span>
                           </>
                         )}
-                        <span className='ms'>{r.ms}</span>
                       </TraceRow>
                     ))}
                   </DiffBody>
@@ -784,17 +889,16 @@ export const SecurityContent = () => {
 
                 <DiffCol $hot>
                   <DiffBar $hot>
-                    <span>observed</span>
-                    <span className='n'>2 new spans · 80x slower</span>
+                    <span>observed · example</span>
+                    <span className='n'>two calls that were never there</span>
                   </DiffBar>
                   <DiffBody>
                     {OBSERVED.map((r) => (
                       <TraceRow key={r.fn} $depth={r.d} $new={r.isNew} $slow={r.slow}>
                         <span className='fn'>{r.fn}</span>
                         {r.isNew && <span className='tag'>new</span>}
-                        {r.slow && <span className='tag'>80x slower</span>}
+                        
                         <span className='sym'>{r.sym}</span>
-                        <span className='ms'>{r.ms}</span>
                       </TraceRow>
                     ))}
                   </DiffBody>
@@ -820,11 +924,11 @@ export const SecurityContent = () => {
                 <Head>
                   <Eyebrow>When something lands</Eyebrow>
                   <h2>
-                    We name the line of code. <span className='mute'>Not the alert.</span>
+                    The finding is the function.
                   </h2>
                   <p>
-                    Not a severity and a service name. The exact function, the argument it was handed and the value it gave back. Everything a responder would otherwise spend the night reconstructing
-                    is already in the finding.
+                    The exact function, the argument it was handed and the value it gave back. Everything a responder would otherwise spend the night reconstructing is already there, at the moment it
+                    happened, because it was captured as it happened.
                   </p>
                   <p>
                     And because the finding sits at the function, so does the fix. A FunctionPolicy blocks that call inside the process, with nothing in front of it and no redeploy.
@@ -835,7 +939,7 @@ export const SecurityContent = () => {
               <Reveal delay={80}>
                 <Finding>
                   <FindingBar>
-                    <span>finding</span>
+                    <span>finding · example</span>
                     <span className='hot'>secret read · blocked</span>
                   </FindingBar>
                   <FindingBody>
@@ -879,26 +983,85 @@ export const SecurityContent = () => {
         </Section>
 
         <Section>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Why now</Eyebrow>
+                <h2>Baselines are earned, not installed.</h2>
+                <p>
+                  Odigos learns what each route normally does across about two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
+                  January.
+                </p>
+              </Head>
+            </Reveal>
+
+            <Reveal delay={70}>
+              <Clock>
+                <ClockLine>
+                  <span className='seg cold'>
+                    <b>nothing deployed</b>
+                    no comparison is possible
+                  </span>
+                  <span className='seg warm'>
+                    <b>two weeks of traffic</b>
+                    the baseline forms
+                  </span>
+                  <span className='seg hot'>
+                    <b>the incident</b>
+                    you can say what changed
+                  </span>
+                </ClockLine>
+              </Clock>
+            </Reveal>
+
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  A probe deployed the day after an incident can tell you what the system is doing. <b>It cannot tell you what changed.</b> Evidence is the one thing in your security program that{' '}
+                  <span className='q'>cannot be bought retroactively</span>.
+                </p>
+              </Verdict>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section $alt>
+          <Inner>
+            <Trust>
+              <div>
+                <Eyebrow>Before you run it</Eyebrow>
+                <h2>The probe is open source.</h2>
+                <p>Your team can read exactly what it attaches to and what it reads before it goes anywhere near production. No closed agent, no proprietary format, and the telemetry stays yours.</p>
+              </div>
+              <TrustLinks>
+                <a href='https://github.com/odigos-io/odigos'>Read the source</a>
+                <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
+                <a href='https://docs.odigos.io/quickstart/introduction'>What it attaches to</a>
+              </TrustLinks>
+            </Trust>
+          </Inner>
+        </Section>
+
+        <Section>
           <CloseInner>
             <Reveal>
-              <Eyebrow>Bring us one</Eyebrow>
+              <Eyebrow>Start somewhere</Eyebrow>
             </Reveal>
             <Reveal delay={60}>
-              <h2>Do not buy another alert. Demand the execution path.</h2>
+              <h2>Pick the service you would least like to explain.</h2>
             </Reveal>
             <Reveal delay={120}>
-              <p>Send us the incident your current tools could not explain. We will show you the trace, or we will tell you we cannot see it.</p>
+              <p>Put Odigos on it for two weeks. At the end you have the call graph for every route it serves, or you have our answer for why we could not see it.</p>
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>
-                <DemoCTA label='Send us the incident' variant='primary' />
-                <TrialCTA variant='secondary' />
+                <TrialCTA label='Start on one service' />
+                <DemoCTA label='Talk to our security team' />
               </CloseCtas>
             </Reveal>
             <Reveal delay={230}>
               <CloseNote>
-                One service, one command, no redeploy. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a> or see{' '}
-                <a href='https://trust.odigos.io'>what the probe reads and what it stores</a>.
+                One command, one service, and nothing loads into your process. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
               </CloseNote>
             </Reveal>
           </CloseInner>

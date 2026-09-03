@@ -12,48 +12,48 @@ import styled, { keyframes, css } from 'styled-components';
    and is never called. When the last step lands the whole route flares, and
    the bar turns over: every finding was ranked low, and the path is critical. */
 
-const T = 16;
+const T = 7.6;
 const p = (s: number) => Math.max(0, Math.min(100, (s / T) * 100));
 
 const HOT = '#c9346a';
 const DEEP = '#1c1633';
 const GREY = 'rgba(24, 20, 54, 0.3)';
 
-const AGENT = { x: 13, y: 50 };
+const AGENT = { x: 12, y: 88 };
 
 /* the four steps, named by technique, in viewBox units (142 x 100) */
 const STOPS = [
-  { x: 34, y: 70, name: '01 ssrf', on: 3.6, lab: 'below' },
-  { x: 60, y: 31, name: '02 known cve', on: 5.6, lab: 'above' },
-  { x: 90, y: 64, name: '03 zero-day', on: 7.6, lab: 'below' },
-  { x: 116, y: 27, name: '04 forged trust', on: 9.6, lab: 'above' },
+  { x: 36, y: 76, name: '01 ssrf', on: 1.75, side: 'right' },
+  { x: 63, y: 58, name: '02 known cve', on: 2.65, side: 'right' },
+  { x: 90, y: 40, name: '03 zero-day', on: 3.55, side: 'right' },
+  { x: 116, y: 22, name: '04 forged trust', on: 4.45, side: 'left' },
 ];
 
 /* the control that should have run and never did */
-const SKIPPED = { x: 102, y: 82, name: 'control never ran' };
+const SKIPPED_ON_SEG = 2; /* the control sits on the route between 03 and 04 */
 
 /* from, to, bow off the straight line. -1 is the agent */
 const PATH: [number, number, number][] = [
-  [-1, 0, 9],
-  [0, 1, -6],
-  [1, 2, -10],
+  [-1, 0, 6],
+  [0, 1, -5],
+  [1, 2, 5],
   [2, 3, -5],
 ];
-const SEG_AT = [2.4, 4.4, 6.4, 8.4];
+const SEG_AT = [1.0, 1.9, 2.8, 3.7];
 
 const PROBES: [number, number][] = [
-  [30, 22],
-  [60, 31],
-  [46, 52],
-  [90, 64],
-  [26, 76],
-  [118, 16],
+  [34, 30],
+  [63, 58],
+  [52, 68],
+  [90, 40],
+  [78, 88],
+  [116, 62],
 ];
-const PROBE_AT = 0.5;
+const PROBE_AT = 0.15;
 
-const SKIP_AT = 9.0;
-const FLARE = 11.6;
-const VERDICT = 12.1;
+const SKIP_AT = 4.1;
+const FLARE = 5.1;
+const VERDICT = 5.45;
 
 /* ---------------- geometry ---------------- */
 
@@ -82,6 +82,8 @@ const ROUTE = PATH.map(([f, t, bow]) => {
   return { ...c, pts: sample(at(f), at(t), c.cx, c.cy, 8) };
 });
 
+const SKIP = ROUTE[SKIPPED_ON_SEG].pts[3];
+
 /* ---------------- motion ---------------- */
 
 const fieldIn = keyframes`
@@ -90,63 +92,63 @@ const fieldIn = keyframes`
 
 const probe = (s: number) => keyframes`
   0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
-  ${p(s + 0.05)}%{opacity:.55}
-  ${p(s + 0.45)}%{stroke-dashoffset:0;opacity:.55}
-  ${p(s + 1.5)}%,100%{stroke-dashoffset:0;opacity:.11}`;
+  ${p(s + 0.04)}%{opacity:.5}
+  ${p(s + 0.3)}%{stroke-dashoffset:0;opacity:.5}
+  ${p(s + 0.9)}%,100%{stroke-dashoffset:0;opacity:.1}`;
 
 const draw = (s: number) => keyframes`
   0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
-  ${p(s + 0.1)}%{opacity:1}
-  ${p(s + 1.3)}%,${p(FLARE)}%{stroke-dashoffset:0;opacity:1;stroke-width:1}
-  ${p(FLARE + 0.7)}%{stroke-dashoffset:0;opacity:1;stroke-width:2.3}
-  ${p(FLARE + 1.7)}%,100%{stroke-dashoffset:0;opacity:1;stroke-width:1.4}`;
+  ${p(s + 0.06)}%{opacity:1}
+  ${p(s + 0.72)}%,${p(FLARE)}%{stroke-dashoffset:0;opacity:1;stroke-width:1.35}
+  ${p(FLARE + 0.4)}%{stroke-dashoffset:0;opacity:1;stroke-width:2.9}
+  ${p(FLARE + 1)}%,100%{stroke-dashoffset:0;opacity:1;stroke-width:1.8}`;
 
 const glow = (s: number) => keyframes`
   0%,${p(FLARE)}%{opacity:0;stroke-width:1}
-  ${p(FLARE + 0.7)}%{opacity:.45;stroke-width:7}
-  ${p(FLARE + 1.7)}%,100%{opacity:.26;stroke-width:5.5}`;
+  ${p(FLARE + 0.4)}%{opacity:.45;stroke-width:8}
+  ${p(FLARE + 1)}%,100%{opacity:.26;stroke-width:6}`;
 
 const ride = (s: number, pts: Pt[]) => {
-  const dur = 1.25;
+  const dur = 0.7;
   const frames = pts.map((pt, i) => `${p(s + (i / (pts.length - 1)) * dur)}%{transform:translate(${pt.x.toFixed(2)}px,${pt.y.toFixed(2)}px)}`).join('\n  ');
   return keyframes`
   0%,${p(s)}%{opacity:0;transform:translate(${pts[0].x.toFixed(2)}px,${pts[0].y.toFixed(2)}px)}
-  ${p(s + 0.1)}%{opacity:1}
+  ${p(s + 0.06)}%{opacity:1}
   ${frames}
-  ${p(s + dur + 0.15)}%,100%{opacity:0}`;
+  ${p(s + dur + 0.1)}%,100%{opacity:0}`;
 };
 
 const stopOn = (s: number) => keyframes`
   0%,${p(s)}%{fill:${GREY};r:2}
-  ${p(s + 0.35)}%{fill:${HOT};r:3.8}
-  ${p(s + 0.85)}%,${p(FLARE)}%{fill:${HOT};r:2.7}
-  ${p(FLARE + 0.7)}%{fill:${HOT};r:4}
-  ${p(FLARE + 1.7)}%,100%{fill:${HOT};r:2.9}`;
+  ${p(s + 0.2)}%{fill:${HOT};r:4}
+  ${p(s + 0.5)}%,${p(FLARE)}%{fill:${HOT};r:2.9}
+  ${p(FLARE + 0.4)}%{fill:${HOT};r:4.3}
+  ${p(FLARE + 1)}%,100%{fill:${HOT};r:3.1}`;
 
 const ringOn = (s: number) => keyframes`
   0%,${p(s)}%{opacity:0;transform:scale(.35)}
-  ${p(s + 0.45)}%{opacity:.55;transform:scale(1)}
-  ${p(s + 1.4)}%,100%{opacity:0;transform:scale(2.4)}`;
+  ${p(s + 0.28)}%{opacity:.55;transform:scale(1)}
+  ${p(s + 0.9)}%,100%{opacity:0;transform:scale(2.4)}`;
 
 const labelOn = (s: number) => keyframes`
   0%,${p(s)}%{opacity:0}
-  ${p(s + 0.45)}%,100%{opacity:1}`;
+  ${p(s + 0.28)}%,100%{opacity:1}`;
 
 const skipIn = keyframes`
   0%,${p(SKIP_AT)}%{opacity:0}
-  ${p(SKIP_AT + 0.8)}%,100%{opacity:1}`;
+  ${p(SKIP_AT + 0.5)}%,100%{opacity:1}`;
 
 const verdictIn = keyframes`
   0%,${p(VERDICT)}%{opacity:0;transform:translateY(8px)}
-  ${p(VERDICT + 0.7)}%,100%{opacity:1;transform:none}`;
+  ${p(VERDICT + 0.45)}%,100%{opacity:1;transform:none}`;
 
 const calmOut = keyframes`
   0%,${p(VERDICT)}%{opacity:1;transform:none}
-  ${p(VERDICT + 0.5)}%,100%{opacity:0;transform:translateY(-8px)}`;
+  ${p(VERDICT + 0.32)}%,100%{opacity:0;transform:translateY(-8px)}`;
 
 const twinkle = (d: number) => keyframes`
-  0%,100%{opacity:${(0.22 + d * 0.12).toFixed(2)}}
-  50%{opacity:${(0.4 + d * 0.14).toFixed(2)}}`;
+  0%,100%{opacity:${(0.17 + d * 0.09).toFixed(2)}}
+  50%{opacity:${(0.29 + d * 0.1).toFixed(2)}}`;
 
 const agentPulse = keyframes`
   0%,100%{opacity:.3;transform:scale(.86)}
@@ -171,16 +173,16 @@ const reduce = css`
 
 /* cx, cy, count, spread, depth */
 const CLUSTERS: [number, number, number, number, number][] = [
-  [34, 70, 7, 10, 0.9],
-  [60, 31, 7, 11, 0.9],
-  [90, 64, 7, 11, 0.9],
-  [116, 27, 6, 9, 0.8],
-  [102, 82, 5, 8, 0.5],
-  [30, 22, 5, 9, 0.4],
-  [46, 52, 5, 8, 0.45],
-  [132, 62, 4, 7, 0.3],
-  [70, 92, 5, 9, 0.3],
-  [26, 76, 4, 7, 0.35],
+  [36, 76, 7, 10, 0.9],
+  [63, 58, 7, 11, 0.9],
+  [90, 40, 7, 11, 0.9],
+  [116, 22, 6, 9, 0.8],
+  [34, 30, 5, 9, 0.45],
+  [52, 68, 5, 8, 0.4],
+  [78, 88, 5, 9, 0.35],
+  [116, 62, 5, 8, 0.4],
+  [136, 90, 4, 7, 0.3],
+  [16, 52, 4, 7, 0.3],
 ];
 
 const build = () => {
@@ -199,10 +201,10 @@ const build = () => {
       const x = cx + Math.cos(a) * dist;
       const y = cy + Math.sin(a) * dist * 0.78;
       nodes.push({ x, y, r: 0.45 + rnd() * 0.6 * (0.5 + depth), d: rnd() });
-      links.push({ x1: cx, y1: cy, x2: x, y2: y, o: 0.05 + depth * 0.07 });
+      links.push({ x1: cx, y1: cy, x2: x, y2: y, o: 0.032 + depth * 0.045 });
     }
     const next = CLUSTERS[(ci + 3) % CLUSTERS.length];
-    links.push({ x1: cx, y1: cy, x2: next[0], y2: next[1], o: 0.045 });
+    links.push({ x1: cx, y1: cy, x2: next[0], y2: next[1], o: 0.03 });
   });
 
   return { nodes, links };
@@ -238,30 +240,6 @@ const rowBase = css`
   @media (max-width: 1000px) {
     padding: 12px 15px;
     font-size: 10px;
-  }
-`;
-
-const Bar = styled.div`
-  ${rowBase};
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper-3);
-  color: var(--ink-faint);
-
-  .lab {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    white-space: nowrap;
-    color: var(--signal-ink);
-  }
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--signal);
-    animation: ${blink} 2s ease-in-out infinite;
-    ${reduce}
   }
 `;
 
@@ -316,7 +294,7 @@ const Glow = styled.path<{ $t: number }>`
 const Seg = styled.path<{ $t: number }>`
   fill: none;
   stroke: ${HOT};
-  stroke-width: 1;
+  stroke-width: 1.35;
   stroke-linecap: round;
   stroke-dasharray: 1;
   animation: ${(x) => draw(x.$t)} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
@@ -356,11 +334,11 @@ const Ring = styled.circle<{ $t: number }>`
   ${reduce}
 `;
 
-const StopLabel = styled.text<{ $t: number }>`
+const StopLabel = styled.text<{ $t: number; $anchor: string }>`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 3.6px;
   letter-spacing: 0.12px;
-  text-anchor: middle;
+  text-anchor: ${(x) => x.$anchor};
   fill: ${HOT};
   opacity: 0;
   animation: ${(x) => labelOn(x.$t)} ${T}s linear infinite both;
@@ -370,17 +348,21 @@ const StopLabel = styled.text<{ $t: number }>`
 const SkipLabel = styled.text`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 3.2px;
-  text-anchor: middle;
+  text-anchor: end;
   fill: rgba(24, 20, 54, 0.42);
   animation: ${skipIn} ${T}s linear infinite both;
   ${reduce}
 `;
 
-const SkipEdge = styled.path`
-  fill: none;
-  stroke: rgba(24, 20, 54, 0.26);
-  stroke-width: 0.36;
-  stroke-dasharray: 1.7 1.7;
+/* a ring on the route with a line through it */
+const SkipMark = ({ $x, $y }: { $x: number; $y: number }) => (
+  <SkipG>
+    <circle cx={$x} cy={$y} r={3.4} fill='#fdfcfe' stroke='rgba(24,20,54,0.42)' strokeWidth={0.5} />
+    <line x1={$x - 2.4} y1={$y + 2.4} x2={$x + 2.4} y2={$y - 2.4} stroke='rgba(24,20,54,0.42)' strokeWidth={0.5} />
+  </SkipG>
+);
+
+const SkipG = styled.g`
   animation: ${skipIn} ${T}s linear infinite both;
   ${reduce}
 `;
@@ -403,14 +385,6 @@ const AgentRing = styled.circle`
   ${reduce}
 `;
 
-const AgentLabel = styled.text`
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 3.6px;
-  letter-spacing: 0.18px;
-  text-anchor: middle;
-  fill: ${DEEP};
-`;
-
 const VerdictWrap = styled.div`
   position: relative;
   border-top: 1px solid var(--line);
@@ -430,6 +404,27 @@ const Calm = styled.div`
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-size: 9.5px;
+  }
+  .lab {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    color: var(--signal-ink);
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: ${blink} 2s ease-in-out infinite;
+    ${reduce}
+  }
+  @media (max-width: 700px) {
+    .lab {
+      display: none;
+    }
   }
 `;
 
@@ -459,14 +454,6 @@ const Verdict = styled.div`
 export const SecurityArt = () => (
   <Frame>
     <Panel>
-      <Bar>
-        <span>one agent · four services · one transaction</span>
-        <span className='lab'>
-          <span className='dot' />
-          nothing raised an alert
-        </span>
-      </Bar>
-
       <Field>
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid slice' aria-hidden>
           {MAP.links.map((l, i) => (
@@ -477,14 +464,9 @@ export const SecurityArt = () => (
           ))}
 
           {PROBES.map(([x, y], i) => (
-            <Probe key={`pr${i}`} x1={AGENT.x} y1={AGENT.y} x2={x} y2={y} pathLength={1} $t={PROBE_AT + i * 0.14} />
+            <Probe key={`pr${i}`} x1={AGENT.x} y1={AGENT.y} x2={x} y2={y} pathLength={1} $t={PROBE_AT + i * 0.08} />
           ))}
 
-          <SkipEdge d={curve(STOPS[2], SKIPPED, -5).d} />
-          <circle cx={SKIPPED.x} cy={SKIPPED.y} r={2} fill={GREY} />
-          <SkipLabel x={SKIPPED.x} y={SKIPPED.y + 7.6}>
-            {SKIPPED.name}
-          </SkipLabel>
 
           {ROUTE.map((r, i) => (
             <Glow key={`g${i}`} d={r.d} $t={SEG_AT[i]} />
@@ -506,19 +488,22 @@ export const SecurityArt = () => (
             <g key={`stop${i}`}>
               <Ring cx={h.x} cy={h.y} $t={h.on} />
               <Stop cx={h.x} cy={h.y} $t={h.on} />
-              <StopLabel x={h.x} y={h.lab === 'above' ? h.y - 5.4 : h.y + 8} $t={h.on}>
+              <StopLabel x={h.side === 'left' ? h.x - 6 : h.x + 6} y={h.y + 1.3} $anchor={h.side === 'left' ? 'end' : 'start'} $t={h.on}>
                 {h.name}
               </StopLabel>
             </g>
           ))}
 
+          {/* the control the route passed straight through */}
+          <SkipMark $x={SKIP.x} $y={SKIP.y} />
+          <SkipLabel x={SKIP.x - 5} y={SKIP.y - 3.4}>
+            control never fired
+          </SkipLabel>
+
           <AgentHalo cx={AGENT.x} cy={AGENT.y} r={9.5} />
           <AgentRing cx={AGENT.x} cy={AGENT.y} r={5.6} />
-          <circle cx={AGENT.x} cy={AGENT.y} r={3.1} fill={DEEP} />
-          <circle cx={AGENT.x} cy={AGENT.y} r={1.2} fill={HOT} />
-          <AgentLabel x={AGENT.x} y={AGENT.y + 11.5}>
-            ai agent
-          </AgentLabel>
+          <circle cx={AGENT.x} cy={AGENT.y} r={3.2} fill={DEEP} />
+          <circle cx={AGENT.x} cy={AGENT.y} r={1.25} fill={HOT} />
         </Map>
       </Field>
 
@@ -526,6 +511,10 @@ export const SecurityArt = () => (
         <Calm>
           <span className='pill'>triaged</span>
           <span>four findings, every one closed on its own merits</span>
+          <span className='lab'>
+            <span className='dot' />
+            no alert raised
+          </span>
         </Calm>
         <Verdict>
           <span className='crit'>critical</span>
