@@ -3,7 +3,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { LandingHeader, LandingFooter } from '@/containers/landing';
-import { Container, Eyebrow, Reveal, DemoCTA } from '@/containers/landing/primitives';
+import { Container, Eyebrow, Reveal, DemoCTA, TrialCTA } from '@/containers/landing/primitives';
+import { SecurityArt } from './security-art';
 
 /* ---------------- shared ---------------- */
 const Section = styled.section<{ $alt?: boolean }>`
@@ -63,18 +64,29 @@ const HeroBackdrop = styled.div`
 
 const HeroInner = styled(Container)`
   position: relative;
-  padding-top: 86px;
-  padding-bottom: 76px;
-  @media (max-width: 1000px) {
-    padding-top: 56px;
-    padding-bottom: 54px;
+  padding-top: 64px;
+  padding-bottom: 56px;
+  display: grid;
+  grid-template-columns: 1.02fr 1.12fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 56px;
+  align-items: center;
+  @media (max-width: 1040px) {
+    grid-template-columns: 1fr;
+    > * {
+      min-width: 0;
+    }
+    gap: 40px;
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 `;
 
 const HeroH1 = styled.h1`
   margin: 18px 0 0;
-  max-width: 18ch;
-  font-size: clamp(34px, 5.1vw, 62px);
+  font-size: clamp(32px, 4vw, 50px);
   line-height: 1.03;
   font-weight: 600;
   letter-spacing: -0.038em;
@@ -88,9 +100,9 @@ const HeroH1 = styled.h1`
 `;
 
 const HeroSub = styled.p`
-  margin: 26px 0 0;
-  max-width: 62ch;
-  font-size: clamp(17px, 1.75vw, 20px);
+  margin: 24px 0 0;
+  max-width: 52ch;
+  font-size: clamp(16.5px, 1.6vw, 19px);
   line-height: 1.55;
   color: var(--ink-soft);
 
@@ -107,64 +119,332 @@ const HeroCtas = styled.div`
   flex-wrap: wrap;
 `;
 
-const Caps = styled.div`
-  margin-top: 58px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    margin-top: 42px;
-  }
-`;
-
-const Cap = styled.div`
-  padding: 22px 20px;
+/* ---------------- numbered list ---------------- */
+/* ---------------- one trace, three services ---------------- */
+const Wire = styled.div`
+  margin-top: 44px;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
+  overflow: hidden;
   background: var(--paper-2);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-lift);
+`;
 
-  .h {
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-  }
-  .d {
-    margin-top: 8px;
-    font-family: var(--font-mono), monospace;
-    font-size: 12.5px;
-    line-height: 1.6;
-    color: var(--ink-mute);
+const WireBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-3);
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+
+  .hot {
+    color: var(--hot-ink);
   }
 `;
 
-/* ---------------- numbered list ---------------- */
-const Points = styled.ol`
-  margin: 44px 0 0;
-  padding: 0;
-  list-style: none;
-  max-width: 900px;
-  border-top: 1px solid var(--line);
+const WireBody = styled.div`
+  padding: 10px 0;
 
-  li {
-    display: flex;
-    gap: 20px;
-    align-items: baseline;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 17.5px;
-    line-height: 1.5;
-    color: var(--ink-soft);
+  @media (max-width: 640px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    > * {
+      width: max-content;
+      min-width: 100%;
+    }
   }
-  .n {
+`;
+
+const WireRow = styled.div<{ $depth: number; $state?: string }>`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 20px;
+  padding-left: ${({ $depth }) => 20 + $depth * 22}px;
+  background: ${({ $state }) => ($state ? 'rgba(201,52,106,0.06)' : 'transparent')};
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(11px, 1.05vw, 13px);
+
+  .svc {
     flex-shrink: 0;
+    width: 108px;
+    color: var(--ink-faint);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .fn {
+    color: ${({ $state }) => ($state === 'gone' ? 'var(--ink-faint)' : $state ? 'var(--ink)' : 'var(--ink-mute)')};
+    text-decoration: ${({ $state }) => ($state === 'gone' ? 'line-through' : 'none')};
+    white-space: nowrap;
+  }
+  .tag {
+    flex-shrink: 0;
+    margin-left: auto;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(201, 52, 106, 0.12);
+    color: var(--hot-ink);
+    font-size: 9.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+`;
+
+const WireFoot = styled.div`
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-mute);
+
+  b {
     font-family: var(--font-mono), monospace;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    color: var(--accent);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+`;
+
+/* ---------------- running it ---------------- */
+const Facts = styled.div`
+  margin-top: 44px;
+  border-top: 1px solid var(--line);
+`;
+
+const Fact = styled.div`
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 40px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink-mute);
+  }
+  code {
+    font-family: var(--font-mono), monospace;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+`;
+
+/* ---------------- the finding ---------------- */
+const Split = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1.06fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 56px;
+  align-items: center;
+  @media (max-width: 940px) {
+    grid-template-columns: 1fr;
+    > * {
+      min-width: 0;
+    }
+    gap: 36px;
+  }
+`;
+
+const Finding = styled.div`
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--paper-2);
+  box-shadow: var(--shadow-lift);
+`;
+
+const FindingBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-3);
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+
+  .hot {
+    color: var(--hot-ink);
+  }
+`;
+
+const FindingBody = styled.div`
+  padding: 6px 0;
+
+  @media (max-width: 640px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    > * {
+      width: max-content;
+      min-width: 100%;
+    }
+  }
+`;
+
+const Field = styled.div<{ $hot?: boolean }>`
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 14px;
+  align-items: baseline;
+  padding: 9px 18px;
+  background: ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.06)' : 'transparent')};
+
+  .k {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .v {
+    font-family: var(--font-mono), monospace;
+    font-size: clamp(11.5px, 1.05vw, 13px);
+    line-height: 1.5;
+    word-break: break-all;
+    color: ${({ $hot }) => ($hot ? 'var(--hot-ink)' : 'var(--ink)')};
+  }
+`;
+
+const FindingFoot = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 18px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+
+  .act {
+    color: var(--signal-ink);
+  }
+`;
+
+/* ---------------- baseline vs observed ---------------- */
+const Diff = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  > * {
+    min-width: 0;
+  }
+  gap: 20px;
+  @media (max-width: 940px) {
+    grid-template-columns: 1fr;
+    > * {
+      min-width: 0;
+    }
+  }
+`;
+
+const DiffCol = styled.div<{ $hot?: boolean }>`
+  border: 1px solid ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.3)' : 'var(--line)')};
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--paper-2);
+  box-shadow: ${({ $hot }) => ($hot ? '0 24px 56px -30px rgba(201,52,106,0.42)' : 'var(--shadow-soft)')};
+`;
+
+const DiffBar = styled.div<{ $hot?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.2)' : 'var(--line)')};
+  background: ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.05)' : 'var(--paper-3)')};
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: ${({ $hot }) => ($hot ? 'var(--hot-ink)' : 'var(--signal-ink)')};
+
+  .n {
+    letter-spacing: 0.08em;
+    text-transform: none;
+    color: var(--ink-faint);
+  }
+`;
+
+const DiffBody = styled.div`
+  padding: 12px 8px 14px;
+
+  @media (max-width: 640px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    > * {
+      width: max-content;
+      min-width: 100%;
+    }
+  }
+`;
+
+const TraceRow = styled.div<{ $depth: number; $new?: boolean; $slow?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  padding-left: ${({ $depth }) => 10 + $depth * 15}px;
+  border-radius: 7px;
+  background: ${({ $new, $slow }) => ($new || $slow ? 'rgba(201,52,106,0.07)' : 'transparent')};
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(11px, 1.05vw, 12.5px);
+
+  .fn {
+    color: ${({ $new, $slow }) => ($new || $slow ? 'var(--ink)' : 'var(--ink-mute)')};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tag {
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(201, 52, 106, 0.12);
+    color: var(--hot-ink);
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ms {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: ${({ $slow }) => ($slow ? 'var(--hot-ink)' : 'var(--ink-faint)')};
   }
 `;
 
@@ -173,9 +453,15 @@ const Chain = styled.div`
   margin-top: 46px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  > * {
+    min-width: 0;
+  }
   gap: 18px;
   @media (max-width: 980px) {
     grid-template-columns: 1fr;
+    > * {
+      min-width: 0;
+    }
   }
 `;
 
@@ -277,13 +563,21 @@ const Flow = styled.div`
   margin-top: 46px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  > * {
+    min-width: 0;
+  }
   gap: 18px;
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
+    > * {
+      min-width: 0;
+    }
   }
 `;
 
 const Stage = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 26px 24px;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
@@ -311,7 +605,8 @@ const Stage = styled.div`
     color: var(--ink-mute);
   }
   .tag {
-    margin-top: 18px;
+    margin-top: auto;
+    padding-top: 18px;
     display: inline-block;
     padding: 5px 11px;
     border-radius: 999px;
@@ -320,19 +615,6 @@ const Stage = styled.div`
     font-family: var(--font-mono), monospace;
     font-size: 11.5px;
     color: var(--ink-soft);
-  }
-`;
-
-const Rule = styled.p`
-  margin: 34px 0 0;
-  max-width: 820px;
-  font-size: clamp(18px, 1.9vw, 22px);
-  line-height: 1.45;
-  letter-spacing: -0.015em;
-  color: var(--ink);
-
-  b {
-    font-weight: 600;
   }
 `;
 
@@ -364,77 +646,107 @@ const CloseInner = styled(Container)`
   }
 `;
 
+const CloseNote = styled.p`
+  margin: 22px auto 0;
+  max-width: 460px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+
+  a {
+    color: var(--ink-mute);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  a:hover {
+    color: var(--ink);
+  }
+`;
+
 const CloseCtas = styled.div`
   margin-top: 30px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 12px;
 `;
 
 /* ---------------- content ---------------- */
-const CAPS = [
-  { h: 'Function-level evidence', d: 'arguments · return values · execution paths' },
-  { h: 'One connected execution path', d: 'follow identity and data across services' },
-  { h: 'Under 1% CPU overhead', d: 'out of process · no SDK · no redeploy' },
-];
 
-const THREAT = [
-  'Recon, exploit chaining and lateral movement now run at machine speed.',
-  'Autonomous agents find zero-days before human researchers do.',
-  'Signatures and CVE feeds arrive after the exploit has already executed.',
-  'The window between disclosure and weaponisation has collapsed to hours.',
-];
 
-const GAP = [
-  'Endpoint, cloud and web tooling observe side effects: packets, syscalls, audit logs. All of it downstream of the application logic.',
-  'A per-process view is blind to a chained attack that traverses services.',
-  'Encrypted traffic is opaque on the network, and the keys cannot ship to a sensor.',
-  'Nothing shows which function ran, with which arguments, along which control-flow path.',
-];
 
-const PATHS = [
+const FACTS = [
   {
-    bar: 'broken authorisation',
-    h: 'A read behind the gateway.',
-    p: 'The front door held. An internal service is trusted to read any account, so a request forwarded through it returned a customer the session never authenticated as.',
-    k: 'the evidence',
-    ev: 'authenticated 1001\nreturned  owner 1002',
-    blind: 'A normal, authorised database read. Nothing at the edge, and nothing in the process, looks wrong.',
+    h: 'It will not drown your analysts.',
+    p: 'One deviation on its own is expected noise and is scored as noise. A trace only ranks critical when classes co-occur on a privileged path: a new egress, plus a library that route has never reached, plus a tenant mismatch, in the same request. Millions of traces become a handful of ranked incidents.',
   },
   {
-    bar: 'expression injection',
-    h: 'A secret with no syscall.',
-    p: 'A template expression hidden in an uploaded file reached a process-wide cache and printed other customers into the attacker’s own document.',
-    k: 'the evidence',
-    ev: 'arg.0    "${T(...).DB_PASSWORD}"\nreturn   "prod-db: Pa$$w0rd..."',
-    blind: 'No new process. No socket. No file. The read never leaves the heap, so there is nothing for a kernel sensor to trip on.',
+    h: 'There is nothing to tune.',
+    p: 'The signals are structural rather than statistical. A call edge, a peer or a library either appears on that route or it does not. Baselines are learned per route, so a normal deploy that adds one edge barely registers.',
   },
   {
-    bar: 'cross-service trust',
-    h: 'One wire, read two ways.',
-    p: 'A single payment message was parsed by two services using two JSON libraries that disagree on duplicate keys. The screener cleared one beneficiary; settlement paid another.',
-    k: 'the evidence',
-    ev: 'screener  payee = clean name\nsettled   payee = sanctioned',
-    blind: 'Both services behaved correctly in isolation. The flaw lives in the gap between them, which no single-service view contains.',
+    h: 'It learns relations, not your data.',
+    p: 'For a check like tenant identity against the row that came back, Odigos stores the relation and how often the two agree. The values themselves are never kept.',
   },
+  {
+    h: 'It attaches to what is already running.',
+    p: 'Kernel-attached uprobes into the JVM, V8, CPython and the Go runtime, on Kubernetes and on bare-metal VMs. It reads cleartext request and response payloads including TLS-terminated traffic. No SDK, no code change, no redeploy.',
+  },
+];
+
+const WIRE = [
+  { svc: 'payments-api', fn: 'POST /api/payments  {amount, payee, fraud_checked}', d: 0, tag: 'user field', state: 'new' },
+  { svc: 'java', fn: 'PaymentController.create', d: 1 },
+  { svc: 'kafka', fn: 'payments.queued  publish', d: 1 },
+  { svc: 'fraud-svc · go', fn: 'FraudCheck.run', d: 2, tag: 'not called', state: 'gone' },
+  { svc: 'settlement', fn: 'payments.queued  process', d: 1 },
+  { svc: 'python', fn: 'Settlement.execute  \u2192 PAID', d: 2, tag: 'unscreened', state: 'new' },
+];
+
+
+const BASELINE = [
+  { fn: 'POST /api/tickets', ms: '12ms', d: 0 },
+  { fn: 'TicketController.create', ms: '3ms', d: 1 },
+  { fn: 'ExpressionResolver.resolve', ms: '1ms', d: 2 },
+  { fn: 'TicketRepository.save', ms: '6ms', d: 1 },
+];
+
+const OBSERVED = [
+  { fn: 'POST /api/tickets', ms: '95ms', d: 0 },
+  { fn: 'TicketController.create', ms: '5ms', d: 1 },
+  { fn: 'ExpressionResolver.resolve', ms: '80ms', d: 2, slow: true },
+  { fn: 'SpelExpressionParser.parse', ms: '2ms', d: 3, isNew: true },
+  { fn: 'ReflectiveMethodExecutor.execute', ms: '60ms', d: 3, isNew: true },
+  { fn: 'TicketRepository.save', ms: '6ms', d: 1 },
+];
+
+const EVIDENCE = [
+  { k: 'process', v: 'tickets-api · pid 4417 · java' },
+  { k: 'package', v: 'org.springframework.expression.spel' },
+  { k: 'function', v: 'SpelExpressionParser.parse' },
+  { k: 'called with', v: '"${T(java.lang.System).getenv(\'DB_PASSWORD\')}"', hot: true },
+  { k: 'returned', v: '"prod-db-01: Pa$$w0rd-9f2c..."', hot: true },
+  { k: 'reached by', v: 'POST /api/tickets · unauthenticated' },
 ];
 
 const STAGES = [
   {
     n: '01 · baseline',
     h: 'Learn what is normal.',
-    p: 'Odigos observes how each service actually behaves and distils it into a compact behavioural fingerprint of steady state, learned per route.',
-    tag: 'a compact fingerprint',
+    p: 'Every route gets a fingerprint of its own steady state. Which functions it calls, and what those calls carry. Learned from production, not written into a config file.',
+    tag: 'one fingerprint per route',
   },
   {
     n: '02 · detect',
     h: 'Catch what diverges.',
-    p: 'New activity is matched against that fingerprint. An unfamiliar call edge, a new egress, an argument that carries something it never carried, an identity that does not match the object returned.',
+    p: 'A call edge that never existed before. An identity that does not match the object it was handed. No rule fired, because no rule was written.',
     tag: 'no signatures · no rules',
   },
   {
     n: '03 · remediate',
-    h: 'Stop it where it happens.',
-    p: 'A policy acts at the function itself, blocking the call or rewriting the response, in milliseconds, with nothing in the data path and no redeploy.',
+    h: 'Stop it at the call.',
+    p: 'The policy sits on the function, not the perimeter. It blocks the call or rewrites what it returns. No proxy, no sidecar, no extra network hop.',
     tag: 'blocked in place',
   },
 ];
@@ -447,6 +759,7 @@ export const SecurityContent = () => {
         <HeroSection>
           <HeroBackdrop />
           <HeroInner>
+            <div>
             <Reveal>
               <Eyebrow>Odigos Security</Eyebrow>
             </Reveal>
@@ -457,70 +770,78 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                An agent went from a public job listing to another customer&rsquo;s account, a statement full of everyone else&rsquo;s, and an <b>$8.5M wire past a green sanctions screen</b>. No shell. No syscall. No failed
-                request. The only evidence lived in the shape of the calls across services.
+                An agent went from a public job listing to another customer&rsquo;s account, a statement full of everyone else&rsquo;s, and an <b>$8.5M wire past a green sanctions screen</b>. No shell, and no failed request anywhere in the
+                trace. The only evidence was in the calls between the services, and in what those calls carried.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
               <HeroCtas>
+                <TrialCTA />
                 <DemoCTA />
               </HeroCtas>
             </Reveal>
-            <Caps>
-              {CAPS.map((c, i) => (
-                <Reveal key={c.h} delay={i * 60}>
-                  <Cap>
-                    <div className='h'>{c.h}</div>
-                    <div className='d'>{c.d}</div>
-                  </Cap>
-                </Reveal>
-              ))}
-            </Caps>
+            </div>
+            <Reveal delay={140}>
+              <SecurityArt />
+            </Reveal>
           </HeroInner>
         </HeroSection>
-
-        <Section>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>The threat</Eyebrow>
-                <h2>
-                  Every attacker now has <span className='mute'>nation-state firepower.</span>
-                </h2>
-              </Head>
-            </Reveal>
-            <Reveal delay={70}>
-              <Points>
-                {THREAT.map((t, i) => (
-                  <li key={t}>
-                    <span className='n'>{String(i + 1).padStart(2, '0')}</span>
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </Points>
-            </Reveal>
-          </Inner>
-        </Section>
 
         <Section $alt>
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>The gap</Eyebrow>
+                <Eyebrow>Detection without signatures</Eyebrow>
                 <h2>
-                  Today&rsquo;s tools watch the symptoms. <span className='mute'>By then the exploit already ran.</span>
+                  The exploit is two function calls that were not there yesterday.
                 </h2>
+                <p>You cannot write a rule for that, so Odigos does not. It learns the call graph each route normally produces, then surfaces the edges that have never appeared on it.</p>
               </Head>
             </Reveal>
+
             <Reveal delay={70}>
-              <Points>
-                {GAP.map((t, i) => (
-                  <li key={t}>
-                    <span className='n'>{String(i + 1).padStart(2, '0')}</span>
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </Points>
+              <Diff>
+                <DiffCol>
+                  <DiffBar>
+                    <span>baseline</span>
+                    <span className='n'>2.1M renders · 14 days</span>
+                  </DiffBar>
+                  <DiffBody>
+                    {BASELINE.map((r) => (
+                      <TraceRow key={r.fn} $depth={r.d}>
+                        <span className='fn'>{r.fn}</span>
+                        <span className='ms'>{r.ms}</span>
+                      </TraceRow>
+                    ))}
+                  </DiffBody>
+                </DiffCol>
+
+                <DiffCol $hot>
+                  <DiffBar $hot>
+                    <span>observed</span>
+                    <span className='n'>2 new spans · 80x slower</span>
+                  </DiffBar>
+                  <DiffBody>
+                    {OBSERVED.map((r) => (
+                      <TraceRow key={r.fn} $depth={r.d} $new={r.isNew} $slow={r.slow}>
+                        <span className='fn'>{r.fn}</span>
+                        {r.isNew && <span className='tag'>new</span>}
+                        {r.slow && <span className='tag'>80x slower</span>}
+                        <span className='ms'>{r.ms}</span>
+                      </TraceRow>
+                    ))}
+                  </DiffBody>
+                </DiffCol>
+              </Diff>
+            </Reveal>
+
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  The exploit only <b>read memory</b>. It never leaves the heap, so there is <span className='q'>no syscall</span> for a kernel or endpoint sensor to trip on. Odigos sees the function call itself:
+                  the expression it was handed, and the secret it returned.
+                </p>
+              </Verdict>
             </Reveal>
           </Inner>
         </Section>
@@ -529,40 +850,42 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Three silent paths, one session</Eyebrow>
-                <h2>
-                  Nothing was broken. <span className='mute'>Everything was permitted.</span>
-                </h2>
-                <p>Each of these is a real class of attack. None of them trips a rule, raises an error, or leaves a mark on any single service.</p>
+                <Eyebrow>Cross-service trust</Eyebrow>
+                <h2>The fraud service never set that flag. The attacker typed it.</h2>
+                <p>
+                  Every payment is supposed to pass fraud screening, which sets an internal <code>fraud_checked</code> flag. The settlement worker trusts that flag and skips re-screening. The API copies every field of
+                  the request body onto the payment, so the attacker simply sent the flag themselves.
+                </p>
               </Head>
             </Reveal>
 
             <Reveal delay={70}>
-              <Chain>
-                {PATHS.map((p) => (
-                  <Path key={p.h}>
-                    <PathBar>{p.bar}</PathBar>
-                    <PathBody>
-                      <h3>{p.h}</h3>
-                      <p>{p.p}</p>
-                      <div className='ev'>
-                        <span className='k'>{p.k}</span>
-                        {p.ev.split('\n').map((l) => (
-                          <div key={l}>{l}</div>
-                        ))}
-                      </div>
-                      <div className='blind'>{p.blind}</div>
-                    </PathBody>
-                  </Path>
-                ))}
-              </Chain>
+              <Wire>
+                <WireBar>
+                  <span>one trace · three services · three languages</span>
+                  <span className='hot'>fraud check never ran</span>
+                </WireBar>
+                <WireBody>
+                  {WIRE.map((r) => (
+                    <WireRow key={r.fn} $depth={r.d} $state={r.state}>
+                      <span className='svc'>{r.svc}</span>
+                      <span className='fn'>{r.fn}</span>
+                      {r.tag && <span className='tag'>{r.tag}</span>}
+                    </WireRow>
+                  ))}
+                </WireBody>
+                <WireFoot>
+                  Odigos flags two things at once. <b>fraud_checked arrived in the user&rsquo;s HTTP body</b>, where it has never once appeared before, and the <b>FraudCheck.run span is missing</b> from a
+                  trace that always contains it.
+                </WireFoot>
+              </Wire>
             </Reveal>
 
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  None of these is a bug in one service. <b>Each is a gap that only shows up across two.</b> A read behind the gateway, an expression that dumps a shared cache, a wire two parsers disagree on.
-                  Only a trace that crosses both services <span className='q'>sees it at all</span>.
+                  Both services behaved correctly on their own. Both logged 200. The bug lives in the gap between them, and the flag&rsquo;s origin is in neither service&rsquo;s logs. Only a trace that carries the
+                  field out of the HTTP body, across the queue, into the worker <span className='q'>sees it at all</span>.
                 </p>
               </Verdict>
             </Reveal>
@@ -573,9 +896,9 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>How runtime defence works</Eyebrow>
+                <Eyebrow>How runtime defense works</Eyebrow>
                 <h2>
-                  Learn what is normal. <span className='mute'>Stop what is not.</span>
+                  Learned from your traffic. <span className='mute'>Enforced on your functions.</span>
                 </h2>
               </Head>
             </Reveal>
@@ -591,27 +914,70 @@ export const SecurityContent = () => {
                 ))}
               </Flow>
             </Reveal>
-            <Reveal delay={110}>
-              <Rule>
-                Learn the baseline, catch what diverges, and shut it down in place. <b>No signatures, no rules, no redeploy.</b>
-              </Rule>
-            </Reveal>
           </Inner>
         </Section>
 
         <Section>
           <Inner>
+            <Split>
+              <Reveal>
+                <Head>
+                  <Eyebrow>When something lands</Eyebrow>
+                  <h2>
+                    We name the line of code. <span className='mute'>Not the alert.</span>
+                  </h2>
+                  <p>
+                    Not a severity and a service name. The exact function, the argument it was handed and the value it gave back. Everything a responder would otherwise spend the night reconstructing
+                    is already in the finding.
+                  </p>
+                  <p>
+                    And because the finding sits at the function, so does the fix. A FunctionPolicy blocks that call inside the process, with nothing in front of it and no redeploy.
+                  </p>
+                </Head>
+              </Reveal>
+
+              <Reveal delay={80}>
+                <Finding>
+                  <FindingBar>
+                    <span>finding</span>
+                    <span className='hot'>secret read · blocked</span>
+                  </FindingBar>
+                  <FindingBody>
+                    {EVIDENCE.map((r) => (
+                      <Field key={r.k} $hot={r.hot}>
+                        <span className='k'>{r.k}</span>
+                        <span className='v'>{r.v}</span>
+                      </Field>
+                    ))}
+                  </FindingBody>
+                  <FindingFoot>
+                    <span className='act'>blocked at the function</span>
+                    <span>no redeploy</span>
+                  </FindingFoot>
+                </Finding>
+              </Reveal>
+            </Split>
+          </Inner>
+        </Section>
+
+        <Section $alt>
+          <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>When something lands</Eyebrow>
-                <h2>
-                  We name the line of code. <span className='mute'>Not the alert.</span>
-                </h2>
-                <p>
-                  Exact function, package and process executing the attack, with the arguments it was called with and the value it returned. Blocking happens at the function, not the firewall, in milliseconds,
-                  with no agent in the data path.
-                </p>
+                <Eyebrow>Running it</Eyebrow>
+                <h2>What it does to your environment.</h2>
               </Head>
+            </Reveal>
+
+            <Reveal delay={70}>
+              <Facts>
+                {FACTS.map((x) => (
+                  <Fact key={x.h}>
+                    <h3>{x.h}</h3>
+                    <p>{x.p}</p>
+                  </Fact>
+                ))}
+              </Facts>
             </Reveal>
           </Inner>
         </Section>
@@ -625,12 +991,18 @@ export const SecurityContent = () => {
               <h2>Do not buy another alert. Demand the execution path.</h2>
             </Reveal>
             <Reveal delay={120}>
-              <p>Bring the attack your current tools struggle to explain.</p>
+              <p>Send us the incident your current tools could not explain. We will show you the trace, or we will tell you we cannot see it.</p>
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>
+                <TrialCTA />
                 <DemoCTA />
               </CloseCtas>
+            </Reveal>
+            <Reveal delay={230}>
+              <CloseNote>
+                One service, one command, no redeploy. <a href='https://docs.odigos.io'>Read the deployment guide</a>.
+              </CloseNote>
             </Reveal>
           </CloseInner>
         </Section>
