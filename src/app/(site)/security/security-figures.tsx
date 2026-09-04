@@ -5,7 +5,7 @@ import styled, { keyframes, css } from 'styled-components';
 
 const HOT = '#c9346a';
 const SLATE = '#8892ab';
-const VIOLET = '#5b43f1';
+const VIOLET = 'var(--accent)';
 const INK = '#1c1633';
 
 const still = css`
@@ -44,11 +44,39 @@ const Strip = styled.div`
   }
 `;
 
-const Stage = styled.div<{ $ar: string }>`
+/* the diagrams carry small type, so on a phone they scroll rather than shrink */
+const Scroll = styled.div`
+  @media (max-width: 820px) {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+`;
+
+const Stage = styled.div<{ $ar: string; $mw: number }>`
   position: relative;
   width: 100%;
   aspect-ratio: ${(x) => x.$ar};
   background: linear-gradient(180deg, #fdfcfe, #f7f5fa);
+
+  @media (max-width: 820px) {
+    width: ${(x) => x.$mw}px;
+  }
+`;
+
+const Hint = styled.div`
+  display: none;
+  padding: 9px 15px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+
+  @media (max-width: 820px) {
+    display: block;
+  }
 `;
 
 const Svg = styled.svg`
@@ -150,7 +178,8 @@ export const DeployFigure = () => (
       <span>where each control attaches</span>
       <span>one node, in cross-section</span>
     </Strip>
-    <Stage $ar='200 / 80'>
+    <Scroll>
+    <Stage $ar='200 / 80' $mw={700}>
       <Svg viewBox='0 0 200 80' preserveAspectRatio='xMidYMid meet' aria-hidden>
         {/* the network edge */}
         <Region $a={0.2}>
@@ -223,6 +252,8 @@ export const DeployFigure = () => (
         </Lbl>
       </Svg>
     </Stage>
+    </Scroll>
+    <Hint>scroll sideways</Hint>
   </Board>
 );
 
@@ -314,8 +345,9 @@ export const VariantFigure = () => (
       <span>machine speed, met at the one place it converges</span>
       <span>no signature required</span>
     </Strip>
-    <Stage $ar='200 / 80'>
-      <Svg viewBox='0 0 200 80' preserveAspectRatio='xMidYMid meet' aria-hidden>
+    <Scroll>
+    <Stage $ar='164 / 82' $mw={560}>
+      <Svg viewBox='0 0 164 82' preserveAspectRatio='xMidYMid meet' aria-hidden>
         <Cap2 x={AX2 - 1} y={AY2 - 5} $a={0.3} $c={HOT}>
           ai operator
         </Cap2>
@@ -324,29 +356,31 @@ export const VariantFigure = () => (
         ))}
         {/* every attempt it can produce, bulging out and coming back to one point */}
         {VARIANTS.map((v) => (
-          <Var key={v.i} d={`M20 ${AY2 + 2.4} C 62 ${v.y}, 106 ${v.y}, 141 ${AY2 + 2.4}`} pathLength={1} $i={v.i} />
+          <Var key={v.i} d={`M20 ${AY2 + 2.4} C 56 ${v.y}, 92 ${v.y}, 124 ${AY2 + 2.4}`} pathLength={1} $i={v.i} />
         ))}
-        <Cap2 x={80} y={6} $a={2.2} $m='middle' $c='rgba(201,52,106,.75)'>
+        <Cap2 x={72} y={6} $a={2.2} $m='middle' $c='rgba(201,52,106,.75)'>
           every variant it can generate
         </Cap2>
 
         {/* the one thing all of them still have to do */}
-        <Ring cx={141} cy={AY2 + 2.4} r={4.4} />
-        <Shut x={140.2} y={AY2 - 6} width={1.6} height={17} rx={0.4} />
-        <Cap2 x={148} y={AY2 + 0.6} $a={3.9} $c={VIOLET}>
+        <Ring cx={124} cy={AY2 + 2.4} r={4.4} />
+        <Shut x={123.2} y={AY2 - 6} width={1.6} height={17} rx={0.4} />
+        <Cap2 x={124} y={AY2 + 23} $a={3.9} $m='middle' $c={VIOLET}>
           one call this route
         </Cap2>
-        <Cap2 x={148} y={AY2 + 5} $a={3.9} $c={VIOLET}>
+        <Cap2 x={124} y={AY2 + 27.4} $a={3.9} $m='middle' $c={VIOLET}>
           has never made
         </Cap2>
-        <Cap2 x={148} y={AY2 + 12} $a={4.9} $s={2.8} $c='rgba(91,67,241,.7)'>
+        <Cap2 x={124} y={AY2 + 33.6} $a={4.9} $m='middle' $s={2.8} $c='rgba(91,67,241,.7)'>
           refused before it runs
         </Cap2>
 
-        <Cap2 x={100} y={76} $a={5.3} $m='middle' $s={3} $c='rgba(28,22,51,.42)'>
+        <Cap2 x={82} y={78} $a={5.3} $m='middle' $s={3} $c='rgba(28,22,51,.42)'>
           you cannot enumerate the variants. you can watch the one thing every one of them needs.
         </Cap2>
       </Svg>
     </Stage>
+    </Scroll>
+    <Hint>scroll sideways</Hint>
   </Board>
 );

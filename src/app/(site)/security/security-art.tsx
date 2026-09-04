@@ -22,7 +22,7 @@ const p = (s: number) => Math.max(0, Math.min(100, (s / T) * 100));
 
 const HOT = '#c9346a';
 const SLATE = '#8892ab';
-const VIOLET = '#5b43f1';
+const VIOLET = 'var(--accent)';
 const INK = '#1c1633';
 
 /* --- geometry --- */

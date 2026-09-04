@@ -368,7 +368,7 @@ const DepthRow = styled.div<{ $us?: boolean }>`
   }
   align-items: center;
   border-bottom: 1px solid var(--line);
-  background: ${({ $us }) => ($us ? 'rgba(201,52,106,0.05)' : 'transparent')};
+  background: ${({ $us }) => ($us ? 'rgba(91,67,241,0.055)' : 'transparent')};
 
   &:last-child {
     border-bottom: none;
@@ -385,7 +385,7 @@ const DepthRow = styled.div<{ $us?: boolean }>`
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: ${({ $us }) => ($us ? 'var(--hot-ink)' : 'var(--ink)')};
+    color: ${({ $us }) => ($us ? 'var(--accent)' : 'var(--ink)')};
   }
   .n {
     font-size: 12.5px;
@@ -402,7 +402,7 @@ const DepthRow = styled.div<{ $us?: boolean }>`
     width: calc(100% - 8px);
     height: ${({ $us }) => ($us ? '10px' : '7px')};
     border-radius: 6px;
-    background: ${({ $us }) => ($us ? 'var(--hot)' : 'rgba(24,20,54,0.2)')};
+    background: ${({ $us }) => ($us ? 'var(--accent)' : 'rgba(24,20,54,0.2)')};
   }
   .miss {
     width: 5px;
@@ -452,7 +452,7 @@ const DepthNote = styled.div`
     letter-spacing: 0.11em;
     text-transform: uppercase;
     font-weight: 500;
-    color: var(--hot-ink);
+    color: var(--accent);
   }
 `;
 
