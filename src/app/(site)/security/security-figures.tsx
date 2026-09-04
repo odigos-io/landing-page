@@ -175,8 +175,8 @@ const GX = 142; /* where the gutter of tool names starts */
 export const DeployFigure = () => (
   <Board>
     <Strip>
-      <span>where each control attaches</span>
-      <span>one node, in cross-section</span>
+      <span>agentless · nothing in your process</span>
+      <span>agent view · every call, its argument, its return value</span>
     </Strip>
     <Scroll>
     <Stage $ar='200 / 80' $mw={700}>
@@ -250,134 +250,6 @@ export const DeployFigure = () => (
         <Lbl x={GX + 3.5} y={71.7} $a={2.2} $c='rgba(91,67,241,.7)' $s={2.7}>
           on the node, no redeploy
         </Lbl>
-      </Svg>
-    </Stage>
-    </Scroll>
-    <Hint>scroll sideways</Hint>
-  </Board>
-);
-
-/* ============================================================
-   Every variant it can generate, and the one thing they share.
-   ============================================================ */
-
-const T2 = 10;
-const r = (s: number) => Math.max(0, Math.min(100, (s / T2) * 100));
-
-const VARIANTS = Array.from({ length: 27 }, (_, i) => {
-  const t = i / 26;
-  return { y: 4 + t * 66, i };
-});
-
-const varIn = (i: number) => keyframes`
-  0%,${r(1.2 + i * 0.038)}%{stroke-dashoffset:1;opacity:0}
-  ${r(1.2 + i * 0.038 + 0.05)}%{opacity:.5}
-  ${r(1.2 + i * 0.038 + 0.5)}%,100%{stroke-dashoffset:0;opacity:.5}`;
-
-const ringIn = keyframes`
-  0%,${r(3.4)}%{opacity:0;transform:scale(2.4)}
-  ${r(3.9)}%{opacity:1;transform:scale(1)}
-  100%{opacity:1;transform:scale(1)}`;
-
-const shutIn = keyframes`
-  0%,${r(4.5)}%{opacity:0;transform:scaleY(0)}
-  ${r(4.75)}%{opacity:1;transform:scaleY(1.25)}
-  ${r(4.95)}%,100%{opacity:1;transform:scaleY(1)}`;
-
-const cap = (a: number, c = 1) => keyframes`
-  0%,${r(a)}%{opacity:0}
-  ${r(a + 0.4)}%,100%{opacity:${c}}`;
-
-const cellIn = (i: number) => keyframes`
-  0%,${r(0.4)}%{opacity:0}
-  ${r(0.4 + i * 0.02 + 0.3)}%,100%{opacity:${0.3 + ((i * 7) % 10) / 14}}`;
-
-const Var = styled.path<{ $i: number }>`
-  fill: none;
-  stroke: ${HOT};
-  stroke-width: 0.42;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  animation: ${(x) => varIn(x.$i)} ${T2}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
-  ${still}
-`;
-
-const Cell2 = styled.rect<{ $i: number }>`
-  fill: ${HOT};
-  animation: ${(x) => cellIn(x.$i)} ${T2}s linear infinite both;
-  ${still}
-`;
-
-const Ring = styled.circle`
-  fill: #fdfcfe;
-  stroke: ${VIOLET};
-  stroke-width: 1.1;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ${ringIn} ${T2}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${still}
-`;
-
-const Shut = styled.rect`
-  fill: ${VIOLET};
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ${shutIn} ${T2}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${still}
-`;
-
-const Cap2 = styled.text<{ $a: number; $c?: string; $s?: number; $m?: string; $o?: number }>`
-  font-family: var(--font-mono), monospace;
-  font-size: ${(x) => x.$s ?? 3.2}px;
-  letter-spacing: 0.2px;
-  fill: ${(x) => x.$c ?? 'rgba(28,22,51,.5)'};
-  text-anchor: ${(x) => x.$m ?? 'start'};
-  animation: ${(x) => cap(x.$a, x.$o)} ${T2}s linear infinite both;
-  ${still}
-`;
-
-const AX2 = 8;
-const AY2 = 33;
-
-export const VariantFigure = () => (
-  <Board>
-    <Strip>
-      <span>machine speed, met at the one place it converges</span>
-      <span>no signature required</span>
-    </Strip>
-    <Scroll>
-    <Stage $ar='164 / 82' $mw={560}>
-      <Svg viewBox='0 0 164 82' preserveAspectRatio='xMidYMid meet' aria-hidden>
-        <Cap2 x={AX2 - 1} y={AY2 - 5} $a={0.3} $c={HOT}>
-          ai operator
-        </Cap2>
-        {Array.from({ length: 16 }, (_, i) => (
-          <Cell2 key={i} x={AX2 + (i % 4) * 2.3} y={AY2 + Math.floor(i / 4) * 2.3} width={1.6} height={1.6} rx={0.3} $i={i} />
-        ))}
-        {/* every attempt it can produce, bulging out and coming back to one point */}
-        {VARIANTS.map((v) => (
-          <Var key={v.i} d={`M20 ${AY2 + 2.4} C 56 ${v.y}, 92 ${v.y}, 124 ${AY2 + 2.4}`} pathLength={1} $i={v.i} />
-        ))}
-        <Cap2 x={72} y={6} $a={2.2} $m='middle' $c='rgba(201,52,106,.75)'>
-          every variant it can generate
-        </Cap2>
-
-        {/* the one thing all of them still have to do */}
-        <Ring cx={124} cy={AY2 + 2.4} r={4.4} />
-        <Shut x={123.2} y={AY2 - 6} width={1.6} height={17} rx={0.4} />
-        <Cap2 x={124} y={AY2 + 23} $a={3.9} $m='middle' $c={VIOLET}>
-          one call this route
-        </Cap2>
-        <Cap2 x={124} y={AY2 + 27.4} $a={3.9} $m='middle' $c={VIOLET}>
-          has never made
-        </Cap2>
-        <Cap2 x={124} y={AY2 + 33.6} $a={4.9} $m='middle' $s={2.8} $c='rgba(91,67,241,.7)'>
-          refused before it runs
-        </Cap2>
-
-        <Cap2 x={82} y={78} $a={5.3} $m='middle' $s={3} $c='rgba(28,22,51,.42)'>
-          you cannot enumerate the variants. you can watch the one thing every one of them needs.
-        </Cap2>
       </Svg>
     </Stage>
     </Scroll>
