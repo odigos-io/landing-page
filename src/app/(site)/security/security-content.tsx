@@ -254,6 +254,146 @@ const Cls = styled.div`
   }
 `;
 
+/* ---------------- how deep each tool sees ---------------- */
+const Depth = styled.div`
+  margin-top: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--paper-2);
+`;
+
+const DepthHead = styled.div`
+  display: grid;
+  grid-template-columns: 208px repeat(5, 1fr);
+  > * {
+    min-width: 0;
+  }
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-3);
+
+  span {
+    padding: 12px 8px;
+    font-family: var(--font-mono), monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+  span:first-child {
+    text-align: left;
+    padding-left: 18px;
+  }
+
+  @media (max-width: 780px) {
+    grid-template-columns: 88px repeat(5, 1fr);
+    span {
+      font-size: 7.5px;
+      padding: 9px 3px;
+    }
+    span:first-child {
+      padding-left: 12px;
+    }
+  }
+`;
+
+const DepthRow = styled.div<{ $us?: boolean }>`
+  display: grid;
+  grid-template-columns: 208px repeat(5, 1fr);
+  > * {
+    min-width: 0;
+  }
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: ${({ $us }) => ($us ? 'rgba(201,52,106,0.05)' : 'transparent')};
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .who {
+    padding: 0 14px 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .k {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: ${({ $us }) => ($us ? 'var(--hot-ink)' : 'var(--ink)')};
+  }
+  .n {
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: var(--ink-faint);
+  }
+  .cell {
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pip {
+    width: calc(100% - 8px);
+    height: ${({ $us }) => ($us ? '10px' : '7px')};
+    border-radius: 6px;
+    background: ${({ $us }) => ($us ? 'var(--hot)' : 'rgba(24,20,54,0.2)')};
+  }
+  .miss {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(24, 20, 54, 0.09);
+  }
+
+  @media (max-width: 780px) {
+    grid-template-columns: 88px repeat(5, 1fr);
+    .who {
+      padding: 0 6px 0 12px;
+    }
+    .k {
+      font-size: 9px;
+    }
+    .n {
+      display: none;
+    }
+    .cell {
+      height: 44px;
+    }
+  }
+`;
+
+const DepthNote = styled.div`
+  display: grid;
+  grid-template-columns: 208px 1fr;
+  > * {
+    min-width: 0;
+  }
+  padding: 14px 18px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--paper-3);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-mute);
+
+  @media (max-width: 780px) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  b {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--hot-ink);
+  }
+`;
+
 /* ---------------- what you already run ---------------- */
 const Compare = styled.div`
   margin-top: 46px;
@@ -446,87 +586,9 @@ const Prose = styled.div`
 `;
 
 /* ---------------- why now ---------------- */
-const Clock = styled.div`
-  margin-top: 44px;
-`;
 
-const ClockLine = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1.1fr 1fr;
-  > * {
-    min-width: 0;
-  }
-  gap: 2px;
-
-  @media (max-width: 800px) {
-    grid-template-columns: 1fr;
-  }
-
-  .seg {
-    display: block;
-    padding: 20px 20px 22px;
-    border-top: 3px solid var(--line-strong);
-    font-size: 14.5px;
-    line-height: 1.5;
-    color: var(--ink-faint);
-  }
-  .seg b {
-    display: block;
-    margin-bottom: 6px;
-    font-family: var(--font-mono), monospace;
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-  }
-  .warm {
-    border-top-color: var(--accent);
-  }
-  .warm b {
-    color: var(--accent);
-  }
-  .hot {
-    border-top-color: var(--hot);
-  }
-  .hot b {
-    color: var(--hot-ink);
-  }
-  .hot {
-    color: var(--ink);
-  }
-`;
 
 /* ---------------- proof of vendor ---------------- */
-const Trust = styled.div`
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  > * {
-    min-width: 0;
-  }
-  gap: 48px;
-  align-items: center;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  h2 {
-    margin: 14px 0 0;
-    font-size: clamp(28px, 3.6vw, 46px);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.12;
-    color: var(--ink);
-  }
-  p {
-    margin: 14px 0 0;
-    font-size: 16px;
-    line-height: 1.65;
-    color: var(--ink-mute);
-  }
-`;
 
 const TrustLinks = styled.div`
   display: flex;
@@ -931,34 +993,32 @@ const CloseCtas = styled.div`
 
 
 
-const FACTS = [
+const DEPLOY = [
   {
-    h: 'It attaches to what is already running.',
-    p: 'Kernel-attached uprobes into the JVM, V8, CPython and the Go runtime, on Kubernetes and on bare-metal VMs. No SDK, no code change, no redeploy.',
+    h: 'One command, no code change',
+    p: 'Kernel-attached probes into the JVM, V8, CPython and the Go runtime, on Kubernetes and on bare-metal VMs. It attaches to processes that are already running, so coverage arrives the day you install it and not the release after.',
   },
   {
-    h: 'It will not drown your analysts.',
-    p: 'Three classes landed on one request in the attack above: a call edge that route had never produced, an argument that had never carried a payload like that, and the latency shape those calls pushed it into. Any one of them on its own would have been scored as noise and gone no further.',
+    h: 'Nothing of ours runs in your process',
+    p: 'No library in your dependency tree, no runtime flag, no vendor code on your call stack. A bad release of ours cannot become an outage of yours.',
   },
   {
-    h: 'The record leaves the host while the attack is still running.',
-    p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you control, so the evidence is off the box before an attacker who owns it knows there was anything to remove. Redaction is configured before anything is written. Retention and access are your destination policy, and we never hold a copy.',
+    h: 'Under 1% CPU',
+    p: 'Measured across 1.04 million cores under production load, with effectively no added latency. You scope which functions are hooked, so the cost is a number you set rather than a number you discover.',
   },
   {
-    h: 'You do not tune it.',
-    p: 'It watches a route for two weeks and forms the baseline itself. Most of the signals are structural: a call edge, a peer or a library either appears on that route or it does not. The two that are not, latency shape and how often two values agree, are learned from that route\'s own history and never from a global threshold. A normal deploy that adds one edge barely registers.',
+    h: 'The record never leaves your control',
+    p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you own. Redaction is configured before anything is written, retention is your policy, and we never hold a copy.',
   },
   {
-    h: 'The baseline never stores a value.',
-    p: 'For a check like tenant identity against the row that came back, Odigos keeps the relation and how often the two agree. The values themselves are never kept. Where a finding needs the value itself, as in the capture above, it is scoped to that function on that workload, governed by RBAC and policy, and redacted by default.',
+    h: 'You do not tune it',
+    p: 'It watches a route for two weeks and forms the baseline itself. Most signals are structural: a call edge, a peer or a library either appears on that route or it does not. A normal deploy that adds one edge barely registers.',
   },
   {
-    h: 'Under 1% CPU.',
-    p: 'Measured across 1.04 million cores under production load, with effectively no added latency. You scope which functions are hooked, so the cost is a number you set rather than a number you discover. The probe fires in the kernel the moment your function is called, which is the moment the value is already in the clear.',
+    h: 'Readable before you run it',
+    p: 'The node agent is open source. Your team can read exactly what it attaches to and what it reads before it goes anywhere near production.',
   },
 ];
-
-
 
 /* the six deviation classes, from the detection model */
 const CLASSES = [
@@ -971,6 +1031,27 @@ const CLASSES = [
 ];
 
 /* what a bank already runs, and why each one was blind to this */
+/* how deep each tool actually reaches, and whether it spans services */
+const runs = (cells: number[]) => {
+  const out: { at: number; len: number; on: boolean }[] = [];
+  cells.forEach((c, i) => {
+    const last = out[out.length - 1];
+    if (last && last.on === !!c && !!c) last.len += 1;
+    else out.push({ at: i, len: 1, on: !!c });
+  });
+  return out;
+};
+
+const LAYERS = ['network', 'host', 'process', 'function', 'across services'];
+const DEPTH = [
+  { k: 'waf', cells: [1, 0, 0, 0, 0], note: 'the request at the edge' },
+  { k: 'edr', cells: [0, 1, 0, 0, 0], note: 'processes and files on a host' },
+  { k: 'cnapp', cells: [0, 1, 0, 0, 0], note: 'the image and its configuration' },
+  { k: 'adr', cells: [0, 0, 1, 0, 0], note: 'behaviour inside one application' },
+  { k: 'tracing', cells: [0, 0, 1, 0, 1], note: 'which services a request touched' },
+  { k: 'odigos', cells: [0, 0, 1, 1, 1], note: 'every call, its arguments, across all of them', us: true },
+];
+
 const OTHERS = [
   { k: 'endpoint detection', w: 'processes, files and shells on a host', m: 'Sees what a process does to the machine. Blind to what it does inside itself.' },
   { k: 'cloud posture', w: 'images, configuration and known CVEs', m: 'Scores what you deployed. It has no view of what that code actually executed.' },
@@ -983,13 +1064,6 @@ const OTHERS = [
   { k: 'odigos · function level', w: 'the function calls inside each service, and how they chain across services', m: 'The only one here that sits where the payload is already in the clear, without running in your process, and whose unit of evidence is a call with its argument and its return value.', us: true },
 ];
 
-/* what the runtime actually captures */
-const BLIND = [
-  { h: 'Calls below what you scoped', p: 'You name the functions. Anything underneath them runs unobserved, which is also why the cost is a number you set.' },
-  { h: 'The first two weeks', p: 'Until a route has a baseline there is nothing to compare against. You get the call graph from the first request and the deviations from day fourteen.' },
-  { h: 'Runtimes outside the matrix', p: 'A version or a runtime we have not attached to is a version we do not read. The supported matrix is in the docs, and it is a short document rather than a long one.' },
-  { h: 'Traffic that never enters a scoped process', p: 'A call between two services you have not enabled is a call we never see. Coverage is a decision you make per workload.' },
-];
 
 /* the CVE backlog question, answered from the running system */
 /* the bar the headline claims moved, developed */
@@ -997,7 +1071,7 @@ const SHIFT = [
   {
     k: 'chained',
     h: 'It is no longer one CVE in one process.',
-    p: 'Low-severity findings get chained into critical compromise. Your severity model scores each one alone, which is exactly how a chain of fours becomes a nine that nobody ranked.',
+    p: 'Low-severity findings get chained into critical compromise. Your severity model scores each one alone, which is exactly how a chain of low findings becomes a critical one that nobody ranked.',
   },
   {
     k: 'tailored',
@@ -1041,7 +1115,7 @@ const CAPTURE = [
   { h: 'The path it took', p: 'The order and depth of the calls this request made, so you see the path the code took rather than every path the source allows.' },
   { h: 'Stitched end to end', p: 'One trace across services, languages and processes, so a chain that crosses four of them is a single object.' },
   { h: 'Java, Node, Python, Go', p: 'One node agent, on Kubernetes or on a bare-metal VM. It attaches to processes already running, so coverage arrives the day you deploy it and not the release after.' },
-  { h: 'One capture, two jobs', p: 'The same record answers why the route got slower and who reached the ledger. Your platform team and your security team stop paying twice for the same bytes.' },
+  { h: 'One capture, two jobs', p: 'The same record answers why the route got slower and who reached data they should not have. Your platform team and your security team stop paying twice for the same bytes.' },
 ];
 
 
@@ -1071,7 +1145,7 @@ const EVIDENCE = [
   { k: 'function', v: 'SpelExpressionParser.parse' },
   { k: 'called with', v: '"${T(java.lang.System).getenv(\'DATABASE_URL\')}"', hot: true },
   { k: 'then', v: 'ReflectiveMethodExecutor.execute' },
-  { k: 'returned', v: '"postgres://svc_settle:\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022@prod-db-01/ledger"', hot: true },
+  { k: 'returned', v: '"postgres://svc_worker:\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022@prod-db-01/appdb"', hot: true },
   { k: 'reached by', v: 'POST /api/tickets · an ordinary customer session' },
 ];
 
@@ -1085,27 +1159,28 @@ export const SecurityContent = () => {
           <HeroBackdrop />
           <HeroInner>
             <div>
-            <Reveal>
-              <Eyebrow>Function-level runtime defense</Eyebrow>
-            </Reveal>
-            <Reveal delay={60}>
-              <HeroH1>
-                Nation-state firepower <em>is now a subscription.</em>
-              </HeroH1>
-            </Reveal>
-            <Reveal delay={120}>
-              <HeroSub>
-                The attack crosses four services and no single service looks wrong. Odigos reads the function calls inside each one, catches the calls that have never run before, and takes a vulnerable function
-                out of play <b>without a patch, a proxy or a redeploy</b>.
-              </HeroSub>
-            </Reveal>
-            <Reveal delay={180}>
-              <HeroCtas>
-                <DemoCTA label='Talk to our security team' variant='primary' />
-                <TrialCTA variant='secondary' />
-              </HeroCtas>
-              <HeroWhat>One eBPF runtime on the node. Under 1% CPU across 1.04 million production cores. No agent in your process, no code change, no signatures to write.</HeroWhat>
-            </Reveal>
+              <Reveal>
+                <Eyebrow>Runtime defense at the function level</Eyebrow>
+              </Reveal>
+              <Reveal delay={60}>
+                <HeroH1>
+                  Nation-state firepower <em>is now a subscription.</em>
+                </HeroH1>
+              </Reveal>
+              <Reveal delay={120}>
+                <HeroSub>
+                  One operator with a model now chains four ordinary weaknesses across four of your services inside a single request, and every one of them returns 200.{' '}
+                  <b>Odigos reads every function call your services make, from outside the process, and stitches them into one picture</b> so the chain is visible while it is still running, and can be
+                  refused at the call.
+                </HeroSub>
+              </Reveal>
+              <Reveal delay={180}>
+                <HeroCtas>
+                  <DemoCTA label='Talk to our security team' variant='primary' />
+                  <TrialCTA variant='secondary' />
+                </HeroCtas>
+                <HeroWhat>One eBPF runtime on the node. No code change, no SDK, nothing of ours inside your process. Under 1% CPU across 1.04 million production cores.</HeroWhat>
+              </Reveal>
             </div>
             <Reveal delay={140}>
               <SecurityArt />
@@ -1113,6 +1188,7 @@ export const SecurityContent = () => {
           </HeroInner>
         </HeroSection>
 
+        {/* 1. the bar moved */}
         <Section>
           <Inner>
             <Reveal>
@@ -1122,8 +1198,8 @@ export const SecurityContent = () => {
                   One operator now runs <span className='mute'>what used to take a team and a budget.</span>
                 </h2>
                 <p>
-                  Recon, exploit chaining and lateral movement at machine speed, from someone who does not need to understand your estate because a model reads it faster than your architects can describe it.
-                  Three things about the attack changed, and each one breaks a different assumption your program is built on.
+                  The attacker no longer has to understand your estate, because a model reads it faster than your architects can describe it. Three properties of the attack changed, and each one breaks a
+                  different assumption your program is built on.
                 </p>
               </Head>
             </Reveal>
@@ -1138,45 +1214,75 @@ export const SecurityContent = () => {
                 ))}
               </Shift>
             </Reveal>
-          </Inner>
-        </Section>
-
-        <Section $alt>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Why the stack missed it</Eyebrow>
-                <h2>
-                  Nothing you own was misconfigured. <span className='mute'>Everything you own was looking somewhere else.</span>
-                </h2>
-                <p>
-                  An SSRF at the edge, a CVE you had already scheduled, an unknown bug in a template helper, and a session token that was still valid. Four ordinary weaknesses, none of them yours alone,
-                  chained inside a single transaction. The controls in your estate watch the effects an attack leaves behind, and this one left none. And the payload only exists in the clear inside the process that handles it, so the traffic between
-                  your services is opaque to anything sitting on the network. None of this is a configuration problem. It is a property of where the sensors sit.
-                </p>
-              </Head>
-            </Reveal>
-
-
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  The attack ran <b>inside the application, in the gaps between your services</b>, and the only place it was ever visible <span className='q'>had no sensor on it</span>.
+                  Nothing you own was misconfigured. The attack ran <b>inside your applications, in the gaps between them</b>, and the one place it was ever visible{' '}
+                  <span className='q'>had no sensor on it</span>.
                 </p>
               </Verdict>
             </Reveal>
           </Inner>
         </Section>
 
+        {/* 2. the depth chart: where each control can actually see */}
         <Section $alt>
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Against what you already run</Eyebrow>
-                <h2>Six controls a bank already owns. Every one of them did its job.</h2>
+                <Eyebrow>How deep each control reaches</Eyebrow>
+                <h2>
+                  Every tool you own stops <span className='mute'>one layer above the attack.</span>
+                </h2>
                 <p>
-                  None of these is misconfigured and none of them is going away. Each one is looking at a layer the attack did not have to touch, and no amount of budget spent on more of the same closes the
-                  distance to the layer it did.
+                  A control can only act on what its sensor can resolve. The chain above happened between function calls, inside four different services, in the seconds between a request arriving and a
+                  response leaving. Two columns decide whether you can see that at all, and only one row reaches both.
+                </p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Depth>
+                <DepthHead>
+                  <span>sees</span>
+                  {LAYERS.map((l) => (
+                    <span key={l}>{l}</span>
+                  ))}
+                </DepthHead>
+                {DEPTH.map((d) => (
+                  <DepthRow key={d.k} $us={d.us}>
+                    <span className='who'>
+                      <span className='k'>{d.k}</span>
+                      <span className='n'>{d.note}</span>
+                    </span>
+                    {runs(d.cells).map((r) => (
+                      <span className='cell' key={r.at} style={{ gridColumn: `span ${r.len}` }}>
+                        {r.on ? <span className='pip' /> : <span className='miss' />}
+                      </span>
+                    ))}
+                  </DepthRow>
+                ))}
+                <DepthNote>
+                  <b>from ebpf</b>
+                  <span>
+                    The depth is not bought with an agent inside your application. One runtime on the node reads the calls from the kernel, which is why it can be that deep and still be something you install
+                    rather than something your developers integrate.
+                  </span>
+                </DepthNote>
+              </Depth>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        {/* 3. the comparison table */}
+        <Section>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Against what you already run</Eyebrow>
+                <h2>Every control in your estate did its job.</h2>
+                <p>
+                  None of these is misconfigured and none of them is going away. Each is watching a layer the attack did not have to touch, and no amount of budget spent on more of the same closes the distance
+                  to the layer it did.
                 </p>
               </Head>
             </Reveal>
@@ -1199,15 +1305,19 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
-        <Section>
+        {/* 4. the unique capability: runtime, from the outside */}
+        <Section $alt>
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>What it captures</Eyebrow>
-                <h2>The layer underneath every tool you own.</h2>
+                <Eyebrow>Runtime, understood from the outside</Eyebrow>
+                <h2>
+                  The inside of your application, <span className='mute'>read from outside of it.</span>
+                </h2>
                 <p>
-                  One eBPF runtime on the node, reading the calls your services actually make. It is the same capture whether you are asking why revenue dropped or whether someone reached a ledger they should
-                  not have.
+                  Everything that decides an attack is in the clear for a moment inside the process: the decoded payload, the argument a function was handed, the value it gave back. Until now the only way to
+                  reach that was to run a vendor&rsquo;s code in your process behind an SDK or a runtime flag. Odigos reads it from the kernel, at the moment your function is called, and stitches what it reads
+                  across every service the request touched.
                 </p>
               </Head>
             </Reveal>
@@ -1221,42 +1331,62 @@ export const SecurityContent = () => {
                 ))}
               </Caps>
             </Reveal>
-          </Inner>
-        </Section>
-
-        <Section $alt>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>What it does not see</Eyebrow>
-                <h2>The four honest gaps.</h2>
-                <p>Every runtime sensor has them. A vendor that lists none is either not telling you or does not know.</p>
-              </Head>
-            </Reveal>
-            <Reveal delay={70}>
-              <Caps>
-                {BLIND.map((b) => (
-                  <Cap key={b.h}>
-                    <h3>{b.h}</h3>
-                    <p>{b.p}</p>
-                  </Cap>
-                ))}
-              </Caps>
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  A trace tells you a request touched four services. This tells you <b>which function in each of them ran, what it was handed, and what it returned</b>{' '}
+                  <span className='q'>on the request that mattered</span>.
+                </p>
+              </Verdict>
             </Reveal>
           </Inner>
         </Section>
 
+        {/* 5. no code changes, no dev work */}
         <Section>
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Detection without signatures</Eyebrow>
+                <Eyebrow>What your engineers have to do</Eyebrow>
                 <h2>
-                  The exploit is two function calls that were not there yesterday.
+                  Nothing. <span className='mute'>That is the whole integration.</span>
                 </h2>
                 <p>
-                  Nobody had a signature for this call graph, and none was needed. Odigos learns the call graph each route normally produces and surfaces what has never appeared on it. It scores six ways a
-                  request can be structurally wrong, and every one of them is a shape learned from your own traffic rather than a rule somebody wrote in advance.
+                  No SDK, no import, no sidecar, no runtime flag, no redeploy, and no line item in anybody&rsquo;s sprint. The reason function-level defense has stayed out of reach is that everything offering
+                  it so far asked your developers to carry it. This does not.
+                </p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Facts>
+                {DEPLOY.map((x) => (
+                  <Fact key={x.h}>
+                    <h3>{x.h}</h3>
+                    <p>{x.p}</p>
+                  </Fact>
+                ))}
+              </Facts>
+            </Reveal>
+            <Reveal delay={120}>
+              <TrustLinks>
+                <a href='https://github.com/odigos-io/odigos/tree/main/odiglet'>Read the node agent source</a>
+                <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
+                <a href='https://docs.odigos.io/quickstart/introduction'>The deployment guide</a>
+              </TrustLinks>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        {/* 6. detection without signatures */}
+        <Section $alt>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Detection without signatures</Eyebrow>
+                <h2>The exploit is two function calls that were not there yesterday.</h2>
+                <p>
+                  Nobody had a signature for this call graph and none was needed. Odigos learns the graph each route normally produces, then surfaces what has never appeared on it. Six ways a request can be
+                  structurally wrong, every one of them a shape learned from your own traffic rather than a rule somebody wrote in advance.
                 </p>
               </Head>
             </Reveal>
@@ -1295,7 +1425,6 @@ export const SecurityContent = () => {
                         <span className='fn'>{r.fn}</span>
                         {r.isNew && <span className='tag'>new</span>}
                         {r.slow && <span className='tag'>slower</span>}
-                        
                         <span className='sym'>{r.sym}</span>
                       </TraceRow>
                     ))}
@@ -1318,15 +1447,16 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
-        <Section $alt>
+        {/* 7. triage */}
+        <Section>
           <Inner>
             <Reveal>
               <Head>
                 <Eyebrow>Triage</Eyebrow>
                 <h2>Which of those four thousand actually ran?</h2>
                 <p>
-                  A scanner can tell you a vulnerable package is present. It cannot tell you whether the vulnerable function was ever loaded, whether anything in your estate can reach it, whether it has been
-                  called, or by whom. Odigos answers that from the running system, which is the difference between a backlog and a short list.
+                  A scanner can tell you a vulnerable package is present. It cannot tell you whether the vulnerable function was ever loaded, whether anything can reach it, whether it has been called, or by
+                  whom. Odigos answers that from the running system, which is the difference between a backlog and a short list.
                 </p>
               </Head>
             </Reveal>
@@ -1343,66 +1473,26 @@ export const SecurityContent = () => {
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  Most of what your scanner ranks critical is <b>present but never called</b>. Some of what it ranks low is executing on a path that handles money. Until you can see the runtime, you are
-                  patching in the order <span className='q'>somebody else guessed</span>.
+                  Most of what your scanner ranks critical is <b>present but never called</b>. Some of what it ranks low is executing on a privileged route right now. Without the runtime you are patching in the
+                  order <span className='q'>somebody else guessed</span>.
                 </p>
               </Verdict>
             </Reveal>
           </Inner>
         </Section>
 
-        <Section>
-          <Inner>
-            <Split>
-              <Reveal>
-                <Head>
-                  <Eyebrow>When something lands</Eyebrow>
-                  <h2>
-                    The finding is the function.
-                  </h2>
-                  <p>
-                    The exact function, the argument it was handed and the value it gave back. Everything a responder would otherwise spend the night reconstructing was written down while it was still running.
-                  </p>
-                  <p>
-                    And because the finding names the function, so can the policy. The first attempt is what you are reading above. The next one does not get that far. No proxy in front of the service, and no redeploy.
-                  </p>
-                </Head>
-              </Reveal>
-
-              <Reveal delay={80}>
-                <Finding>
-                  <FindingBar>
-                    <span>finding · example</span>
-                    <span className='hot'>secret read · recorded</span>
-                  </FindingBar>
-                  <FindingBody>
-                    {EVIDENCE.map((r) => (
-                      <Field key={r.k} $hot={r.hot}>
-                        <span className='k'>{r.k}</span>
-                        <span className='v'>{r.v}</span>
-                      </Field>
-                    ))}
-                  </FindingBody>
-                  <FindingFoot>
-                    <span className='act'>draft a report-only policy</span>
-                    <span>scoped to one call</span>
-                  </FindingFoot>
-                </Finding>
-              </Reveal>
-            </Split>
-          </Inner>
-        </Section>
-
+        {/* 8. mitigation at the function level */}
         <Section $alt>
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Virtual patching at the function level</Eyebrow>
+                <Eyebrow>Mitigation at the function level</Eyebrow>
                 <h2>
-                  Patch the function. <span className='mute'>Not the vendor&rsquo;s release cycle.</span>
+                  Take one function out of play. <span className='mute'>Not the service, not the route, not the release.</span>
                 </h2>
                 <p>
-                  Three situations account for most of the risk a bank actually carries, and in every one of them the ordinary answer, ship a patch, is unavailable to you when you need it.
+                  Because the finding names the exact function, the policy can too. Three situations account for most of the risk you actually carry, and in every one of them the ordinary answer, ship a patch,
+                  is unavailable to you at the moment you need it.
                 </p>
               </Head>
             </Reveal>
@@ -1419,102 +1509,41 @@ export const SecurityContent = () => {
             </Reveal>
 
             <Reveal delay={110}>
-              <Prose>
-                <p>
-                  A FunctionPolicy takes the vulnerable function out of play without touching the code that contains it. Refuse the call for the routes and callers you name, or let it run and replace what it
-                  returns. It is written against the function, so it holds for every path that reaches it, including the ones nobody has found yet. When the real patch finally ships, you delete the policy.
-                </p>
-                <p>
-                  The blast radius is one function on one workload, which is why it can move at the speed the threat does. A rule at the perimeter is a decision about every request that will ever arrive. This is
-                  a decision about one call.
-                </p>
-                <p>
-                  It is also an object rather than a console setting. A policy is versioned, has an author, and ships report-only until somebody promotes it, so your auditors can carry it as a compensating
-                  control rather than as an undocumented change to a production application. If it is not there, the call behaves exactly as it does today.
-                </p>
-              </Prose>
-            </Reveal>
+              <Split>
+                <Prose>
+                  <p>
+                    A FunctionPolicy takes the vulnerable function out of play without touching the code that contains it. Refuse the call for the routes and callers you name, or let it run and replace what it
+                    returns. It is written against the function, so it holds for every path that reaches it, including the ones nobody has found yet. When the real patch ships, you delete the policy.
+                  </p>
+                  <p>
+                    The blast radius is one function on one workload, which is why it can move at the speed the threat does. A rule at the perimeter is a decision about every request that will ever arrive. This
+                    is a decision about one call.
+                  </p>
+                  <p>
+                    It is an object rather than a console setting: versioned, attributable, and report-only until somebody promotes it, so your auditors can carry it as a compensating control rather than as an
+                    undocumented change to a production application. If it is not there, the call behaves exactly as it does today.
+                  </p>
+                </Prose>
 
-          </Inner>
-        </Section>
-
-        <Section>
-          <Inner>
-            <Trust>
-              <div>
-                <Eyebrow>Before you run it</Eyebrow>
-                <h2>Read the probe before you run it.</h2>
-                <p>Your team can read exactly what it attaches to and what it reads before it goes anywhere near production. No closed agent, no proprietary format, and the telemetry stays yours.</p>
-              </div>
-              <TrustLinks>
-                <a href='https://github.com/odigos-io/odigos/tree/main/odiglet'>Read the node agent source</a>
-                <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
-                <a href='https://docs.odigos.io'>The probe, in the docs</a>
-              </TrustLinks>
-            </Trust>
-          </Inner>
-        </Section>
-
-        <Section $alt>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Running it</Eyebrow>
-                <h2>Nothing of ours executes inside your process.</h2>
-              </Head>
-            </Reveal>
-
-            <Reveal delay={70}>
-              <Facts>
-                {FACTS.map((x) => (
-                  <Fact key={x.h}>
-                    <h3>{x.h}</h3>
-                    <p>{x.p}</p>
-                  </Fact>
-                ))}
-              </Facts>
-            </Reveal>
-          </Inner>
-        </Section>
-
-        <Section>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Why now</Eyebrow>
-                <h2>Baselines are earned, not installed.</h2>
-                <p>
-                  Odigos learns what each route normally does across two weeks of ordinary traffic. Which means the record you will want for the incident in March is the record you have to be keeping in
-                  January.
-                </p>
-              </Head>
-            </Reveal>
-
-            <Reveal delay={70}>
-              <Clock>
-                <ClockLine>
-                  <span className='seg cold'>
-                    <b>nothing deployed</b>
-                    no comparison is possible
-                  </span>
-                  <span className='seg warm'>
-                    <b>two weeks of traffic</b>
-                    the baseline forms
-                  </span>
-                  <span className='seg hot'>
-                    <b>the incident</b>
-                    you can say what changed
-                  </span>
-                </ClockLine>
-              </Clock>
-            </Reveal>
-
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  Deploy a probe the day after an incident and all you get is a picture of a system that has <b>already been rearranged</b>.
-                </p>
-              </Verdict>
+                <Finding>
+                  <FindingBar>
+                    <span>finding · example</span>
+                    <span className='hot'>secret read · recorded</span>
+                  </FindingBar>
+                  <FindingBody>
+                    {EVIDENCE.map((r) => (
+                      <Field key={r.k} $hot={r.hot}>
+                        <span className='k'>{r.k}</span>
+                        <span className='v'>{r.v}</span>
+                      </Field>
+                    ))}
+                  </FindingBody>
+                  <FindingFoot>
+                    <span className='act'>draft a policy for this call</span>
+                    <span>scoped to one function</span>
+                  </FindingFoot>
+                </Finding>
+              </Split>
             </Reveal>
           </Inner>
         </Section>
