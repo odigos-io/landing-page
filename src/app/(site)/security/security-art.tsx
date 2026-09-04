@@ -25,13 +25,13 @@ type Node = { id: string; x: number; y: number; name: string; lx?: number; ly?: 
 const NODES: Node[] = [
   { id: 'gw', x: 26, y: 50, name: 'gateway', ly: 8, step: 1, on: 1.5 },
   { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -7, step: 2, on: 3.1 },
-  { id: 'ac', x: 50, y: 76, name: 'accounts-api', ly: 8 },
-  { id: 'nt', x: 79, y: 13, name: 'notify-svc', ly: 8 },
+  { id: 'ac', x: 50, y: 76, name: '', ly: 8 },
+  { id: 'nt', x: 79, y: 13, name: '', ly: 8 },
   { id: 'pm', x: 86, y: 48, name: 'payments-api', lx: -13, ly: 9, step: 3, on: 4.4 },
-  { id: 'sr', x: 76, y: 86, name: 'search-svc', ly: 8 },
+  { id: 'sr', x: 76, y: 86, name: '', ly: 8 },
   { id: 'fr', x: 112, y: 72, name: 'fraud-svc', ly: 8 },
   { id: 'st', x: 118, y: 30, name: 'settlement', ly: -7, step: 4, on: 5.3 },
-  { id: 'lg', x: 128, y: 58, name: 'ledger-db', lx: 4, ly: 9 },
+  { id: 'lg', x: 128, y: 58, name: '', lx: 4, ly: 9 },
 ];
 
 const AGENT = { x: 9, y: 50 };
@@ -56,10 +56,10 @@ const EDGES: [string, string, number][] = [
 
 /* four rounds. from wherever it has reached, throw everything, keep what lands. */
 const ROUNDS = [
-  { at: 0.4, from: 'agent', miss: ['ac', 'sr', 'nt', 'tk', 'ac'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 8, cy: -11 },
-  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'nt', 'ac', 'sr', 'tk', 'nt'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: -25, cy: -14 },
-  { at: 3.1, from: 'tk', miss: ['nt', 'sr', 'ac', 'lg', 'nt', 'pm', 'sr', 'ac', 'lg'], hit: 'pm', bow: -5, vuln: 'zero-day', cx: 6, cy: -12 },
-  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'ac', 'fr', 'lg', 'st', 'sr', 'nt', 'fr', 'ac', 'lg'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 2, cy: 12 },
+  { at: 0.4, from: 'agent', miss: ['ac', 'sr', 'nt', 'tk'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 8, cy: -11 },
+  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'nt', 'lg', 'pm'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 2, cy: -14 },
+  { at: 3.1, from: 'tk', miss: ['nt', 'sr', 'ac', 'lg', 'fr', 'st'], hit: 'pm', bow: -5, vuln: 'zero-day', cx: 6, cy: -12 },
+  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'ac', 'fr', 'nt', 'st', 'tk'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 2, cy: 12 },
 ];
 
 const BURST = 0.75;
@@ -211,8 +211,8 @@ const Map = styled.svg`
 
 const Edge = styled.path`
   fill: none;
-  stroke: ${LINE};
-  stroke-width: 0.55;
+  stroke: rgba(24, 20, 54, 0.1);
+  stroke-width: 0.45;
 `;
 
 const Miss = styled.path<{ $t: number }>`
@@ -271,7 +271,7 @@ const Hit = styled.path<{ $t: number }>`
 
 const Dot = styled.circle<{ $t?: number }>`
   fill: #fff;
-  stroke: ${LINE};
+  stroke: ${({ $t }) => ($t === undefined ? 'rgba(24,20,54,0.13)' : LINE)};
   stroke-width: 0.6;
   ${({ $t }) =>
     $t !== undefined &&
@@ -316,7 +316,7 @@ const Label = styled.text<{ $t?: number }>`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 3.4px;
   text-anchor: middle;
-  fill: ${INK};
+  fill: rgba(24, 20, 54, 0.34);
   ${({ $t }) =>
     $t !== undefined &&
     css`
@@ -511,9 +511,11 @@ export const SecurityArt = () => (
                   {n.step}
                 </Num>
               )}
-              <Label x={n.x + (n.lx ?? 0)} y={n.y + (n.ly ?? 8)} $t={n.on}>
-                {n.name}
-              </Label>
+              {n.name && (
+                <Label x={n.x + (n.lx ?? 0)} y={n.y + (n.ly ?? 8)} $t={n.on}>
+                  {n.name}
+                </Label>
+              )}
             </g>
           ))}
 
