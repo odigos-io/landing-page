@@ -86,7 +86,7 @@ const HeroInner = styled(Container)`
 
 const HeroH1 = styled.h1`
   margin: 18px 0 0;
-  font-size: clamp(32px, 4vw, 50px);
+  font-size: clamp(38px, 5.2vw, 66px);
   line-height: 1.03;
   font-weight: 600;
   letter-spacing: -0.038em;
@@ -514,7 +514,7 @@ const Trust = styled.div`
 
   h2 {
     margin: 14px 0 0;
-    font-size: clamp(26px, 3vw, 36px);
+    font-size: clamp(28px, 3.6vw, 46px);
     font-weight: 600;
     letter-spacing: -0.025em;
     line-height: 1.12;
@@ -886,7 +886,7 @@ const CloseInner = styled(Container)`
   h2 {
     margin: 18px auto 0;
     max-width: 20ch;
-    font-size: clamp(30px, 4.2vw, 52px);
+    font-size: clamp(28px, 3.4vw, 44px);
     line-height: 1.04;
     font-weight: 600;
     letter-spacing: -0.035em;
@@ -978,7 +978,9 @@ const OTHERS = [
   { k: 'web firewall', w: 'request payloads at the edge', m: 'Judges one request in isolation, against patterns somebody wrote in advance.' },
   { k: 'siem', w: 'what your services choose to log', m: 'Can only correlate what an engineer decided in advance was worth writing down.' },
   { k: 'tracing', w: 'which services a request touched, and how long each took', m: 'Spans, not calls. It stops at the service boundary and never goes inside.' },
-  { k: 'odigos', w: 'the function calls inside each service, and how they chain across services', m: 'Sees inside the process, where the other six stop. The evidence is a function, an argument and a return value.', us: true },
+  { k: 'in-app agents', w: 'the same process, from the inside of it', m: 'Runs a vendor\'s code in your process, behind an SDK or a runtime flag, one redeploy per service. Their bad release is your outage.' },
+  { k: 'app detection', w: 'in-process behaviour, one service at a time', m: 'Watches a service. Not the chain across four of them, and not the argument the function was handed.' },
+  { k: 'odigos · function level', w: 'the function calls inside each service, and how they chain across services', m: 'The only one here that sits where the payload is already in the clear, without running in your process, and whose unit of evidence is a call with its argument and its return value.', us: true },
 ];
 
 /* what the runtime actually captures */
@@ -1014,7 +1016,7 @@ const TRIAGE = [
   { k: 'loaded', p: 'The vulnerable class was actually loaded into a running process.' },
   { k: 'reachable', p: 'A path exists from a route you serve to the vulnerable function.' },
   { k: 'called', p: 'It ran. On this route, this many times, in the last fourteen days.' },
-  { k: 'by whom', p: 'The caller, the argument it was handed, and what it returned.' },
+  { k: 'by whom', p: 'The caller, and the session it came in on.' },
 ];
 
 /* what you do when there is no patch to apply */
@@ -1034,7 +1036,7 @@ const PATCHING = [
 ];
 
 const CAPTURE = [
-  { h: 'Arguments and return values', p: 'Not that a function ran. What it was handed and what it gave back, on the routes you scope. That is the layer nothing else on this page reaches.' },
+  { h: 'Arguments and return values', p: 'On the routes you scope, the values themselves rather than the fact that something ran.' },
   { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, after TLS has been terminated and before anything is serialized back out.' },
   { h: 'The path it took', p: 'The order and depth of the calls this request made, so you see the path the code took rather than every path the source allows.' },
   { h: 'Stitched end to end', p: 'One trace across services, languages and processes, so a chain that crosses four of them is a single object.' },
@@ -1084,7 +1086,7 @@ export const SecurityContent = () => {
           <HeroInner>
             <div>
             <Reveal>
-              <Eyebrow>Odigos Security</Eyebrow>
+              <Eyebrow>Function-level runtime defense</Eyebrow>
             </Reveal>
             <Reveal delay={60}>
               <HeroH1>
@@ -1093,8 +1095,8 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                The attack crosses four services. No single service looks wrong. Odigos learns the calls each route normally makes, catches the ones that have never run before, and hands you the function, the argument
-                and the value it returned.
+                The attack crosses four services and no single service looks wrong. Odigos reads the function calls inside each one, catches the calls that have never run before, and takes a vulnerable function
+                out of play <b>without a patch, a proxy or a redeploy</b>.
               </HeroSub>
             </Reveal>
             <Reveal delay={180}>
@@ -1102,7 +1104,7 @@ export const SecurityContent = () => {
                 <DemoCTA label='Talk to our security team' variant='primary' />
                 <TrialCTA variant='secondary' />
               </HeroCtas>
-              <HeroWhat>One eBPF runtime on the node. No agent in your process, no code change, no signatures to write.</HeroWhat>
+              <HeroWhat>One eBPF runtime on the node. Under 1% CPU across 1.04 million production cores. No agent in your process, no code change, no signatures to write.</HeroWhat>
             </Reveal>
             </div>
             <Reveal delay={140}>
@@ -1135,14 +1137,6 @@ export const SecurityContent = () => {
                   </Shard>
                 ))}
               </Shift>
-            </Reveal>
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  And the clock moved with it. Disclosure to working exploit is now hours, while <b>patch velocity is set by your vendors rather than your team</b>. Signatures and CVE feeds arrive{' '}
-                  <span className='q'>after the thing has already run</span>.
-                </p>
-              </Verdict>
             </Reveal>
           </Inner>
         </Section>
@@ -1236,7 +1230,7 @@ export const SecurityContent = () => {
               <Head>
                 <Eyebrow>What it does not see</Eyebrow>
                 <h2>The four honest gaps.</h2>
-                <p>Every runtime sensor has them. A vendor that lists none is either not telling you or does not know, and both answers cost you more than this page does.</p>
+                <p>Every runtime sensor has them. A vendor that lists none is either not telling you or does not know.</p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
@@ -1403,7 +1397,7 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Virtual patching</Eyebrow>
+                <Eyebrow>Virtual patching at the function level</Eyebrow>
                 <h2>
                   Patch the function. <span className='mute'>Not the vendor&rsquo;s release cycle.</span>
                 </h2>
@@ -1432,19 +1426,15 @@ export const SecurityContent = () => {
                 </p>
                 <p>
                   The blast radius is one function on one workload, which is why it can move at the speed the threat does. A rule at the perimeter is a decision about every request that will ever arrive. This is
-                  a decision about one call. Every policy starts in report-only, and most of them stay there.
+                  a decision about one call.
+                </p>
+                <p>
+                  It is also an object rather than a console setting. A policy is versioned, has an author, and ships report-only until somebody promotes it, so your auditors can carry it as a compensating
+                  control rather than as an undocumented change to a production application. If it is not there, the call behaves exactly as it does today.
                 </p>
               </Prose>
             </Reveal>
 
-            <Reveal delay={150}>
-              <Verdict>
-                <p>
-                  Which is the part that matters for an attacker moving at machine speed: you no longer need to know what the exploit is called, or wait for someone to name it, to{' '}
-                  <span className='q'>take the function it needs away from it</span>.
-                </p>
-              </Verdict>
-            </Reveal>
           </Inner>
         </Section>
 
@@ -1538,12 +1528,15 @@ export const SecurityContent = () => {
               <h2>Pick the service you would least like to explain.</h2>
             </Reveal>
             <Reveal delay={120}>
-              <p>Put Odigos on it for two weeks. At the end you have the call graph for every route it serves, or you have our answer for why we could not see it.</p>
+              <p>
+                Thirty days on one service, in whichever environment your change process allows, with the success criteria written down before we start. At the end you have the call graph for every route it
+                serves, or you have our answer for why we could not see it.
+              </p>
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>
-                <TrialCTA label='Start on one service' />
-                <DemoCTA label='Talk to our security team' />
+                <DemoCTA label='Start on one service' variant='primary' />
+                <TrialCTA label='Send us your architecture questions' variant='secondary' />
               </CloseCtas>
             </Reveal>
             <Reveal delay={230}>

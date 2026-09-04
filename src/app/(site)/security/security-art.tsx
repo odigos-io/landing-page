@@ -23,13 +23,13 @@ const LINE = 'rgba(24, 20, 54, 0.16)';
 type Node = { id: string; x: number; y: number; name: string; lx?: number; ly?: number; step?: number; on?: number };
 
 const NODES: Node[] = [
-  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: -8.5, step: 1, on: 1.5 },
-  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -8.5, step: 2, on: 3.1 },
+  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: 9, step: 1, on: 1.5 },
+  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -10.5, step: 2, on: 3.1 },
   { id: 'ac', x: 50, y: 76, name: '', ly: 8 },
   { id: 'nt', x: 79, y: 13, name: '', ly: 8 },
-  { id: 'pm', x: 86, y: 48, name: 'payments-api', ly: -8.5, step: 3, on: 4.4 },
+  { id: 'pm', x: 86, y: 48, name: 'payments-api', lx: 0, ly: 10.5, step: 3, on: 4.4 },
   { id: 'sr', x: 76, y: 86, name: '', ly: 8 },
-  { id: 'fr', x: 112, y: 72, name: 'fraud-svc', ly: 8 },
+  { id: 'fr', x: 112, y: 72, name: 'fraud-svc', ly: -8.5 },
   { id: 'st', x: 118, y: 30, name: 'settlement', ly: -8.5, step: 4, on: 5.3 },
   { id: 'lg', x: 128, y: 58, name: '', lx: 4, ly: 9 },
 ];
@@ -44,6 +44,10 @@ const WALLS = [
   { x: 72, at: 4.05, label: 'cnapp', c: '#a67c3d' },
   { x: 104, at: 5.15, label: 'siem', c: '#6b5aa6' },
 ];
+
+/* the one it does not get through */
+const HOLD = { x: 130, label: 'odigos', at: 6.0 };
+const BLOCKED_AT = 5.9;
 const SHARDS = 7;
 const at = (id: string) => NODES.find((n) => n.id === id) as Node;
 const pt = (id: string) => (id === 'agent' ? AGENT : at(id));
@@ -63,10 +67,10 @@ const EDGES: [string, string, number][] = [
 
 /* four rounds. from wherever it has reached, throw everything, keep what lands. */
 const ROUNDS = [
-  { at: 0.4, from: 'agent', miss: ['ac', 'nt', 'sr'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 0, cy: 12.5 },
-  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'lg'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 0, cy: 12.5 },
-  { at: 3.1, from: 'tk', miss: ['nt', 'ac', 'lg', 'st'], hit: 'pm', bow: -5, vuln: 'unknown call', cx: 0, cy: 12.5 },
-  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'fr', 'nt'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 0, cy: 12.5 },
+  { at: 0.4, from: 'agent', miss: ['ac', 'nt'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 0, cy: 12.5 },
+  { at: 1.9, from: 'gw', miss: ['ac', 'sr'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 0, cy: 12.5 },
+  { at: 3.1, from: 'tk', miss: ['nt', 'lg'], hit: 'pm', bow: -5, vuln: 'unknown call', cx: 0, cy: 12.5 },
+  { at: 4.2, from: 'pm', miss: ['lg', 'fr'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 0, cy: 12.5 },
 ];
 
 const BURST = 0.75;
@@ -99,8 +103,8 @@ const fizzle = (s: number) => keyframes`
   0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
   ${p(s + 0.02)}%{opacity:.85}
   ${p(s + 0.16)}%{stroke-dashoffset:0;opacity:.85}
-  ${p(s + 0.34)}%{stroke-dashoffset:0;opacity:.14}
-  ${p(s + 0.6)}%,100%{stroke-dashoffset:0;opacity:.28}`;
+  ${p(s + 0.34)}%{stroke-dashoffset:0;opacity:.06}
+  ${p(s + 0.6)}%,100%{stroke-dashoffset:0;opacity:0}`;
 
 /* the one that lands, and then stays lit for the rest of the loop */
 const land = (s: number) => keyframes`
@@ -133,7 +137,7 @@ const numIn = (s: number) => keyframes`
 const shock = (s: number) => keyframes`
   0%,${p(s)}%{opacity:0;transform:scale(.25)}
   ${p(s + 0.2)}%{opacity:.7;transform:scale(1)}
-  ${p(s + 0.8)}%,100%{opacity:0;transform:scale(2.6)}`;
+  ${p(s + 0.8)}%,100%{opacity:0;transform:scale(1.9)}`;
 
 /* each find joins the chain and stays */
 const chipIn = (s: number) => keyframes`
@@ -173,13 +177,31 @@ const shard = (t: number, i: number) => {
   0%,${p(t)}%{opacity:0;transform:translate(0,0) rotate(0deg)}
   ${p(t + 0.01 + lag)}%{opacity:.85;transform:translate(0,0) rotate(0deg)}
   ${p(t + 0.55 + lag)}%{opacity:.5;transform:translate(${dir * 2.5}px,7px) rotate(${dir * 16}deg)}
-  ${p(t + 1.1 + lag)}%,100%{opacity:0;transform:translate(${dir * 4}px,17px) rotate(${dir * 30}deg)}`;
+  ${p(t + 1.1 + lag)}%,100%{opacity:.22;transform:translate(${dir * 4}px,17px) rotate(${dir * 30}deg)}`;
 };
 
 const wallLabel = (t: number, c: string) => keyframes`
   0%,${p(t)}%{opacity:.85;fill:${c}}
   ${p(t + 0.25)}%{opacity:1;fill:${HOT}}
   ${p(t + 1.3)}%,100%{opacity:.32;fill:rgba(24,20,54,0.32)}`;
+
+/* our line holds, and the attempt against it is refused */
+const holdIn = keyframes`
+  0%,${p(BLOCKED_AT - 0.4)}%{opacity:.35}
+  ${p(BLOCKED_AT)}%{opacity:1}
+  ${p(BLOCKED_AT + 0.5)}%,100%{opacity:1}`;
+
+const refused = keyframes`
+  0%,${p(BLOCKED_AT)}%{opacity:0;stroke-dashoffset:1}
+  ${p(BLOCKED_AT + 0.05)}%{opacity:1}
+  ${p(BLOCKED_AT + 0.3)}%{opacity:1;stroke-dashoffset:0}
+  ${p(BLOCKED_AT + 0.55)}%{opacity:.25;stroke-dashoffset:0}
+  ${p(BLOCKED_AT + 0.9)}%,100%{opacity:.18;stroke-dashoffset:0}`;
+
+const stampIn = keyframes`
+  0%,${p(BLOCKED_AT + 0.25)}%{opacity:0;transform:translate(-50%,5px) scale(.85)}
+  ${p(BLOCKED_AT + 0.5)}%{opacity:1;transform:translate(-50%,0) scale(1.05)}
+  ${p(BLOCKED_AT + 0.65)}%,100%{opacity:1;transform:translate(-50%,0) scale(1)}`;
 
 const agentPulse = keyframes`
   0%,100%{opacity:.3;transform:scale(.85)}
@@ -267,7 +289,7 @@ const SkipNote = styled.text`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 3.4px;
   letter-spacing: 0.04px;
-  text-anchor: middle;
+  text-anchor: start;
   fill: ${DEEP};
   animation: ${skipIn} ${T}s linear infinite both;
   ${reduce}
@@ -314,7 +336,7 @@ const Shock = styled.circle<{ $t: number }>`
   fill: none;
   stroke: ${HOT};
   stroke-width: 0.5;
-  r: 7;
+  r: 5;
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
@@ -373,7 +395,12 @@ const Shard = styled.rect<{ $t: number; $i: number; $c: string }>`
   transform-origin: center;
   opacity: 0;
   animation: ${(x) => shard(x.$t, x.$i)} ${T}s cubic-bezier(0.3, 0, 0.4, 1) infinite both;
-  ${reduce}
+
+  /* at rest the wall is drawn whole, so its shards must not draw on top of it */
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
+  }
 `;
 
 const WallName = styled.text<{ $t: number; $c: string }>`
@@ -389,6 +416,62 @@ const WallName = styled.text<{ $t: number; $c: string }>`
 
 const Outside = styled.rect`
   fill: rgba(201, 52, 106, 0.075);
+`;
+
+const Hold = styled.rect`
+  fill: ${HOT};
+  animation: ${holdIn} ${T}s ease-out infinite both;
+  ${reduce}
+`;
+
+const HoldName = styled.text`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 3.4px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  text-anchor: middle;
+  fill: ${HOT};
+  animation: ${holdIn} ${T}s ease-out infinite both;
+  ${reduce}
+`;
+
+const Refused = styled.path`
+  fill: none;
+  stroke: ${HOT};
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  opacity: 0;
+  animation: ${refused} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  ${reduce}
+`;
+
+const Stamp = styled.div`
+  position: absolute;
+  left: 68%;
+  top: 63%;
+  padding: 5px 11px;
+  white-space: nowrap;
+  border-radius: 8px;
+  background: ${HOT};
+  color: #fff;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 10px 24px -10px rgba(201, 52, 106, 0.85);
+  transform: translate(-50%, 0);
+  animation: ${stampIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  @media (max-width: 700px) {
+    font-size: 8.5px;
+    padding: 4px 8px;
+  }
 `;
 
 const AgentHalo = styled.circle`
@@ -510,7 +593,7 @@ export const SecurityArt = () => (
           ))}
 
           <SkipEdge d={arc(at(SKIP[0]), at(SKIP[1]), SKIP[2])} />
-          <SkipNote x={at('fr').x - 6} y={at('fr').y + 16}>
+          <SkipNote x={at('fr').x - 26} y={at('fr').y + 11}>
             skipped on this request
           </SkipNote>
 
@@ -545,6 +628,13 @@ export const SecurityArt = () => (
             </g>
           ))}
 
+          {/* the attempt that does not get through */}
+          <Refused d={arc(at('st'), { x: HOLD.x - 2, y: 54 }, -7)} pathLength={1} />
+          <Hold x={HOLD.x - 0.7} y={10} width={1.4} height={80} />
+          <HoldName x={HOLD.x} y={6.5}>
+            {HOLD.label}
+          </HoldName>
+
           <AgentHalo cx={AGENT.x} cy={AGENT.y} r={8} />
           <circle cx={AGENT.x} cy={AGENT.y} r={2.9} fill={DEEP} />
           <circle cx={AGENT.x} cy={AGENT.y} r={1.1} fill={HOT} />
@@ -557,11 +647,12 @@ export const SecurityArt = () => (
         </Map>
 
 
+        <Stamp>arg 0 refused · policy on one function</Stamp>
       </Field>
 
       <BarWrap>
         <Probing>
-          <span className='crit'>critical</span>
+          <span className='crit'>stopped at the call</span>
           <span className='live'>
             <span className='dot' />
             probing
