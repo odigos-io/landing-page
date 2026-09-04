@@ -3,119 +3,113 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
-/* Hero art: one request.
+/* Hero art: through every wall, then stopped at the call.
 
-   A line is one request. From the outside it is a 200 and nothing else, which
-   is all any control at the edge or on the host ever gets to read.
+   Three colours, each meaning exactly one thing.
 
-   Then the line is combed, in one fast pass, into every function call it
-   actually made, grouped into the four services it crossed. Four of those
-   calls light up and turn out to be a single chain. The last one is refused.
+     slate    the controls you already own. They stand as vertical walls,
+              and each one has a gap at the layer it was never built to read.
+     crimson  the operator with a model. It probes, finds the gaps, and then
+              moves sideways between services inside a single request.
+     violet   Odigos. Not another wall in the row. A plane underneath all four
+              services, which is the only geometry that sees a chain.
 
-   The comb is the claim. Nobody else can draw the inside of a request. */
+   The picture is the argument: their controls are vertical slices, we are the
+   floor beneath every one of them. */
 
-const T = 10;
+const T = 12;
 const p = (s: number) => Math.max(0, Math.min(100, (s / T) * 100));
 
 const HOT = '#c9346a';
+const SLATE = '#8892ab';
+const VIOLET = '#5b43f1';
 const INK = '#1c1633';
-const OK = '#3f8a5c';
 
-const Y = 20; /* the request */
-const TOP = Y + 1.5; /* where the comb starts */
-const RAIL = 56; /* where the chain is drawn */
-const X0 = 10;
-const X1 = 132;
+/* --- geometry --- */
+const RUN = 32; /* the height the request runs at */
+const WALL_TOP = 14;
+const WALL_BTM = 44;
+const PLANE = 64;
+const SVC_Y = 32;
 
-const COMB_AT = 1.6;
-const NAME_AT = 2.4;
-const CHAIN_AT = 3.1;
-const LINK_AT = 4.4;
-const STOP_AT = 5.5;
+const WALLS = [
+  { x: 28, k: 'waf', w: 'the edge', g0: 28.5, g1: 35.5 },
+  { x: 39.5, k: 'edr', w: 'the host', g0: 25.5, g1: 32.5 },
+  { x: 51, k: 'adr', w: 'one app', g0: 30.5, g1: 37.5 },
+];
 
-/* four services, each a burst of calls. the gaps between them are the seams
-   the attack crosses, which is the part a per-service tool never sees. */
-const SVC = ['edge', 'api', 'worker', 'store'];
-const GAP = 3.2;
-const BAND = (X1 - X0 - GAP * 3) / 4;
+const SVC = [
+  { x: 68, k: 'edge' },
+  { x: 90, k: 'api' },
+  { x: 112, k: 'worker' },
+  { x: 134, k: 'store' },
+];
 
-let seed = 20260904;
-const rnd = () => {
-  seed = (seed * 1103515245 + 12345) % 2147483648;
-  return seed / 2147483648;
-};
+/* the run in, threading the gap in each wall on the way */
+const RUN_D = `M17 ${RUN} L28 32 L${WALLS[1].x} 29 L${WALLS[2].x} 34 L64.5 ${SVC_Y}`;
+/* lateral movement, one hop per service, above the row */
+const HOP = (a: number, b: number) => `M${SVC[a].x + 3.6} ${SVC_Y - 2.6} Q${(SVC[a].x + SVC[b].x) / 2} 17 ${SVC[b].x - 3.6} ${SVC_Y - 2.6}`;
+const BLOCK_X = (SVC[2].x + SVC[3].x) / 2;
 
-type Tick = { x: number; h: number; svc: number; hit: boolean };
-const TICKS: Tick[] = [];
-const HITS: Tick[] = [];
-SVC.forEach((_, s) => {
-  const x0 = X0 + s * (BAND + GAP);
-  const n = 13 + Math.floor(rnd() * 4);
-  const hit = 3 + Math.floor(rnd() * (n - 6));
-  for (let i = 0; i < n; i++) {
-    const t = { x: x0 + 1.2 + (i * (BAND - 2.4)) / (n - 1), h: 2.4 + rnd() * 8.2, svc: s, hit: i === hit };
-    if (t.hit) {
-      t.h = 11.5;
-      HITS.push(t);
-    }
-    TICKS.push(t);
-  }
-});
-const WALLGAP = 3.2;
-const SEAM = [0, 1, 2].map((i) => X0 + (i + 1) * BAND + i * GAP + GAP / 2);
-const MID = (s: number) => X0 + s * (BAND + GAP) + BAND / 2;
-const WALL = HITS[3].x - WALLGAP;
+/* the attacker, as a block of weights rather than a hooded figure */
+const CELLS = [0.9, 0.35, 0.68, 0.22, 0.5, 0.85, 0.3, 0.62, 0.75, 0.28, 0.92, 0.44, 0.38, 0.7, 0.25, 0.8];
 
-/* ---------------- motion ---------------- */
+/* --- timing --- */
+const WALLS_AT = 0.7;
+const PLANE_AT = 1.1;
+const AGENT_AT = 1.9;
+const PROBE_AT = 2.3;
+const RUN_AT = 2.9;
+const HOP_AT = [3.9, 4.7, 5.5];
+const LAND_AT = [3.7, 4.5, 5.3];
+const LINK_AT = 5.6;
+const BLOCK_AT = 6.1;
 
-const lineIn = keyframes`
-  0%{opacity:0;transform:scaleX(.5)}
-  ${p(1.0)}%,100%{opacity:1;transform:scaleX(1)}`;
+/* --- motion --- */
 
-/* one fast pass, left to right. the only fast thing in the frame. */
-const tickIn = (i: number, n: number) => keyframes`
-  0%,${p(COMB_AT + (i / n) * 0.62)}%{opacity:0;transform:scaleY(0)}
-  ${p(COMB_AT + (i / n) * 0.62 + 0.1)}%,100%{opacity:1;transform:scaleY(1)}`;
+const draw = (a: number, d: number, to = 0) => keyframes`
+  0%,${p(a)}%{stroke-dashoffset:1;opacity:0}
+  ${p(a + 0.04)}%{opacity:1}
+  ${p(a + d)}%,100%{stroke-dashoffset:${to};opacity:1}`;
 
-const hitIn = (i: number, n: number) => {
-  const a = COMB_AT + (i / n) * 0.62;
-  const b = CHAIN_AT + HITS.findIndex((h) => h === TICKS[i]) * 0.3;
-  return keyframes`
-  0%,${p(a)}%{opacity:0;transform:scaleY(0);fill:rgba(28,22,51,.3)}
-  ${p(a + 0.1)}%{opacity:1;transform:scaleY(1);fill:rgba(28,22,51,.3)}
-  ${p(b)}%{opacity:1;transform:scaleY(1);fill:rgba(28,22,51,.3)}
-  ${p(b + 0.14)}%{opacity:1;transform:scaleY(1.14);fill:${HOT}}
-  ${p(b + 0.36)}%,100%{opacity:1;transform:scaleY(1);fill:${HOT}}`;
-};
-
-const riserIn = (i: number) => keyframes`
-  0%,${p(LINK_AT + i * 0.13)}%{opacity:0;transform:scaleY(0)}
-  ${p(LINK_AT + i * 0.13 + 0.22)}%,100%{opacity:.55;transform:scaleY(1)}`;
-
-const triedIn = keyframes`
-  0%,${p(LINK_AT + 0.39)}%{opacity:0;transform:scaleY(0)}
-  ${p(LINK_AT + 0.61)}%{opacity:.5;transform:scaleY(1)}
-  ${p(STOP_AT)}%{opacity:.5;transform:scaleY(1)}
-  ${p(STOP_AT + 0.3)}%,100%{opacity:.24;transform:scaleY(1)}`;
-
-const railIn = keyframes`
-  0%,${p(LINK_AT)}%{stroke-dashoffset:1;opacity:0}
-  ${p(LINK_AT + 0.05)}%{opacity:1}
-  ${p(LINK_AT + 0.85)}%,100%{stroke-dashoffset:0;opacity:1}`;
-
-const stopIn = keyframes`
-  0%,${p(STOP_AT)}%{opacity:0;transform:scaleY(.2)}
-  ${p(STOP_AT + 0.14)}%{opacity:1;transform:scaleY(1.3)}
-  ${p(STOP_AT + 0.3)}%,100%{opacity:1;transform:scaleY(1)}`;
-
-const fade = (a: number, b?: number) => keyframes`
+const fade = (a: number, b?: number, o = 1) => keyframes`
   0%,${p(a)}%{opacity:0}
-  ${p(a + 0.35)}%${b === undefined ? ',100%' : ''}{opacity:1}
-  ${b === undefined ? '' : `${p(b)}%{opacity:1}${p(b + 0.3)}%,100%{opacity:0}`}`;
+  ${p(a + 0.35)}%${b === undefined ? ',100%' : ''}{opacity:${o}}
+  ${b === undefined ? '' : `${p(b)}%{opacity:${o}}${p(b + 0.3)}%,100%{opacity:0}`}`;
 
-const seamIn = keyframes`
-  0%,${p(NAME_AT)}%{opacity:0}
-  ${p(NAME_AT + 0.4)}%,100%{opacity:1}`;
+const wallIn = (i: number) => keyframes`
+  0%,${p(WALLS_AT + i * 0.14)}%{opacity:0;transform:scaleY(.4)}
+  ${p(WALLS_AT + i * 0.14 + 0.4)}%,100%{opacity:1;transform:scaleY(1)}`;
+
+/* recon: it tries everything, and the walls hold. then it finds the gaps. */
+const probeIn = (i: number) => keyframes`
+  0%,${p(PROBE_AT + i * 0.11)}%{stroke-dashoffset:1;opacity:0}
+  ${p(PROBE_AT + i * 0.11 + 0.05)}%{opacity:.5}
+  ${p(PROBE_AT + i * 0.11 + 0.26)}%{stroke-dashoffset:0;opacity:.5}
+  ${p(PROBE_AT + i * 0.11 + 0.5)}%,100%{stroke-dashoffset:0;opacity:0}`;
+
+const landIn = (i: number) => keyframes`
+  0%,${p(LAND_AT[i])}%{fill:#fff;stroke:${INK};transform:scale(1)}
+  ${p(LAND_AT[i] + 0.16)}%{fill:${HOT};stroke:${HOT};transform:scale(1.28)}
+  ${p(LAND_AT[i] + 0.4)}%,100%{fill:${HOT};stroke:${HOT};transform:scale(1)}`;
+
+const lastIn = keyframes`
+  0%,${p(BLOCK_AT)}%{fill:#fff;stroke:${INK}}
+  ${p(BLOCK_AT + 0.3)}%,100%{fill:#fff;stroke:${VIOLET}}`;
+
+/* what we wrote down, on the plane, as each one landed */
+const markIn = (i: number) => keyframes`
+  0%,${p(LAND_AT[i] + 0.12)}%{opacity:0;transform:scale(.2)}
+  ${p(LAND_AT[i] + 0.34)}%,100%{opacity:1;transform:scale(1)}`;
+
+const blockIn = keyframes`
+  0%,${p(BLOCK_AT)}%{transform:scaleY(0)}
+  ${p(BLOCK_AT + 0.22)}%{transform:scaleY(1.06)}
+  ${p(BLOCK_AT + 0.4)}%,100%{transform:scaleY(1)}`;
+
+const cellPulse = (i: number) => keyframes`
+  0%,100%{opacity:${CELLS[i]}}
+  50%{opacity:${Math.min(1, CELLS[i] + 0.3)}}`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}`;
 
@@ -124,10 +118,11 @@ const still = css`
     animation: none;
     opacity: 1;
     transform: none;
+    stroke-dashoffset: 0;
   }
 `;
 
-/* ---------------- shell ---------------- */
+/* --- shell --- */
 
 const Frame = styled.div`
   animation: ${float} 16s ease-in-out infinite;
@@ -144,10 +139,30 @@ const Panel = styled.div`
   overflow: hidden;
 `;
 
+const Strip = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 22px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+
+  .ok {
+    color: #3f8a5c;
+  }
+
+  @media (max-width: 1000px) {
+    padding: 11px 15px;
+    font-size: 9.5px;
+  }
+`;
+
 const Field = styled.div`
   position: relative;
   width: 100%;
-  aspect-ratio: 142 / 76;
+  aspect-ratio: 148 / 78;
   background: linear-gradient(180deg, #fdfcfe, #f7f5fa);
 `;
 
@@ -158,135 +173,179 @@ const Map = styled.svg`
   height: 100%;
 `;
 
-const Line = styled.rect`
-  fill: ${INK};
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ${lineIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${still}
-`;
-
-const Bar = styled.rect<{ $i: number; $n: number }>`
-  fill: rgba(28, 22, 51, 0.36);
-  transform-box: fill-box;
-  transform-origin: top;
-  animation: ${(x) => tickIn(x.$i, x.$n)} ${T}s cubic-bezier(0.2, 0, 0.2, 1) infinite both;
-  ${still}
-`;
-
-const Hit = styled.rect<{ $i: number; $n: number }>`
-  fill: rgba(28, 22, 51, 0.36);
-  transform-box: fill-box;
-  transform-origin: top;
-  animation: ${(x) => hitIn(x.$i, x.$n)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${still}
-`;
-
-
-const Rail = styled.path`
-  fill: none;
-  stroke: ${HOT};
-  stroke-width: 1;
+/* their controls */
+const Wall = styled.line<{ $i: number }>`
+  stroke: ${SLATE};
+  stroke-width: 0.75;
+  stroke-dasharray: 2.6 1.3;
   stroke-linecap: round;
-  stroke-dasharray: 1;
-  animation: ${railIn} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
-  ${still}
-`;
-
-const Riser = styled.rect<{ $i: number }>`
-  fill: ${HOT};
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: top;
-  animation: ${(x) => riserIn(x.$i)} ${T}s ease-out infinite both;
-  ${still}
-`;
-
-const Tried = styled.rect`
-  fill: ${HOT};
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: top;
-  animation: ${triedIn} ${T}s ease-out infinite both;
-  mask-image: repeating-linear-gradient(180deg, #000 0 2px, transparent 2px 5px);
-  ${still}
-`;
-
-const Seam = styled.line`
-  stroke: rgba(28, 22, 51, 0.13);
-  stroke-width: 0.4;
-  stroke-dasharray: 1.2 1.8;
-  opacity: 0;
-  animation: ${seamIn} ${T}s ease-out infinite both;
-  ${still}
-`;
-
-const Stop = styled.rect`
-  fill: ${HOT};
   transform-box: fill-box;
   transform-origin: center;
-  opacity: 0;
-  animation: ${stopIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  animation: ${(x) => wallIn(x.$i)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
   ${still}
 `;
 
-const Svc = styled.text`
+const WallCap = styled.text<{ $i: number }>`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 3.1px;
-  letter-spacing: 0.28px;
+  letter-spacing: 0.3px;
   text-transform: uppercase;
-  fill: rgba(28, 22, 51, 0.42);
+  fill: ${SLATE};
   text-anchor: middle;
-  opacity: 0;
-  animation: ${seamIn} ${T}s ease-out infinite both;
+  animation: ${(x) => fade(WALLS_AT + x.$i * 0.14)} ${T}s linear infinite both;
   ${still}
 `;
 
-const Cap = styled.text<{ $a: number; $b?: number; $c?: string }>`
+/* the attacker */
+const Cell = styled.rect<{ $i: number }>`
+  fill: ${HOT};
+  opacity: ${(x) => CELLS[x.$i]};
+  animation:
+    ${(x) => fade(AGENT_AT + x.$i * 0.012, undefined, CELLS[x.$i])} ${T}s linear infinite both,
+    ${(x) => cellPulse(x.$i)} ${(x) => 2.2 + (x.$i % 5) * 0.42}s ease-in-out infinite;
+  ${still}
+`;
+
+const Probe = styled.path<{ $i: number }>`
+  fill: none;
+  stroke: ${HOT};
+  stroke-width: 0.45;
+  stroke-dasharray: 1;
+  stroke-linecap: round;
+  animation: ${(x) => probeIn(x.$i)} ${T}s ease-out infinite both;
+  ${still}
+`;
+
+const Run = styled.path`
+  fill: none;
+  stroke: ${HOT};
+  stroke-width: 1.05;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: ${draw(RUN_AT, 0.9)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite both;
+  ${still}
+`;
+
+const Hop = styled.path<{ $i: number }>`
+  fill: none;
+  stroke: ${HOT};
+  stroke-width: 1.05;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  animation: ${(x) => draw(HOP_AT[x.$i], 0.55, x.$i === 2 ? 0.5 : 0)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite both;
+  ${still}
+`;
+
+/* the services */
+const Node = styled.rect<{ $i: number }>`
+  fill: #fff;
+  stroke: ${INK};
+  stroke-width: 0.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation:
+    ${fade(0.3)} ${T}s linear infinite both,
+    ${(x) => (x.$i === 3 ? lastIn : landIn(x.$i))} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  ${still}
+`;
+
+const SvcCap = styled.text`
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 3.5px;
-  letter-spacing: 0.05px;
+  font-size: 3.1px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  fill: rgba(28, 22, 51, 0.45);
+  text-anchor: middle;
+  animation: ${fade(0.3)} ${T}s linear infinite both;
+  ${still}
+`;
+
+/* us */
+const Plane = styled.path`
+  fill: none;
+  stroke: ${VIOLET};
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  animation: ${draw(PLANE_AT, 0.9)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  ${still}
+`;
+
+const Riser = styled.line`
+  stroke: ${VIOLET};
+  stroke-width: 0.42;
+  animation: ${fade(PLANE_AT + 0.5, undefined, 0.28)} ${T}s linear infinite both;
+  ${still}
+`;
+
+const Mark = styled.rect<{ $i: number }>`
+  fill: ${VIOLET};
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ${(x) => markIn(x.$i)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  ${still}
+`;
+
+const Link = styled.path`
+  fill: none;
+  stroke: ${VIOLET};
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  opacity: 0.9;
+  animation: ${draw(LINK_AT, 0.5)} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  ${still}
+`;
+
+const Block = styled.rect`
+  fill: ${VIOLET};
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: ${blockIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  ${still}
+`;
+
+const Stem = styled.line`
+  stroke: ${VIOLET};
+  stroke-width: 0.5;
+  stroke-dasharray: 1.4 1.6;
+  animation: ${fade(BLOCK_AT + 0.1, undefined, 0.4)} ${T}s linear infinite both;
+  ${still}
+`;
+
+const WallSub = styled.text<{ $i: number }>`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 2.8px;
+  fill: rgba(136, 146, 171, 0.85);
+  text-anchor: middle;
+  animation: ${(x) => fade(WALLS_AT + x.$i * 0.14 + 0.2)} ${T}s linear infinite both;
+  ${still}
+`;
+
+const Cap = styled.text<{ $a: number; $b?: number; $c?: string; $e?: boolean; $s?: number }>`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: ${(x) => x.$s ?? 3.4}px;
   fill: ${(x) => x.$c ?? 'rgba(28,22,51,.45)'};
-  opacity: 0;
+  text-anchor: ${(x) => (x.$e ? 'end' : 'start')};
   animation: ${(x) => fade(x.$a, x.$b)} ${T}s linear infinite both;
   ${still}
-`;
-
-const Head = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 13px 22px;
-  border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 11px;
-  color: var(--ink-faint);
-  animation: ${fade(0.5)} ${T}s linear infinite both;
-  ${still}
-
-  .ok {
-    color: ${OK};
-  }
-
-  @media (max-width: 1000px) {
-    padding: 11px 15px;
-    font-size: 9.5px;
-  }
 `;
 
 const Foot = styled.div`
   display: grid;
   padding: 14px 22px;
   border-top: 1px solid var(--line);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+
   > * {
     grid-area: 1 / 1;
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 11px;
-  color: var(--ink-faint);
 
   @media (max-width: 1000px) {
     padding: 12px 15px;
@@ -295,84 +354,113 @@ const Foot = styled.div`
 `;
 
 const Pill = styled.span`
+  flex: none;
   padding: 3px 9px;
   border-radius: 999px;
-  background: ${HOT};
+  background: ${VIOLET};
   color: #fff;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   font-size: 9.5px;
-  flex: none;
 `;
 
-const FootHot = styled.div`
+const Quiet = styled.div`
+  animation: ${fade(0.6, BLOCK_AT)} ${T}s linear infinite both;
+  ${still}
+`;
+
+const Loud = styled.div`
   color: var(--ink);
-  animation: ${fade(STOP_AT + 0.15)} ${T}s linear infinite both;
+  animation: ${fade(BLOCK_AT + 0.2)} ${T}s linear infinite both;
   ${still}
 `;
 
-const FootQuiet = styled.div`
-  animation: ${fade(0.6, STOP_AT)} ${T}s linear infinite both;
-  ${still}
-`;
-
-const N = TICKS.length;
+const AX = 8.5;
+const AY = 26.5;
 
 export const SecurityArt = () => (
   <Frame>
     <Panel>
-      <Head>
+      <Strip>
         <span>one request</span>
         <span className='ok'>200 OK</span>
-      </Head>
+      </Strip>
       <Field>
-        <Map viewBox='0 0 142 76' preserveAspectRatio='xMidYMid meet' aria-hidden>
-          {/* the four services it crossed, named above the line it arrived on */}
-          {SVC.map((s, i) => (
-            <Svc key={s} x={MID(i)} y={Y - 8}>
-              {s}
-            </Svc>
+        <Map viewBox='0 0 148 78' preserveAspectRatio='xMidYMid meet' aria-hidden>
+          {/* the controls you already own, and the gap in each one */}
+          {WALLS.map((w, i) => (
+            <g key={w.k}>
+              <WallCap x={w.x} y={10} $i={i}>
+                {w.k}
+              </WallCap>
+              <Wall x1={w.x} y1={WALL_TOP} x2={w.x} y2={w.g0} $i={i} />
+              <Wall x1={w.x} y1={w.g1} x2={w.x} y2={WALL_BTM} $i={i} />
+              <WallSub x={w.x} y={i === 1 ? 53 : 48} $i={i}>
+                {w.w}
+              </WallSub>
+            </g>
           ))}
-          <Line x={X0} y={Y - 0.7} width={X1 - X0} height={1.4} rx={0.7} />
 
-          {/* the inside of it, at the resolution we work at */}
-          {TICKS.map((t, i) =>
-            t.hit ? (
-              <Hit key={i} x={t.x - 0.6} y={TOP} width={1.2} height={t.h} rx={0.55} $i={i} $n={N} />
-            ) : (
-              <Bar key={i} x={t.x - 0.475} y={TOP} width={0.95} height={t.h} rx={0.42} $i={i} $n={N} />
-            ),
-          )}
-          <Cap x={X0} y={TOP + 15} $a={COMB_AT + 0.5} $b={CHAIN_AT}>
-            every function call it actually made
+          {/* an operator with a model, drawn as what it is */}
+          <Cap x={AX - 3} y={AY - 4.5} $a={AGENT_AT} $c={HOT} $s={2.95}>
+            ai operator
+          </Cap>
+          {CELLS.map((_, i) => (
+            <Cell key={i} x={AX + (i % 4) * 2.3} y={AY + Math.floor(i / 4) * 2.3} width={1.6} height={1.6} rx={0.3} $i={i} />
+          ))}
+
+          {/* recon against all three, which is what the walls are good for */}
+          {[24, 32, 40].map((y, i) => (
+            <Probe key={y} d={`M17 ${RUN} Q${(17 + WALLS[i].x) / 2} ${y} ${WALLS[i].x - 0.8} ${y}`} pathLength={1} $i={i} />
+          ))}
+
+          {/* us: not another wall in the row, a plane under all four */}
+          <Plane d={`M61 ${PLANE} H143`} pathLength={1} />
+          {SVC.map((s) => (
+            <Riser key={s.k} x1={s.x} y1={47} x2={s.x} y2={PLANE - 1} />
+          ))}
+          <Cap x={61} y={PLANE + 8} $a={PLANE_AT + 0.5} $c={VIOLET}>
+            odigos · every call, in every one of them
           </Cap>
 
-          {SEAM.map((x, i) => (
-            <Seam key={i} x1={x} y1={Y - 5} x2={x} y2={TOP + 14} />
+          {/* the chain */}
+          <Run d={RUN_D} pathLength={1} />
+          {[0, 1, 2].map((i) => (
+            <Hop key={i} d={HOP(i, i + 1)} pathLength={1} $i={i} />
           ))}
 
-          {/* four of those calls, one per service, are a single chain */}
-          {HITS.slice(0, 3).map((h, i) => (
-            <Riser key={i} x={h.x - 0.28} y={TOP + h.h + 0.8} width={0.56} height={RAIL - TOP - h.h - 0.8} $i={i} />
+          {SVC.map((s, i) => (
+            <g key={s.k}>
+              <Node x={s.x - 3.6} y={SVC_Y - 3.6} width={7.2} height={7.2} rx={1.6} $i={i} />
+              <SvcCap x={s.x} y={43.5}>
+                {s.k}
+              </SvcCap>
+            </g>
           ))}
-          <Rail d={`M${HITS[0].x} ${RAIL} H${WALL - 1.4}`} pathLength={1} />
-          <Tried x={HITS[3].x - 0.28} y={TOP + HITS[3].h + 0.8} width={0.56} height={RAIL - TOP - HITS[3].h - 0.8} />
-          <Stop x={WALL - 0.9} y={RAIL - 7.5} width={1.8} height={15} rx={0.25} />
 
-          <Cap x={X0} y={RAIL + 11.5} $a={LINK_AT + 0.6} $c={HOT}>
-            four weaknesses · four services · one request
+          {/* written down on the plane as each one landed, then joined up */}
+          <Link d={`M${SVC[0].x} ${PLANE} H${SVC[2].x}`} pathLength={1} />
+          {[0, 1, 2].map((i) => (
+            <Mark key={i} x={SVC[i].x - 1.15} y={PLANE - 1.15} width={2.3} height={2.3} rx={0.5} $i={i} />
+          ))}
+
+          {/* and the fourth one does not happen */}
+          <Stem x1={BLOCK_X} y1={30} x2={BLOCK_X} y2={PLANE} />
+          <Block x={BLOCK_X - 0.75} y={15.5} width={1.5} height={15} rx={0.3} />
+          <Cap x={143} y={13} $a={BLOCK_AT + 0.3} $c={VIOLET} $e>
+            refused at the call
           </Cap>
         </Map>
       </Field>
 
       <Foot>
-        <FootQuiet>
-          <span>nothing in this request was malformed</span>
-        </FootQuiet>
-        <FootHot>
+        <Quiet>
+          <span>three controls, three gaps, nothing malformed</span>
+        </Quiet>
+        <Loud>
           <Pill>refused</Pill>
-          <span>at the call, not at the release</span>
-        </FootHot>
+          <span>the fourth call never ran</span>
+        </Loud>
       </Foot>
     </Panel>
   </Frame>

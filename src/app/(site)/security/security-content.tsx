@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { LandingHeader, LandingFooter } from '@/containers/landing';
 import { Container, Eyebrow, Reveal, DemoCTA, TrialCTA } from '@/containers/landing/primitives';
 import { SecurityArt } from './security-art';
+import { DeployFigure, VariantFigure } from './security-figures';
 
 /* ---------------- shared ---------------- */
 const Section = styled.section<{ $alt?: boolean }>`
@@ -1271,6 +1272,9 @@ export const SecurityContent = () => {
                 </p>
               </Head>
             </Reveal>
+            <Reveal delay={60}>
+              <VariantFigure />
+            </Reveal>
             <Reveal delay={70}>
               <Shift>
                 {SHIFT.map((x) => (
@@ -1396,6 +1400,9 @@ export const SecurityContent = () => {
                   across every service the request touched.
                 </p>
               </Head>
+            </Reveal>
+            <Reveal delay={60}>
+              <DeployFigure />
             </Reveal>
             <Reveal delay={70}>
               <Caps>
