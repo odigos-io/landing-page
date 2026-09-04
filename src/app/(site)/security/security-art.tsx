@@ -39,10 +39,10 @@ const AGENT = { x: 9, y: 50 };
 /* four defences between the attacker and the ledger. each falls as it is beaten. */
 const PERIMETER = 19;
 const WALLS = [
-  { x: 19, at: 1.35, label: 'perimeter' },
-  { x: 40, at: 2.85, label: 'authn' },
-  { x: 72, at: 4.05, label: 'service trust' },
-  { x: 104, at: 5.15, label: 'payment control' },
+  { x: 19, at: 1.35, label: 'waf', c: '#4a6fa5' },
+  { x: 40, at: 2.85, label: 'edr', c: '#3f8a7d' },
+  { x: 72, at: 4.05, label: 'cnapp', c: '#a67c3d' },
+  { x: 104, at: 5.15, label: 'siem', c: '#6b5aa6' },
 ];
 const SHARDS = 7;
 const at = (id: string) => NODES.find((n) => n.id === id) as Node;
@@ -135,13 +135,6 @@ const shock = (s: number) => keyframes`
   ${p(s + 0.2)}%{opacity:.7;transform:scale(1)}
   ${p(s + 0.8)}%,100%{opacity:0;transform:scale(2.6)}`;
 
-/* the weakness is named at the moment it is found, then it lives in the bar */
-const vulnPop = (s: number) => keyframes`
-  0%,${p(s)}%{opacity:0;transform:translate(-50%,4px) scale(.8)}
-  ${p(s + 0.18)}%{opacity:1;transform:translate(-50%,0) scale(1.08)}
-  ${p(s + 0.3)}%,${p(s + 1.5)}%{opacity:1;transform:translate(-50%,0) scale(1)}
-  ${p(s + 1.9)}%,100%{opacity:0;transform:translate(-50%,-5px) scale(1)}`;
-
 /* each find joins the chain and stays */
 const chipIn = (s: number) => keyframes`
   0%,${p(s)}%{opacity:0;transform:translateY(5px)}
@@ -183,10 +176,10 @@ const shard = (t: number, i: number) => {
   ${p(t + 1.1 + lag)}%,100%{opacity:0;transform:translate(${dir * 4}px,17px) rotate(${dir * 30}deg)}`;
 };
 
-const wallLabel = (t: number) => keyframes`
-  0%,${p(t)}%{opacity:.55;fill:rgba(24,20,54,0.55)}
+const wallLabel = (t: number, c: string) => keyframes`
+  0%,${p(t)}%{opacity:.85;fill:${c}}
   ${p(t + 0.25)}%{opacity:1;fill:${HOT}}
-  ${p(t + 1.3)}%,100%{opacity:.3;fill:rgba(24,20,54,0.3)}`;
+  ${p(t + 1.3)}%,100%{opacity:.32;fill:rgba(24,20,54,0.32)}`;
 
 const agentPulse = keyframes`
   0%,100%{opacity:.3;transform:scale(.85)}
@@ -366,15 +359,16 @@ const AttackerLabel = styled.text`
 `;
 
 /* a wall, while it is still holding */
-const Wall = styled.rect<{ $t: number }>`
-  fill: rgba(24, 20, 54, 0.5);
+const Wall = styled.rect<{ $t: number; $c: string }>`
+  fill: ${(x) => x.$c};
+  opacity: 0.5;
   animation: ${(x) => strain(x.$t)} ${T}s linear infinite both;
   ${reduce}
 `;
 
 /* and the pieces it comes apart into */
-const Shard = styled.rect<{ $t: number; $i: number }>`
-  fill: rgba(24, 20, 54, 0.42);
+const Shard = styled.rect<{ $t: number; $i: number; $c: string }>`
+  fill: ${(x) => x.$c};
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
@@ -382,12 +376,14 @@ const Shard = styled.rect<{ $t: number; $i: number }>`
   ${reduce}
 `;
 
-const WallName = styled.text<{ $t: number }>`
+const WallName = styled.text<{ $t: number; $c: string }>`
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 2.9px;
-  letter-spacing: 0.09px;
+  font-size: 3.4px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
   text-anchor: middle;
-  animation: ${(x) => wallLabel(x.$t)} ${T}s linear infinite both;
+  animation: ${(x) => wallLabel(x.$t, x.$c)} ${T}s linear infinite both;
   ${reduce}
 `;
 
@@ -403,40 +399,11 @@ const AgentHalo = styled.circle`
   ${reduce}
 `;
 
-/* the weakness, named where it was found */
-const Vuln = styled.div<{ $t: number; $x: number; $y: number }>`
-  position: absolute;
-  left: ${(x) => x.$x}%;
-  top: ${(x) => x.$y}%;
-  padding: 3px 9px;
-  white-space: nowrap;
-  border-radius: 999px;
-  background: ${HOT};
-  color: #fff;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  box-shadow: 0 6px 18px -8px rgba(201, 52, 106, 0.8);
-  transform: translate(-50%, 0);
-  animation: ${(x) => vulnPop(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-
-  @media (max-width: 620px) {
-    font-size: 8.5px;
-    padding: 2px 7px;
-  }
-`;
-
 const rowBase = css`
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
   padding: 14px 22px;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 11px;
@@ -455,6 +422,8 @@ const BarWrap = styled.div`
 
 const Probing = styled.div`
   ${rowBase};
+  flex-wrap: nowrap;
+  overflow: hidden;
   color: var(--ink-faint);
 
   .crit {
@@ -500,10 +469,13 @@ const Probing = styled.div`
   }
   .plus {
     color: var(--ink-faint);
+    white-space: nowrap;
   }
 `;
 
 const Chip = styled.span<{ $t: number }>`
+  flex-shrink: 0;
+  white-space: nowrap;
   animation: ${(x) => chipIn(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
 
   @media (prefers-reduced-motion: reduce) {
@@ -523,11 +495,11 @@ export const SecurityArt = () => (
           {/* the defences, and the pieces they come apart into */}
           {WALLS.map((w) => (
             <g key={`w${w.x}`}>
-              <Wall x={w.x - 0.55} y={9} width={1.1} height={82} $t={w.at} />
+              <Wall x={w.x - 0.6} y={10} width={1.2} height={80} $t={w.at} $c={w.c} />
               {Array.from({ length: SHARDS }, (_, i) => (
-                <Shard key={i} x={w.x - 0.55} y={9 + i * (82 / SHARDS)} width={1.1} height={82 / SHARDS - 1.4} $t={w.at} $i={i} />
+                <Shard key={i} x={w.x - 0.6} y={10 + i * (80 / SHARDS)} width={1.2} height={80 / SHARDS - 1.4} $t={w.at} $i={i} $c={w.c} />
               ))}
-              <WallName x={w.x} y={6} $t={w.at}>
+              <WallName x={w.x} y={6.5} $t={w.at} $c={w.c}>
                 {w.label}
               </WallName>
             </g>
@@ -584,14 +556,7 @@ export const SecurityArt = () => (
           </AttackerLabel>
         </Map>
 
-        {ROUNDS.map((r) => {
-          const target = at(r.hit);
-          return (
-            <Vuln key={`v${r.vuln}`} $t={r.at + HIT_AT + 0.35} $x={((target.x + r.cx) / 142) * 100} $y={target.y + r.cy}>
-              {r.vuln}
-            </Vuln>
-          );
-        })}
+
       </Field>
 
       <BarWrap>
