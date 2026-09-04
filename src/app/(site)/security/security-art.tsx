@@ -23,21 +23,28 @@ const LINE = 'rgba(24, 20, 54, 0.16)';
 type Node = { id: string; x: number; y: number; name: string; lx?: number; ly?: number; step?: number; on?: number };
 
 const NODES: Node[] = [
-  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: -6, step: 1, on: 1.5 },
-  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -6, step: 2, on: 3.1 },
+  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: -8.5, step: 1, on: 1.5 },
+  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -8.5, step: 2, on: 3.1 },
   { id: 'ac', x: 50, y: 76, name: '', ly: 8 },
   { id: 'nt', x: 79, y: 13, name: '', ly: 8 },
-  { id: 'pm', x: 86, y: 48, name: 'payments-api', ly: -6, step: 3, on: 4.4 },
+  { id: 'pm', x: 86, y: 48, name: 'payments-api', ly: -8.5, step: 3, on: 4.4 },
   { id: 'sr', x: 76, y: 86, name: '', ly: 8 },
   { id: 'fr', x: 112, y: 72, name: 'fraud-svc', ly: 8 },
-  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -6, step: 4, on: 5.3 },
+  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -8.5, step: 4, on: 5.3 },
   { id: 'lg', x: 128, y: 58, name: '', lx: 4, ly: 9 },
 ];
 
 const AGENT = { x: 9, y: 50 };
 
-/* everything it throws crosses one boundary, and the boundary does not stop it */
+/* four defences between the attacker and the ledger. each falls as it is beaten. */
 const PERIMETER = 19;
+const WALLS = [
+  { x: 19, at: 1.35, label: 'perimeter' },
+  { x: 40, at: 2.85, label: 'authn' },
+  { x: 72, at: 4.05, label: 'service trust' },
+  { x: 104, at: 5.15, label: 'payment control' },
+];
+const SHARDS = 7;
 const at = (id: string) => NODES.find((n) => n.id === id) as Node;
 const pt = (id: string) => (id === 'agent' ? AGENT : at(id));
 
@@ -56,10 +63,10 @@ const EDGES: [string, string, number][] = [
 
 /* four rounds. from wherever it has reached, throw everything, keep what lands. */
 const ROUNDS = [
-  { at: 0.4, from: 'agent', miss: ['ac', 'nt', 'sr'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 0, cy: 11 },
-  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'lg'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 0, cy: 11 },
-  { at: 3.1, from: 'tk', miss: ['nt', 'ac', 'lg', 'st'], hit: 'pm', bow: -5, vuln: 'unknown call', cx: 0, cy: 11 },
-  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'fr', 'nt'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 0, cy: 11 },
+  { at: 0.4, from: 'agent', miss: ['ac', 'nt', 'sr'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 0, cy: 12.5 },
+  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'lg'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 0, cy: 12.5 },
+  { at: 3.1, from: 'tk', miss: ['nt', 'ac', 'lg', 'st'], hit: 'pm', bow: -5, vuln: 'unknown call', cx: 0, cy: 12.5 },
+  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'fr', 'nt'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 0, cy: 12.5 },
 ];
 
 const BURST = 0.75;
@@ -156,6 +163,30 @@ const liveOut = keyframes`
 const critIn = keyframes`
   0%,${p(VERDICT)}%{opacity:0;transform:scale(.7)}
   ${p(VERDICT + 0.3)}%,100%{opacity:1;transform:scale(1)}`;
+
+/* the wall takes the hits, then comes apart */
+const strain = (t: number) => keyframes`
+  0%,${p(t - 0.9)}%{opacity:.42}
+  ${p(t - 0.6)}%{opacity:.8}
+  ${p(t - 0.35)}%{opacity:.5}
+  ${p(t - 0.12)}%{opacity:.95}
+  ${p(t)}%{opacity:1}
+  ${p(t + 0.02)}%,100%{opacity:0}`;
+
+const shard = (t: number, i: number) => {
+  const dir = i % 2 ? 1 : -1;
+  const lag = i * 0.045;
+  return keyframes`
+  0%,${p(t)}%{opacity:0;transform:translate(0,0) rotate(0deg)}
+  ${p(t + 0.01 + lag)}%{opacity:.85;transform:translate(0,0) rotate(0deg)}
+  ${p(t + 0.55 + lag)}%{opacity:.5;transform:translate(${dir * 2.5}px,7px) rotate(${dir * 16}deg)}
+  ${p(t + 1.1 + lag)}%,100%{opacity:0;transform:translate(${dir * 4}px,17px) rotate(${dir * 30}deg)}`;
+};
+
+const wallLabel = (t: number) => keyframes`
+  0%,${p(t)}%{opacity:.55;fill:rgba(24,20,54,0.55)}
+  ${p(t + 0.25)}%{opacity:1;fill:${HOT}}
+  ${p(t + 1.3)}%,100%{opacity:.3;fill:rgba(24,20,54,0.3)}`;
 
 const agentPulse = keyframes`
   0%,100%{opacity:.3;transform:scale(.85)}
@@ -334,22 +365,34 @@ const AttackerLabel = styled.text`
   font-weight: 600;
 `;
 
-/* the edge of the estate */
-const Fence = styled.line`
-  stroke: rgba(24, 20, 54, 0.5);
-  stroke-width: 0.75;
-  stroke-dasharray: 2.4 2;
+/* a wall, while it is still holding */
+const Wall = styled.rect<{ $t: number }>`
+  fill: rgba(24, 20, 54, 0.5);
+  animation: ${(x) => strain(x.$t)} ${T}s linear infinite both;
+  ${reduce}
+`;
+
+/* and the pieces it comes apart into */
+const Shard = styled.rect<{ $t: number; $i: number }>`
+  fill: rgba(24, 20, 54, 0.42);
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: ${(x) => shard(x.$t, x.$i)} ${T}s cubic-bezier(0.3, 0, 0.4, 1) infinite both;
+  ${reduce}
+`;
+
+const WallName = styled.text<{ $t: number }>`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 2.9px;
+  letter-spacing: 0.09px;
+  text-anchor: middle;
+  animation: ${(x) => wallLabel(x.$t)} ${T}s linear infinite both;
+  ${reduce}
 `;
 
 const Outside = styled.rect`
   fill: rgba(201, 52, 106, 0.075);
-`;
-
-const FenceLabel = styled.text`
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 3.3px;
-  letter-spacing: 0.1px;
-  fill: rgba(24, 20, 54, 0.6);
 `;
 
 const AgentHalo = styled.circle`
@@ -444,6 +487,8 @@ const Probing = styled.div`
     ${reduce}
   }
   .chip {
+    display: inline-block;
+    white-space: nowrap;
     padding: 2px 8px;
     border-radius: 999px;
     border: 1px solid rgba(201, 52, 106, 0.3);
@@ -474,10 +519,19 @@ export const SecurityArt = () => (
       <Field>
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid meet' aria-hidden>
           <Outside x={0} y={0} width={PERIMETER} height={100} />
-          <Fence x1={PERIMETER} y1={4} x2={PERIMETER} y2={96} />
-          <FenceLabel x={PERIMETER + 3} y={7} textAnchor='start'>
-            your perimeter
-          </FenceLabel>
+
+          {/* the defences, and the pieces they come apart into */}
+          {WALLS.map((w) => (
+            <g key={`w${w.x}`}>
+              <Wall x={w.x - 0.55} y={9} width={1.1} height={82} $t={w.at} />
+              {Array.from({ length: SHARDS }, (_, i) => (
+                <Shard key={i} x={w.x - 0.55} y={9 + i * (82 / SHARDS)} width={1.1} height={82 / SHARDS - 1.4} $t={w.at} $i={i} />
+              ))}
+              <WallName x={w.x} y={6} $t={w.at}>
+                {w.label}
+              </WallName>
+            </g>
+          ))}
 
           {EDGES.map(([a, b, bow]) => (
             <Edge key={`e${a}${b}`} d={arc(at(a), at(b), bow)} />

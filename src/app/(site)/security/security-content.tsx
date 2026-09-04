@@ -304,6 +304,130 @@ const Row = styled.div<{ $head?: boolean; $us?: boolean }>`
   }
 `;
 
+/* ---------------- what changed ---------------- */
+const Shift = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  > * {
+    min-width: 0;
+  }
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Shard = styled.div`
+  padding: 30px 26px 32px;
+  background: var(--paper);
+
+  .k {
+    display: block;
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--hot-ink);
+  }
+  h3 {
+    margin: 14px 0 0;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  p {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+`;
+
+/* ---------------- triage funnel ---------------- */
+const Funnel = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  > * {
+    min-width: 0;
+  }
+  gap: 2px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+`;
+
+const Step = styled.div<{ $i: number }>`
+  padding: 22px 18px 24px;
+  border-top: 3px solid ${({ $i }) => ($i === 0 ? 'var(--line-strong)' : `rgba(201,52,106,${0.25 + $i * 0.19})`)};
+  background: ${({ $i }) => ($i === 0 ? 'transparent' : `rgba(201,52,106,${0.015 + $i * 0.012})`)};
+
+  .k {
+    display: block;
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${({ $i }) => ($i === 0 ? 'var(--ink-faint)' : 'var(--hot-ink)')};
+  }
+  p {
+    margin: 10px 0 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: ${({ $i }) => ($i === 0 ? 'var(--ink-faint)' : 'var(--ink-mute)')};
+  }
+
+  @media (max-width: 900px) {
+    padding: 16px 0 18px;
+    border-top-width: 2px;
+  }
+`;
+
+/* ---------------- virtual patching ---------------- */
+const Cases = styled.div`
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  > * {
+    min-width: 0;
+  }
+  gap: 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Case = styled.div`
+  padding: 26px 24px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--paper-2);
+
+  h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  p {
+    margin: 11px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+`;
+
 /* ---------------- response ---------------- */
 const Prose = styled.div`
   margin-top: 40px;
@@ -865,6 +989,50 @@ const BLIND = [
   { h: 'Traffic that never enters a scoped process', p: 'A call between two services you have not enabled is a call we never see. Coverage is a decision you make per workload.' },
 ];
 
+/* the CVE backlog question, answered from the running system */
+/* the bar the headline claims moved, developed */
+const SHIFT = [
+  {
+    k: 'chained',
+    h: 'It is no longer one CVE in one process.',
+    p: 'Low-severity findings get chained into critical compromise. Your severity model scores each one alone, which is exactly how a chain of fours becomes a nine that nobody ranked.',
+  },
+  {
+    k: 'tailored',
+    h: 'The payload is built for your estate.',
+    p: 'Your runtime version, your module graph, your package set. Not a generic exploit hunting for a generic target, and not something a shared signature was ever going to match.',
+  },
+  {
+    k: 'lateral',
+    h: 'It moves inside one transaction.',
+    p: 'Across services, across languages, across trust boundaries, between a request arriving and a response leaving. Nothing in that window looks like an intrusion to a per-host sensor.',
+  },
+];
+
+const TRIAGE = [
+  { k: 'present', p: 'The package is in the image. This is where a scanner stops, and where your backlog comes from.' },
+  { k: 'loaded', p: 'The vulnerable class was actually loaded into a running process.' },
+  { k: 'reachable', p: 'A path exists from a route you serve to the vulnerable function.' },
+  { k: 'called', p: 'It ran. On this route, this many times, in the last fourteen days.' },
+  { k: 'by whom', p: 'The caller, the argument it was handed, and what it returned.' },
+];
+
+/* what you do when there is no patch to apply */
+const PATCHING = [
+  {
+    h: 'Third-party code you cannot rebuild',
+    p: 'The vulnerable function is in a library you did not write and cannot fork. There is nothing for your team to patch, and the vendor ships when the vendor ships.',
+  },
+  {
+    h: 'A zero-day with no patch in existence',
+    p: 'Nobody has written a fix yet. A signature will arrive after the exploit has already run somewhere, and by then the technique has mutated anyway.',
+  },
+  {
+    h: 'The window your change process cannot close',
+    p: 'Disclosure to working exploit is now hours. Your emergency change window is measured in days, and your quarterly one in weeks.',
+  },
+];
+
 const CAPTURE = [
   { h: 'Arguments and return values', p: 'Not that a function ran. What it was handed and what it gave back, on the routes you scope. That is the layer nothing else on this page reaches.' },
   { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, after TLS has been terminated and before anything is serialized back out.' },
@@ -944,6 +1112,42 @@ export const SecurityContent = () => {
         </HeroSection>
 
         <Section>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>What changed</Eyebrow>
+                <h2>
+                  One operator now runs <span className='mute'>what used to take a team and a budget.</span>
+                </h2>
+                <p>
+                  Recon, exploit chaining and lateral movement at machine speed, from someone who does not need to understand your estate because a model reads it faster than your architects can describe it.
+                  Three things about the attack changed, and each one breaks a different assumption your program is built on.
+                </p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Shift>
+                {SHIFT.map((x) => (
+                  <Shard key={x.k}>
+                    <span className='k'>{x.k}</span>
+                    <h3>{x.h}</h3>
+                    <p>{x.p}</p>
+                  </Shard>
+                ))}
+              </Shift>
+            </Reveal>
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  And the clock moved with it. Disclosure to working exploit is now hours, while <b>patch velocity is set by your vendors rather than your team</b>. Signatures and CVE feeds arrive{' '}
+                  <span className='q'>after the thing has already run</span>.
+                </p>
+              </Verdict>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section $alt>
           <Inner>
             <Reveal>
               <Head>
@@ -1120,6 +1324,39 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
+        <Section $alt>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Triage</Eyebrow>
+                <h2>Which of those four thousand actually ran?</h2>
+                <p>
+                  A scanner can tell you a vulnerable package is present. It cannot tell you whether the vulnerable function was ever loaded, whether anything in your estate can reach it, whether it has been
+                  called, or by whom. Odigos answers that from the running system, which is the difference between a backlog and a short list.
+                </p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Funnel>
+                {TRIAGE.map((t, i) => (
+                  <Step key={t.k} $i={i}>
+                    <span className='k'>{t.k}</span>
+                    <p>{t.p}</p>
+                  </Step>
+                ))}
+              </Funnel>
+            </Reveal>
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  Most of what your scanner ranks critical is <b>present but never called</b>. Some of what it ranks low is executing on a path that handles money. Until you can see the runtime, you are
+                  patching in the order <span className='q'>somebody else guessed</span>.
+                </p>
+              </Verdict>
+            </Reveal>
+          </Inner>
+        </Section>
+
         <Section>
           <Inner>
             <Split>
@@ -1166,34 +1403,45 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Response</Eyebrow>
-                <h2>Turn one finding into one rule, on one call.</h2>
+                <Eyebrow>Virtual patching</Eyebrow>
+                <h2>
+                  Patch the function. <span className='mute'>Not the vendor&rsquo;s release cycle.</span>
+                </h2>
                 <p>
-                  A rule at the perimeter is a decision about all of your traffic. A FunctionPolicy is a decision about one call on one route, so the worst case if you get it wrong is that one call behaves
-                  differently, not that a service stops serving.
+                  Three situations account for most of the risk a bank actually carries, and in every one of them the ordinary answer, ship a patch, is unavailable to you when you need it.
                 </p>
               </Head>
             </Reveal>
+
             <Reveal delay={70}>
+              <Cases>
+                {PATCHING.map((c) => (
+                  <Case key={c.h}>
+                    <h3>{c.h}</h3>
+                    <p>{c.p}</p>
+                  </Case>
+                ))}
+              </Cases>
+            </Reveal>
+
+            <Reveal delay={110}>
               <Prose>
                 <p>
-                  A policy can refuse the call for the route and the caller you scoped it to, and everything else on that service keeps serving. Where refusing would break the request, it can replace the value
-                  that comes back instead. Most policies start by doing neither, watching and reporting only, and a great many of them stay there.
+                  A FunctionPolicy takes the vulnerable function out of play without touching the code that contains it. Refuse the call for the routes and callers you name, or let it run and replace what it
+                  returns. It is written against the function, so it holds for every path that reaches it, including the ones nobody has found yet. When the real patch finally ships, you delete the policy.
                 </p>
                 <p>
-                  A policy names one function on one workload, so the review it needs is the review that workload&rsquo;s changes already get. Who may write one, and against which services, is your RBAC.
-                </p>
-                <p>
-                  Capture and enforcement are separate systems. Capture never runs in your process. Enforcement is a distinct opt-in mode with its own mechanism and its own rollout, so ask us for the enforcement
-                  design note before you plan around it. Every policy starts in report-only, and most of them stay there.
+                  The blast radius is one function on one workload, which is why it can move at the speed the threat does. A rule at the perimeter is a decision about every request that will ever arrive. This is
+                  a decision about one call. Every policy starts in report-only, and most of them stay there.
                 </p>
               </Prose>
             </Reveal>
-            <Reveal delay={110}>
+
+            <Reveal delay={150}>
               <Verdict>
                 <p>
-                  And the blast radius of the capture is smaller still. It runs outside your application, so <b>a bad release of ours cannot take your service down with it</b>, and what may be captured, on which
-                  workload, by whom, <span className='q'>is governed by policy before anything is written</span>.
+                  Which is the part that matters for an attacker moving at machine speed: you no longer need to know what the exploit is called, or wait for someone to name it, to{' '}
+                  <span className='q'>take the function it needs away from it</span>.
                 </p>
               </Verdict>
             </Reveal>
