@@ -150,6 +150,7 @@ export const LandingFooter = () => {
           <h3>Product</h3>
           <Link href='/product'>Product</Link>
           <Link href='/pricing'>Pricing</Link>
+          <Link href='/roi-calculator'>ROI Calculator</Link>
           <Link href={DOCS_LINK} target='_blank'>Documentation</Link>
           <Link href={DOCS_LINK + '/quickstart/introduction'} target='_blank'>Quickstart</Link>
         </Col>

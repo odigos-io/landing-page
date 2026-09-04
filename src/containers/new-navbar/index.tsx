@@ -190,6 +190,7 @@ const getNavigationHref = (label: string, href: string) => {
   if (label === 'Pricing') return '/new/pricing';
   if (label === 'Blog') return '/new/blog';
   if (label === 'Events') return '/new/events';
+  if (label === 'ROI Calculator') return '/new/roi-calculator';
   return href;
 };
 

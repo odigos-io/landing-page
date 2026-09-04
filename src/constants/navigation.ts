@@ -46,6 +46,10 @@ export const NAVIGATION: NavItem[] = [
     label: 'Documentation',
     href: DOCS_LINK,
   },
+  {
+    label: 'ROI Calculator',
+    href: '/roi-calculator',
+  },
 ];
 
 export interface NavGroup {
@@ -67,7 +71,10 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     label: 'Pricing',
-    href: '/pricing',
+    items: [
+      { label: 'Plans', href: '/pricing', blurb: 'What it costs and what is included' },
+      { label: 'ROI calculator', href: '/roi-calculator', blurb: 'What it saves against what you run today' },
+    ],
   },
   {
     label: 'Resources',
