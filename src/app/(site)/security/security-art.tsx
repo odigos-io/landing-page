@@ -38,11 +38,14 @@ const AGENT = { x: 9, y: 50 };
 
 /* four defences between the attacker and the ledger. each falls as it is beaten. */
 const PERIMETER = 19;
-const WALLS = [
-  { x: 19, at: 1.35, label: 'waf', c: '#4a6fa5' },
-  { x: 40, at: 2.85, label: 'edr', c: '#3f8a7d' },
-  { x: 72, at: 4.05, label: 'cnapp', c: '#a67c3d' },
-  { x: 104, at: 5.15, label: 'siem', c: '#6b5aa6' },
+/* the only control actually in the path, and it is only at the edge */
+const EDGE = { x: 19, at: 1.2, label: 'waf', c: '#4a6fa5' };
+
+/* the ones that watch rather than block, and what each of them is looking at */
+const WATCHERS = [
+  { k: 'edr', w: 'host', at: 1.9 },
+  { k: 'cnapp', w: 'image', at: 3.1 },
+  { k: 'siem', w: 'logs', at: 4.2 },
 ];
 
 /* the one it does not get through */
@@ -161,29 +164,23 @@ const critIn = keyframes`
   0%,${p(VERDICT)}%{opacity:0;transform:scale(.7)}
   ${p(VERDICT + 0.3)}%,100%{opacity:1;transform:scale(1)}`;
 
-/* the wall takes the hits, then comes apart */
-const strain = (t: number) => keyframes`
-  0%,${p(t - 0.9)}%{opacity:.42}
-  ${p(t - 0.6)}%{opacity:.8}
-  ${p(t - 0.35)}%{opacity:.5}
-  ${p(t - 0.12)}%{opacity:.95}
-  ${p(t)}%{opacity:1}
-  ${p(t + 0.02)}%,100%{opacity:0}`;
+/* the edge holds. it simply has no reason to object. */
+const edgeHold = keyframes`
+  0%,${p(EDGE.at - 0.5)}%{opacity:.45}
+  ${p(EDGE.at)}%{opacity:.95}
+  ${p(EDGE.at + 0.5)}%,100%{opacity:.45}`;
 
-const shard = (t: number, i: number) => {
-  const dir = i % 2 ? 1 : -1;
-  const lag = i * 0.045;
-  return keyframes`
-  0%,${p(t)}%{opacity:0;transform:translate(0,0) rotate(0deg)}
-  ${p(t + 0.01 + lag)}%{opacity:.85;transform:translate(0,0) rotate(0deg)}
-  ${p(t + 0.55 + lag)}%{opacity:.5;transform:translate(${dir * 2.5}px,7px) rotate(${dir * 16}deg)}
-  ${p(t + 1.1 + lag)}%,100%{opacity:.22;transform:translate(${dir * 4}px,17px) rotate(${dir * 30}deg)}`;
-};
+const allowed = keyframes`
+  0%,${p(EDGE.at - 0.1)}%{opacity:0}
+  ${p(EDGE.at + 0.15)}%{opacity:1}
+  ${p(EDGE.at + 1.5)}%{opacity:1}
+  ${p(EDGE.at + 2.1)}%,100%{opacity:.5}`;
 
-const wallLabel = (t: number, c: string) => keyframes`
-  0%,${p(t)}%{opacity:.85;fill:${c}}
-  ${p(t + 0.25)}%{opacity:1;fill:${HOT}}
-  ${p(t + 1.3)}%,100%{opacity:.32;fill:rgba(24,20,54,0.32)}`;
+/* a watcher notices the request, has no reason to flag it, and goes quiet */
+const watching = (t: number) => keyframes`
+  0%,${p(t - 0.3)}%{opacity:.3}
+  ${p(t)}%{opacity:.85}
+  ${p(t + 0.7)}%,100%{opacity:.42}`;
 
 /* our line holds, and the attempt against it is refused */
 const holdIn = keyframes`
@@ -289,7 +286,7 @@ const SkipNote = styled.text`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 3.4px;
   letter-spacing: 0.04px;
-  text-anchor: start;
+  text-anchor: middle;
   fill: ${DEEP};
   animation: ${skipIn} ${T}s linear infinite both;
   ${reduce}
@@ -381,38 +378,34 @@ const AttackerLabel = styled.text`
 `;
 
 /* a wall, while it is still holding */
-const Wall = styled.rect<{ $t: number; $c: string }>`
-  fill: ${(x) => x.$c};
-  opacity: 0.5;
-  animation: ${(x) => strain(x.$t)} ${T}s linear infinite both;
+const EdgeWall = styled.rect`
+  fill: ${EDGE.c};
+  animation: ${edgeHold} ${T}s ease-in-out infinite both;
   ${reduce}
 `;
 
-/* and the pieces it comes apart into */
-const Shard = styled.rect<{ $t: number; $i: number; $c: string }>`
-  fill: ${(x) => x.$c};
-  transform-box: fill-box;
-  transform-origin: center;
-  opacity: 0;
-  animation: ${(x) => shard(x.$t, x.$i)} ${T}s cubic-bezier(0.3, 0, 0.4, 1) infinite both;
-
-  /* at rest the wall is drawn whole, so its shards must not draw on top of it */
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 0;
-  }
-`;
-
-const WallName = styled.text<{ $t: number; $c: string }>`
+const EdgeName = styled.text`
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 3.4px;
   font-weight: 600;
   letter-spacing: 0.2px;
   text-transform: uppercase;
   text-anchor: middle;
-  animation: ${(x) => wallLabel(x.$t, x.$c)} ${T}s linear infinite both;
+  fill: ${EDGE.c};
+`;
+
+const Allowed = styled.text`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 3px;
+  letter-spacing: 0.06px;
+  text-anchor: middle;
+  fill: #3f8a5c;
+  animation: ${allowed} ${T}s linear infinite both;
   ${reduce}
 `;
+
+/* and the pieces it comes apart into */
+
 
 const Outside = styled.rect`
   fill: rgba(201, 52, 106, 0.075);
@@ -449,8 +442,8 @@ const Refused = styled.path`
 
 const Stamp = styled.div`
   position: absolute;
-  left: 68%;
-  top: 63%;
+  left: 55%;
+  top: 70%;
   padding: 5px 11px;
   white-space: nowrap;
   border-radius: 8px;
@@ -501,6 +494,55 @@ const rowBase = css`
 const BarWrap = styled.div`
   position: relative;
   border-top: 1px solid var(--line);
+`;
+
+const Watchers = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 11px 22px;
+  border-top: 1px solid var(--line);
+  background: var(--paper-3);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  color: var(--ink-faint);
+
+  @media (max-width: 1000px) {
+    padding: 9px 15px;
+    gap: 9px;
+    font-size: 8.5px;
+  }
+`;
+
+const Watch = styled.span<{ $t: number }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  animation: ${(x) => watching(x.$t)} ${T}s ease-out infinite both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.55;
+  }
+
+  b {
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  i {
+    font-style: normal;
+    color: var(--ink-faint);
+  }
+  .q {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(24, 20, 54, 0.22);
+  }
 `;
 
 const Probing = styled.div`
@@ -575,26 +617,22 @@ export const SecurityArt = () => (
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid meet' aria-hidden>
           <Outside x={0} y={0} width={PERIMETER} height={100} />
 
-          {/* the defences, and the pieces they come apart into */}
-          {WALLS.map((w) => (
-            <g key={`w${w.x}`}>
-              <Wall x={w.x - 0.6} y={10} width={1.2} height={80} $t={w.at} $c={w.c} />
-              {Array.from({ length: SHARDS }, (_, i) => (
-                <Shard key={i} x={w.x - 0.6} y={10 + i * (80 / SHARDS)} width={1.2} height={80 / SHARDS - 1.4} $t={w.at} $i={i} $c={w.c} />
-              ))}
-              <WallName x={w.x} y={6.5} $t={w.at} $c={w.c}>
-                {w.label}
-              </WallName>
-            </g>
-          ))}
+          {/* the one control in the path, which lets a well formed request through */}
+          <EdgeWall x={EDGE.x - 0.7} y={10} width={1.4} height={80} />
+          <EdgeName x={EDGE.x} y={6.5}>
+            {EDGE.label}
+          </EdgeName>
+          <Allowed x={EDGE.x + 15} y={66}>
+            request allowed
+          </Allowed>
 
           {EDGES.map(([a, b, bow]) => (
             <Edge key={`e${a}${b}`} d={arc(at(a), at(b), bow)} />
           ))}
 
           <SkipEdge d={arc(at(SKIP[0]), at(SKIP[1]), SKIP[2])} />
-          <SkipNote x={at('fr').x - 26} y={at('fr').y + 11}>
-            skipped on this request
+          <SkipNote x={at('fr').x - 8} y={at('fr').y + 18}>
+            fraud check skipped
           </SkipNote>
 
           {/* everything it threw that went nowhere, and stayed on the map */}
@@ -649,6 +687,16 @@ export const SecurityArt = () => (
 
         <Stamp>arg 0 refused · policy on one function</Stamp>
       </Field>
+
+      <Watchers>
+        {WATCHERS.map((w) => (
+          <Watch key={w.k} $t={w.at}>
+            <span className='q' />
+            <b>{w.k}</b>
+            <i>{w.w} · no alert</i>
+          </Watch>
+        ))}
+      </Watchers>
 
       <BarWrap>
         <Probing>
