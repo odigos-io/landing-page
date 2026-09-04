@@ -222,6 +222,10 @@ const refused = keyframes`
   ${p(BLOCKED_AT + 0.9)}%,100%{opacity:.18;stroke-dashoffset:0}`;
 
 
+const sweep = keyframes`
+  0%,100%{transform:rotate(-54deg)}
+  50%{transform:rotate(54deg)}`;
+
 const agentPulse = keyframes`
   0%,100%{opacity:.3;transform:scale(.85)}
   50%{opacity:.06;transform:scale(1.55)}`;
@@ -480,11 +484,22 @@ const Outside = styled.rect`
 
 
 
+/* a radar arc that never stops turning */
+const Sweep = styled.g`
+  transform-box: view-box;
+  transform-origin: ${AGENT.x}px ${AGENT.y}px;
+  animation: ${sweep} 2.8s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
 const AgentHalo = styled.circle`
   fill: ${HOT};
   transform-box: fill-box;
   transform-origin: center;
-  animation: ${agentPulse} 2.4s ease-in-out infinite;
+  animation: ${agentPulse} 1.5s ease-in-out infinite;
   ${reduce}
 `;
 
@@ -629,6 +644,12 @@ export const SecurityArt = () => (
     <Panel>
       <Field>
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid meet' aria-hidden>
+          <defs>
+            <linearGradient id='scan' x1='0' y1='0' x2='1' y2='0'>
+              <stop offset='0%' stopColor={HOT} stopOpacity='0.3' />
+              <stop offset='100%' stopColor={HOT} stopOpacity='0' />
+            </linearGradient>
+          </defs>
           <Outside x={0} y={0} width={PERIMETER} height={100} />
 
           {/* the one control in the path, which lets a well formed request through */}
@@ -702,6 +723,10 @@ export const SecurityArt = () => (
             odigos covers the calls between them
           </ZoneName>
 
+
+          <Sweep>
+            <path d={`M ${AGENT.x} ${AGENT.y} L ${AGENT.x + 34} ${AGENT.y - 4.6} L ${AGENT.x + 34} ${AGENT.y + 4.6} Z`} fill='url(#scan)' />
+          </Sweep>
 
           <AgentHalo cx={AGENT.x} cy={AGENT.y} r={8} />
           <circle cx={AGENT.x} cy={AGENT.y} r={2.9} fill={DEEP} />
