@@ -173,26 +173,23 @@ const Fact = styled.div`
 
 /* ---------------- what it captures ---------------- */
 const Caps = styled.div`
-  margin-top: 46px;
+  margin-top: 48px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   > * {
     min-width: 0;
   }
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
+  gap: 40px 44px;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
+    gap: 30px;
   }
 `;
 
 const Cap = styled.div`
-  padding: 26px 24px 28px;
-  background: var(--paper-2);
+  padding-top: 18px;
+  border-top: 2px solid var(--accent);
 
   h3 {
     margin: 0;
@@ -263,7 +260,7 @@ const Compare = styled.div`
   border-top: 1px solid var(--line);
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ $head?: boolean; $us?: boolean }>`
   display: grid;
   grid-template-columns: 190px 1fr 1.15fr;
   > * {
@@ -279,22 +276,31 @@ const Row = styled.div`
     gap: 6px;
   }
 
+  padding: ${({ $head }) => ($head ? '0 0 12px' : '22px 0')};
+  background: ${({ $us }) => ($us ? 'rgba(91,67,241,0.04)' : 'transparent')};
+  box-shadow: ${({ $us }) => ($us ? 'inset 3px 0 0 var(--accent)' : 'none')};
+
   .k {
     font-family: var(--font-mono), monospace;
-    font-size: 11px;
+    font-size: ${({ $head }) => ($head ? '10px' : '11px')};
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: ${({ $head }) => ($head ? 'var(--ink-faint)' : 'var(--ink)')};
+    font-weight: ${({ $us }) => ($us ? 600 : 400)};
+    padding-left: ${({ $us }) => ($us ? '18px' : '0')};
   }
   .w {
-    font-size: 14.5px;
+    font-size: ${({ $head }) => ($head ? '11px' : '14.5px')};
     line-height: 1.55;
     color: var(--ink-faint);
+    ${({ $head }) => $head && 'font-family: var(--font-mono), monospace; letter-spacing: 0.12em; text-transform: uppercase;'}
   }
   .m {
-    font-size: 15px;
+    font-size: ${({ $head }) => ($head ? '11px' : '15px')};
     line-height: 1.55;
-    color: var(--ink-mute);
+    color: ${({ $head }) => 'var(--ink-faint)'};
+    ${({ $head }) => $head && 'font-family: var(--font-mono), monospace; letter-spacing: 0.12em; text-transform: uppercase;'}
+    ${({ $head }) => !$head && 'color: var(--ink-mute);'}
   }
 `;
 
@@ -803,12 +809,8 @@ const CloseCtas = styled.div`
 
 const FACTS = [
   {
-    h: 'It attaches to what is already running.',
-    p: 'Kernel-attached uprobes into the JVM, V8, CPython and the Go runtime, on Kubernetes and on bare-metal VMs. It reads cleartext request and response payloads including TLS-terminated traffic. No SDK, no code change, no redeploy.',
-  },
-  {
     h: 'It will not drown your analysts.',
-    p: 'Three of the six landed on one request in the attack above: two new call edges, and the latency shape they pushed that route into, on a path that ends at the ledger. Any one of them on its own would have been scored as noise and gone no further.',
+    p: 'Four of the six landed on one request in the attack above: two new call edges, an argument that had never carried a payload like that, and the latency shape those calls pushed the route into. Any one of them on its own would have been scored as noise and gone no further.',
   },
   {
     h: 'The record leaves the host while the attack is still running.',
@@ -824,7 +826,7 @@ const FACTS = [
   },
   {
     h: 'Under 1% CPU.',
-    p: 'Measured across 1.04 million cores under production load, with effectively no added latency. The probe fires in the kernel the moment your function is called, which is the moment the value is already in the clear.',
+    p: 'Measured across 1.04 million cores under production load, with effectively no added latency. You scope which functions are hooked, so the cost is a number you set rather than a number you discover. The probe fires in the kernel the moment your function is called, which is the moment the value is already in the clear.',
   },
 ];
 
@@ -848,16 +850,17 @@ const OTHERS = [
   { k: 'web firewall', w: 'request payloads at the edge', m: 'Judges one request in isolation, against patterns somebody wrote in advance.' },
   { k: 'siem', w: 'what your services choose to log', m: 'Can only correlate what an engineer decided in advance was worth writing down.' },
   { k: 'tracing', w: 'which services a request touched, and how long each took', m: 'Spans, not calls. It stops at the service boundary and never goes inside.' },
+  { k: 'odigos', w: 'the function calls inside each service, and how they chain across services', m: 'Sees inside the process, where the other six stop. The evidence is a function, an argument and a return value.', us: true },
 ];
 
 /* what the runtime actually captures */
 const CAPTURE = [
-  { h: 'Calls, arguments, return values', p: 'Not that service A called service B, but which function ran inside it, what it was handed, and what it gave back.' },
-  { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, including traffic that arrived over TLS.' },
-  { h: 'The control-flow path', p: 'Which branch a request actually took through the code, not which branch the source says it might.' },
+  { h: 'Arguments and return values', p: 'Not that a function ran. What it was handed and what it gave back, on the routes you scope. That is the layer nothing else on this page reaches.' },
+  { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, after TLS has been terminated and before anything is serialized back out.' },
+  { h: 'The path it took', p: 'The order and depth of the calls this request made, so you see the path the code took rather than every path the source allows.' },
   { h: 'Stitched end to end', p: 'One trace across services, languages and processes, so a chain that crosses four of them is a single object.' },
-  { h: 'Four runtimes', p: 'Kernel-attached uprobes into the JVM, V8, CPython and the Go runtime. No SDK, no code change, no redeploy.' },
-  { h: 'Two substrates', p: 'The same node agent covers Kubernetes and bare-metal VMs, so coverage does not stop at the edge of the cluster.' },
+  { h: 'Java, Node, Python, Go', p: 'One node agent, on Kubernetes or on a bare-metal VM. It attaches to processes already running, so coverage arrives the day you deploy it and not the release after.' },
+  { h: 'One capture, two jobs', p: 'The same record answers why the route got slower and who reached the ledger. Your platform team and your security team stop paying twice for the same bytes.' },
 ];
 
 
@@ -911,7 +914,7 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={120}>
               <HeroSub>
-                The attack crosses four services. No single service looks wrong. Odigos learns the calls each route normally makes, catches the two that have never run before, and hands you the function, the argument
+                The attack crosses four services. No single service looks wrong. Odigos learns the calls each route normally makes, catches the ones that have never run before, and hands you the function, the argument
                 and the value it returned.
               </HeroSub>
             </Reveal>
@@ -938,7 +941,8 @@ export const SecurityContent = () => {
                   Nothing you own was misconfigured. <span className='mute'>Everything you own was looking somewhere else.</span>
                 </h2>
                 <p>
-                  The controls in your estate watch the effects an attack leaves behind. This one left none. And the payload only exists in the clear inside the process that handles it, so the traffic between
+                  An SSRF at the edge, a CVE you had already scheduled, an unknown bug in a template helper, and a session token that was still valid. Four ordinary weaknesses, none of them yours alone,
+                  chained inside a single transaction. The controls in your estate watch the effects an attack leaves behind, and this one left none. And the payload only exists in the clear inside the process that handles it, so the traffic between
                   your services is opaque to anything sitting on the network. None of this is a configuration problem. It is a property of where the sensors sit.
                 </p>
               </Head>
@@ -969,8 +973,13 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={70}>
               <Compare>
+                <Row $head>
+                  <span className='k'>control</span>
+                  <span className='w'>what it watches</span>
+                  <span className='m'>where it stops</span>
+                </Row>
                 {OTHERS.map((x) => (
-                  <Row key={x.k}>
+                  <Row key={x.k} $us={x.us}>
                     <span className='k'>{x.k}</span>
                     <span className='w'>{x.w}</span>
                     <span className='m'>{x.m}</span>
@@ -1015,7 +1024,7 @@ export const SecurityContent = () => {
                   The exploit is two function calls that were not there yesterday.
                 </h2>
                 <p>
-                  Nobody had a signature for this call graph, and none was needed. Odigos learns the call graph each route normally produces and surfaces what has never appeared on it. There are six ways a
+                  Nobody had a signature for this call graph, and none was needed. Odigos learns the call graph each route normally produces and surfaces what has never appeared on it. It scores six ways a
                   request can be structurally wrong, and every one of them is a shape learned from your own traffic rather than a rule somebody wrote in advance.
                 </p>
               </Head>
@@ -1125,7 +1134,7 @@ export const SecurityContent = () => {
             <Reveal>
               <Head>
                 <Eyebrow>Response</Eyebrow>
-                <h2>The blast radius of a policy is one function.</h2>
+                <h2>Turn one finding into one rule, on one call.</h2>
                 <p>
                   A rule at the perimeter is a decision about all of your traffic. A FunctionPolicy is a decision about one call on one route, so the worst case if you get it wrong is that one call behaves
                   differently, not that a service stops serving.
@@ -1159,7 +1168,7 @@ export const SecurityContent = () => {
             <Trust>
               <div>
                 <Eyebrow>Before you run it</Eyebrow>
-                <h2>The probe is open source.</h2>
+                <h2>Read the probe before you run it.</h2>
                 <p>Your team can read exactly what it attaches to and what it reads before it goes anywhere near production. No closed agent, no proprietary format, and the telemetry stays yours.</p>
               </div>
               <TrustLinks>
@@ -1176,7 +1185,7 @@ export const SecurityContent = () => {
             <Reveal>
               <Head>
                 <Eyebrow>Running it</Eyebrow>
-                <h2>Nothing of ours runs in your address space.</h2>
+                <h2>Nothing of ours executes inside your process.</h2>
               </Head>
             </Reveal>
 

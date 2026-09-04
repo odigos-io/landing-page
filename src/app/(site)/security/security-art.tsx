@@ -53,19 +53,19 @@ const EDGES: [string, string, number][] = [
 
 /* four rounds. from wherever it has reached, throw everything, keep what lands. */
 const ROUNDS = [
-  { at: 0.5, from: 'agent', miss: ['ac', 'sr', 'nt', 'tk'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 8, cy: -11 },
-  { at: 2.1, from: 'gw', miss: ['ac', 'sr', 'nt'], hit: 'tk', bow: -5, vuln: 'known cve', cx: -19, cy: -12 },
-  { at: 3.7, from: 'tk', miss: ['nt', 'sr', 'ac', 'lg'], hit: 'pm', bow: -5, vuln: 'zero-day', cx: 6, cy: -12 },
-  { at: 5.3, from: 'pm', miss: ['lg', 'sr', 'ac'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 2, cy: 12 },
+  { at: 0.4, from: 'agent', miss: ['ac', 'sr', 'nt', 'tk', 'ac'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 8, cy: -11 },
+  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'nt', 'ac', 'sr', 'tk', 'nt'], hit: 'tk', bow: -5, vuln: 'known cve', cx: -19, cy: -12 },
+  { at: 3.1, from: 'tk', miss: ['nt', 'sr', 'ac', 'lg', 'nt', 'pm', 'sr', 'ac', 'lg'], hit: 'pm', bow: -5, vuln: 'zero-day', cx: 6, cy: -12 },
+  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'ac', 'fr', 'lg', 'st', 'sr', 'nt', 'fr', 'ac', 'lg'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 2, cy: 12 },
 ];
 
 const BURST = 0.75;
 const HIT_AT = 0.95;
 
 const SKIP: [string, string, number] = ['pm', 'fr', 5];
-const SKIP_AT = 6.6;
-const FLARE = 7.2;
-const VERDICT = 7.6;
+const SKIP_AT = 5.8;
+const FLARE = 6.4;
+const VERDICT = 6.9;
 
 /* ---------------- geometry ---------------- */
 
@@ -90,7 +90,7 @@ const fizzle = (s: number) => keyframes`
   ${p(s + 0.02)}%{opacity:.85}
   ${p(s + 0.16)}%{stroke-dashoffset:0;opacity:.85}
   ${p(s + 0.34)}%{stroke-dashoffset:0;opacity:.14}
-  ${p(s + 0.6)}%,100%{stroke-dashoffset:0;opacity:.16}`;
+  ${p(s + 0.6)}%,100%{stroke-dashoffset:0;opacity:.28}`;
 
 /* the one that lands, and then stays lit for the rest of the loop */
 const land = (s: number) => keyframes`
@@ -145,9 +145,14 @@ const verdictIn = keyframes`
   0%,${p(VERDICT)}%{opacity:0;transform:translateY(8px)}
   ${p(VERDICT + 0.4)}%,100%{opacity:1;transform:none}`;
 
-const probingOut = keyframes`
-  0%,${p(VERDICT)}%{opacity:1;transform:none}
-  ${p(VERDICT + 0.3)}%,100%{opacity:0;transform:translateY(-8px)}`;
+/* only the live indicator leaves. the chain it assembled stays for the payoff. */
+const liveOut = keyframes`
+  0%,${p(VERDICT)}%{opacity:1;width:70px}
+  ${p(VERDICT + 0.3)}%,100%{opacity:0;width:0}`;
+
+const critIn = keyframes`
+  0%,${p(VERDICT)}%{opacity:0;transform:scale(.7)}
+  ${p(VERDICT + 0.3)}%,100%{opacity:1;transform:scale(1)}`;
 
 const agentPulse = keyframes`
   0%,100%{opacity:.3;transform:scale(.85)}
@@ -210,12 +215,16 @@ const Edge = styled.path`
 const Miss = styled.path<{ $t: number }>`
   fill: none;
   stroke: ${HOT};
-  stroke-width: 0.3;
+  stroke-width: 0.38;
   stroke-linecap: round;
   stroke-dasharray: 1;
   opacity: 0;
   animation: ${(x) => fizzle(x.$t)} ${T}s cubic-bezier(0.3, 0, 0.2, 1) infinite both;
-  ${reduce}
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.22;
+  }
 `;
 
 const SkipEdge = styled.path`
@@ -326,8 +335,14 @@ const Vuln = styled.div<{ $t: number; $x: number; $y: number }>`
   letter-spacing: 0.07em;
   text-transform: uppercase;
   box-shadow: 0 6px 18px -8px rgba(201, 52, 106, 0.8);
+  transform: translate(-50%, 0);
   animation: ${(x) => vulnPop(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${reduce}
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 
   @media (max-width: 620px) {
     font-size: 8.5px;
@@ -358,13 +373,23 @@ const BarWrap = styled.div`
 const Probing = styled.div`
   ${rowBase};
   color: var(--ink-faint);
-  animation: ${probingOut} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
 
-  @media (prefers-reduced-motion: reduce) {
-    display: none;
+  .crit {
+    flex-shrink: 0;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: ${HOT};
+    color: #fff;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 9.5px;
+    animation: ${critIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+    ${reduce}
   }
-
   .live {
+    overflow: hidden;
+    animation: ${liveOut} ${T}s ease-in-out infinite both;
+    ${reduce}
     display: inline-flex;
     align-items: center;
     gap: 7px;
@@ -398,34 +423,6 @@ const Chip = styled.span<{ $t: number }>`
   ${reduce}
 `;
 
-const Verdict = styled.div`
-  ${rowBase};
-  position: absolute;
-  inset: 0;
-  background: rgba(201, 52, 106, 0.06);
-  color: var(--hot-ink);
-  animation: ${verdictIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${reduce}
-
-  @media (prefers-reduced-motion: reduce) {
-    position: static;
-  }
-
-  .crit {
-    flex-shrink: 0;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: ${HOT};
-    color: #fff;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-size: 9.5px;
-  }
-  .txt {
-    color: var(--ink);
-  }
-`;
-
 export const SecurityArt = () => (
   <Frame>
     <Panel>
@@ -443,7 +440,7 @@ export const SecurityArt = () => (
           {/* everything it threw that went nowhere, and stayed on the map */}
           {ROUNDS.map((r, ri) =>
             r.miss.map((m, mi) => (
-              <Miss key={`m${ri}${m}`} d={arc(pt(r.from), at(m), (mi % 2 ? 1 : -1) * (4 + mi * 2))} pathLength={1} $t={r.at + mi * (BURST / r.miss.length)} />
+              <Miss key={`m${ri}-${mi}`} d={arc(pt(r.from), at(m), (mi % 2 ? 1 : -1) * (3 + mi * 2.2))} pathLength={1} $t={r.at + mi * (BURST / r.miss.length)} />
             )),
           )}
 
@@ -489,6 +486,7 @@ export const SecurityArt = () => (
 
       <BarWrap>
         <Probing>
+          <span className='crit'>critical</span>
           <span className='live'>
             <span className='dot' />
             probing
@@ -500,10 +498,6 @@ export const SecurityArt = () => (
             </Chip>
           ))}
         </Probing>
-        <Verdict>
-          <span className='crit'>critical</span>
-          <span className='txt'>four weaknesses, one path, one transaction</span>
-        </Verdict>
       </BarWrap>
     </Panel>
   </Frame>
