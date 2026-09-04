@@ -1030,7 +1030,7 @@ const CLASSES = [
   { n: 'attribute mismatch', p: 'Two values that always agreed, now disagreeing.', e: 'the caller tenant against the tenant on the row' },
 ];
 
-/* what a bank already runs, and why each one was blind to this */
+/* the controls already in the estate, and where each one stops */
 /* how deep each tool actually reaches, and whether it spans services */
 const runs = (cells: number[]) => {
   const out: { at: number; len: number; on: boolean }[] = [];
@@ -1488,7 +1488,7 @@ export const SecurityContent = () => {
               <Head>
                 <Eyebrow>Mitigation at the function level</Eyebrow>
                 <h2>
-                  Take one function out of play. <span className='mute'>Not the service, not the route, not the release.</span>
+                  Take one function out of play. <span className='mute'>Not the service. Not the release.</span>
                 </h2>
                 <p>
                   Because the finding names the exact function, the policy can too. Three situations account for most of the risk you actually carry, and in every one of them the ordinary answer, ship a patch,
