@@ -190,8 +190,6 @@ const HeroCtas = styled.div`
   flex-wrap: wrap;
 `;
 
-/* ---------------- numbered list ---------------- */
-/* ---------------- one trace, three services ---------------- */
 /* ---------------- running it ---------------- */
 const Facts = styled.div`
   margin-top: 44px;
@@ -268,53 +266,6 @@ const Cap = styled.div`
   }
 `;
 
-/* ---------------- deviation classes ---------------- */
-const Classes = styled.div`
-  margin-top: 46px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  > * {
-    min-width: 0;
-  }
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Cls = styled.div`
-  padding: 22px 22px 24px;
-  background: var(--paper-2);
-
-  h3 {
-    margin: 0;
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  p {
-    margin: 11px 0 0;
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--ink);
-  }
-  .e {
-    display: block;
-    margin-top: 10px;
-    font-family: var(--font-mono), monospace;
-    font-size: 11.5px;
-    line-height: 1.5;
-    color: var(--ink-faint);
-  }
-`;
 
 /* ---------------- how deep each tool sees ---------------- */
 const Depth = styled.div`
@@ -506,93 +457,6 @@ const Row = styled.div<{ $head?: boolean; $us?: boolean }>`
   }
 `;
 
-/* ---------------- what changed ---------------- */
-const Shift = styled.div`
-  margin-top: 46px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  > * {
-    min-width: 0;
-  }
-  gap: 1px;
-  background: var(--line);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Shard = styled.div`
-  padding: 30px 26px 32px;
-  background: var(--paper);
-
-  .k {
-    display: block;
-    font-family: var(--font-mono), monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--hot-ink);
-  }
-  h3 {
-    margin: 14px 0 0;
-    font-size: 19px;
-    font-weight: 600;
-    letter-spacing: -0.018em;
-    line-height: 1.25;
-    color: var(--ink);
-  }
-  p {
-    margin: 12px 0 0;
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--ink-mute);
-  }
-`;
-
-/* ---------------- triage funnel ---------------- */
-const Funnel = styled.div`
-  margin-top: 46px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  > * {
-    min-width: 0;
-  }
-  gap: 2px;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 1px;
-  }
-`;
-
-const Step = styled.div<{ $i: number }>`
-  padding: 22px 18px 24px;
-  border-top: 3px solid ${({ $i }) => ($i === 0 ? 'var(--line-strong)' : `rgba(201,52,106,${0.25 + $i * 0.19})`)};
-  background: ${({ $i }) => ($i === 0 ? 'transparent' : `rgba(201,52,106,${0.015 + $i * 0.012})`)};
-
-  .k {
-    display: block;
-    font-family: var(--font-mono), monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${({ $i }) => ($i === 0 ? 'var(--ink-faint)' : 'var(--hot-ink)')};
-  }
-  p {
-    margin: 10px 0 0;
-    font-size: 14.5px;
-    line-height: 1.55;
-    color: ${({ $i }) => ($i === 0 ? 'var(--ink-faint)' : 'var(--ink-mute)')};
-  }
-
-  @media (max-width: 900px) {
-    padding: 16px 0 18px;
-    border-top-width: 2px;
-  }
-`;
 
 /* ---------------- virtual patching ---------------- */
 const Cases = styled.div`
@@ -647,10 +511,6 @@ const Prose = styled.div`
   }
 `;
 
-/* ---------------- why now ---------------- */
-
-
-/* ---------------- proof of vendor ---------------- */
 
 const TrustLinks = styled.div`
   display: flex;
@@ -777,116 +637,8 @@ const FindingFoot = styled.div`
   }
 `;
 
-/* ---------------- the structural gaps ---------------- */
-/* ---------------- baseline vs observed ---------------- */
-const Diff = styled.div`
-  margin-top: 46px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  > * {
-    min-width: 0;
-  }
-  gap: 20px;
-  @media (max-width: 940px) {
-    grid-template-columns: 1fr;
-    > * {
-      min-width: 0;
-    }
-  }
-`;
 
-const DiffCol = styled.div<{ $hot?: boolean }>`
-  border: 1px solid ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.3)' : 'var(--line)')};
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--paper-2);
-  box-shadow: ${({ $hot }) => ($hot ? '0 24px 56px -30px rgba(201,52,106,0.42)' : 'var(--shadow-soft)')};
-`;
-
-const DiffBar = styled.div<{ $hot?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 18px;
-  border-bottom: 1px solid ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.2)' : 'var(--line)')};
-  background: ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.05)' : 'var(--paper-3)')};
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: ${({ $hot }) => ($hot ? 'var(--hot-ink)' : 'var(--signal-ink)')};
-
-  .n {
-    letter-spacing: 0.08em;
-    text-transform: none;
-    color: var(--ink-faint);
-  }
-`;
-
-const DiffBody = styled.div`
-  padding: 12px 8px 14px;
-
-  @media (max-width: 640px) {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    > * {
-      width: max-content;
-      min-width: 100%;
-    }
-  }
-`;
-
-const TraceRow = styled.div<{ $depth: number; $new?: boolean; $slow?: boolean; $ghost?: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 7px 10px;
-  padding-left: ${({ $depth }) => 10 + $depth * 15}px;
-  border-radius: 7px;
-  background: ${({ $new, $slow }) => ($new || $slow ? 'rgba(201,52,106,0.07)' : 'transparent')};
-  font-family: var(--font-mono), monospace;
-  font-size: clamp(11px, 1.05vw, 12.5px);
-
-  .fn {
-    flex-shrink: 0;
-    font-family: var(--font-display), 'Geist', sans-serif;
-    font-size: 14px;
-    color: ${({ $new, $slow }) => ($new || $slow ? 'var(--ink)' : 'var(--ink-mute)')};
-    white-space: nowrap;
-  }
-  .sym {
-    min-width: 0;
-    color: var(--ink-faint);
-    font-size: 10.5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .tag {
-    flex-shrink: 0;
-    padding: 2px 7px;
-    border-radius: 999px;
-    background: rgba(201, 52, 106, 0.12);
-    color: var(--hot-ink);
-    font-size: 9.5px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .ms {
-    margin-left: auto;
-    flex-shrink: 0;
-    color: ${({ $slow }) => ($slow ? 'var(--hot-ink)' : 'var(--ink-faint)')};
-  }
-  .gap {
-    display: block;
-    width: 132px;
-    height: 1px;
-    border-top: 1px dashed var(--line-strong, var(--line));
-  }
-`;
-
-/* ---------------- the attack ---------------- */
+/* ---------------- the finding card ---------------- */
 const Chain = styled.div`
   margin-top: 46px;
   display: grid;
@@ -996,7 +748,6 @@ const Verdict = styled.div`
   }
 `;
 
-/* ---------------- how it works ---------------- */
 /* ---------------- close ---------------- */
 const CloseInner = styled(Container)`
   padding-top: 96px;
@@ -1054,7 +805,6 @@ const CloseCtas = styled.div`
 /* ---------------- content ---------------- */
 
 
-
 const DEPLOY = [
   {
     h: 'One command, no code change',
@@ -1072,25 +822,8 @@ const DEPLOY = [
     h: 'The record never leaves your control',
     p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you own. Redaction is configured before anything is written, retention is your policy, and we never hold a copy.',
   },
-  {
-    h: 'You do not tune it',
-    p: 'It watches a route for two weeks and forms the baseline itself. Most signals are structural: a call edge, a peer or a library either appears on that route or it does not. A normal deploy that adds one edge barely registers.',
-  },
-  {
-    h: 'Readable before you run it',
-    p: 'The node agent is open source. Your team can read exactly what it attaches to and what it reads before it goes anywhere near production.',
-  },
 ];
 
-/* the six deviation classes, from the detection model */
-const CLASSES = [
-  { n: 'new call edge', p: 'A caller and a callee that have never run together on this route.', e: 'a template helper reaching an auth lookup' },
-  { n: 'new egress', p: 'A service reaching a destination it has never reached before.', e: 'a first request to an external host' },
-  { n: 'timing anomaly', p: 'A span far outside the latency shape that route has always had.', e: '240ms where the baseline is 8ms' },
-  { n: 'argument anomaly', p: 'An argument or a return value carrying something its type never carried.', e: 'an injected bearer token in arg 0' },
-  { n: 'new library', p: 'Code reaching a package that route has never touched.', e: 'a text library on a path that never used it' },
-  { n: 'attribute mismatch', p: 'Two values that always agreed, now disagreeing.', e: 'the caller tenant against the tenant on the row' },
-];
 
 /* the controls already in the estate, and where each one stops */
 /* how deep each tool actually reaches, and whether it spans services */
@@ -1117,43 +850,13 @@ const DEPTH = [
 const OTHERS = [
   { k: 'endpoint detection', w: 'processes, files and shells on a host', m: 'Sees what a process does to the machine. Blind to what it does inside itself.' },
   { k: 'cloud posture', w: 'images, configuration and known CVEs', m: 'Scores what you deployed. It has no view of what that code actually executed.' },
-  { k: 'syscall sensors', w: 'execve, connect, open', m: 'Can tell you a service opened a new connection. Not which function opened it, what it was handed, or what came back.' },
   { k: 'web firewall', w: 'request payloads at the edge', m: 'Judges one request in isolation, against patterns somebody wrote in advance.' },
   { k: 'siem', w: 'what your services choose to log', m: 'Can only correlate what an engineer decided in advance was worth writing down.' },
   { k: 'tracing', w: 'which services a request touched, and how long each took', m: 'Spans, not calls. It stops at the service boundary and never goes inside.' },
   { k: 'in-app agents', w: 'the same process, from the inside of it', m: 'Runs a vendor\'s code in your process, behind an SDK or a runtime flag, one redeploy per service. Their bad release is your outage.' },
-  { k: 'app detection', w: 'in-process behaviour, one service at a time', m: 'Watches a service. Not the chain across four of them, and not the argument the function was handed.' },
   { k: 'odigos · function level', w: 'the function calls inside each service, and how they chain across services', m: 'The only one here that sits where the payload is already in the clear, without running in your process, and whose unit of evidence is a call with its argument and its return value.', us: true },
 ];
 
-
-/* the CVE backlog question, answered from the running system */
-/* the bar the headline claims moved, developed */
-const SHIFT = [
-  {
-    k: 'chained',
-    h: 'It is no longer one CVE in one process.',
-    p: 'Low-severity findings get chained into critical compromise. Your severity model scores each one alone, which is exactly how a chain of low findings becomes a critical one that nobody ranked.',
-  },
-  {
-    k: 'tailored',
-    h: 'The payload is built for your estate.',
-    p: 'Your runtime version, your module graph, your package set. Not a generic exploit hunting for a generic target, and not something a shared signature was ever going to match.',
-  },
-  {
-    k: 'lateral',
-    h: 'It moves inside one transaction.',
-    p: 'Across services, across languages, across trust boundaries, between a request arriving and a response leaving. Nothing in that window looks like an intrusion to a per-host sensor.',
-  },
-];
-
-const TRIAGE = [
-  { k: 'present', p: 'The package is in the image. This is where a scanner stops, and where your backlog comes from.' },
-  { k: 'loaded', p: 'The vulnerable class was actually loaded into a running process.' },
-  { k: 'reachable', p: 'A path exists from a route you serve to the vulnerable function.' },
-  { k: 'called', p: 'It ran. On this route, this many times, in the last fourteen days.' },
-  { k: 'by whom', p: 'The caller, and the session it came in on.' },
-];
 
 /* what you do when there is no patch to apply */
 const PATCHING = [
@@ -1174,33 +877,9 @@ const PATCHING = [
 const CAPTURE = [
   { h: 'Arguments and return values', p: 'On the routes you scope, the values themselves rather than the fact that something ran.' },
   { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, after TLS has been terminated and before anything is serialized back out.' },
-  { h: 'The path it took', p: 'The order and depth of the calls this request made, so you see the path the code took rather than every path the source allows.' },
   { h: 'Stitched end to end', p: 'One trace across services, languages and processes, so a chain that crosses four of them is a single object.' },
-  { h: 'Java, Node, Python, Go', p: 'One node agent, on Kubernetes or on a bare-metal VM. It attaches to processes already running, so coverage arrives the day you deploy it and not the release after.' },
-  { h: 'One capture, two jobs', p: 'The same record answers why the route got slower and who reached data they should not have. Your platform team and your security team stop paying twice for the same bytes.' },
 ];
 
-
-/* what a policy can do once the finding names the function */
-
-
-const BASELINE = [
-  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', d: 0 },
-  { fn: 'create the record', sym: 'TicketController.create', d: 1 },
-  { fn: 'render the template', sym: 'TemplateRenderer.render', d: 2 },
-  { fn: '', sym: '', d: 3, ghost: true },
-  { fn: '', sym: '', d: 3, ghost: true },
-  { fn: 'write to the database', sym: 'TicketRepository.save', d: 1 },
-];
-
-const OBSERVED = [
-  { fn: 'a customer submits a ticket', sym: 'POST /api/tickets', d: 0 },
-  { fn: 'create the record', sym: 'TicketController.create', d: 1 },
-  { fn: 'render the template', sym: 'TemplateRenderer.render', d: 2, slow: true },
-  { fn: 'read the text as code', sym: 'SpelExpressionParser.parse', d: 3, isNew: true },
-  { fn: 'run whatever it read', sym: 'ReflectiveMethodExecutor.execute', d: 3, isNew: true },
-  { fn: 'write to the database', sym: 'TicketRepository.save', d: 1 },
-];
 
 const EVIDENCE = [
   { k: 'service', v: 'tickets-api · java' },
@@ -1267,32 +946,13 @@ export const SecurityContent = () => {
                   One operator now runs <span className='mute'>what used to take a team and a budget.</span>
                 </h2>
                 <p>
-                  The attacker no longer has to understand your estate, because a model reads it faster than your architects can describe it. Three properties of the attack changed, and each one breaks a
-                  different assumption your program is built on.
+                  The attacker no longer has to understand your estate, because a model reads it faster than your architects can describe it. It generates variants faster than anyone writes signatures,
+                  and every one of them still has to make a call your route has never made.
                 </p>
               </Head>
             </Reveal>
             <Reveal delay={60}>
               <VariantFigure />
-            </Reveal>
-            <Reveal delay={70}>
-              <Shift>
-                {SHIFT.map((x) => (
-                  <Shard key={x.k}>
-                    <span className='k'>{x.k}</span>
-                    <h3>{x.h}</h3>
-                    <p>{x.p}</p>
-                  </Shard>
-                ))}
-              </Shift>
-            </Reveal>
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  Nothing you own was misconfigured. The attack ran <b>inside your applications, in the gaps between them</b>, and the one place it was ever visible{' '}
-                  <span className='q'>had no sensor on it</span>.
-                </p>
-              </Verdict>
             </Reveal>
           </Inner>
         </Section>
@@ -1414,14 +1074,6 @@ export const SecurityContent = () => {
                 ))}
               </Caps>
             </Reveal>
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  A trace tells you a request touched four services. This tells you <b>which function in each of them ran, what it was handed, and what it returned</b>{' '}
-                  <span className='q'>on the request that mattered</span>.
-                </p>
-              </Verdict>
-            </Reveal>
           </Inner>
         </Section>
 
@@ -1468,118 +1120,6 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
-        {/* 6. detection without signatures */}
-        <Section $alt>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Detection without signatures</Eyebrow>
-                <h2>The exploit is two function calls that were not there yesterday.</h2>
-                <p>
-                  Nobody had a signature for this call graph and none was needed. Odigos learns the graph each route normally produces, then surfaces what has never appeared on it. Six ways a request can be
-                  structurally wrong, every one of them a shape learned from your own traffic rather than a rule somebody wrote in advance.
-                </p>
-              </Head>
-            </Reveal>
-
-            <Reveal delay={70}>
-              <Diff>
-                <DiffCol>
-                  <DiffBar>
-                    <span>baseline · example</span>
-                    <span className='n'>two weeks of ordinary traffic</span>
-                  </DiffBar>
-                  <DiffBody>
-                    {BASELINE.map((r, i) => (
-                      <TraceRow key={r.fn || `gap-${i}`} $depth={r.d} $ghost={r.ghost}>
-                        {r.ghost ? (
-                          <span className='gap' />
-                        ) : (
-                          <>
-                            <span className='fn'>{r.fn}</span>
-                            <span className='sym'>{r.sym}</span>
-                          </>
-                        )}
-                      </TraceRow>
-                    ))}
-                  </DiffBody>
-                </DiffCol>
-
-                <DiffCol $hot>
-                  <DiffBar $hot>
-                    <span>observed · example</span>
-                    <span className='n'>two new calls, and a route that got slower</span>
-                  </DiffBar>
-                  <DiffBody>
-                    {OBSERVED.map((r) => (
-                      <TraceRow key={r.fn} $depth={r.d} $new={r.isNew} $slow={r.slow}>
-                        <span className='fn'>{r.fn}</span>
-                        {r.isNew && <span className='tag'>new</span>}
-                        {r.slow && <span className='tag'>slower</span>}
-                        <span className='sym'>{r.sym}</span>
-                      </TraceRow>
-                    ))}
-                  </DiffBody>
-                </DiffCol>
-              </Diff>
-            </Reveal>
-
-            <Reveal delay={130}>
-              <Classes>
-                {CLASSES.map((c) => (
-                  <Cls key={c.n}>
-                    <h3>{c.n}</h3>
-                    <p>{c.p}</p>
-                    <span className='e'>{c.e}</span>
-                  </Cls>
-                ))}
-              </Classes>
-            </Reveal>
-            <Reveal delay={170}>
-              <Verdict>
-                <p>
-                  Nothing here is a model guessing at intent. <b>The baseline is your own traffic</b>, and a deviation is{' '}
-                  <span className='q'>arithmetic on what that route has always done</span>.
-                </p>
-              </Verdict>
-            </Reveal>
-          </Inner>
-        </Section>
-
-        {/* 7. triage */}
-        <Section>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Triage</Eyebrow>
-                <h2>Which of those four thousand actually ran?</h2>
-                <p>
-                  A scanner can tell you a vulnerable package is present. It cannot tell you whether the vulnerable function was ever loaded, whether anything can reach it, whether it has been called, or by
-                  whom. Odigos answers that from the running system, which is the difference between a backlog and a short list.
-                </p>
-              </Head>
-            </Reveal>
-            <Reveal delay={70}>
-              <Funnel>
-                {TRIAGE.map((t, i) => (
-                  <Step key={t.k} $i={i}>
-                    <span className='k'>{t.k}</span>
-                    <p>{t.p}</p>
-                  </Step>
-                ))}
-              </Funnel>
-            </Reveal>
-            <Reveal delay={110}>
-              <Verdict>
-                <p>
-                  Most of what your scanner ranks critical is <b>present but never called</b>. Some of what it ranks low is executing on a privileged route right now. Without the runtime you are patching in the
-                  order <span className='q'>somebody else guessed</span>.
-                </p>
-              </Verdict>
-            </Reveal>
-          </Inner>
-        </Section>
-
         {/* 8. mitigation at the function level */}
         <Section $alt>
           <Inner>
@@ -1613,14 +1153,6 @@ export const SecurityContent = () => {
                   <p>
                     A FunctionPolicy takes the vulnerable function out of play without touching the code that contains it. Refuse the call for the routes and callers you name, or let it run and replace what it
                     returns. It is written against the function, so it holds for every path that reaches it, including the ones nobody has found yet. When the real patch ships, you delete the policy.
-                  </p>
-                  <p>
-                    The blast radius is one function on one workload, which is why it can move at the speed the threat does. A rule at the perimeter is a decision about every request that will ever arrive. This
-                    is a decision about one call.
-                  </p>
-                  <p>
-                    It is an object rather than a console setting: versioned, attributable, and report-only until somebody promotes it, so your auditors can carry it as a compensating control rather than as an
-                    undocumented change to a production application. If it is not there, the call behaves exactly as it does today.
                   </p>
                 </Prose>
 
