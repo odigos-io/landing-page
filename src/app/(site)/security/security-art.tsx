@@ -75,12 +75,14 @@ const EDGES: [string, string, number][] = [
   ['sr', 'lg', 6],
 ];
 
-/* four rounds. from wherever it has reached, throw everything, keep what lands. */
+/* Four rounds. Each one probes from every foothold it already has, not just
+   the newest one, so the fan widens as it goes. That is the difference between
+   a person working a thread and a model working all of them. */
 const ROUNDS = [
-  { at: 0.4, from: 'agent', miss: ['ac', 'nt'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 0, cy: 12.5 },
-  { at: 1.9, from: 'gw', miss: ['ac', 'sr'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 0, cy: 12.5 },
-  { at: 3.1, from: 'tk', miss: ['nt', 'lg'], hit: 'pm', bow: -5, vuln: 'unknown call', cx: 0, cy: 12.5 },
-  { at: 4.2, from: 'pm', miss: ['lg', 'fr'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 0, cy: 12.5 },
+  { at: 0.4, from: 'agent', origins: ['agent'], miss: ['ac', 'nt'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 0, cy: 12.5 },
+  { at: 1.9, from: 'gw', origins: ['agent', 'gw'], miss: ['ac', 'sr', 'nt'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 0, cy: 12.5 },
+  { at: 3.1, from: 'tk', origins: ['agent', 'gw', 'tk'], miss: ['nt', 'lg', 'sr'], hit: 'pm', bow: -5, vuln: 'unknown call', cx: 0, cy: 12.5 },
+  { at: 4.2, from: 'pm', origins: ['gw', 'tk', 'pm'], miss: ['lg', 'fr', 'nt'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 0, cy: 12.5 },
 ];
 
 const BURST = 0.75;
@@ -111,10 +113,11 @@ const fieldIn = keyframes`
 /* a probe that goes nowhere. fast, then it stays on the map as a scar. */
 const fizzle = (s: number) => keyframes`
   0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
-  ${p(s + 0.02)}%{opacity:.85}
-  ${p(s + 0.16)}%{stroke-dashoffset:0;opacity:.85}
-  ${p(s + 0.34)}%{stroke-dashoffset:0;opacity:.06}
-  ${p(s + 0.6)}%,100%{stroke-dashoffset:0;opacity:0}`;
+  ${p(s + 0.02)}%{opacity:.95}
+  ${p(s + 0.12)}%{stroke-dashoffset:0;opacity:.95}
+  ${p(s + 0.4)}%{stroke-dashoffset:0;opacity:.6}
+  ${p(s + 0.7)}%{stroke-dashoffset:0;opacity:.12}
+  ${p(s + 1.0)}%,100%{stroke-dashoffset:0;opacity:.05}`;
 
 /* the one that lands, and then stays lit for the rest of the loop */
 const land = (s: number) => keyframes`
@@ -431,11 +434,11 @@ const ZoneName = styled.text<{ $t: number; $c: string }>`
 const Ribbon = styled.path`
   fill: none;
   stroke: ${HOT};
-  stroke-width: 5.5;
+  stroke-width: 8;
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: 0;
-  filter: blur(1.6px);
+  filter: blur(2.6px);
   animation: ${ribbonIn} ${T}s ease-out infinite both;
   ${reduce}
 `;
@@ -729,7 +732,7 @@ export const SecurityArt = () => (
           <span className='crit'>stopped at the call</span>
           <span className='live'>
             <span className='dot' />
-            probing
+            probing every foothold at once
           </span>
           {ROUNDS.map((r, i) => (
             <Chip key={`c${r.vuln}`} $t={r.at + HIT_AT + 0.35}>
