@@ -852,7 +852,7 @@ const OTHERS = [
 
 /* what the runtime actually captures */
 const CAPTURE = [
-  { h: 'Every function call', p: 'Caller, callee, arguments and return values, on every request, in any service you point it at.' },
+  { h: 'Calls, arguments, return values', p: 'Not that service A called service B, but which function ran inside it, what it was handed, and what it gave back.' },
   { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, including traffic that arrived over TLS.' },
   { h: 'The control-flow path', p: 'Which branch a request actually took through the code, not which branch the source says it might.' },
   { h: 'Stitched end to end', p: 'One trace across services, languages and processes, so a chain that crosses four of them is a single object.' },
