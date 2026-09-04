@@ -27,10 +27,10 @@ const NODES: Node[] = [
   { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -7, step: 2, on: 3.1 },
   { id: 'ac', x: 50, y: 76, name: 'accounts-api', ly: 8 },
   { id: 'nt', x: 79, y: 13, name: 'notify-svc', ly: 8 },
-  { id: 'pm', x: 86, y: 48, name: 'payments-api', lx: -13, ly: 9, step: 3, on: 4.7 },
+  { id: 'pm', x: 86, y: 48, name: 'payments-api', lx: -13, ly: 9, step: 3, on: 4.4 },
   { id: 'sr', x: 76, y: 86, name: 'search-svc', ly: 8 },
   { id: 'fr', x: 112, y: 72, name: 'fraud-svc', ly: 8 },
-  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -7, step: 4, on: 6.3 },
+  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -7, step: 4, on: 5.3 },
   { id: 'lg', x: 128, y: 58, name: 'ledger-db', lx: 4, ly: 9 },
 ];
 
@@ -54,7 +54,7 @@ const EDGES: [string, string, number][] = [
 /* four rounds. from wherever it has reached, throw everything, keep what lands. */
 const ROUNDS = [
   { at: 0.4, from: 'agent', miss: ['ac', 'sr', 'nt', 'tk', 'ac'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 8, cy: -11 },
-  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'nt', 'ac', 'sr', 'tk', 'nt'], hit: 'tk', bow: -5, vuln: 'known cve', cx: -19, cy: -12 },
+  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'nt', 'ac', 'sr', 'tk', 'nt'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: -25, cy: -14 },
   { at: 3.1, from: 'tk', miss: ['nt', 'sr', 'ac', 'lg', 'nt', 'pm', 'sr', 'ac', 'lg'], hit: 'pm', bow: -5, vuln: 'zero-day', cx: 6, cy: -12 },
   { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'ac', 'fr', 'lg', 'st', 'sr', 'nt', 'fr', 'ac', 'lg'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 2, cy: 12 },
 ];
@@ -238,9 +238,10 @@ const SkipEdge = styled.path`
 
 const SkipNote = styled.text`
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 3.1px;
+  font-size: 3.4px;
+  letter-spacing: 0.04px;
   text-anchor: middle;
-  fill: rgba(24, 20, 54, 0.45);
+  fill: ${DEEP};
   animation: ${skipIn} ${T}s linear infinite both;
   ${reduce}
 `;
@@ -274,7 +275,12 @@ const Dot = styled.circle<{ $t?: number }>`
     css`
       animation: ${nodeOn($t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
     `}
-  ${reduce}
+
+  /* at rest a hit node stays lit, or the white numeral sits on white */
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    ${({ $t }) => $t !== undefined && `fill: ${HOT}; stroke: ${HOT}; r: 4.6;`}
+  }
 `;
 
 const Shock = styled.circle<{ $t: number }>`
@@ -296,7 +302,11 @@ const Num = styled.text<{ $t: number }>`
   dominant-baseline: central;
   fill: #fff;
   animation: ${(x) => numIn(x.$t)} ${T}s linear infinite both;
-  ${reduce}
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+  }
 `;
 
 const Label = styled.text<{ $t?: number }>`
@@ -420,7 +430,12 @@ const Probing = styled.div`
 
 const Chip = styled.span<{ $t: number }>`
   animation: ${(x) => chipIn(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${reduce}
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 `;
 
 export const SecurityArt = () => (
@@ -433,7 +448,7 @@ export const SecurityArt = () => (
           ))}
 
           <SkipEdge d={arc(at(SKIP[0]), at(SKIP[1]), SKIP[2])} />
-          <SkipNote x={(at('pm').x + at('fr').x) / 2 - 6} y={(at('pm').y + at('fr').y) / 2 + 7}>
+          <SkipNote x={(at('pm').x + at('fr').x) / 2 - 18} y={(at('pm').y + at('fr').y) / 2 + 18}>
             not called on this request
           </SkipNote>
 
