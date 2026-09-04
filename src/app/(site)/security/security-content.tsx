@@ -121,6 +121,67 @@ const HeroWhat = styled.p`
   color: var(--ink-faint);
 `;
 
+const Denials = styled.div`
+  margin: 26px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+  max-width: 540px;
+
+  span {
+    position: relative;
+    font-family: var(--font-mono), monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    padding: 2px 0;
+  }
+  span::before {
+    content: '';
+    position: absolute;
+    left: -11px;
+    top: 50%;
+    width: 5px;
+    height: 1px;
+    background: var(--hot);
+  }
+  span:first-child::before {
+    display: none;
+  }
+`;
+
+const Refrain = styled.div`
+  margin-top: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 30px 0;
+
+  span {
+    flex: 1 1 auto;
+    padding-right: 26px;
+    font-size: clamp(19px, 2.1vw, 27px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  span:last-child {
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 720px) {
+    gap: 4px 0;
+    span {
+      flex: 0 0 100%;
+      font-size: 21px;
+      padding-right: 0;
+    }
+  }
+`;
+
 const HeroCtas = styled.div`
   margin-top: 32px;
   display: flex;
@@ -1160,7 +1221,7 @@ export const SecurityContent = () => {
           <HeroInner>
             <div>
               <Reveal>
-                <Eyebrow>Runtime defense at the function level</Eyebrow>
+                <Eyebrow>Outside the process. Across every service.</Eyebrow>
               </Reveal>
               <Reveal delay={60}>
                 <HeroH1>
@@ -1169,17 +1230,24 @@ export const SecurityContent = () => {
               </Reveal>
               <Reveal delay={120}>
                 <HeroSub>
-                  One operator with a model now chains four ordinary weaknesses across four of your services inside a single request, and every one of them returns 200.{' '}
-                  <b>Odigos reads every function call your services make, from outside the process, and stitches them into one picture</b> so the chain is visible while it is still running, and can be
-                  refused at the call.
+                  One operator with a model chains four weaknesses across four of your services inside one request. <b>Odigos reads every function call, from outside the process, across all of them.</b> The
+                  chain is visible while it runs, and refused at the call.
                 </HeroSub>
+              </Reveal>
+              <Reveal delay={150}>
+                <Denials>
+                  <span>No code changes</span>
+                  <span>No SDK</span>
+                  <span>No sidecar</span>
+                  <span>No redeploy</span>
+                </Denials>
               </Reveal>
               <Reveal delay={180}>
                 <HeroCtas>
                   <DemoCTA label='Talk to our security team' variant='primary' />
                   <TrialCTA variant='secondary' />
                 </HeroCtas>
-                <HeroWhat>One eBPF runtime on the node. No code change, no SDK, nothing of ours inside your process. Under 1% CPU across 1.04 million production cores.</HeroWhat>
+                <HeroWhat>One eBPF runtime on the node, under 1% CPU measured across 1.04 million production cores.</HeroWhat>
               </Reveal>
             </div>
             <Reveal delay={140}>
@@ -1302,6 +1370,14 @@ export const SecurityContent = () => {
                 ))}
               </Compare>
             </Reveal>
+            <Reveal delay={110}>
+              <Verdict>
+                <p>
+                  Buying a seventh control at the same depth does not close it. <b>The chain crosses services</b>, and every row above this one{' '}
+                  <span className='q'>stops inside a single service</span>.
+                </p>
+              </Verdict>
+            </Reveal>
           </Inner>
         </Section>
 
@@ -1352,10 +1428,18 @@ export const SecurityContent = () => {
                   Nothing. <span className='mute'>That is the whole integration.</span>
                 </h2>
                 <p>
-                  No SDK, no import, no sidecar, no runtime flag, no redeploy, and no line item in anybody&rsquo;s sprint. The reason function-level defense has stayed out of reach is that everything offering
-                  it so far asked your developers to carry it. This does not.
+                  Function-level defense has stayed out of reach for one reason: everything that offered it asked your developers to carry it, one service and one release at a time. This does not.
                 </p>
               </Head>
+            </Reveal>
+            <Reveal delay={50}>
+              <Refrain>
+                <span>No code changes.</span>
+                <span>No SDK.</span>
+                <span>No sidecar.</span>
+                <span>No redeploy.</span>
+                <span>No developer ticket.</span>
+              </Refrain>
             </Reveal>
             <Reveal delay={70}>
               <Facts>
@@ -1443,6 +1527,14 @@ export const SecurityContent = () => {
                   </Cls>
                 ))}
               </Classes>
+            </Reveal>
+            <Reveal delay={170}>
+              <Verdict>
+                <p>
+                  Nothing here is a model guessing at intent. <b>The baseline is your own traffic</b>, and a deviation is{' '}
+                  <span className='q'>arithmetic on what that route has always done</span>.
+                </p>
+              </Verdict>
             </Reveal>
           </Inner>
         </Section>

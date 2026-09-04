@@ -167,7 +167,7 @@ const Line = styled.rect`
 `;
 
 const Bar = styled.rect<{ $i: number; $n: number }>`
-  fill: rgba(28, 22, 51, 0.3);
+  fill: rgba(28, 22, 51, 0.36);
   transform-box: fill-box;
   transform-origin: top;
   animation: ${(x) => tickIn(x.$i, x.$n)} ${T}s cubic-bezier(0.2, 0, 0.2, 1) infinite both;
@@ -175,7 +175,7 @@ const Bar = styled.rect<{ $i: number; $n: number }>`
 `;
 
 const Hit = styled.rect<{ $i: number; $n: number }>`
-  fill: rgba(28, 22, 51, 0.3);
+  fill: rgba(28, 22, 51, 0.36);
   transform-box: fill-box;
   transform-origin: top;
   animation: ${(x) => hitIn(x.$i, x.$n)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
@@ -340,7 +340,7 @@ export const SecurityArt = () => (
             t.hit ? (
               <Hit key={i} x={t.x - 0.6} y={TOP} width={1.2} height={t.h} rx={0.55} $i={i} $n={N} />
             ) : (
-              <Bar key={i} x={t.x - 0.42} y={TOP} width={0.84} height={t.h} rx={0.42} $i={i} $n={N} />
+              <Bar key={i} x={t.x - 0.475} y={TOP} width={0.95} height={t.h} rx={0.42} $i={i} $n={N} />
             ),
           )}
           <Cap x={X0} y={TOP + 15} $a={COMB_AT + 0.5} $b={CHAIN_AT}>
