@@ -34,7 +34,10 @@ const NODES: Node[] = [
   { id: 'lg', x: 128, y: 58, name: 'ledger-db', lx: 4, ly: 9 },
 ];
 
-const AGENT = { x: 7, y: 50 };
+const AGENT = { x: 9, y: 50 };
+
+/* everything it throws crosses one boundary, and the boundary does not stop it */
+const PERIMETER = 19;
 const at = (id: string) => NODES.find((n) => n.id === id) as Node;
 const pt = (id: string) => (id === 'agent' ? AGENT : at(id));
 
@@ -322,6 +325,33 @@ const Label = styled.text<{ $t?: number }>`
   ${reduce}
 `;
 
+const AttackerLabel = styled.text`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 3.2px;
+  letter-spacing: 0.05px;
+  text-anchor: middle;
+  fill: ${HOT};
+  font-weight: 600;
+`;
+
+/* the edge of the estate */
+const Fence = styled.line`
+  stroke: rgba(24, 20, 54, 0.34);
+  stroke-width: 0.45;
+  stroke-dasharray: 1.6 1.8;
+`;
+
+const Outside = styled.rect`
+  fill: rgba(201, 52, 106, 0.045);
+`;
+
+const FenceLabel = styled.text`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 2.9px;
+  letter-spacing: 0.1px;
+  fill: rgba(24, 20, 54, 0.42);
+`;
+
 const AgentHalo = styled.circle`
   fill: ${HOT};
   transform-box: fill-box;
@@ -443,13 +473,19 @@ export const SecurityArt = () => (
     <Panel>
       <Field>
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid meet' aria-hidden>
+          <Outside x={0} y={0} width={PERIMETER} height={100} />
+          <Fence x1={PERIMETER} y1={4} x2={PERIMETER} y2={96} />
+          <FenceLabel x={PERIMETER + 2.5} y={7} textAnchor='start'>
+            your estate
+          </FenceLabel>
+
           {EDGES.map(([a, b, bow]) => (
             <Edge key={`e${a}${b}`} d={arc(at(a), at(b), bow)} />
           ))}
 
           <SkipEdge d={arc(at(SKIP[0]), at(SKIP[1]), SKIP[2])} />
-          <SkipNote x={(at('pm').x + at('fr').x) / 2 - 18} y={(at('pm').y + at('fr').y) / 2 + 18}>
-            not called on this request
+          <SkipNote x={at('fr').x - 6} y={at('fr').y + 16}>
+            skipped on this request
           </SkipNote>
 
           {/* everything it threw that went nowhere, and stayed on the map */}
@@ -484,9 +520,12 @@ export const SecurityArt = () => (
           <AgentHalo cx={AGENT.x} cy={AGENT.y} r={8} />
           <circle cx={AGENT.x} cy={AGENT.y} r={2.9} fill={DEEP} />
           <circle cx={AGENT.x} cy={AGENT.y} r={1.1} fill={HOT} />
-          <text x={AGENT.x} y={AGENT.y + 9} fontSize='3.4px' textAnchor='middle' fontFamily='var(--font-mono), monospace' fill={DEEP}>
-            agent
-          </text>
+          <AttackerLabel x={AGENT.x} y={AGENT.y + 8.6}>
+            ai
+          </AttackerLabel>
+          <AttackerLabel x={AGENT.x} y={AGENT.y + 12.4}>
+            attacker
+          </AttackerLabel>
         </Map>
 
         {ROUNDS.map((r) => {
