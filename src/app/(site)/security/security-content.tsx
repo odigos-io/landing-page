@@ -854,6 +854,13 @@ const OTHERS = [
 ];
 
 /* what the runtime actually captures */
+const BLIND = [
+  { h: 'Calls below what you scoped', p: 'You name the functions. Anything underneath them runs unobserved, which is also why the cost is a number you set.' },
+  { h: 'The first two weeks', p: 'Until a route has a baseline there is nothing to compare against. You get the call graph from the first request and the deviations from day fourteen.' },
+  { h: 'Runtimes outside the matrix', p: 'A version or a runtime we have not attached to is a version we do not read. The supported matrix is in the docs, and it is a short document rather than a long one.' },
+  { h: 'Traffic that never enters a scoped process', p: 'A call between two services you have not enabled is a call we never see. Coverage is a decision you make per workload.' },
+];
+
 const CAPTURE = [
   { h: 'Arguments and return values', p: 'Not that a function ran. What it was handed and what it gave back, on the routes you scope. That is the layer nothing else on this page reaches.' },
   { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, after TLS has been terminated and before anything is serialized back out.' },
@@ -1019,6 +1026,28 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
+                <Eyebrow>What it does not see</Eyebrow>
+                <h2>The four honest gaps.</h2>
+                <p>Every runtime sensor has them. A vendor that lists none is either not telling you or does not know, and both answers cost you more than this page does.</p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Caps>
+                {BLIND.map((b) => (
+                  <Cap key={b.h}>
+                    <h3>{b.h}</h3>
+                    <p>{b.p}</p>
+                  </Cap>
+                ))}
+              </Caps>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        <Section>
+          <Inner>
+            <Reveal>
+              <Head>
                 <Eyebrow>Detection without signatures</Eyebrow>
                 <h2>
                   The exploit is two function calls that were not there yesterday.
@@ -1120,7 +1149,7 @@ export const SecurityContent = () => {
                     ))}
                   </FindingBody>
                   <FindingFoot>
-                    <span className='act'>write a policy from this finding</span>
+                    <span className='act'>draft a report-only policy</span>
                     <span>scoped to one call</span>
                   </FindingFoot>
                 </Finding>
@@ -1150,12 +1179,16 @@ export const SecurityContent = () => {
                 <p>
                   A policy names one function on one workload, so the review it needs is the review that workload&rsquo;s changes already get. Who may write one, and against which services, is your RBAC.
                 </p>
+                <p>
+                  Capture and enforcement are separate systems. Capture never runs in your process. Enforcement is a distinct opt-in mode with its own mechanism and its own rollout, so ask us for the enforcement
+                  design note before you plan around it. Every policy starts in report-only, and most of them stay there.
+                </p>
               </Prose>
             </Reveal>
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  And the blast radius of the capture is smaller still. It runs outside your application, so <b>a bad release of ours cannot take your service down with it</b>, and what may be captured, on which
+                  And the blast radius of the capture is smaller still. It runs outside your application, so <b>a bad release of ours cannot corrupt your process or change what your code returns</b>, and what may be captured, on which
                   workload, by whom, <span className='q'>is governed by policy before anything is written</span>.
                 </p>
               </Verdict>
