@@ -42,4 +42,8 @@ export const NAVIGATION: NavItem[] = [
     label: 'Documentation',
     href: DOCS_LINK,
   },
+  {
+    label: 'ROI Calculator',
+    href: '/roi-calculator',
+  },
 ];
