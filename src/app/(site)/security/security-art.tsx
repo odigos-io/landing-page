@@ -39,17 +39,24 @@ const AGENT = { x: 9, y: 50 };
 /* four defences between the attacker and the ledger. each falls as it is beaten. */
 const PERIMETER = 19;
 /* the only control actually in the path, and it is only at the edge */
-const EDGE = { x: 19, at: 1.2, label: 'waf', c: '#4a6fa5' };
+const EDGE = { x: 19, at: 1.0, label: 'waf', c: '#4a6fa5' };
 
-/* the ones that watch rather than block, and what each of them is looking at */
+/* EDR covers hosts, so it covers the boxes */
+const EDR_C = '#3f8a7d';
+const EDR_AT = 1.8;
+
+/* ADR covers one application, from inside it */
+const ADR_C = '#a67c3d';
+const ADR_AT = 2.6;
+const ADR_ON = 'tk';
+
+/* what each one is actually looking at */
 const WATCHERS = [
-  { k: 'edr', w: 'host', at: 1.9 },
-  { k: 'cnapp', w: 'image', at: 3.1 },
-  { k: 'siem', w: 'logs', at: 4.2 },
+  { k: 'waf', w: 'the edge', at: 1.0, c: '#4a6fa5' },
+  { k: 'edr', w: 'the hosts', at: 1.8, c: EDR_C },
+  { k: 'adr', w: 'one app at a time', at: 2.6, c: ADR_C },
 ];
 
-/* the one it does not get through */
-const HOLD = { x: 130, label: 'odigos', at: 6.0 };
 const BLOCKED_AT = 5.9;
 const SHARDS = 7;
 const at = (id: string) => NODES.find((n) => n.id === id) as Node;
@@ -176,6 +183,22 @@ const allowed = keyframes`
   ${p(EDGE.at + 1.5)}%{opacity:1}
   ${p(EDGE.at + 2.1)}%,100%{opacity:.5}`;
 
+/* coverage arrives, and then sits there covering the wrong thing */
+const coverIn = (t: number) => keyframes`
+  0%,${p(t)}%{opacity:0}
+  ${p(t + 0.4)}%{opacity:.16}
+  ${p(t + 1.6)}%,100%{opacity:.11}`;
+
+const zoneName = (t: number) => keyframes`
+  0%,${p(t)}%{opacity:0}
+  ${p(t + 0.4)}%,100%{opacity:.7}`;
+
+/* ours follows the calls rather than the boxes */
+const ribbonIn = keyframes`
+  0%,${p(BLOCKED_AT - 1.4)}%{opacity:0;stroke-dashoffset:1}
+  ${p(BLOCKED_AT - 0.5)}%{opacity:.55;stroke-dashoffset:0}
+  ${p(BLOCKED_AT + 0.4)}%,100%{opacity:.4;stroke-dashoffset:0}`;
+
 /* a watcher notices the request, has no reason to flag it, and goes quiet */
 const watching = (t: number) => keyframes`
   0%,${p(t - 0.3)}%{opacity:.3}
@@ -195,10 +218,6 @@ const refused = keyframes`
   ${p(BLOCKED_AT + 0.55)}%{opacity:.25;stroke-dashoffset:0}
   ${p(BLOCKED_AT + 0.9)}%,100%{opacity:.18;stroke-dashoffset:0}`;
 
-const stampIn = keyframes`
-  0%,${p(BLOCKED_AT + 0.25)}%{opacity:0;transform:translate(-50%,5px) scale(.85)}
-  ${p(BLOCKED_AT + 0.5)}%{opacity:1;transform:translate(-50%,0) scale(1.05)}
-  ${p(BLOCKED_AT + 0.65)}%,100%{opacity:1;transform:translate(-50%,0) scale(1)}`;
 
 const agentPulse = keyframes`
   0%,100%{opacity:.3;transform:scale(.85)}
@@ -378,6 +397,49 @@ const AttackerLabel = styled.text`
 `;
 
 /* a wall, while it is still holding */
+/* EDR: a halo on every host. it covers the boxes and nothing between them. */
+const EdrZone = styled.circle`
+  fill: ${EDR_C};
+  opacity: 0;
+  animation: ${coverIn(EDR_AT)} ${T}s ease-out infinite both;
+  ${reduce}
+`;
+
+/* ADR: one application, from the inside */
+const AdrZone = styled.circle`
+  fill: none;
+  stroke: ${ADR_C};
+  stroke-width: 0.7;
+  stroke-dasharray: 2.2 1.8;
+  opacity: 0;
+  animation: ${coverIn(ADR_AT)} ${T}s ease-out infinite both;
+  ${reduce}
+`;
+
+const ZoneName = styled.text<{ $t: number; $c: string }>`
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 3.1px;
+  letter-spacing: 0.08px;
+  text-anchor: middle;
+  fill: ${(x) => x.$c};
+  opacity: 0;
+  animation: ${(x) => zoneName(x.$t)} ${T}s ease-out infinite both;
+  ${reduce}
+`;
+
+/* ours traces the calls themselves */
+const Ribbon = styled.path`
+  fill: none;
+  stroke: ${HOT};
+  stroke-width: 5.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  filter: blur(1.6px);
+  animation: ${ribbonIn} ${T}s ease-out infinite both;
+  ${reduce}
+`;
+
 const EdgeWall = styled.rect`
   fill: ${EDGE.c};
   animation: ${edgeHold} ${T}s ease-in-out infinite both;
@@ -411,61 +473,9 @@ const Outside = styled.rect`
   fill: rgba(201, 52, 106, 0.075);
 `;
 
-const Hold = styled.rect`
-  fill: ${HOT};
-  animation: ${holdIn} ${T}s ease-out infinite both;
-  ${reduce}
-`;
 
-const HoldName = styled.text`
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 3.4px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  text-transform: uppercase;
-  text-anchor: middle;
-  fill: ${HOT};
-  animation: ${holdIn} ${T}s ease-out infinite both;
-  ${reduce}
-`;
 
-const Refused = styled.path`
-  fill: none;
-  stroke: ${HOT};
-  stroke-width: 1.1;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  opacity: 0;
-  animation: ${refused} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
-  ${reduce}
-`;
 
-const Stamp = styled.div`
-  position: absolute;
-  left: 55%;
-  top: 70%;
-  padding: 5px 11px;
-  white-space: nowrap;
-  border-radius: 8px;
-  background: ${HOT};
-  color: #fff;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  box-shadow: 0 10px 24px -10px rgba(201, 52, 106, 0.85);
-  transform: translate(-50%, 0);
-  animation: ${stampIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-  @media (max-width: 700px) {
-    font-size: 8.5px;
-    padding: 4px 8px;
-  }
-`;
 
 const AgentHalo = styled.circle`
   fill: ${HOT};
@@ -515,7 +525,7 @@ const Watchers = styled.div`
   }
 `;
 
-const Watch = styled.span<{ $t: number }>`
+const Watch = styled.span<{ $t: number; $c: string }>`
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -538,10 +548,11 @@ const Watch = styled.span<{ $t: number }>`
     color: var(--ink-faint);
   }
   .q {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgba(24, 20, 54, 0.22);
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: ${(x) => x.$c};
+    opacity: 0.55;
   }
 `;
 
@@ -622,9 +633,23 @@ export const SecurityArt = () => (
           <EdgeName x={EDGE.x} y={6.5}>
             {EDGE.label}
           </EdgeName>
-          <Allowed x={EDGE.x + 15} y={66}>
+          <Allowed x={EDGE.x + 17} y={22}>
             request allowed
           </Allowed>
+
+          {/* what EDR covers: every host, and nothing running between them */}
+          {NODES.map((n) => (
+            <EdrZone key={`edr${n.id}`} cx={n.x} cy={n.y} r={8} />
+          ))}
+          <ZoneName x={at('ac').x - 6} y={at('ac').y + 16} $t={EDR_AT} $c={EDR_C}>
+            edr covers the hosts
+          </ZoneName>
+
+          {/* what ADR covers: one application */}
+          <AdrZone cx={at(ADR_ON).x} cy={at(ADR_ON).y} r={13} />
+          <ZoneName x={at(ADR_ON).x + 6} y={at(ADR_ON).y - 17} $t={ADR_AT} $c={ADR_C}>
+            adr covers one app
+          </ZoneName>
 
           {EDGES.map(([a, b, bow]) => (
             <Edge key={`e${a}${b}`} d={arc(at(a), at(b), bow)} />
@@ -666,12 +691,14 @@ export const SecurityArt = () => (
             </g>
           ))}
 
-          {/* the attempt that does not get through */}
-          <Refused d={arc(at('st'), { x: HOLD.x - 2, y: 54 }, -7)} pathLength={1} />
-          <Hold x={HOLD.x - 0.7} y={10} width={1.4} height={80} />
-          <HoldName x={HOLD.x} y={6.5}>
-            {HOLD.label}
-          </HoldName>
+          {/* what we cover: the calls, which is the part the path runs through */}
+          {ROUNDS.map((r, i) => (
+            <Ribbon key={`rb${i}`} d={arc(pt(r.from), at(r.hit), r.bow)} pathLength={1} />
+          ))}
+          <ZoneName x={66} y={72} $t={BLOCKED_AT - 1.2} $c={HOT}>
+            odigos covers the calls between them
+          </ZoneName>
+
 
           <AgentHalo cx={AGENT.x} cy={AGENT.y} r={8} />
           <circle cx={AGENT.x} cy={AGENT.y} r={2.9} fill={DEEP} />
@@ -685,12 +712,11 @@ export const SecurityArt = () => (
         </Map>
 
 
-        <Stamp>arg 0 refused · policy on one function</Stamp>
       </Field>
 
       <Watchers>
         {WATCHERS.map((w) => (
-          <Watch key={w.k} $t={w.at}>
+          <Watch key={w.k} $t={w.at} $c={w.c}>
             <span className='q' />
             <b>{w.k}</b>
             <i>{w.w} · no alert</i>
