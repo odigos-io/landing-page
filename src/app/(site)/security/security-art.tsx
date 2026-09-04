@@ -3,15 +3,16 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
-/* Hero art: the service map, and the route taken through it.
+/* Hero art: an agent brute forcing its way across the estate.
 
-   Services are nodes, calls between them are edges, laid out the way a
-   dependency map actually looks. The agent enters at the gateway and moves
-   only along edges that already existed, which is the point: nothing here is a
-   new connection, only a new sequence. The one call that should have been made
-   stays dashed. When the last hop lands the route flares and the bar turns. */
+   Four rounds. Each one throws a burst of probes from wherever it has already
+   reached, most of which fail and stay on the map as faint scars, so the sheer
+   volume of what was tried is visible. One probe in each burst lands, the
+   service ignites, the weakness it found is named, and that name joins the
+   chain in the bar. By the fourth round the frontier is the settlement service
+   and four separate findings have compounded into one path. */
 
-const T = 7.6;
+const T = 10;
 const p = (s: number) => Math.max(0, Math.min(100, (s / T) * 100));
 
 const HOT = '#c9346a';
@@ -19,24 +20,25 @@ const DEEP = '#1c1633';
 const INK = 'rgba(24, 20, 54, 0.5)';
 const LINE = 'rgba(24, 20, 54, 0.16)';
 
-type Node = { id: string; x: number; y: number; name: string; lx?: number; ly?: number; anchor?: string; step?: number; on?: number };
+type Node = { id: string; x: number; y: number; name: string; lx?: number; ly?: number; step?: number; on?: number };
 
 const NODES: Node[] = [
-  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: 8, step: 1, on: 1.4 },
-  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -7, step: 2, on: 1.9 },
+  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: 8, step: 1, on: 1.5 },
+  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -7, step: 2, on: 3.1 },
   { id: 'ac', x: 50, y: 76, name: 'accounts-api', ly: 8 },
   { id: 'nt', x: 79, y: 13, name: 'notify-svc', ly: 8 },
-  { id: 'pm', x: 86, y: 48, name: 'payments-api', lx: -13, ly: 9, step: 3, on: 2.4 },
+  { id: 'pm', x: 86, y: 48, name: 'payments-api', lx: -13, ly: 9, step: 3, on: 4.7 },
   { id: 'sr', x: 76, y: 86, name: 'search-svc', ly: 8 },
   { id: 'fr', x: 112, y: 72, name: 'fraud-svc', ly: 8 },
-  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -7, step: 4, on: 2.9 },
+  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -7, step: 4, on: 6.3 },
   { id: 'lg', x: 128, y: 58, name: 'ledger-db', lx: 4, ly: 9 },
 ];
 
 const AGENT = { x: 7, y: 50 };
 const at = (id: string) => NODES.find((n) => n.id === id) as Node;
+const pt = (id: string) => (id === 'agent' ? AGENT : at(id));
 
-/* the calls this estate normally makes. bow keeps the map organic */
+/* the calls this estate normally makes */
 const EDGES: [string, string, number][] = [
   ['gw', 'tk', -5],
   ['gw', 'ac', 5],
@@ -49,29 +51,21 @@ const EDGES: [string, string, number][] = [
   ['sr', 'lg', 6],
 ];
 
-/* the sequence the agent took, every hop along an edge that already existed */
-const HOPS: { a: { x: number; y: number }; b: { x: number; y: number }; bow: number; t: number }[] = [
-  { a: AGENT, b: at('gw'), bow: -4, t: 1.0 },
-  { a: at('gw'), b: at('tk'), bow: -5, t: 1.5 },
-  { a: at('tk'), b: at('pm'), bow: -5, t: 2.0 },
-  { a: at('pm'), b: at('st'), bow: -5, t: 2.5 },
+/* four rounds. from wherever it has reached, throw everything, keep what lands. */
+const ROUNDS = [
+  { at: 0.5, from: 'agent', miss: ['ac', 'sr', 'nt', 'tk'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 8, cy: -11 },
+  { at: 2.1, from: 'gw', miss: ['ac', 'sr', 'nt'], hit: 'tk', bow: -5, vuln: 'known cve', cx: -19, cy: -12 },
+  { at: 3.7, from: 'tk', miss: ['nt', 'sr', 'ac', 'lg'], hit: 'pm', bow: -5, vuln: 'zero-day', cx: 6, cy: -12 },
+  { at: 5.3, from: 'pm', miss: ['lg', 'sr', 'ac'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 2, cy: 12 },
 ];
+
+const BURST = 0.75;
+const HIT_AT = 0.95;
 
 const SKIP: [string, string, number] = ['pm', 'fr', 5];
-const SKIP_AT = 3.0;
-const FLARE = 3.2;
-const VERDICT = 3.55;
-
-/* the loop held a static frame for four seconds. spend it going inside the box. */
-const OPEN_AT = 4.5;
-const FN_ORIGIN = { x: 54, y: 26 };
-const FNS = [
-  { dx: -21, dy: -1, name: 'render', hot: false, slow: true },
-  { dx: -18, dy: -9, name: 'parse', hot: true },
-  { dx: -8, dy: -15, name: 'execute', hot: true },
-];
-
-const CHAIN = ['ssrf', 'trusted internal call', 'template injection', 'service token reused'];
+const SKIP_AT = 6.6;
+const FLARE = 7.2;
+const VERDICT = 7.6;
 
 /* ---------------- geometry ---------------- */
 
@@ -88,69 +82,80 @@ const arc = (a: { x: number; y: number }, b: { x: number; y: number }, bow: numb
 
 const fieldIn = keyframes`
   0%{opacity:0}
-  ${p(0.5)}%,100%{opacity:1}`;
+  ${p(0.4)}%,100%{opacity:1}`;
 
-const draw = (s: number) => keyframes`
+/* a probe that goes nowhere. fast, then it stays on the map as a scar. */
+const fizzle = (s: number) => keyframes`
   0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
-  ${p(s + 0.05)}%{opacity:1}
-  ${p(s + 0.45)}%,${p(FLARE)}%{stroke-dashoffset:0;opacity:1;stroke-width:1.5}
-  ${p(FLARE + 0.4)}%{stroke-dashoffset:0;opacity:1;stroke-width:2.6}
-  ${p(FLARE + 1)}%,100%{stroke-dashoffset:0;opacity:1;stroke-width:1.8}`;
+  ${p(s + 0.02)}%{opacity:.85}
+  ${p(s + 0.16)}%{stroke-dashoffset:0;opacity:.85}
+  ${p(s + 0.34)}%{stroke-dashoffset:0;opacity:.14}
+  ${p(s + 0.6)}%,100%{stroke-dashoffset:0;opacity:.16}`;
+
+/* the one that lands, and then stays lit for the rest of the loop */
+const land = (s: number) => keyframes`
+  0%,${p(s)}%{stroke-dashoffset:1;opacity:0}
+  ${p(s + 0.04)}%{opacity:1}
+  ${p(s + 0.42)}%,${p(FLARE)}%{stroke-dashoffset:0;opacity:1;stroke-width:1.5}
+  ${p(FLARE + 0.4)}%{stroke-dashoffset:0;opacity:1;stroke-width:2.8}
+  ${p(FLARE + 1.1)}%,100%{stroke-dashoffset:0;opacity:1;stroke-width:1.9}`;
 
 const glow = (s: number) => keyframes`
   0%,${p(FLARE)}%{opacity:0;stroke-width:1}
   ${p(FLARE + 0.4)}%{opacity:.42;stroke-width:8}
-  ${p(FLARE + 1)}%,100%{opacity:.24;stroke-width:6}`;
+  ${p(FLARE + 1.1)}%,100%{opacity:.24;stroke-width:6}`;
 
 const nodeOn = (s: number) => keyframes`
   0%,${p(s)}%{fill:#fff;stroke:${LINE};r:3.2}
-  ${p(s + 0.22)}%{fill:${HOT};stroke:${HOT};r:5}
-  ${p(s + 0.5)}%,${p(FLARE)}%{fill:${HOT};stroke:${HOT};r:4.4}
+  ${p(s + 0.18)}%{fill:${HOT};stroke:${HOT};r:5.4}
+  ${p(s + 0.45)}%,${p(FLARE)}%{fill:${HOT};stroke:${HOT};r:4.4}
   ${p(FLARE + 0.4)}%{fill:${HOT};stroke:${HOT};r:5.2}
-  ${p(FLARE + 1)}%,100%{fill:${HOT};stroke:${HOT};r:4.6}`;
+  ${p(FLARE + 1.1)}%,100%{fill:${HOT};stroke:${HOT};r:4.6}`;
 
 const labelOn = (s: number) => keyframes`
   0%,${p(s)}%{fill:${INK}}
-  ${p(s + 0.25)}%,100%{fill:${HOT}}`;
+  ${p(s + 0.22)}%,100%{fill:${HOT}}`;
 
 const numIn = (s: number) => keyframes`
-  0%,${p(s + 0.1)}%{opacity:0}
-  ${p(s + 0.35)}%,100%{opacity:1}`;
+  0%,${p(s + 0.08)}%{opacity:0}
+  ${p(s + 0.3)}%,100%{opacity:1}`;
 
-const ringOut = (s: number) => keyframes`
-  0%,${p(s)}%{opacity:0;transform:scale(.3)}
-  ${p(s + 0.28)}%{opacity:.55;transform:scale(1)}
-  ${p(s + 0.95)}%,100%{opacity:0;transform:scale(2.3)}`;
+const shock = (s: number) => keyframes`
+  0%,${p(s)}%{opacity:0;transform:scale(.25)}
+  ${p(s + 0.2)}%{opacity:.7;transform:scale(1)}
+  ${p(s + 0.8)}%,100%{opacity:0;transform:scale(2.6)}`;
+
+/* the weakness is named at the moment it is found, then it lives in the bar */
+const vulnPop = (s: number) => keyframes`
+  0%,${p(s)}%{opacity:0;transform:translate(-50%,4px) scale(.8)}
+  ${p(s + 0.18)}%{opacity:1;transform:translate(-50%,0) scale(1.08)}
+  ${p(s + 0.3)}%,${p(s + 1.5)}%{opacity:1;transform:translate(-50%,0) scale(1)}
+  ${p(s + 1.9)}%,100%{opacity:0;transform:translate(-50%,-5px) scale(1)}`;
+
+/* each find joins the chain and stays */
+const chipIn = (s: number) => keyframes`
+  0%,${p(s)}%{opacity:0;transform:translateY(5px)}
+  ${p(s + 0.28)}%,100%{opacity:1;transform:none}`;
 
 const skipIn = keyframes`
   0%,${p(SKIP_AT)}%{opacity:0}
-  ${p(SKIP_AT + 0.5)}%,100%{opacity:1}`;
+  ${p(SKIP_AT + 0.45)}%,100%{opacity:1}`;
 
 const verdictIn = keyframes`
   0%,${p(VERDICT)}%{opacity:0;transform:translateY(8px)}
-  ${p(VERDICT + 0.45)}%,100%{opacity:1;transform:none}`;
+  ${p(VERDICT + 0.4)}%,100%{opacity:1;transform:none}`;
 
-const calmOut = keyframes`
+const probingOut = keyframes`
   0%,${p(VERDICT)}%{opacity:1;transform:none}
-  ${p(VERDICT + 0.32)}%,100%{opacity:0;transform:translateY(-8px)}`;
-
-
-
-const zoomIn = (i: number) => keyframes`
-  0%,${p(OPEN_AT + i * 0.18)}%{opacity:0;transform:translate(0,0) scale(.4)}
-  ${p(OPEN_AT + i * 0.18 + 0.4)}%,100%{opacity:1;transform:none}`;
-
-const stalkIn = (i: number) => keyframes`
-  0%,${p(OPEN_AT + i * 0.18)}%{opacity:0;stroke-dashoffset:1}
-  ${p(OPEN_AT + i * 0.18 + 0.4)}%,100%{opacity:1;stroke-dashoffset:0}`;
-
-const insideIn = keyframes`
-  0%,${p(OPEN_AT)}%{opacity:0}
-  ${p(OPEN_AT + 0.5)}%,100%{opacity:1}`;
+  ${p(VERDICT + 0.3)}%,100%{opacity:0;transform:translateY(-8px)}`;
 
 const agentPulse = keyframes`
-  0%,100%{opacity:.28;transform:scale(.85)}
-  50%{opacity:.05;transform:scale(1.5)}`;
+  0%,100%{opacity:.3;transform:scale(.85)}
+  50%{opacity:.06;transform:scale(1.55)}`;
+
+const rattle = keyframes`
+  0%,100%{opacity:.35}
+  50%{opacity:1}`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 
@@ -184,7 +189,7 @@ const Field = styled.div`
   width: 100%;
   aspect-ratio: 1.42 / 1;
   overflow: hidden;
-  background: radial-gradient(75% 120% at 8% 50%, rgba(201, 52, 106, 0.06), transparent 55%), linear-gradient(180deg, #fdfcfe, #f8f6fa);
+  background: radial-gradient(75% 120% at 8% 50%, rgba(201, 52, 106, 0.07), transparent 55%), linear-gradient(180deg, #fdfcfe, #f8f6fa);
 `;
 
 const Map = styled.svg`
@@ -200,6 +205,17 @@ const Edge = styled.path`
   fill: none;
   stroke: ${LINE};
   stroke-width: 0.55;
+`;
+
+const Miss = styled.path<{ $t: number }>`
+  fill: none;
+  stroke: ${HOT};
+  stroke-width: 0.3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  opacity: 0;
+  animation: ${(x) => fizzle(x.$t)} ${T}s cubic-bezier(0.3, 0, 0.2, 1) infinite both;
+  ${reduce}
 `;
 
 const SkipEdge = styled.path`
@@ -220,7 +236,7 @@ const SkipNote = styled.text`
   ${reduce}
 `;
 
-const HopGlow = styled.path<{ $t: number }>`
+const HitGlow = styled.path<{ $t: number }>`
   fill: none;
   stroke: ${HOT};
   stroke-linecap: round;
@@ -230,13 +246,13 @@ const HopGlow = styled.path<{ $t: number }>`
   ${reduce}
 `;
 
-const Hop = styled.path<{ $t: number }>`
+const Hit = styled.path<{ $t: number }>`
   fill: none;
   stroke: ${HOT};
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-dasharray: 1;
-  animation: ${(x) => draw(x.$t)} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: ${(x) => land(x.$t)} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
   ${reduce}
 `;
 
@@ -252,7 +268,7 @@ const Dot = styled.circle<{ $t?: number }>`
   ${reduce}
 `;
 
-const Ring = styled.circle<{ $t: number }>`
+const Shock = styled.circle<{ $t: number }>`
   fill: none;
   stroke: ${HOT};
   stroke-width: 0.5;
@@ -260,7 +276,7 @@ const Ring = styled.circle<{ $t: number }>`
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
-  animation: ${(x) => ringOut(x.$t)} ${T}s ease-out infinite both;
+  animation: ${(x) => shock(x.$t)} ${T}s ease-out infinite both;
   ${reduce}
 `;
 
@@ -287,44 +303,42 @@ const Label = styled.text<{ $t?: number }>`
   ${reduce}
 `;
 
-/* the functions inside one service, which no service map contains */
-const FnStalk = styled.line<{ $i: number }>`
-  stroke: rgba(201, 52, 106, 0.4);
-  stroke-width: 0.4;
-  stroke-dasharray: 1;
-  animation: ${(x) => stalkIn(x.$i)} ${T}s ease-out infinite both;
-  ${reduce}
-`;
-
-const FnG = styled.g<{ $i: number }>`
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ${(x) => zoomIn(x.$i)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${reduce}
-`;
-
-const InsideNote = styled.text`
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 2.9px;
-  text-anchor: middle;
-  letter-spacing: 0.05px;
-  fill: rgba(24, 20, 54, 0.45);
-  animation: ${insideIn} ${T}s linear infinite both;
-  ${reduce}
-`;
-
 const AgentHalo = styled.circle`
   fill: ${HOT};
   transform-box: fill-box;
   transform-origin: center;
-  animation: ${agentPulse} 3.6s ease-in-out infinite;
+  animation: ${agentPulse} 2.4s ease-in-out infinite;
   ${reduce}
+`;
+
+/* the weakness, named where it was found */
+const Vuln = styled.div<{ $t: number; $x: number; $y: number }>`
+  position: absolute;
+  left: ${(x) => x.$x}%;
+  top: ${(x) => x.$y}%;
+  padding: 3px 9px;
+  white-space: nowrap;
+  border-radius: 999px;
+  background: ${HOT};
+  color: #fff;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 18px -8px rgba(201, 52, 106, 0.8);
+  animation: ${(x) => vulnPop(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  ${reduce}
+
+  @media (max-width: 620px) {
+    font-size: 8.5px;
+    padding: 2px 7px;
+  }
 `;
 
 const rowBase = css`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   padding: 14px 22px;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 11px;
@@ -332,34 +346,56 @@ const rowBase = css`
   @media (max-width: 1000px) {
     padding: 12px 15px;
     font-size: 9.5px;
-    gap: 8px;
+    gap: 7px;
   }
 `;
 
-const VerdictWrap = styled.div`
+const BarWrap = styled.div`
   position: relative;
   border-top: 1px solid var(--line);
 `;
 
-const Calm = styled.div`
+const Probing = styled.div`
   ${rowBase};
   color: var(--ink-faint);
-  animation: ${calmOut} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  ${reduce}
+  animation: ${probingOut} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
 
-  .pill {
-    padding: 3px 9px;
+  @media (prefers-reduced-motion: reduce) {
+    display: none;
+  }
+
+  .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--hot-ink);
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${HOT};
+    animation: ${rattle} 0.45s ease-in-out infinite;
+    ${reduce}
+  }
+  .chip {
+    padding: 2px 8px;
     border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--paper-3);
-    letter-spacing: 0.1em;
+    border: 1px solid rgba(201, 52, 106, 0.3);
+    background: rgba(201, 52, 106, 0.08);
+    color: var(--hot-ink);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     font-size: 9.5px;
   }
-  /* reduced motion shows both rows stacked, so the reversal still reads */
-  @media (prefers-reduced-motion: reduce) {
-    border-bottom: 1px solid var(--line);
+  .plus {
+    color: var(--ink-faint);
   }
+`;
+
+const Chip = styled.span<{ $t: number }>`
+  animation: ${(x) => chipIn(x.$t)} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  ${reduce}
 `;
 
 const Verdict = styled.div`
@@ -385,20 +421,9 @@ const Verdict = styled.div`
     text-transform: uppercase;
     font-size: 9.5px;
   }
-  .chain {
+  .txt {
     color: var(--ink);
-    white-space: nowrap;
-
-    @media (max-width: 560px) {
-      white-space: normal;
-      line-height: 1.5;
-    }
   }
-  .arw {
-    color: var(--ink-faint);
-    padding: 0 5px;
-  }
-
 `;
 
 export const SecurityArt = () => (
@@ -415,16 +440,23 @@ export const SecurityArt = () => (
             not called on this request
           </SkipNote>
 
-          {HOPS.map((h, i) => (
-            <HopGlow key={`hg${i}`} d={arc(h.a, h.b, h.bow)} $t={h.t} />
+          {/* everything it threw that went nowhere, and stayed on the map */}
+          {ROUNDS.map((r, ri) =>
+            r.miss.map((m, mi) => (
+              <Miss key={`m${ri}${m}`} d={arc(pt(r.from), at(m), (mi % 2 ? 1 : -1) * (4 + mi * 2))} pathLength={1} $t={r.at + mi * (BURST / r.miss.length)} />
+            )),
+          )}
+
+          {ROUNDS.map((r, i) => (
+            <HitGlow key={`hg${i}`} d={arc(pt(r.from), at(r.hit), r.bow)} $t={r.at + HIT_AT} />
           ))}
-          {HOPS.map((h, i) => (
-            <Hop key={`h${i}`} d={arc(h.a, h.b, h.bow)} pathLength={1} $t={h.t} />
+          {ROUNDS.map((r, i) => (
+            <Hit key={`h${i}`} d={arc(pt(r.from), at(r.hit), r.bow)} pathLength={1} $t={r.at + HIT_AT} />
           ))}
 
           {NODES.map((n) => (
             <g key={n.id}>
-              {n.on !== undefined && <Ring cx={n.x} cy={n.y} $t={n.on} />}
+              {n.on !== undefined && <Shock cx={n.x} cy={n.y} $t={n.on} />}
               <Dot cx={n.x} cy={n.y} r={3.2} $t={n.on} />
               {n.step !== undefined && n.on !== undefined && (
                 <Num x={n.x} y={n.y} $t={n.on}>
@@ -437,29 +469,6 @@ export const SecurityArt = () => (
             </g>
           ))}
 
-          {/* inside node 2: the calls a service map has no way to show */}
-          {FNS.map((fn, i) => (
-            <FnStalk key={`fs${fn.name}`} x1={FN_ORIGIN.x} y1={FN_ORIGIN.y} x2={FN_ORIGIN.x + fn.dx} y2={FN_ORIGIN.y + fn.dy} pathLength={1} $i={i} />
-          ))}
-          {FNS.map((fn, i) => (
-            <FnG key={`fn${fn.name}`} $i={i}>
-              <circle cx={FN_ORIGIN.x + fn.dx} cy={FN_ORIGIN.y + fn.dy} r={2.1} fill={fn.hot ? HOT : fn.slow ? 'rgba(201,52,106,0.22)' : '#fff'} stroke={fn.hot ? HOT : fn.slow ? 'rgba(201,52,106,0.5)' : LINE} strokeWidth={0.5} />
-              <text
-                x={FN_ORIGIN.x + fn.dx - 3.6}
-                y={FN_ORIGIN.y + fn.dy + 1}
-                fontSize='2.9px'
-                textAnchor='end'
-                fontFamily='var(--font-mono), monospace'
-                fill={fn.hot ? HOT : fn.slow ? 'rgba(201,52,106,0.7)' : 'rgba(24,20,54,0.5)'}
-              >
-                {fn.name}
-              </text>
-            </FnG>
-          ))}
-          <InsideNote x={FN_ORIGIN.x - 10} y={FN_ORIGIN.y - 20}>
-            two calls that never ran here before
-          </InsideNote>
-
           <AgentHalo cx={AGENT.x} cy={AGENT.y} r={8} />
           <circle cx={AGENT.x} cy={AGENT.y} r={2.9} fill={DEEP} />
           <circle cx={AGENT.x} cy={AGENT.y} r={1.1} fill={HOT} />
@@ -467,25 +476,35 @@ export const SecurityArt = () => (
             agent
           </text>
         </Map>
+
+        {ROUNDS.map((r) => {
+          const target = at(r.hit);
+          return (
+            <Vuln key={`v${r.vuln}`} $t={r.at + HIT_AT + 0.35} $x={((target.x + r.cx) / 142) * 100} $y={target.y + r.cy}>
+              {r.vuln}
+            </Vuln>
+          );
+        })}
       </Field>
 
-      <VerdictWrap>
-        <Calm>
-          <span className='pill'>triaged</span>
-          <span>three closed on their merits, one never filed</span>
-        </Calm>
+      <BarWrap>
+        <Probing>
+          <span className='live'>
+            <span className='dot' />
+            probing
+          </span>
+          {ROUNDS.map((r, i) => (
+            <Chip key={`c${r.vuln}`} $t={r.at + HIT_AT + 0.35}>
+              {i > 0 && <span className='plus'>+ </span>}
+              <span className='chip'>{r.vuln}</span>
+            </Chip>
+          ))}
+        </Probing>
         <Verdict>
           <span className='crit'>critical</span>
-          <span className='chain'>
-            {CHAIN.map((c, i) => (
-              <React.Fragment key={c}>
-                {i > 0 && <span className='arw'>&rsaquo;</span>}
-                {c}
-              </React.Fragment>
-            ))}
-          </span>
+          <span className='txt'>four weaknesses, one path, one transaction</span>
         </Verdict>
-      </VerdictWrap>
+      </BarWrap>
     </Panel>
   </Frame>
 );

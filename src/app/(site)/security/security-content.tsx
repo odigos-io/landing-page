@@ -171,6 +171,44 @@ const Fact = styled.div`
   }
 `;
 
+/* ---------------- what it captures ---------------- */
+const Caps = styled.div`
+  margin-top: 46px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  > * {
+    min-width: 0;
+  }
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Cap = styled.div`
+  padding: 26px 24px 28px;
+  background: var(--paper-2);
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  p {
+    margin: 10px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+`;
+
 /* ---------------- deviation classes ---------------- */
 const Classes = styled.div`
   margin-top: 46px;
@@ -804,13 +842,24 @@ const CLASSES = [
 
 /* what a bank already runs, and why each one was blind to this */
 const OTHERS = [
-  { k: 'endpoint detection', w: 'processes, files and shells on a host', m: 'No new process. No shell. Nothing was written to disk.' },
-  { k: 'cloud posture', w: 'images, configuration and known CVEs', m: 'No unpatched CVE in any image on the path. The flaw is in how two services trust each other, and nothing scans for that.' },
-  { k: 'syscall sensors', w: 'execve, connect, open', m: 'Every syscall it made was one those services make a thousand times a day. The read itself never left the heap.' },
-  { k: 'web firewall', w: 'request payloads at the edge', m: 'The request was well formed and matched no signature.' },
-  { k: 'siem', w: 'what your services choose to log', m: 'Every service logged 200. Nothing logged where the field came from.' },
-  { k: 'tracing', w: 'which services a request touched, and how long each took', m: 'Not which function ran inside them, what it was handed, or that the call was new.' },
+  { k: 'endpoint detection', w: 'processes, files and shells on a host', m: 'Sees what a process does to the machine. Blind to what it does inside itself.' },
+  { k: 'cloud posture', w: 'images, configuration and known CVEs', m: 'Scores what you deployed. It has no view of what that code actually executed.' },
+  { k: 'syscall sensors', w: 'execve, connect, open', m: 'Sees the boundary crossings. Application logic never crosses one.' },
+  { k: 'web firewall', w: 'request payloads at the edge', m: 'Judges one request in isolation, against patterns somebody wrote in advance.' },
+  { k: 'siem', w: 'what your services choose to log', m: 'Can only correlate what an engineer decided in advance was worth writing down.' },
+  { k: 'tracing', w: 'which services a request touched, and how long each took', m: 'Spans, not calls. It stops at the service boundary and never goes inside.' },
 ];
+
+/* what the runtime actually captures */
+const CAPTURE = [
+  { h: 'Every function call', p: 'Caller, callee, arguments and return values, on every request, in any service you point it at.' },
+  { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, including traffic that arrived over TLS.' },
+  { h: 'The control-flow path', p: 'Which branch a request actually took through the code, not which branch the source says it might.' },
+  { h: 'Stitched end to end', p: 'One trace across services, languages and processes, so a chain that crosses four of them is a single object.' },
+  { h: 'Four runtimes', p: 'Kernel-attached uprobes into the JVM, V8, CPython and the Go runtime. No SDK, no code change, no redeploy.' },
+  { h: 'Two substrates', p: 'The same node agent covers Kubernetes and bare-metal VMs, so coverage does not stop at the edge of the cluster.' },
+];
+
 
 /* what a policy can do once the finding names the function */
 
@@ -912,7 +961,10 @@ export const SecurityContent = () => {
               <Head>
                 <Eyebrow>Against what you already run</Eyebrow>
                 <h2>Six controls a bank already owns. Every one of them did its job.</h2>
-                <p>This is not a tooling gap you can close by buying more of what you have. Each of these does its job correctly and none of them is looking at the layer the attack used.</p>
+                <p>
+                  None of these is misconfigured and none of them is going away. Each one is looking at a layer the attack did not have to touch, and no amount of budget spent on more of the same closes the
+                  distance to the layer it did.
+                </p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
@@ -929,6 +981,31 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
+        <Section>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>What it captures</Eyebrow>
+                <h2>The layer underneath every tool you own.</h2>
+                <p>
+                  One eBPF runtime on the node, reading the calls your services actually make. It is the same capture whether you are asking why revenue dropped or whether someone reached a ledger they should
+                  not have.
+                </p>
+              </Head>
+            </Reveal>
+            <Reveal delay={70}>
+              <Caps>
+                {CAPTURE.map((c) => (
+                  <Cap key={c.h}>
+                    <h3>{c.h}</h3>
+                    <p>{c.p}</p>
+                  </Cap>
+                ))}
+              </Caps>
+            </Reveal>
+          </Inner>
+        </Section>
+
         <Section $alt>
           <Inner>
             <Reveal>
@@ -937,7 +1014,10 @@ export const SecurityContent = () => {
                 <h2>
                   The exploit is two function calls that were not there yesterday.
                 </h2>
-                <p>Nobody had a signature for this call graph, and none was needed. It learns the call graph each route normally produces, then surfaces the edges that have never appeared on it.</p>
+                <p>
+                  Nobody had a signature for this call graph, and none was needed. Odigos learns the call graph each route normally produces and surfaces what has never appeared on it. There are six ways a
+                  request can be structurally wrong, and every one of them is a shape learned from your own traffic rather than a rule somebody wrote in advance.
+                </p>
               </Head>
             </Reveal>
 
@@ -984,21 +1064,7 @@ export const SecurityContent = () => {
               </Diff>
             </Reveal>
 
-          </Inner>
-        </Section>
-
-        <Section>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>What it watches for</Eyebrow>
-                <h2>Six ways a request can be structurally wrong.</h2>
-                <p>
-                  No signatures, because there is nothing to write a signature against. Each class is a shape the route has never produced before, learned from your own traffic.
-                </p>
-              </Head>
-            </Reveal>
-            <Reveal delay={70}>
+            <Reveal delay={130}>
               <Classes>
                 {CLASSES.map((c) => (
                   <Cls key={c.n}>
