@@ -23,14 +23,14 @@ const LINE = 'rgba(24, 20, 54, 0.16)';
 type Node = { id: string; x: number; y: number; name: string; lx?: number; ly?: number; step?: number; on?: number };
 
 const NODES: Node[] = [
-  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: 8, step: 1, on: 1.5 },
-  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -7, step: 2, on: 3.1 },
+  { id: 'gw', x: 26, y: 50, name: 'gateway', ly: -6, step: 1, on: 1.5 },
+  { id: 'tk', x: 54, y: 26, name: 'tickets-api', ly: -6, step: 2, on: 3.1 },
   { id: 'ac', x: 50, y: 76, name: '', ly: 8 },
   { id: 'nt', x: 79, y: 13, name: '', ly: 8 },
-  { id: 'pm', x: 86, y: 48, name: 'payments-api', lx: -13, ly: 9, step: 3, on: 4.4 },
+  { id: 'pm', x: 86, y: 48, name: 'payments-api', ly: -6, step: 3, on: 4.4 },
   { id: 'sr', x: 76, y: 86, name: '', ly: 8 },
   { id: 'fr', x: 112, y: 72, name: 'fraud-svc', ly: 8 },
-  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -7, step: 4, on: 5.3 },
+  { id: 'st', x: 118, y: 30, name: 'settlement', ly: -6, step: 4, on: 5.3 },
   { id: 'lg', x: 128, y: 58, name: '', lx: 4, ly: 9 },
 ];
 
@@ -56,10 +56,10 @@ const EDGES: [string, string, number][] = [
 
 /* four rounds. from wherever it has reached, throw everything, keep what lands. */
 const ROUNDS = [
-  { at: 0.4, from: 'agent', miss: ['ac', 'sr', 'nt', 'tk'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 8, cy: -11 },
-  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'nt', 'lg', 'pm'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 2, cy: -14 },
-  { at: 3.1, from: 'tk', miss: ['nt', 'sr', 'ac', 'lg', 'fr', 'st'], hit: 'pm', bow: -5, vuln: 'zero-day', cx: 6, cy: -12 },
-  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'ac', 'fr', 'nt', 'st', 'tk'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 2, cy: 12 },
+  { at: 0.4, from: 'agent', miss: ['ac', 'nt', 'sr'], hit: 'gw', bow: 6, vuln: 'ssrf', cx: 0, cy: 11 },
+  { at: 1.9, from: 'gw', miss: ['ac', 'sr', 'lg'], hit: 'tk', bow: -5, vuln: 'auth bypass', cx: 0, cy: 11 },
+  { at: 3.1, from: 'tk', miss: ['nt', 'ac', 'lg', 'st'], hit: 'pm', bow: -5, vuln: 'unknown call', cx: 0, cy: 11 },
+  { at: 4.2, from: 'pm', miss: ['lg', 'sr', 'fr', 'nt'], hit: 'st', bow: -5, vuln: 'token reuse', cx: 0, cy: 11 },
 ];
 
 const BURST = 0.75;
@@ -336,20 +336,20 @@ const AttackerLabel = styled.text`
 
 /* the edge of the estate */
 const Fence = styled.line`
-  stroke: rgba(24, 20, 54, 0.34);
-  stroke-width: 0.45;
-  stroke-dasharray: 1.6 1.8;
+  stroke: rgba(24, 20, 54, 0.5);
+  stroke-width: 0.75;
+  stroke-dasharray: 2.4 2;
 `;
 
 const Outside = styled.rect`
-  fill: rgba(201, 52, 106, 0.045);
+  fill: rgba(201, 52, 106, 0.075);
 `;
 
 const FenceLabel = styled.text`
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 2.9px;
+  font-size: 3.3px;
   letter-spacing: 0.1px;
-  fill: rgba(24, 20, 54, 0.42);
+  fill: rgba(24, 20, 54, 0.6);
 `;
 
 const AgentHalo = styled.circle`
@@ -475,8 +475,8 @@ export const SecurityArt = () => (
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid meet' aria-hidden>
           <Outside x={0} y={0} width={PERIMETER} height={100} />
           <Fence x1={PERIMETER} y1={4} x2={PERIMETER} y2={96} />
-          <FenceLabel x={PERIMETER + 2.5} y={7} textAnchor='start'>
-            your estate
+          <FenceLabel x={PERIMETER + 3} y={7} textAnchor='start'>
+            your perimeter
           </FenceLabel>
 
           {EDGES.map(([a, b, bow]) => (
@@ -505,7 +505,7 @@ export const SecurityArt = () => (
           {NODES.map((n) => (
             <g key={n.id}>
               {n.on !== undefined && <Shock cx={n.x} cy={n.y} $t={n.on} />}
-              <Dot cx={n.x} cy={n.y} r={3.2} $t={n.on} />
+              <Dot cx={n.x} cy={n.y} r={n.on !== undefined ? 3.2 : 2.3} $t={n.on} />
               {n.step !== undefined && n.on !== undefined && (
                 <Num x={n.x} y={n.y} $t={n.on}>
                   {n.step}

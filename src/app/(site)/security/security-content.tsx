@@ -810,23 +810,23 @@ const CloseCtas = styled.div`
 const FACTS = [
   {
     h: 'It will not drown your analysts.',
-    p: 'Four of the six landed on one request in the attack above: two new call edges, an argument that had never carried a payload like that, and the latency shape those calls pushed the route into. Any one of them on its own would have been scored as noise and gone no further.',
+    p: 'Three classes landed on one request in the attack above: a call edge that route had never produced, an argument that had never carried a payload like that, and the latency shape those calls pushed it into. Any one of them on its own would have been scored as noise and gone no further.',
   },
   {
     h: 'The record leaves the host while the attack is still running.',
-    p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you control, so the evidence is off the box before an attacker who owns it knows there was anything to remove. Redaction is configured before anything is written. Retention and access are your destination policy, and we never hold a copy.',
+    p: 'Odigos runs in your own cluster and exports as OpenTelemetry to a destination you control, so the record is exported continuously rather than sitting on the box waiting to be deleted at leisure. Redaction is configured before anything is written. Retention and access are your destination policy, and we never hold a copy.',
   },
   {
     h: 'You do not tune it.',
     p: 'It watches a route for two weeks and forms the baseline itself. Most of the signals are structural: a call edge, a peer or a library either appears on that route or it does not. The two that are not, latency shape and how often two values agree, are learned from that route\'s own history and never from a global threshold. A normal deploy that adds one edge barely registers.',
   },
   {
-    h: 'The baseline never stores a value.',
-    p: 'For a check like tenant identity against the row that came back, Odigos keeps the relation and how often the two agree. The values are not kept in the baseline. Where a finding needs the value itself, as in the capture above, it is scoped to that function on that workload, governed by RBAC and policy, and redacted by default.',
+    h: 'The baseline keeps shapes, not payloads.',
+    p: 'For a check like tenant identity against the row that came back, Odigos keeps the relation and how often the two agree, and for arguments it keeps the shape a value has taken rather than the value. Payloads are not retained in the baseline. Where a finding needs the value itself, as in the capture above, it is scoped to that function on that workload, governed by RBAC and policy, and redacted by default.',
   },
   {
     h: 'Under 1% CPU.',
-    p: 'Measured across 1.04 million cores under production load, with effectively no added latency. You scope which functions are hooked, so the cost is a number you set rather than a number you discover. The probe fires in the kernel the moment your function is called, which is the moment the value is already in the clear.',
+    p: 'Measured across 1.04 million cores under production load, with effectively no added latency. You scope which functions are hooked, so the cost is a number you set rather than a number you discover. The read happens at the point the application itself handles the value, which is after TLS has been terminated.',
   },
 ];
 
@@ -846,7 +846,7 @@ const CLASSES = [
 const OTHERS = [
   { k: 'endpoint detection', w: 'processes, files and shells on a host', m: 'Sees what a process does to the machine. Blind to what it does inside itself.' },
   { k: 'cloud posture', w: 'images, configuration and known CVEs', m: 'Scores what you deployed. It has no view of what that code actually executed.' },
-  { k: 'syscall sensors', w: 'execve, connect, open', m: 'Sees the boundary crossings. Application logic never crosses one.' },
+  { k: 'syscall sensors', w: 'execve, connect, open', m: 'Can tell you a service opened a new connection. Not which function opened it, what it was handed, or what came back.' },
   { k: 'web firewall', w: 'request payloads at the edge', m: 'Judges one request in isolation, against patterns somebody wrote in advance.' },
   { k: 'siem', w: 'what your services choose to log', m: 'Can only correlate what an engineer decided in advance was worth writing down.' },
   { k: 'tracing', w: 'which services a request touched, and how long each took', m: 'Spans, not calls. It stops at the service boundary and never goes inside.' },
@@ -866,7 +866,7 @@ const CAPTURE = [
   { h: 'Cleartext payloads', p: 'Request and response bodies as the application sees them, after TLS has been terminated and before anything is serialized back out.' },
   { h: 'The path it took', p: 'The order and depth of the calls this request made, so you see the path the code took rather than every path the source allows.' },
   { h: 'Stitched end to end', p: 'One trace across services, languages and processes, so a chain that crosses four of them is a single object.' },
-  { h: 'Java, Node, Python, Go', p: 'One node agent, on Kubernetes or on a bare-metal VM. It attaches to processes already running, so coverage arrives the day you deploy it and not the release after.' },
+  { h: 'Java, Node, Python, Go', p: 'One node agent, on Kubernetes or on a bare-metal VM. How each runtime is reached differs, and we will tell you which applies to your version before you scope it.' },
   { h: 'One capture, two jobs', p: 'The same record answers why the route got slower and who reached the ledger. Your platform team and your security team stop paying twice for the same bytes.' },
 ];
 
@@ -1188,7 +1188,7 @@ export const SecurityContent = () => {
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  And the blast radius of the capture is smaller still. It runs outside your application, so <b>a bad release of ours cannot corrupt your process or change what your code returns</b>, and what may be captured, on which
+                  And the blast radius of the capture is smaller still. It runs outside your application, so <b>the collector and the control plane never sit in your request path</b>, and what may be captured, on which
                   workload, by whom, <span className='q'>is governed by policy before anything is written</span>.
                 </p>
               </Verdict>
@@ -1218,7 +1218,7 @@ export const SecurityContent = () => {
             <Reveal>
               <Head>
                 <Eyebrow>Running it</Eyebrow>
-                <h2>Nothing of ours executes inside your process.</h2>
+                <h2>No source change. No rebuild. Nothing in your request path.</h2>
               </Head>
             </Reveal>
 
