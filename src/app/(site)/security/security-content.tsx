@@ -1373,8 +1373,8 @@ export const SecurityContent = () => {
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  Buying a seventh control at the same depth does not close it. <b>The chain crosses services</b>, and every row above this one{' '}
-                  <span className='q'>stops inside a single service</span>.
+                  Buying another control at this depth does not close it. <b>The chain is made of calls, and it crosses services.</b> Every row above this one{' '}
+                  <span className='q'>gives up on one or the other</span>.
                 </p>
               </Verdict>
             </Reveal>
