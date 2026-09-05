@@ -407,6 +407,7 @@ const Row = styled.div<{ $head?: boolean; $us?: boolean }>`
     ${({ $head }) => $head && 'font-family: var(--font-mono), monospace; letter-spacing: 0.12em; text-transform: uppercase;'}
     ${({ $head }) => !$head && 'color: var(--ink-mute);'}
   }
+  ${({ $head }) => ($head ? '@media (max-width: 900px) { display: none; }' : '')}
 `;
 
 
@@ -448,6 +449,7 @@ const Case = styled.div`
 
 
 const TrustLinks = styled.div`
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -518,15 +520,6 @@ const FindingBar = styled.div`
 
 const FindingBody = styled.div`
   padding: 6px 0;
-
-  @media (max-width: 640px) {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    > * {
-      width: max-content;
-      min-width: 100%;
-    }
-  }
 `;
 
 const Field = styled.div<{ $hot?: boolean }>`
@@ -551,8 +544,21 @@ const Field = styled.div<{ $hot?: boolean }>`
     font-family: var(--font-mono), monospace;
     font-size: clamp(11.5px, 1.05vw, 13px);
     line-height: 1.5;
-    word-break: break-all;
+    overflow-wrap: anywhere;
+    white-space: normal;
     color: ${({ $hot }) => ($hot ? 'var(--hot-ink)' : 'var(--ink)')};
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 78px 1fr;
+    gap: 10px;
+    padding: 9px 14px;
+    .k {
+      font-size: 9.5px;
+    }
+    .v {
+      font-size: 11px;
+    }
   }
 `;
 
@@ -926,11 +932,11 @@ export const SecurityContent = () => {
               <Head>
                 <Eyebrow>Agentless experience. Agent capabilities.</Eyebrow>
                 <h2>
-                  Deployed like an agentless tool. <span className='mute'>Sees like an agent.</span>
+                  Agentless to deploy. <span className='mute'>An agent&rsquo;s view inside.</span>
                 </h2>
                 <p>
-                  Agentless tools never see inside the process, so they miss the payload, the argument and the return value. In-app agents see all of it, and charge you vendor code in every service and a
-                  redeploy for each one. Odigos reads the process from the kernel. The inside view, with nothing inside.
+                  Agentless tools never see inside the process. In-app agents do, and cost you vendor code in every service plus a redeploy for each. Odigos reads the process from the kernel: the inside
+                  view, with nothing inside.
                 </p>
               </Head>
             </Reveal>
@@ -974,7 +980,7 @@ export const SecurityContent = () => {
                 <Head>
                   <Eyebrow>Mitigation at the function level</Eyebrow>
                   <h2>
-                    Take one function out of play. <span className='mute'>Not the service. Not the release.</span>
+                    Block one function. <span className='mute'>The service stays up.</span>
                   </h2>
                   <p>
                     The finding names the function, so the policy can too. Refuse the call for the routes and callers you name, or let it run and change what it returns. No proxy in front of the service, no
