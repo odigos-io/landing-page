@@ -6,6 +6,8 @@ import { LandingHeader, LandingFooter } from '@/containers/landing';
 import { Container, Eyebrow, Reveal, DemoCTA, TrialCTA } from '@/containers/landing/primitives';
 import { SecurityArt } from './security-art';
 import { DeployFigure } from './security-figures';
+import { LandingLogos } from '@/containers/landing';
+import { FAQ } from './security-faq';
 
 /* ---------------- shared ---------------- */
 const Section = styled.section<{ $alt?: boolean }>`
@@ -163,13 +165,13 @@ const DepthHead = styled.div`
   }
 
   @media (max-width: 780px) {
-    grid-template-columns: 88px repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     span {
       font-size: 7.5px;
       padding: 9px 3px;
     }
     span:first-child {
-      padding-left: 12px;
+      display: none;
     }
   }
 `;
@@ -226,18 +228,24 @@ const DepthRow = styled.div<{ $us?: boolean }>`
   }
 
   @media (max-width: 780px) {
-    grid-template-columns: 88px repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    padding: 10px 0 4px;
     .who {
-      padding: 0 6px 0 12px;
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 8px;
+      padding: 0 12px 4px;
     }
     .k {
-      font-size: 9px;
+      font-size: 9.5px;
+      flex: none;
     }
     .n {
-      display: none;
+      font-size: 11.5px;
     }
     .cell {
-      height: 44px;
+      height: 30px;
     }
   }
   .cell:last-child {
@@ -621,6 +629,46 @@ const Verdict = styled.div`
   }
 `;
 
+/* ---------------- short answers ---------------- */
+const Faq = styled.div`
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  > * {
+    min-width: 0;
+  }
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const FaqItem = styled.div`
+  padding: 22px 24px 24px;
+  background: var(--paper-2);
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+  @media (max-width: 800px) {
+    padding: 18px 16px 20px;
+  }
+`;
+
 /* ---------------- close ---------------- */
 const CloseInner = styled(Container)`
   padding-top: 96px;
@@ -747,7 +795,7 @@ export const SecurityContent = () => {
           <HeroInner>
             <div>
               <Reveal>
-                <Eyebrow>Outside the process. Across every service.</Eyebrow>
+                <Eyebrow>eBPF runtime security for Kubernetes</Eyebrow>
               </Reveal>
               <Reveal delay={60}>
                 <HeroH1>
@@ -811,12 +859,14 @@ export const SecurityContent = () => {
                 ))}
                 <DepthNote>
                   <b>from ebpf</b>
-                  <span>One runtime on the node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU across 1.04 million production cores. The node sensor is open source.</span>
+                  <span>One runtime on each Kubernetes node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU across 1.04 million production cores. The node sensor is open source.</span>
                 </DepthNote>
               </Depth>
             </Reveal>
           </Inner>
         </Section>
+
+        <LandingLogos />
 
         {/* what you already run */}
         <Section $alt>
@@ -892,7 +942,7 @@ export const SecurityContent = () => {
             <Split>
               <Reveal>
                 <Head>
-                  <Eyebrow>Mitigation at the function level</Eyebrow>
+                  <Eyebrow>Virtual patching at the function level</Eyebrow>
                   <h2>
                     Block one function. <span className='mute'>The service stays up.</span>
                   </h2>
@@ -933,6 +983,28 @@ export const SecurityContent = () => {
                   </Case>
                 ))}
               </Cases>
+            </Reveal>
+          </Inner>
+        </Section>
+
+        {/* short answers, the same ones answer engines get */}
+        <Section $alt>
+          <Inner>
+            <Reveal>
+              <Head>
+                <Eyebrow>Short answers</Eyebrow>
+                <h2>The five questions we get first.</h2>
+              </Head>
+            </Reveal>
+            <Reveal delay={60}>
+              <Faq>
+                {FAQ.map((x) => (
+                  <FaqItem key={x.q}>
+                    <h3>{x.q}</h3>
+                    <p>{x.a}</p>
+                  </FaqItem>
+                ))}
+              </Faq>
             </Reveal>
           </Inner>
         </Section>
