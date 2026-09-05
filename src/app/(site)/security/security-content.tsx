@@ -650,6 +650,9 @@ const Faq = styled.div`
 const FaqItem = styled.div`
   padding: 22px 24px 24px;
   background: var(--paper-2);
+  &:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 
   h3 {
     margin: 0 0 8px;
