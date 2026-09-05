@@ -329,6 +329,13 @@ const Map = styled.svg`
     text-transform: uppercase;
     opacity: 0.9;
   }
+  /* the panel is a third the width on a phone, so the labels grow */
+  @media (max-width: 560px) {
+    text {
+      font-size: 3.5px;
+      letter-spacing: 0.15px;
+    }
+  }
   .l1 {
     fill: ${HOT};
     animation: ${stay(LAND_AT + 0.3)} ${T}s ease infinite;
@@ -563,8 +570,8 @@ const Line = styled.div<{ $a: number; $b?: number }>`
     color: var(--accent);
   }
   @media (max-width: 560px) {
-    font-size: 10.5px;
-    padding: 8px 11px;
+    font-size: 12px;
+    padding: 9px 12px;
   }
 `;
 
