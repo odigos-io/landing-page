@@ -117,38 +117,6 @@ const HeroSub = styled.p`
 `;
 
 
-const Refrain = styled.div`
-  margin-top: 44px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 30px 0;
-
-  span {
-    flex: 1 1 auto;
-    padding-right: 26px;
-    font-size: clamp(19px, 2.1vw, 27px);
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-    white-space: nowrap;
-  }
-  span:last-child {
-    color: var(--ink-faint);
-  }
-
-  @media (max-width: 720px) {
-    gap: 4px 0;
-    span {
-      flex: 0 0 100%;
-      font-size: 21px;
-      padding-right: 0;
-    }
-  }
-`;
-
 const HeroCtas = styled.div`
   margin-top: 32px;
   display: flex;
@@ -158,42 +126,6 @@ const HeroCtas = styled.div`
     > * {
       flex: 1 1 100%;
     }
-  }
-`;
-
-
-/* ---------------- what it captures ---------------- */
-const Caps = styled.div`
-  margin-top: 48px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  > * {
-    min-width: 0;
-  }
-  gap: 40px 44px;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-`;
-
-const Cap = styled.div`
-  padding-top: 18px;
-  border-top: 2px solid var(--accent);
-
-  h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-  }
-  p {
-    margin: 10px 0 0;
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--ink-mute);
   }
 `;
 
@@ -430,37 +362,6 @@ const Case = styled.div`
   }
 `;
 
-
-const TrustLinks = styled.div`
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-
-  a {
-    padding: 18px 20px;
-    background: var(--paper-2);
-    font-family: var(--font-mono), monospace;
-    font-size: 13px;
-    color: var(--ink);
-    text-decoration: none;
-    transition: background 0.15s ease;
-  }
-  a:hover {
-    background: var(--paper-3);
-    color: var(--accent);
-  }
-  a {
-    color: var(--accent);
-  }
-  a::after {
-    content: ' →';
-  }
-`;
 
 /* ---------------- the finding ---------------- */
 const Split = styled.div`
@@ -773,15 +674,6 @@ const PATCHING = [
   { h: 'A window your change process cannot close', p: 'Disclosure to working exploit is now hours. Your emergency change window is days.' },
 ];
 
-const CAPTURE = [
-  { h: 'Arguments and return values', p: 'What the function was handed and what it gave back, on the routes you choose.' },
-  {
-    h: 'Cleartext payloads',
-    p: 'Request and response bodies as the application sees them. Fields you name are redacted at the node, and the data leaves as OpenTelemetry to a destination you own.',
-  },
-  { h: 'Stitched across services', p: 'A chain that crosses four services arrives as one trace.' },
-];
-
 
 const EVIDENCE = [
   { k: 'service', v: 'tickets-api · java' },
@@ -929,32 +821,6 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={60}>
               <DeployFigure />
-            </Reveal>
-            <Reveal delay={90}>
-              <Refrain>
-                <span>No code changes.</span>
-                <span>No SDK.</span>
-                <span>No sidecar.</span>
-                <span>No redeploy.</span>
-                <span>No developer ticket.</span>
-              </Refrain>
-            </Reveal>
-            <Reveal delay={110}>
-              <Caps>
-                {CAPTURE.map((c) => (
-                  <Cap key={c.h}>
-                    <h3>{c.h}</h3>
-                    <p>{c.p}</p>
-                  </Cap>
-                ))}
-              </Caps>
-            </Reveal>
-            <Reveal delay={130}>
-              <TrustLinks>
-                <a href='https://github.com/odigos-io/odigos/tree/main/odiglet'>Read the node agent source</a>
-                <a href='https://trust.odigos.io'>Trust center and SOC 2</a>
-                <a href='https://docs.odigos.io/quickstart/introduction'>The deployment guide</a>
-              </TrustLinks>
             </Reveal>
           </Inner>
         </Section>
