@@ -136,7 +136,7 @@ const Cell = styled.rect<{ $i: number }>`
 
 const Var = styled.path<{ $i: number }>`
   fill: none;
-  stroke: ${HOT};
+  stroke: url(#lens-ramp);
   stroke-width: 0.46;
   stroke-linecap: round;
   stroke-dasharray: 1;
@@ -246,7 +246,13 @@ export const SecurityArt = () => (
       </Strip>
       <Field>
         <Map viewBox='0 0 148 96' preserveAspectRatio='xMidYMid meet' aria-hidden>
-          <Cap x={AX - 1} y={AY + 13} $a={CELLS_AT} $c={HOT} $s={3.1}>
+          <defs>
+            <linearGradient id='lens-ramp' gradientUnits='userSpaceOnUse' x1={X0} y1={0} x2={X1} y2={0}>
+              <stop offset='0' stopColor={HOT} stopOpacity={1} />
+              <stop offset='1' stopColor={HOT} stopOpacity={0.28} />
+            </linearGradient>
+          </defs>
+          <Cap x={AX - 1} y={AY - 5.5} $a={CELLS_AT} $c={HOT} $s={2.8}>
             ai operator
           </Cap>
           {CELLS.map((_, i) => (

@@ -308,6 +308,9 @@ const DepthRow = styled.div<{ $us?: boolean }>`
       height: 44px;
     }
   }
+  .cell:last-child {
+    padding-right: 10px;
+  }
 `;
 
 const DepthNote = styled.div`
@@ -835,7 +838,7 @@ export const SecurityContent = () => {
                 <h2>
                   Every tool you own stops <span className='mute'>one layer above the attack.</span>
                 </h2>
-                <p>The attack is function calls, spread across services. Nothing you run reaches the function. Nothing you run sees across services. One row does both.</p>
+                <p>The attack is function calls, spread across services. Nothing you run reaches the function. Nothing you run sees across services.</p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
@@ -861,7 +864,7 @@ export const SecurityContent = () => {
                 ))}
                 <DepthNote>
                   <b>from ebpf</b>
-                  <span>One runtime on the node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU, measured across 1.04 million production cores, and the node agent is open source.</span>
+                  <span>One runtime on the node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU across 1.04 million production cores. The node agent is open source.</span>
                 </DepthNote>
               </Depth>
             </Reveal>
@@ -911,7 +914,7 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Agentless experience. Agent capabilities.</Eyebrow>
+                <Eyebrow>Nothing in your process</Eyebrow>
                 <h2>
                   Agentless to deploy. <span className='mute'>An agent&rsquo;s view inside.</span>
                 </h2>

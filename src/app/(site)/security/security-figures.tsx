@@ -25,19 +25,6 @@ const Board = styled.div`
   background: var(--paper-2);
   overflow: hidden;
 
-  /* on a phone the diagram scrolls; the fade says so before the hint does */
-  @media (max-width: 820px) {
-    &::after {
-      content: '';
-      position: absolute;
-      top: 44px;
-      bottom: 34px;
-      right: 0;
-      width: 28px;
-      pointer-events: none;
-      background: linear-gradient(90deg, rgba(253, 252, 254, 0), #f7f5fa);
-    }
-  }
 `;
 
 const Strip = styled.div`
@@ -65,6 +52,10 @@ const Scroll = styled.div`
     overflow-x: auto;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
+    padding-right: 24px;
+    /* the diagram scrolls; the fade says so before the hint does */
+    mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent);
   }
 `;
 
