@@ -328,7 +328,7 @@ const TraceRow = styled.div<{ $d: number; $tag?: string }>`
   gap: 12px;
   padding: 9px 18px 9px ${({ $d }) => 18 + $d * 18}px;
   border-bottom: 1px solid var(--line);
-  background: ${({ $tag }) => ($tag === 'refused' ? 'rgba(91,67,241,0.06)' : $tag ? 'rgba(201,52,106,0.05)' : 'transparent')};
+  background: ${({ $tag }) => ($tag?.endsWith('refused') ? 'rgba(91,67,241,0.06)' : $tag ? 'rgba(201,52,106,0.05)' : 'transparent')};
   &:last-child {
     border-bottom: none;
   }
@@ -343,7 +343,7 @@ const TraceRow = styled.div<{ $d: number; $tag?: string }>`
   .fn {
     font-family: var(--font-mono), monospace;
     font-size: 12px;
-    color: ${({ $tag }) => ($tag === 'refused' ? 'var(--accent)' : $tag ? 'var(--hot-ink)' : 'var(--ink)')};
+    color: ${({ $tag }) => ($tag?.endsWith('refused') ? 'var(--accent)' : $tag ? 'var(--hot-ink)' : 'var(--ink)')};
     overflow-wrap: anywhere;
   }
   .tag {
@@ -354,8 +354,8 @@ const TraceRow = styled.div<{ $d: number; $tag?: string }>`
     white-space: nowrap;
     padding: 2px 8px;
     border-radius: 999px;
-    color: ${({ $tag }) => ($tag === 'refused' ? '#fff' : 'var(--hot-ink)')};
-    background: ${({ $tag }) => ($tag === 'refused' ? 'var(--accent)' : 'rgba(201,52,106,0.1)')};
+    color: ${({ $tag }) => ($tag?.endsWith('refused') ? '#fff' : 'var(--hot-ink)')};
+    background: ${({ $tag }) => ($tag?.endsWith('refused') ? 'var(--accent)' : 'rgba(201,52,106,0.1)')};
   }
 
   @media (max-width: 600px) {
@@ -714,7 +714,7 @@ const OBSERVED: Span[] = [
   { svc: 'api', fn: 'TemplateRenderer.render', d: 2 },
   { svc: 'api', fn: 'SpelExpressionParser.parse', d: 3, tag: 'new · cve' },
   { svc: 'api', fn: 'ReflectiveMethodExecutor.execute', d: 3, tag: 'new' },
-  { svc: 'worker', fn: 'Job.run', d: 2, tag: 'refused' },
+  { svc: 'worker', fn: 'Job.run', d: 2, tag: 'zero-day · refused' },
   { svc: 'api', fn: 'TicketRepository.save', d: 2 },
 ];
 
@@ -783,7 +783,7 @@ export const SecurityContent = () => {
                   Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
                 </h2>
                 <p>
-                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. ADR sees inside one process, and not very far. All of it is after the fact,
+                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. ADR sees inside one process, and only shallowly. All of it is after the fact,
                   and a tailored attack leaves none of it until it is finished. Odigos sees as deep as the runtime goes, the function calls the attack is made of, across every service at once.
                 </p>
               </Head>
@@ -811,7 +811,7 @@ export const SecurityContent = () => {
                 ))}
                 <DepthNote>
                   <b>from ebpf</b>
-                  <span>One runtime on the node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU across 1.04 million production cores. The node agent is open source.</span>
+                  <span>One runtime on the node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU across 1.04 million production cores. The node sensor is open source.</span>
                 </DepthNote>
               </Depth>
             </Reveal>
@@ -875,7 +875,7 @@ export const SecurityContent = () => {
                   Zero effort for your developers. <span className='mute'>An eBPF sensor unlike any other.</span>
                 </h2>
                 <p>
-                  Nothing in your code, nothing in your process, nothing in anyone&rsquo;s sprint. Other eBPF sensors stop at what the kernel sees: syscalls, sockets, files. Odigos reads the function
+                  Nothing in your code, nothing in your process, nothing in anyone&rsquo;s sprint. Most eBPF sensors stop at what the kernel sees: syscalls, sockets, files. Odigos reads the function
                   calls inside the process, with their arguments and return values, and stitches them across every service.
                 </p>
               </Head>
@@ -899,7 +899,7 @@ export const SecurityContent = () => {
                   <p>
                     Detection is baselined on your own traffic: the calls a route normally makes, and the one it has never made. No shared model, no signature feed. The finding names the function, so the
                     policy can too. Refuse the call, or let it run and change what it returns. Scope it to the callers you name. Ship or revert it without a redeploy. When the real patch lands you delete it,
-                    and the call runs exactly as it always did.
+                    and the call runs exactly as it always did. Fields you name are redacted at the node, and everything captured leaves as OpenTelemetry to a destination you own.
                   </p>
                 </Head>
               </Reveal>
@@ -940,13 +940,13 @@ export const SecurityContent = () => {
         <Section>
           <CloseInner>
             <Reveal>
-              <Eyebrow>AI-powered attacks</Eyebrow>
+              <Eyebrow>One operator. Every service.</Eyebrow>
             </Reveal>
             <Reveal delay={60}>
               <h2>Mythos-class attacks, met at the function level.</h2>
             </Reveal>
             <Reveal delay={120}>
-              <p>One operator with a frontier model now runs what took a team. See every function call in every service, with nothing in your code, and block the attack where it happens. Start on one service: fourteen days, success criteria written first.</p>
+              <p>One operator with a Mythos-class model now runs what took a team. See every function call in every service, with nothing in your code, and block the attack where it happens. Start on one service: fourteen days, success criteria written first.</p>
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>

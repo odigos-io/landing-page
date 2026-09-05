@@ -609,7 +609,7 @@ const CUT = (() => {
 
 export const SecurityArt = () => (
   <Frame>
-    <Panel role='img' aria-label='A map of services. An AI operator probes the estate, lands on the edge service through an SSRF, moves sideways to the API through a CVE, and is refused by policy before reaching the worker.'>
+    <Panel role='img' aria-label='A map of services. An AI operator probes the estate, lands on the edge service through an SSRF, moves sideways to the API through a CVE, and is refused by policy at the worker.'>
       <Field>
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid slice' aria-hidden>
           {MAP.links.map((l, i) => (
