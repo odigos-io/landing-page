@@ -65,7 +65,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: 'Product',
     items: [
       { label: 'Overview', href: '/product', blurb: 'What Odigos captures, and how' },
-      { label: 'Security', href: '/security', blurb: 'AI-speed attacks, refused at the function' },
+      { label: 'Security', href: '/security', blurb: 'See into the runtime. Block AI-powered attacks.' },
       { label: 'Comparisons', href: '/comparisons', blurb: 'How the approaches actually differ' },
     ],
   },

@@ -18,11 +18,26 @@ const still = css`
 `;
 
 const Board = styled.div`
+  position: relative;
   margin-top: 44px;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   background: var(--paper-2);
   overflow: hidden;
+
+  /* on a phone the diagram scrolls; the fade says so before the hint does */
+  @media (max-width: 820px) {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 44px;
+      bottom: 34px;
+      right: 0;
+      width: 28px;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(253, 252, 254, 0), #f7f5fa);
+    }
+  }
 `;
 
 const Strip = styled.div`
@@ -234,7 +249,7 @@ export const DeployFigure = () => (
 
         {/* the kernel, and the read upward into a process we never enter */}
         {[26, 44, 62, 80, 98].map((x, i) => (
-          <Ray key={x} d={`M${x} 51.4 l2.1 4.2 h-4.2 z`} $i={i} />
+          <Ray key={x} d={`M${x} 50.6 l3 5.6 h-6 z`} $i={i} />
         ))}
         <Region $a={1.6}>
           <Kern x={12} y={57} width={114} height={11} rx={2} />
@@ -256,6 +271,6 @@ export const DeployFigure = () => (
       </Svg>
     </Stage>
     </Scroll>
-    <Hint>scroll sideways</Hint>
+    <Hint>scroll sideways &rsaquo;</Hint>
   </Board>
 );

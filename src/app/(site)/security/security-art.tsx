@@ -23,7 +23,7 @@ const Y0 = AY + 3.5; /* where the lens starts and ends */
 const X0 = 20;
 const X1 = 116;
 
-const VARIANTS = Array.from({ length: 29 }, (_, i) => ({ y: 13 + (i / 28) * 66, i }));
+const VARIANTS = Array.from({ length: 29 }, (_, i) => ({ y: 9 + (i / 28) * 74, i }));
 const CELLS = [0.9, 0.35, 0.68, 0.22, 0.5, 0.85, 0.3, 0.62, 0.75, 0.28, 0.92, 0.44, 0.38, 0.7, 0.25, 0.8];
 
 const CELLS_AT = 0.5;
@@ -147,6 +147,22 @@ const Var = styled.path<{ $i: number }>`
   }
 `;
 
+const haloIn = keyframes`
+  0%,${p(RING_AT)}%{opacity:0;transform:scale(.3)}
+  ${p(RING_AT + 0.6)}%,100%{opacity:.08;transform:scale(1)}`;
+
+const Halo = styled.circle`
+  fill: var(--accent);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ${haloIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.08;
+    transform: none;
+  }
+`;
+
 const Ring = styled.circle`
   fill: #fdfcfe;
   stroke: ${VIOLET};
@@ -230,7 +246,7 @@ export const SecurityArt = () => (
       </Strip>
       <Field>
         <Map viewBox='0 0 148 96' preserveAspectRatio='xMidYMid meet' aria-hidden>
-          <Cap x={AX - 1} y={AY - 4.5} $a={CELLS_AT} $c={HOT} $s={3.1}>
+          <Cap x={AX - 1} y={AY + 13} $a={CELLS_AT} $c={HOT} $s={3.1}>
             ai operator
           </Cap>
           {CELLS.map((_, i) => (
@@ -245,8 +261,12 @@ export const SecurityArt = () => (
             tries everything, at machine speed
           </Cap>
 
-          <Ring cx={X1} cy={Y0} r={4.6} />
-          <Shut x={X1 - 0.85} y={Y0 - 9} width={1.7} height={18} rx={0.4} />
+          <Halo cx={X1} cy={Y0} r={11} />
+          <Ring cx={X1} cy={Y0} r={6.2} />
+          <Shut x={X1 - 0.9} y={Y0 - 11} width={1.8} height={22} rx={0.4} />
+          <Cap x={X1 + 13.5} y={Y0 + 1.2} $a={SHUT_AT + 0.3} $c={VIOLET} $s={3.1}>
+            refused
+          </Cap>
 
           <Cap x={68} y={90} $a={RING_AT + 0.4} $m='middle' $c={VIOLET} $s={3.3}>
             every one of them makes a call this route has never made
@@ -260,7 +280,7 @@ export const SecurityArt = () => (
         </Quiet>
         <Loud>
           <Pill>refused</Pill>
-          <span>before it runs</span>
+          <span>by policy, before it runs</span>
         </Loud>
       </Foot>
     </Panel>

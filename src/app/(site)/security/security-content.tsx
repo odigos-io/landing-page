@@ -43,6 +43,9 @@ const Head = styled.div`
     color: var(--ink-soft);
     max-width: 640px;
   }
+  p {
+    max-width: 620px;
+  }
 `;
 
 /* ---------------- hero ---------------- */
@@ -114,35 +117,6 @@ const HeroSub = styled.p`
 `;
 
 
-const Denials = styled.div`
-  margin: 26px 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 20px;
-  max-width: 540px;
-
-  span {
-    position: relative;
-    font-family: var(--font-mono), monospace;
-    font-size: 12.5px;
-    letter-spacing: 0.02em;
-    color: var(--ink);
-    padding: 2px 0;
-  }
-  span::before {
-    content: '';
-    position: absolute;
-    left: -11px;
-    top: 50%;
-    width: 5px;
-    height: 1px;
-    background: var(--hot);
-  }
-  span:first-child::before {
-    display: none;
-  }
-`;
-
 const Refrain = styled.div`
   margin-top: 44px;
   display: flex;
@@ -180,6 +154,11 @@ const HeroCtas = styled.div`
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  @media (max-width: 600px) {
+    > * {
+      flex: 1 1 100%;
+    }
+  }
 `;
 
 
@@ -302,10 +281,10 @@ const DepthRow = styled.div<{ $us?: boolean }>`
     justify-content: center;
   }
   .pip {
-    width: calc(100% - 8px);
+    width: calc(100% - 14px);
     height: ${({ $us }) => ($us ? '10px' : '7px')};
     border-radius: 6px;
-    background: ${({ $us }) => ($us ? 'var(--accent)' : 'rgba(24,20,54,0.2)')};
+    background: ${({ $us }) => ($us ? 'var(--accent)' : 'rgba(24,20,54,0.3)')};
   }
   .miss {
     width: 5px;
@@ -382,7 +361,7 @@ const Row = styled.div<{ $head?: boolean; $us?: boolean }>`
   }
 
   padding: ${({ $head }) => ($head ? '0 0 12px' : '22px 0')};
-  background: ${({ $us }) => ($us ? 'rgba(91,67,241,0.04)' : 'transparent')};
+  background: ${({ $us }) => ($us ? 'rgba(91,67,241,0.05)' : 'transparent')};
   box-shadow: ${({ $us }) => ($us ? 'inset 3px 0 0 var(--accent)' : 'none')};
 
   .k {
@@ -408,6 +387,7 @@ const Row = styled.div<{ $head?: boolean; $us?: boolean }>`
     ${({ $head }) => !$head && 'color: var(--ink-mute);'}
   }
   ${({ $head }) => ($head ? '@media (max-width: 900px) { display: none; }' : '')}
+  ${({ $us }) => ($us ? '@media (max-width: 900px) { padding-left: 16px; .k { padding-left: 0; } }' : '')}
 `;
 
 
@@ -470,6 +450,12 @@ const TrustLinks = styled.div`
   a:hover {
     background: var(--paper-3);
     color: var(--accent);
+  }
+  a {
+    color: var(--accent);
+  }
+  a::after {
+    content: ' \2192';
   }
 `;
 
@@ -758,7 +744,7 @@ const runs = (cells: number[]) => {
   return out;
 };
 
-const LAYERS = ['network', 'host', 'process', 'function', 'across services'];
+const LAYERS = ['network', 'host', 'process', 'function', 'cross-service'];
 const DEPTH = [
   { k: 'waf', cells: [1, 0, 0, 0, 0], note: 'the request at the edge' },
   { k: 'edr', cells: [0, 1, 0, 0, 0], note: 'processes and files on a host' },
@@ -768,8 +754,8 @@ const DEPTH = [
 ];
 
 const OTHERS = [
-  { k: 'endpoint detection', w: 'processes, files and shells on a host', m: 'Sees what a process does to the machine. Not what it does inside itself.' },
-  { k: 'cloud posture', w: 'images, configuration and known CVEs', m: 'Scores what you deployed. Never sees what it executed.' },
+  { k: 'endpoint detection', w: 'processes and files on a host', m: 'Sees what a process does to the machine. Not what it does inside itself.' },
+  { k: 'cloud posture', w: 'images and known CVEs', m: 'Scores what you deployed. Never sees what it executed.' },
   { k: 'web firewall', w: 'request payloads at the edge', m: 'One request at a time, against patterns written in advance.' },
   { k: 'siem', w: 'what your services choose to log', m: 'Correlates only what an engineer decided in advance to write down.' },
   { k: 'in-app agents', w: 'your process, from inside it', m: 'Vendor code on your call stack, one redeploy per service. Their bad release is your outage.' },
@@ -785,9 +771,12 @@ const PATCHING = [
 ];
 
 const CAPTURE = [
-  { h: 'Arguments and return values', p: 'What the function was handed and what it gave back. On the routes you scope, the values themselves.' },
-  { h: 'Cleartext payloads', p: 'Request and response bodies the way the application sees them, after TLS and before serialization.' },
-  { h: 'Stitched across services', p: 'One trace across services, languages and processes, so a chain that crosses four of them is one object.' },
+  { h: 'Arguments and return values', p: 'What the function was handed and what it gave back, on the routes you choose.' },
+  {
+    h: 'Cleartext payloads',
+    p: 'Request and response bodies as the application sees them. Fields you name are redacted at the node, and the data leaves as OpenTelemetry to a destination you own.',
+  },
+  { h: 'Stitched across services', p: 'A chain that crosses four services arrives as one trace.' },
 ];
 
 
@@ -820,17 +809,9 @@ export const SecurityContent = () => {
               </Reveal>
               <Reveal delay={120}>
                 <HeroSub>
-                  An operator with a model tries every variant, chains what works across your services, and does it inside one request.{' '}
-                  <b>Odigos sees every function call in every service, with nothing in your code, and refuses the one that matters.</b>
+                  An operator with a model tries every variant, chains what works, and finishes inside one request. <b>Odigos lets you see into the runtime like never before</b>: every function call, in
+                  every service, with nothing in your code. <b>Then it blocks AI-powered attacks at the function level</b>, before they run.
                 </HeroSub>
-              </Reveal>
-              <Reveal delay={150}>
-                <Denials>
-                  <span>No code changes</span>
-                  <span>No SDK</span>
-                  <span>No sidecar</span>
-                  <span>No redeploy</span>
-                </Denials>
               </Reveal>
               <Reveal delay={180}>
                 <HeroCtas>
@@ -880,7 +861,7 @@ export const SecurityContent = () => {
                 ))}
                 <DepthNote>
                   <b>from ebpf</b>
-                  <span>One runtime on the node, reading the calls from the kernel. That is how it gets this deep with nothing inside your application.</span>
+                  <span>One runtime on the node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU, measured across 1.04 million production cores, and the node agent is open source.</span>
                 </DepthNote>
               </Depth>
             </Reveal>
@@ -894,9 +875,9 @@ export const SecurityContent = () => {
               <Head>
                 <Eyebrow>What you already run</Eyebrow>
                 <h2>
-                  None of it is misconfigured. <span className='mute'>All of it is looking somewhere else.</span>
+                  Every control you own <span className='mute'>is looking somewhere else.</span>
                 </h2>
-                <p>Each control watches a layer the attack never touched. More of the same buys more of the same view.</p>
+                <p>None of it is misconfigured. Each one watches a layer the attack never touched, and more of the same gets you more of the same view.</p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
@@ -983,8 +964,8 @@ export const SecurityContent = () => {
                     Block one function. <span className='mute'>The service stays up.</span>
                   </h2>
                   <p>
-                    The finding names the function, so the policy can too. Refuse the call for the routes and callers you name, or let it run and change what it returns. No proxy in front of the service, no
-                    redeploy, and when the real patch ships you delete the policy.
+                    Detection is baselined on your own traffic: the calls a route normally makes, and the one it has never made. No shared model, no signature feed. The finding names the function, so the
+                    policy can too. Refuse the call for the routes and callers you name, or let it run and change what it returns. No proxy, no redeploy, and when the real patch ships you delete the policy.
                   </p>
                 </Head>
               </Reveal>
@@ -1025,13 +1006,13 @@ export const SecurityContent = () => {
         <Section>
           <CloseInner>
             <Reveal>
-              <Eyebrow>Start somewhere</Eyebrow>
+              <Eyebrow>One service. Fourteen days.</Eyebrow>
             </Reveal>
             <Reveal delay={60}>
               <h2>Pick the service you would least like to explain.</h2>
             </Reveal>
             <Reveal delay={120}>
-              <p>Thirty days on one service, success criteria written down first. At the end you have the call graph for every route it serves, or our answer for why we could not see it.</p>
+              <p>Fourteen days on one service, success criteria written down first. At the end you have the call graph for every route it serves, or we tell you why not.</p>
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>
