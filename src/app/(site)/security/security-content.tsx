@@ -6,8 +6,6 @@ import { LandingHeader, LandingFooter } from '@/containers/landing';
 import { Container, Eyebrow, Reveal, DemoCTA, TrialCTA } from '@/containers/landing/primitives';
 import { SecurityArt } from './security-art';
 import { DeployFigure } from './security-figures';
-import { LandingLogos } from '@/containers/landing';
-import { FAQ } from './security-faq';
 
 /* ---------------- shared ---------------- */
 const Section = styled.section<{ $alt?: boolean }>`
@@ -629,48 +627,6 @@ const Verdict = styled.div`
   }
 `;
 
-/* ---------------- short answers ---------------- */
-const Faq = styled.div`
-  margin-top: 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  > * {
-    min-width: 0;
-  }
-  @media (max-width: 800px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const FaqItem = styled.div`
-  padding: 22px 24px 24px;
-  background: var(--paper-2);
-  &:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-
-  h3 {
-    margin: 0 0 8px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-  p {
-    margin: 0;
-    font-size: 14.5px;
-    line-height: 1.6;
-    color: var(--ink-mute);
-  }
-  @media (max-width: 800px) {
-    padding: 18px 16px 20px;
-  }
-`;
 
 /* ---------------- close ---------------- */
 const CloseInner = styled(Container)`
@@ -869,8 +825,6 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
-        <LandingLogos />
-
         {/* what you already run */}
         <Section $alt>
           <Inner>
@@ -986,28 +940,6 @@ export const SecurityContent = () => {
                   </Case>
                 ))}
               </Cases>
-            </Reveal>
-          </Inner>
-        </Section>
-
-        {/* short answers, the same ones answer engines get */}
-        <Section $alt>
-          <Inner>
-            <Reveal>
-              <Head>
-                <Eyebrow>Short answers</Eyebrow>
-                <h2>The five questions we get first.</h2>
-              </Head>
-            </Reveal>
-            <Reveal delay={60}>
-              <Faq>
-                {FAQ.map((x) => (
-                  <FaqItem key={x.q}>
-                    <h3>{x.q}</h3>
-                    <p>{x.a}</p>
-                  </FaqItem>
-                ))}
-              </Faq>
             </Reveal>
           </Inner>
         </Section>

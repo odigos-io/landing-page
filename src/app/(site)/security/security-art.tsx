@@ -14,7 +14,7 @@ import styled, { keyframes, css } from 'styled-components';
 
    crimson is the operator, violet is us, grey is the estate. */
 
-const T = 16;
+const T = 12;
 const pc = (s: number) => Math.max(0, Math.min(100, (s / T) * 100));
 
 const GREY = 'rgba(24, 20, 54, 0.32)';
@@ -22,11 +22,11 @@ const HOT = '#c9346a';
 const LIT = '#5b43f1';
 
 /* beats, in seconds */
-const PROBE_AT = 0.9;
-const LAND_AT = 4.9;
-const HOP1_AT = 7.4;
-const HOP2_AT = 10.4;
-const STOP_AT = 11.6;
+const PROBE_AT = 0.7;
+const LAND_AT = 2.6;
+const HOP1_AT = 4.3;
+const HOP2_AT = 6.3;
+const STOP_AT = 7.3;
 
 /* the estate, drawn once from a fixed seed so hydration matches */
 const CLUSTERS: [number, number, number][] = [
@@ -96,10 +96,48 @@ const E = { x: CLUSTERS[EDGE][0], y: CLUSTERS[EDGE][1] };
 const A = { x: CLUSTERS[API][0], y: CLUSTERS[API][1] };
 const Wk = { x: CLUSTERS[WORKER][0], y: CLUSTERS[WORKER][1] };
 
+const r3 = (v: number) => Math.round(v * 1000) / 1000;
+const cut = (a: { x: number; y: number }, b: { x: number; y: number }, r: number) => {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const d = Math.hypot(dx, dy);
+  return { x1: r3(a.x + (dx / d) * r), y1: r3(a.y + (dy / d) * r), x2: r3(b.x - (dx / d) * r), y2: r3(b.y - (dy / d) * r) };
+};
+const IN = cut(OP, E, 2.4);
+const H1 = cut(E, A, 2.4);
+const H2 = cut(A, Wk, 2.4);
+/* a gentle bow, so the path travels rather than rules */
+const bow = (s: { x1: number; y1: number; x2: number; y2: number }, k: number) => {
+  const mx = (s.x1 + s.x2) / 2;
+  const my = (s.y1 + s.y2) / 2;
+  const dx = s.x2 - s.x1;
+  const dy = s.y2 - s.y1;
+  const d = Math.hypot(dx, dy);
+  const c = { x: r3(mx - (dy / d) * k), y: r3(my + (dx / d) * k) };
+  return { d: `M${s.x1} ${s.y1} Q${c.x} ${c.y} ${s.x2} ${s.y2}`, c };
+};
+const D_IN = `M${IN.x1} ${IN.y1} L${IN.x2} ${IN.y2}`;
+const D_H1 = bow(H1, -5).d;
+const B2 = bow(H2, 6);
+const D_H2 = B2.d;
+/* where the second hop is stopped: half way along its curve */
+const CUT = (() => {
+  const tt = 0.5;
+  const x = (1 - tt) ** 2 * H2.x1 + 2 * (1 - tt) * tt * B2.c.x + tt ** 2 * H2.x2;
+  const y = (1 - tt) ** 2 * H2.y1 + 2 * (1 - tt) * tt * B2.c.y + tt ** 2 * H2.y2;
+  const tx = 2 * (1 - tt) * (B2.c.x - H2.x1) + 2 * tt * (H2.x2 - B2.c.x);
+  const ty = 2 * (1 - tt) * (B2.c.y - H2.y1) + 2 * tt * (H2.y2 - B2.c.y);
+  const n = Math.hypot(tx, ty);
+  const nx = -ty / n;
+  const ny = tx / n;
+  const r = (v: number) => Math.round(v * 1000) / 1000;
+  return { x1: r(x + nx * 3.2), y1: r(y + ny * 3.2), x2: r(x - nx * 3.2), y2: r(y - ny * 3.2), x: r(x), y: r(y) };
+})();
+
 /* --- motion --- */
 
 const probeIn = (i: number) => {
-  const a = PROBE_AT + i * 0.12;
+  const a = PROBE_AT + i * 0.065;
   return keyframes`
   0%,${pc(a)}%{stroke-dashoffset:1;opacity:0}
   ${pc(a + 0.04)}%{opacity:.42}
@@ -291,7 +329,7 @@ const Map = styled.svg`
   }
   .cut {
     stroke: ${LIT};
-    stroke-width: 0.75;
+    stroke-width: 0.9;
     stroke-linecap: round;
     transform-box: fill-box;
     transform-origin: center;
@@ -305,11 +343,6 @@ const Map = styled.svg`
     transform-box: fill-box;
     transform-origin: center;
     animation: ${cutIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  }
-  .l4 {
-    fill: ${LIT};
-    font-weight: 500;
-    animation: ${stay(STOP_AT + 0.15)} ${T}s ease infinite;
   }
   .src {
     fill: ${HOT};
@@ -390,8 +423,7 @@ const Map = styled.svg`
       opacity: 0.55;
     }
     .cut,
-    .cutglow,
-    .l4 {
+    .cutglow {
       animation: none;
       opacity: 1;
       transform: none;
@@ -486,6 +518,55 @@ const Hit = styled.i<{ $x: number; $y: number; $a: number }>`
   }
 `;
 
+const flash = keyframes`
+  0%,${pc(STOP_AT - 0.05)}% { opacity:0 }
+  ${pc(STOP_AT + 0.12)}% { opacity:.42 }
+  ${pc(STOP_AT + 0.9)}%,100% { opacity:0 }`;
+
+const Flash = styled.i`
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 70% at ${CUT.x / 1.42}% ${CUT.y}%, rgba(91, 67, 241, 0.55), rgba(91, 67, 241, 0.12) 45%, transparent 75%);
+  animation: ${flash} ${T}s ease-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
+  }
+`;
+
+const badgeIn = keyframes`
+  0%,${pc(STOP_AT + 0.05)}% { opacity:0; transform:translate(-50%, -50%) scale(.6) }
+  ${pc(STOP_AT + 0.28)}% { opacity:1; transform:translate(-50%, -50%) scale(1.08) }
+  ${pc(STOP_AT + 0.45)}%,100% { opacity:1; transform:translate(-50%, -50%) scale(1) }`;
+
+const Badge = styled.span`
+  position: absolute;
+  left: ${CUT.x / 1.42 - 2}%;
+  top: ${CUT.y + 14}%;
+  transform: translate(-50%, -50%);
+  padding: 4px 10px 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(91, 67, 241, 0.35);
+  animation: ${badgeIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  @media (max-width: 560px) {
+    font-size: 8.5px;
+    padding: 3px 8px 4px;
+  }
+`;
+
 const Glow = styled.i`
   position: absolute;
   left: ${Wk.x / 1.42}%;
@@ -502,13 +583,14 @@ const Glow = styled.i`
   }
 `;
 
-const Halo = styled.i`
+const Halo = styled.i<{ $d?: number }>`
   position: absolute;
-  left: ${Wk.x / 1.42}%;
-  top: ${Wk.y}%;
+  left: ${CUT.x / 1.42}%;
+  top: ${CUT.y}%;
   width: 46px;
   height: 46px;
   margin: -23px 0 0 -23px;
+  animation-delay: ${(p) => p.$d ?? 0}s;
   border-radius: 50%;
   border: 1.5px solid var(--accent);
   animation: ${halo} ${T}s ease-out infinite;
@@ -523,8 +605,13 @@ const Scope = styled.div`
   position: absolute;
   right: 18px;
   bottom: 16px;
+  display: grid;
   min-width: 200px;
   min-height: 62px;
+  max-width: calc(100% - 36px);
+  > * {
+    grid-area: 1 / 1;
+  }
   animation: ${stay(LAND_AT)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
@@ -540,12 +627,11 @@ const Scope = styled.div`
     right: 12px;
     bottom: 12px;
     min-width: 150px;
+    max-width: calc(100% - 24px);
   }
 `;
 
 const Line = styled.div<{ $a: number; $b?: number }>`
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -569,50 +655,17 @@ const Line = styled.div<{ $a: number; $b?: number }>`
     font-style: normal;
     color: var(--accent);
   }
+  em b {
+    font-weight: 700;
+  }
   @media (max-width: 560px) {
-    font-size: 12px;
+    font-size: 11.5px;
     padding: 9px 12px;
+    white-space: normal;
   }
 `;
 
 
-const r3 = (v: number) => Math.round(v * 1000) / 1000;
-const cut = (a: { x: number; y: number }, b: { x: number; y: number }, r: number) => {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const d = Math.hypot(dx, dy);
-  return { x1: r3(a.x + (dx / d) * r), y1: r3(a.y + (dy / d) * r), x2: r3(b.x - (dx / d) * r), y2: r3(b.y - (dy / d) * r) };
-};
-const IN = cut(OP, E, 2.4);
-const H1 = cut(E, A, 2.4);
-const H2 = cut(A, Wk, 2.4);
-/* a gentle bow, so the path travels rather than rules */
-const bow = (s: { x1: number; y1: number; x2: number; y2: number }, k: number) => {
-  const mx = (s.x1 + s.x2) / 2;
-  const my = (s.y1 + s.y2) / 2;
-  const dx = s.x2 - s.x1;
-  const dy = s.y2 - s.y1;
-  const d = Math.hypot(dx, dy);
-  const c = { x: r3(mx - (dy / d) * k), y: r3(my + (dx / d) * k) };
-  return { d: `M${s.x1} ${s.y1} Q${c.x} ${c.y} ${s.x2} ${s.y2}`, c };
-};
-const D_IN = `M${IN.x1} ${IN.y1} L${IN.x2} ${IN.y2}`;
-const D_H1 = bow(H1, -5).d;
-const B2 = bow(H2, 6);
-const D_H2 = B2.d;
-/* where the second hop is stopped: half way along its curve */
-const CUT = (() => {
-  const tt = 0.5;
-  const x = (1 - tt) ** 2 * H2.x1 + 2 * (1 - tt) * tt * B2.c.x + tt ** 2 * H2.x2;
-  const y = (1 - tt) ** 2 * H2.y1 + 2 * (1 - tt) * tt * B2.c.y + tt ** 2 * H2.y2;
-  const tx = 2 * (1 - tt) * (B2.c.x - H2.x1) + 2 * tt * (H2.x2 - B2.c.x);
-  const ty = 2 * (1 - tt) * (B2.c.y - H2.y1) + 2 * tt * (H2.y2 - B2.c.y);
-  const n = Math.hypot(tx, ty);
-  const nx = -ty / n;
-  const ny = tx / n;
-  const r = (v: number) => Math.round(v * 1000) / 1000;
-  return { x1: r(x + nx * 2.7), y1: r(y + ny * 2.7), x2: r(x - nx * 2.7), y2: r(y - ny * 2.7), x: r(x), y: r(y) };
-})();
 
 export const SecurityArt = () => (
   <Frame>
@@ -665,9 +718,7 @@ export const SecurityArt = () => (
           <text className='l3' x={Wk.x + 9} y={Wk.y + 1}>
             worker · zero-day
           </text>
-          <text className='l4' x={Wk.x - 4.6} y={Wk.y - 6.6}>
-            odigos · policy
-          </text>
+
         </Map>
 
         <Scope>
@@ -682,17 +733,20 @@ export const SecurityArt = () => (
             </span>
           </Line>
           <Line $a={STOP_AT}>
-            <span>
-              <b>zero-day</b> found
-            </span>
-            <em>Odigos refused the call</em>
+            <em>
+              <b>Odigos</b> blocked the call
+            </em>
+            <span>zero-day · by policy</span>
           </Line>
         </Scope>
 
         <Hit $x={E.x} $y={E.y} $a={LAND_AT} />
         <Hit $x={A.x} $y={A.y} $a={HOP1_AT + 0.6} />
+        <Flash />
         <Glow />
         <Halo />
+        <Halo $d={0.35} />
+        <Badge>odigos · blocked</Badge>
         <Reticle>
           <span />
           <span />
