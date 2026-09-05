@@ -273,58 +273,100 @@ const DepthNote = styled.div`
   }
 `;
 
-/* ---------------- what you already run ---------------- */
-const Compare = styled.div`
-  margin-top: 46px;
-  border-top: 1px solid var(--line);
-`;
 
-const Row = styled.div<{ $head?: boolean; $us?: boolean }>`
+/* ---------------- the trace diff ---------------- */
+const Diff = styled.div`
+  margin-top: 44px;
   display: grid;
-  grid-template-columns: 190px 1fr 1.15fr;
+  grid-template-columns: 1fr 1.18fr;
+  gap: 18px;
   > * {
     min-width: 0;
   }
-  gap: 28px;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--line);
-  align-items: baseline;
-
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    gap: 6px;
   }
-
-  padding: ${({ $head }) => ($head ? '0 0 12px' : '22px 0')};
-  background: ${({ $us }) => ($us ? 'rgba(91,67,241,0.05)' : 'transparent')};
-  box-shadow: ${({ $us }) => ($us ? 'inset 3px 0 0 var(--accent)' : 'none')};
-
-  .k {
-    font-family: var(--font-mono), monospace;
-    font-size: ${({ $head }) => ($head ? '10px' : '11px')};
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: ${({ $head }) => ($head ? 'var(--ink-faint)' : 'var(--ink)')};
-    font-weight: ${({ $us }) => ($us ? 600 : 400)};
-    padding-left: ${({ $us }) => ($us ? '18px' : '0')};
-  }
-  .w {
-    font-size: ${({ $head }) => ($head ? '11px' : '14.5px')};
-    line-height: 1.55;
-    color: var(--ink-faint);
-    ${({ $head }) => $head && 'font-family: var(--font-mono), monospace; letter-spacing: 0.12em; text-transform: uppercase;'}
-  }
-  .m {
-    font-size: ${({ $head }) => ($head ? '11px' : '15px')};
-    line-height: 1.55;
-    color: ${({ $head }) => 'var(--ink-faint)'};
-    ${({ $head }) => $head && 'font-family: var(--font-mono), monospace; letter-spacing: 0.12em; text-transform: uppercase;'}
-    ${({ $head }) => !$head && 'color: var(--ink-mute);'}
-  }
-  ${({ $head }) => ($head ? '@media (max-width: 900px) { display: none; }' : '')}
-  ${({ $us }) => ($us ? '@media (max-width: 900px) { padding-left: 16px; .k { padding-left: 0; } }' : '')}
 `;
 
+const DiffCol = styled.div<{ $hot?: boolean }>`
+  border: 1px solid ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.28)' : 'var(--line)')};
+  border-radius: var(--r-lg);
+  background: var(--paper-2);
+  overflow: hidden;
+  box-shadow: ${({ $hot }) => ($hot ? 'var(--shadow-lift)' : 'none')};
+`;
+
+const DiffHead = styled.div<{ $hot?: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  background: ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.05)' : 'var(--paper-3)')};
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: ${({ $hot }) => ($hot ? 'var(--hot-ink)' : 'var(--ink-faint)')};
+
+  .n {
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-faint);
+  }
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 14px;
+  }
+`;
+
+const TraceRow = styled.div<{ $d: number; $tag?: string }>`
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 18px 9px ${({ $d }) => 18 + $d * 18}px;
+  border-bottom: 1px solid var(--line);
+  background: ${({ $tag }) => ($tag === 'refused' ? 'rgba(91,67,241,0.06)' : $tag ? 'rgba(201,52,106,0.05)' : 'transparent')};
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .svc {
+    font-family: var(--font-mono), monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8892ab;
+  }
+  .fn {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    color: ${({ $tag }) => ($tag === 'refused' ? 'var(--accent)' : $tag ? 'var(--hot-ink)' : 'var(--ink)')};
+    overflow-wrap: anywhere;
+  }
+  .tag {
+    font-family: var(--font-mono), monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 2px 8px;
+    border-radius: 999px;
+    color: ${({ $tag }) => ($tag === 'refused' ? '#fff' : 'var(--hot-ink)')};
+    background: ${({ $tag }) => ($tag === 'refused' ? 'var(--accent)' : 'rgba(201,52,106,0.1)')};
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    padding-left: ${({ $d }) => 14 + $d * 10}px;
+    .tag {
+      justify-self: start;
+    }
+  }
+`;
 
 /* ---------------- virtual patching ---------------- */
 const Cases = styled.div`
@@ -657,13 +699,23 @@ const DEPTH = [
   { k: 'odigos', cells: [0, 0, 1, 1, 1], note: 'every call, with its arguments, in every service', us: true },
 ];
 
-const OTHERS = [
-  { k: 'endpoint detection', w: 'processes and files on a host', m: 'Judges what a process does to the machine. None of these steps touches the machine.' },
-  { k: 'cloud posture', w: 'images and known CVEs', m: 'Scores what you deployed. Never sees what it executed.' },
-  { k: 'web firewall', w: 'request payloads at the edge', m: 'Judges one request at a time, and each request in the chain looks ordinary.' },
-  { k: 'siem', w: 'what your services choose to log', m: 'Correlates what got logged, and none of these steps was worth a log line.' },
-  { k: 'in-app sensors', w: 'your process, from inside it', m: 'One service at a time, on vendor code in your process, one redeploy each. The chain crosses four.' },
-  { k: 'odigos · function level', w: 'every function call in every service, and how they chain', m: 'The whole transaction: each call, its argument, its return value, across services. The chain is visible as a chain.', us: true },
+type Span = { svc: string; fn: string; d: number; tag?: string };
+const BASELINE: Span[] = [
+  { svc: 'edge', fn: 'POST /api/tickets', d: 0 },
+  { svc: 'edge', fn: 'fetch(previewUrl)', d: 1 },
+  { svc: 'api', fn: 'TicketController.create', d: 1 },
+  { svc: 'api', fn: 'TemplateRenderer.render', d: 2 },
+  { svc: 'api', fn: 'TicketRepository.save', d: 2 },
+];
+const OBSERVED: Span[] = [
+  { svc: 'edge', fn: 'POST /api/tickets', d: 0 },
+  { svc: 'edge', fn: 'fetch(url)', d: 1, tag: 'ssrf · internal address' },
+  { svc: 'api', fn: 'TicketController.create', d: 1 },
+  { svc: 'api', fn: 'TemplateRenderer.render', d: 2 },
+  { svc: 'api', fn: 'SpelExpressionParser.parse', d: 3, tag: 'new · cve' },
+  { svc: 'api', fn: 'ReflectiveMethodExecutor.execute', d: 3, tag: 'new' },
+  { svc: 'worker', fn: 'Job.run', d: 2, tag: 'refused' },
+  { svc: 'api', fn: 'TicketRepository.save', d: 2 },
 ];
 
 
@@ -782,25 +834,31 @@ export const SecurityContent = () => {
               </Head>
             </Reveal>
             <Reveal delay={70}>
-              <Compare>
-                <Row $head>
-                  <span className='k'>control</span>
-                  <span className='w'>what it watches</span>
-                  <span className='m'>why it stays green</span>
-                </Row>
-                {OTHERS.map((x) => (
-                  <Row key={x.k} $us={x.us}>
-                    <span className='k'>{x.k}</span>
-                    <span className='w'>{x.w}</span>
-                    <span className='m'>{x.m}</span>
-                  </Row>
+              <Diff>
+                {[BASELINE, OBSERVED].map((col, ci) => (
+                  <DiffCol key={ci} $hot={ci === 1}>
+                    <DiffHead $hot={ci === 1}>
+                      <span>{ci === 0 ? 'yesterday · the same route' : 'today · one request'}</span>
+                      <span className='n'>{ci === 0 ? 'what it normally does' : 'three services, three weaknesses'}</span>
+                    </DiffHead>
+                    <div>
+                      {col.map((r, i) => (
+                        <TraceRow key={i} $d={r.d} $tag={r.tag}>
+                          <span className='svc'>{r.svc}</span>
+                          <span className='fn'>{r.fn}</span>
+                          {r.tag && <span className='tag'>{r.tag}</span>}
+                        </TraceRow>
+                      ))}
+                    </div>
+                  </DiffCol>
                 ))}
-              </Compare>
+              </Diff>
             </Reveal>
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  <b>Each step was green on its own.</b> The transaction was the attack, and <span className='q'>only one row here sees the transaction</span>.
+                  <b>Every line on the right is a call that route is allowed to make.</b> Read together, they are the attack, and{' '}
+                  <span className='q'>only something that reads them together can say so</span>.
                 </p>
               </Verdict>
             </Reveal>
