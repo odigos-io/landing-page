@@ -836,11 +836,11 @@ export const SecurityContent = () => {
               <Head>
                 <Eyebrow>Side effects, or the source</Eyebrow>
                 <h2>
-                  Your controls watch for side effects. <span className='mute'>A targeted attack leaves none.</span>
+                  Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
                 </h2>
                 <p>
-                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. Each one watches what an attack does to the machine around it, after the fact.
-                  A tailored attack does none of that until it is finished. Odigos watches the function calls the attack is made of, where they happen, across every service.
+                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. All of it is what an attack does to the machine around it, after the fact, and
+                  a tailored attack does none of it until it is finished. Odigos watches the function calls the attack is made of, across every service.
                 </p>
               </Head>
             </Reveal>
