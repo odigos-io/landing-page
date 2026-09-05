@@ -658,12 +658,12 @@ const DEPTH = [
 ];
 
 const OTHERS = [
-  { k: 'endpoint detection', w: 'processes and files on a host', m: 'Sees what a process does to the machine. Not what it does inside itself.' },
+  { k: 'endpoint detection', w: 'processes and files on a host', m: 'Judges what a process does to the machine. None of these steps touches the machine.' },
   { k: 'cloud posture', w: 'images and known CVEs', m: 'Scores what you deployed. Never sees what it executed.' },
-  { k: 'web firewall', w: 'request payloads at the edge', m: 'One request at a time, against patterns written in advance.' },
-  { k: 'siem', w: 'what your services choose to log', m: 'Correlates only what an engineer decided in advance to write down.' },
-  { k: 'in-app agents', w: 'your process, from inside it', m: 'Vendor code on your call stack, one redeploy per service. Their bad release is your outage.' },
-  { k: 'odigos · function level', w: 'every function call in every service, and how they chain', m: 'The call, its argument, its return value. In the clear, with nothing running in your process.', us: true },
+  { k: 'web firewall', w: 'request payloads at the edge', m: 'Judges one request at a time, and each request in the chain looks ordinary.' },
+  { k: 'siem', w: 'what your services choose to log', m: 'Correlates what got logged, and none of these steps was worth a log line.' },
+  { k: 'in-app sensors', w: 'your process, from inside it', m: 'One service at a time, on vendor code in your process, one redeploy each. The chain crosses four.' },
+  { k: 'odigos · function level', w: 'every function call in every service, and how they chain', m: 'The whole transaction: each call, its argument, its return value, across services. The chain is visible as a chain.', us: true },
 ];
 
 
@@ -771,11 +771,14 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Control by control</Eyebrow>
+                <Eyebrow>Every dashboard stays green</Eyebrow>
                 <h2>
-                  What each control watches, <span className='mute'>and where it stops.</span>
+                  Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
                 </h2>
-                <p>Each of these is good at what it was built for. None of them was built to see a function call inside your service, or a chain of them across services, and that is what a targeted attack is.</p>
+                <p>
+                  A sophisticated attack is a handful of operations, each ordinary on its own: a request, a lookup, a call into a library, a query. Every control you run judges one of those pieces, so
+                  every dashboard stays green while the attacker is inside. Only the whole transaction is malicious, and only something that sees the whole transaction can say so.
+                </p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
@@ -783,7 +786,7 @@ export const SecurityContent = () => {
                 <Row $head>
                   <span className='k'>control</span>
                   <span className='w'>what it watches</span>
-                  <span className='m'>where it stops</span>
+                  <span className='m'>why it stays green</span>
                 </Row>
                 {OTHERS.map((x) => (
                   <Row key={x.k} $us={x.us}>
@@ -797,7 +800,7 @@ export const SecurityContent = () => {
             <Reveal delay={110}>
               <Verdict>
                 <p>
-                  <b>The chain is made of calls, and it crosses services.</b> Every row above this one <span className='q'>gives up on one or the other</span>.
+                  <b>Each step was green on its own.</b> The transaction was the attack, and <span className='q'>only one row here sees the transaction</span>.
                 </p>
               </Verdict>
             </Reveal>
