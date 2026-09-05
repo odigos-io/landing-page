@@ -812,8 +812,8 @@ export const SecurityContent = () => {
               </Reveal>
               <Reveal delay={120}>
                 <HeroSub>
-                  An operator with a model tries every variant, chains what works, and finishes inside one request. <b>Odigos lets you see into the runtime like never before</b>: every function call, in
-                  every service, with nothing in your code. <b>Then you block AI-powered attacks at the function level</b>, by policy, before they run.
+                  An operator with a model tries every variant, chains what works, and finishes inside one request. <b>Odigos lets you see into the runtime like never before</b>, with nothing in your
+                  code, <b>and block AI-powered attacks at the function level</b>, before they run.
                 </HeroSub>
               </Reveal>
               <Reveal delay={180}>
@@ -834,11 +834,14 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Where each control stops</Eyebrow>
+                <Eyebrow>Side effects, or the source</Eyebrow>
                 <h2>
-                  Every tool you own stops <span className='mute'>one layer above the attack.</span>
+                  Your controls watch for side effects. <span className='mute'>A targeted attack leaves none.</span>
                 </h2>
-                <p>The attack is function calls, spread across services. Nothing you run reaches the function. Nothing you run sees across services.</p>
+                <p>
+                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. Each one watches what an attack does to the machine around it, after the fact.
+                  A tailored attack does none of that until it is finished. Odigos watches the function calls the attack is made of, where they happen, across every service.
+                </p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
@@ -876,11 +879,11 @@ export const SecurityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>What you already run</Eyebrow>
+                <Eyebrow>Control by control</Eyebrow>
                 <h2>
-                  Every control you own <span className='mute'>is looking somewhere else.</span>
+                  What each control watches, <span className='mute'>and where it stops.</span>
                 </h2>
-                <p>None of it is misconfigured. Each one watches a layer the attack never touched, and more of the same gets you more of the same view.</p>
+                <p>Each of these is good at what it was built for. None of them was built to see a function call inside your service, or a chain of them across services, and that is what a targeted attack is.</p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
@@ -1010,18 +1013,18 @@ export const SecurityContent = () => {
         <Section>
           <CloseInner>
             <Reveal>
-              <Eyebrow>One service. Fourteen days.</Eyebrow>
+              <Eyebrow>AI-powered attacks</Eyebrow>
             </Reveal>
             <Reveal delay={60}>
-              <h2>Pick the service you would least like to explain.</h2>
+              <h2>Mythos-class attacks, met at the function level.</h2>
             </Reveal>
             <Reveal delay={120}>
-              <p>Fourteen days on one service, success criteria written down first. At the end you have the call graph for every route it serves, or we tell you why not.</p>
+              <p>One operator with a frontier model now runs what took a team. See every function call in every service, with nothing in your code, and block the attack where it happens. Start on one service: fourteen days, success criteria written first.</p>
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>
-                <DemoCTA label='Start on one service' variant='primary' />
-                <TrialCTA label='Send us your architecture questions' variant='secondary' />
+                <DemoCTA label='Talk to our security team' variant='primary' />
+                <TrialCTA variant='secondary' />
               </CloseCtas>
             </Reveal>
             <Reveal delay={230}>
