@@ -455,7 +455,7 @@ const TrustLinks = styled.div`
     color: var(--accent);
   }
   a::after {
-    content: ' \2192';
+    content: ' →';
   }
 `;
 
@@ -965,7 +965,8 @@ export const SecurityContent = () => {
                   </h2>
                   <p>
                     Detection is baselined on your own traffic: the calls a route normally makes, and the one it has never made. No shared model, no signature feed. The finding names the function, so the
-                    policy can too. Refuse the call for the routes and callers you name, or let it run and change what it returns. No proxy, no redeploy, and when the real patch ships you delete the policy.
+                    policy can too. Refuse the call, or let it run and change what it returns. A policy is versioned, scoped to the callers you name, and shipped or reverted without a redeploy. When the real
+                    patch lands you delete it, and the call runs exactly as it always did.
                   </p>
                 </Head>
               </Reveal>
