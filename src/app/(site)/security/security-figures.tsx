@@ -54,8 +54,8 @@ const Scroll = styled.div`
     -webkit-overflow-scrolling: touch;
     padding-right: 24px;
     /* the diagram scrolls; the fade says so before the hint does */
-    mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent);
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 60px), transparent calc(100% - 10px));
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 60px), transparent calc(100% - 10px));
   }
 `;
 

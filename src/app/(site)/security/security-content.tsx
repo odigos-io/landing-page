@@ -968,8 +968,8 @@ export const SecurityContent = () => {
                   </h2>
                   <p>
                     Detection is baselined on your own traffic: the calls a route normally makes, and the one it has never made. No shared model, no signature feed. The finding names the function, so the
-                    policy can too. Refuse the call, or let it run and change what it returns. A policy is versioned, scoped to the callers you name, and shipped or reverted without a redeploy. When the real
-                    patch lands you delete it, and the call runs exactly as it always did.
+                    policy can too. Refuse the call, or let it run and change what it returns. Scope it to the callers you name. Ship or revert it without a redeploy. When the real patch lands you delete it,
+                    and the call runs exactly as it always did.
                   </p>
                 </Head>
               </Reveal>
