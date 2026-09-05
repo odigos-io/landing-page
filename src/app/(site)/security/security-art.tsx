@@ -214,7 +214,7 @@ const Loud = styled.div`
 
 export const SecurityArt = () => (
   <Frame>
-    <Panel>
+    <Panel role='img' aria-label='An AI operator generates every exploit variant it can. All of them converge on one function call this route has never made, and it is refused before it runs.'>
       <Strip>
         <span className='hot'>every variant it can generate</span>
         <span className='us'>one call</span>

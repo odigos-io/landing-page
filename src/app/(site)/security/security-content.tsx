@@ -773,7 +773,7 @@ const OTHERS = [
   { k: 'web firewall', w: 'request payloads at the edge', m: 'One request at a time, against patterns written in advance.' },
   { k: 'siem', w: 'what your services choose to log', m: 'Correlates only what an engineer decided in advance to write down.' },
   { k: 'in-app agents', w: 'your process, from inside it', m: 'Vendor code on your call stack, one redeploy per service. Their bad release is your outage.' },
-  { k: 'odigos · function level', w: 'every function call in every service, and how they chain', m: 'Sits where the payload is in the clear, runs nothing in your process, and its unit of evidence is a call with its argument and its return value.', us: true },
+  { k: 'odigos · function level', w: 'every function call in every service, and how they chain', m: 'The call, its argument, its return value. In the clear, with nothing running in your process.', us: true },
 ];
 
 
