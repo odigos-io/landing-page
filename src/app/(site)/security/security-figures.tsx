@@ -184,8 +184,8 @@ const GX = 142; /* where the gutter of tool names starts */
 export const DeployFigure = () => (
   <Board>
     <Strip>
-      <span>agentless · nothing in your process</span>
-      <span>agent view · every call, its argument, its return value</span>
+      <span>zero effort · nothing in your process</span>
+      <span>every call, its argument, its return value</span>
     </Strip>
     <Scroll>
     <Stage $ar='200 / 80' $mw={700}>
@@ -229,7 +229,7 @@ export const DeployFigure = () => (
         <Tie x1={122} y1={40} x2={GX - 3} y2={40} $a={1.3} />
         <Dot cx={GX} cy={40} r={1.15} fill={SLATE} $a={1.3} />
         <Lbl x={GX + 3.5} y={41.1} $a={1.3} $c={SLATE}>
-          in-app agents
+          in-app sensors
         </Lbl>
         <Lbl x={GX + 3.5} y={45.4} $a={1.5} $c='rgba(136,146,171,.75)' $s={2.7}>
           vendor code on your

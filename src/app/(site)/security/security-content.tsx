@@ -812,8 +812,8 @@ export const SecurityContent = () => {
               </Reveal>
               <Reveal delay={120}>
                 <HeroSub>
-                  An operator with a model tries every variant, chains what works, and finishes inside one request. <b>Odigos lets you see into the runtime like never before</b>, with nothing in your
-                  code, <b>and block AI-powered attacks at the function level</b>, before they run.
+                  One operator, one model, every variant, chained inside a single request. <b>Odigos lets you see into the runtime like never before and block AI-powered attacks at the function level</b>,
+                  with nothing in your code.
                 </HeroSub>
               </Reveal>
               <Reveal delay={180}>
@@ -839,8 +839,8 @@ export const SecurityContent = () => {
                   Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
                 </h2>
                 <p>
-                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. All of it is what an attack does to the machine around it, after the fact, and
-                  a tailored attack does none of it until it is finished. Odigos watches the function calls the attack is made of, across every service.
+                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. ADR sees inside one process, and not very far. All of it is after the fact,
+                  and a tailored attack leaves none of it until it is finished. Odigos sees as deep as the runtime goes, the function calls the attack is made of, across every service at once.
                 </p>
               </Head>
             </Reveal>
@@ -912,18 +912,18 @@ export const SecurityContent = () => {
           </Inner>
         </Section>
 
-        {/* agentless experience, agent capabilities */}
+        {/* zero effort, and an ebpf sensor unlike any other */}
         <Section>
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Nothing in your process</Eyebrow>
+                <Eyebrow>Nothing to add, nothing to redeploy</Eyebrow>
                 <h2>
-                  Agentless to deploy. <span className='mute'>An agent&rsquo;s view inside.</span>
+                  Zero effort for your developers. <span className='mute'>An eBPF sensor unlike any other.</span>
                 </h2>
                 <p>
-                  Agentless tools never see inside the process. In-app agents do, and cost you vendor code in every service plus a redeploy for each. Odigos reads the process from the kernel: the inside
-                  view, with nothing inside.
+                  Nothing in your code, nothing in your process, nothing in anyone&rsquo;s sprint. Other eBPF sensors stop at what the kernel sees: syscalls, sockets, files. Odigos reads the function
+                  calls inside the process, with their arguments and return values, and stitches them across every service.
                 </p>
               </Head>
             </Reveal>
