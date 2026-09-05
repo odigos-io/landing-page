@@ -813,7 +813,7 @@ export const SecurityContent = () => {
               <Reveal delay={120}>
                 <HeroSub>
                   An operator with a model tries every variant, chains what works, and finishes inside one request. <b>Odigos lets you see into the runtime like never before</b>: every function call, in
-                  every service, with nothing in your code. <b>Then it blocks AI-powered attacks at the function level</b>, before they run.
+                  every service, with nothing in your code. <b>Then you block AI-powered attacks at the function level</b>, by policy, before they run.
                 </HeroSub>
               </Reveal>
               <Reveal delay={180}>
