@@ -49,7 +49,7 @@ const EDGE = 5;
 const API = 6;
 const WORKER = 4;
 
-const OP = { x: 4.5, y: 52 };
+const OP = { x: 5.2, y: 52 };
 
 const build = () => {
   let s = 20260905;
@@ -135,7 +135,6 @@ const halo = keyframes`
   100%    { opacity:0; transform:scale(1.9) }`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
-const breathe = keyframes`0%,100%{opacity:.55;transform:rotate(0deg) scale(.92)}50%{opacity:1;transform:rotate(45deg) scale(1)}`;
 
 const reduce = css`
   @media (prefers-reduced-motion: reduce) {
@@ -208,6 +207,18 @@ const Map = styled.svg`
   }
   .op {
     fill: ${HOT};
+  }
+  .perim {
+    fill: none;
+    stroke: #8892ab;
+    stroke-width: 0.5;
+    stroke-dasharray: 2 1.4;
+    stroke-linecap: round;
+    animation: ${stay(0.2)} ${T}s ease infinite;
+  }
+  .lp {
+    fill: #8892ab;
+    animation: ${stay(0.4)} ${T}s ease infinite;
   }
   .probe {
     fill: none;
@@ -380,14 +391,13 @@ const Halo = styled.i`
   }
 `;
 
-/* what we wrote down at each step */
+/* what it found, one line at a time */
 const Scope = styled.div`
   position: absolute;
   right: 18px;
   bottom: 16px;
-  width: 40%;
-  min-width: 168px;
-  min-height: 82px;
+  min-width: 200px;
+  min-height: 62px;
   border-radius: 10px;
   border: 1px solid rgba(24, 20, 54, 0.1);
   background: rgba(255, 255, 255, 0.94);
@@ -397,160 +407,42 @@ const Scope = styled.div`
   @media (max-width: 560px) {
     right: 12px;
     bottom: 12px;
-    width: 54%;
-    min-height: 74px;
-  }
-
-  .cap {
-    padding: 7px 10px 0;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .cap.hot {
-    color: var(--hot-ink);
-  }
-  .cap.us {
-    color: var(--accent);
-  }
-  .body {
-    padding: 7px 10px 10px;
+    min-width: 150px;
   }
 `;
 
-const Sheet = styled.div<{ $a: number; $b?: number }>`
+const Line = styled.div<{ $a: number; $b?: number }>`
   position: absolute;
   inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 14px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--hot-ink);
+  white-space: nowrap;
   animation: ${(x) => (x.$b === undefined ? stay(x.$a) : show(x.$a, x.$b))} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: ${(x) => (x.$b === undefined ? 1 : 0)};
   }
-`;
-
-const Bars = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  i {
-    display: block;
-    height: 5px;
-    border-radius: 2px;
-    background: rgba(24, 20, 54, 0.17);
-  }
-  i.hot {
-    background: ${HOT};
-  }
-`;
-
-const Vals = styled.div`
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10.5px;
-  line-height: 1.65;
-  color: var(--ink-mute);
 
   b {
-    font-weight: 500;
-    color: var(--hot-ink);
+    font-weight: 600;
   }
   em {
     font-style: normal;
     color: var(--accent);
   }
-`;
-
-const Foot = styled.div`
-  padding: 14px 22px 15px;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 11.5px;
-  color: var(--ink-faint);
-  @media (max-width: 1000px) {
-    padding: 13px 16px 15px;
+  @media (max-width: 560px) {
+    font-size: 10.5px;
+    padding: 8px 11px;
   }
 `;
 
-const Step = styled.div`
-  position: relative;
-  height: 22px;
-  margin-bottom: 7px;
-
-  .mark {
-    position: absolute;
-    left: 1px;
-    bottom: 4px;
-    color: var(--hot-ink);
-    transform-origin: center;
-    animation: ${breathe} 3.2s ease-in-out infinite;
-    ${reduce}
-  }
-
-  span {
-    position: absolute;
-    left: 24px;
-    bottom: 0;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(10.5px, 1.2vw, 14.5px);
-    letter-spacing: 0.01em;
-    color: var(--hot-ink);
-    white-space: nowrap;
-  }
-`;
-
-const S = styled.span<{ $a: number; $b?: number }>`
-  animation: ${(x) => (x.$b === undefined ? stay(x.$a) : show(x.$a, x.$b))} ${T}s ease infinite;
-  ${reduce}
-  @media (prefers-reduced-motion: reduce) {
-    opacity: ${(x) => (x.$b === undefined ? 1 : 0)};
-  }
-`;
-
-const Pill = styled(S)`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 3px 11px 4px;
-  margin-left: -4px;
-  border-radius: 999px;
-  background: rgba(91, 67, 241, 0.08);
-  border: 1px solid rgba(91, 67, 241, 0.22);
-  color: var(--accent);
-  font-weight: 500;
-`;
-
-const Answer = styled.span`
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
-  min-height: 1.45em;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: clamp(12px, 1.2vw, 13.5px);
-  color: var(--ink);
-  animation: ${stay(STOP_AT + 0.6)} ${T}s ease infinite;
-  ${reduce}
-  @media (prefers-reduced-motion: reduce) {
-    opacity: 1;
-  }
-
-  .ctx {
-    color: var(--ink-faint);
-  }
-`;
-
-const Found = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--accent);
-
-  svg {
-    flex-shrink: 0;
-  }
-`;
 
 const cut = (a: { x: number; y: number }, b: { x: number; y: number }, r: number) => {
   const dx = b.x - a.x;
@@ -571,6 +463,12 @@ export const SecurityArt = () => (
             <line key={i} className='link' x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
           ))}
 
+          {/* the perimeter, and the operator outside it */}
+          <line className='perim' x1={13.5} y1={1} x2={13.5} y2={99} />
+          <text className='lp' x={15.2} y={5.6}>
+            perimeter
+          </text>
+
           {/* everything it tries against the near face of the estate */}
           {MAP.probes.map((t, i) => (
             <Probe key={i} className='probe' d={`M${OP.x} ${OP.y} L${t.x} ${t.y}`} pathLength={1} $i={i} />
@@ -587,7 +485,7 @@ export const SecurityArt = () => (
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <circle key={`o${i}`} className='op' cx={OP.x - 1.6 + (i % 3) * 1.6} cy={OP.y - 1.6 + Math.floor(i / 3) * 1.6} r={0.55} />
           ))}
-          <text className='lo' x={OP.x - 2.3} y={OP.y - 4}>
+          <text className='lo' x={OP.x - 3.2} y={OP.y - 4.2}>
             ai operator
           </text>
 
@@ -603,50 +501,22 @@ export const SecurityArt = () => (
         </Map>
 
         <Scope>
-          <Sheet $a={PROBE_AT + 0.4} $b={LAND_AT - 0.4}>
-            <div className='cap hot'>attempts</div>
-            <div className='body'>
-              <Bars>
-                <i style={{ width: '88%' }} />
-                <i style={{ width: '64%' }} />
-                <i style={{ width: '93%' }} />
-                <i style={{ width: '71%' }} />
-              </Bars>
-            </div>
-          </Sheet>
-
-          <Sheet $a={LAND_AT} $b={HOP1_AT + 0.4}>
-            <div className='cap hot'>edge · function values</div>
-            <div className='body'>
-              <Vals>
-                fetch(url)
-                <br />
-                url <b>an internal address</b>
-              </Vals>
-            </div>
-          </Sheet>
-
-          <Sheet $a={HOP1_AT + 0.8} $b={STOP_AT - 0.3}>
-            <div className='cap hot'>api · function values</div>
-            <div className='body'>
-              <Vals>
-                parse(input)
-                <br />
-                input <b>an expression, not a string</b>
-              </Vals>
-            </div>
-          </Sheet>
-
-          <Sheet $a={STOP_AT}>
-            <div className='cap us'>policy</div>
-            <div className='body'>
-              <Vals>
-                worker · zero-day
-                <br />
-                the call <em>refused</em>
-              </Vals>
-            </div>
-          </Sheet>
+          <Line $a={LAND_AT} $b={HOP1_AT + 0.4}>
+            <span>
+              <b>SSRF</b> found
+            </span>
+          </Line>
+          <Line $a={HOP1_AT + 0.8} $b={STOP_AT - 0.3}>
+            <span>
+              <b>CVE-2026-135253</b> found
+            </span>
+          </Line>
+          <Line $a={STOP_AT}>
+            <span>
+              <b>zero-day</b> found
+            </span>
+            <em>refused by policy</em>
+          </Line>
         </Scope>
 
         <Glow />
@@ -659,26 +529,6 @@ export const SecurityArt = () => (
         </Reticle>
       </Field>
 
-      <Foot>
-        <Step>
-          <svg className='mark' width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
-            <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
-          </svg>
-          <S $a={0.4} $b={LAND_AT - 0.4}>trying every variant, at machine speed</S>
-          <S $a={LAND_AT} $b={HOP1_AT + 0.4}>one landed: edge, through an ssrf</S>
-          <S $a={HOP1_AT + 0.8} $b={STOP_AT - 0.3}>sideways: api, through a cve</S>
-          <Pill $a={STOP_AT}>refused at the call</Pill>
-        </Step>
-        <Answer>
-          <Found>
-            <svg width='12' height='12' viewBox='0 0 14 14' fill='none' aria-hidden>
-              <path d='M2 7.4 5.2 10.5 12 3.5' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
-            </svg>
-            the third hop never ran
-          </Found>
-          <span className='ctx'>worker, by policy, before the zero-day</span>
-        </Answer>
-      </Foot>
     </Panel>
   </Frame>
 );
