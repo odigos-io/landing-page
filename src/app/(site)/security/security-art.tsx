@@ -129,6 +129,9 @@ const Cell = styled.rect<{ $i: number }>`
     ${(x) => cellIn(x.$i)} ${T}s linear infinite both,
     ${(x) => cellPulse(x.$i)} ${(x) => 2.2 + (x.$i % 5) * 0.42}s ease-in-out infinite;
   ${still}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: ${(x) => CELLS[x.$i]};
+  }
 `;
 
 const Var = styled.path<{ $i: number }>`
@@ -139,6 +142,9 @@ const Var = styled.path<{ $i: number }>`
   stroke-dasharray: 1;
   animation: ${(x) => varIn(x.$i)} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite both;
   ${still}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.55;
+  }
 `;
 
 const Ring = styled.circle`
@@ -203,7 +209,10 @@ const Pill = styled.span`
 
 const Quiet = styled.div`
   animation: ${fade(0.8, 1, SHUT_AT)} ${T}s linear infinite both;
-  ${still}
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
+  }
 `;
 
 const Loud = styled.div`

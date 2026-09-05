@@ -145,6 +145,9 @@ const Ray = styled.path<{ $i: number }>`
   fill: ${VIOLET};
   animation: ${(x) => rayIn(x.$i)} ${T1}s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
   ${still}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.32;
+  }
 `;
 
 const Tie = styled.line<{ $a: number }>`
