@@ -669,7 +669,7 @@ const Line = styled.div<{ $a: number; $b?: number }>`
 
 export const SecurityArt = () => (
   <Frame>
-    <Panel role='img' aria-label='A map of services. An AI operator probes the estate, lands on the edge service through an SSRF, moves sideways to the API through a CVE, and is refused by policy at the worker.'>
+    <Panel role='img' aria-label='A map of services. An AI operator probes the estate, lands on the edge service through an SSRF, moves sideways to the API through a CVE, and is blocked by Odigos at the worker.'>
       <Field>
         <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid slice' aria-hidden>
           {MAP.links.map((l, i) => (
@@ -736,7 +736,7 @@ export const SecurityArt = () => (
             <em>
               <b>Odigos</b> blocked the call
             </em>
-            <span>zero-day · by policy</span>
+            <span>zero-day found</span>
           </Line>
         </Scope>
 
