@@ -81,7 +81,7 @@ const build = () => {
   });
 
   /* what it tries, in the order it tries it */
-  const probes = face.sort(() => rnd() - 0.5).slice(0, 16);
+  const probes = face.sort(() => rnd() - 0.5).slice(0, 26);
 
   return { nodes, links, probes };
 };
@@ -94,23 +94,27 @@ const Wk = { x: CLUSTERS[WORKER][0], y: CLUSTERS[WORKER][1] };
 /* --- motion --- */
 
 const probeIn = (i: number) => {
-  const a = PROBE_AT + i * 0.17;
+  const a = PROBE_AT + i * 0.12;
   return keyframes`
   0%,${pc(a)}%{stroke-dashoffset:1;opacity:0}
-  ${pc(a + 0.04)}%{opacity:.55}
-  ${pc(a + 0.3)}%{stroke-dashoffset:0;opacity:.55}
-  ${pc(a + 1.1)}%,100%{stroke-dashoffset:0;opacity:.13}`;
+  ${pc(a + 0.04)}%{opacity:.42}
+  ${pc(a + 0.28)}%{stroke-dashoffset:0;opacity:.42}
+  ${pc(a + 1.7)}%,100%{stroke-dashoffset:0;opacity:.1}`;
 };
 
-const draw = (a: number, d: number, to = 0) => keyframes`
+const draw = (a: number, d: number, to = 0, o = 1) => keyframes`
   0%,${pc(a)}%{stroke-dashoffset:1;opacity:0}
-  ${pc(a + 0.04)}%{opacity:1}
-  ${pc(a + d)}%,100%{stroke-dashoffset:${to};opacity:1}`;
+  ${pc(a + 0.04)}%{opacity:${o}}
+  ${pc(a + d)}%,100%{stroke-dashoffset:${to};opacity:${o}}`;
 
 const hit = (a: number) => keyframes`
   0%,${pc(a)}%{fill:${GREY};transform:scale(1)}
-  ${pc(a + 0.18)}%{fill:${HOT};transform:scale(2.3)}
-  ${pc(a + 0.5)}%,100%{fill:${HOT};transform:scale(1.8)}`;
+  ${pc(a + 0.18)}%{fill:${HOT};transform:scale(2.1)}
+  ${pc(a + 0.5)}%,100%{fill:${HOT};transform:scale(1.6)}`;
+const pulse = keyframes`
+  0%{opacity:.55;transform:scale(.5)}
+  70%{opacity:0;transform:scale(2.2)}
+  100%{opacity:0;transform:scale(2.2)}`;
 
 const spared = keyframes`
   0%,${pc(STOP_AT)}%{fill:${GREY};transform:scale(1)}
@@ -118,7 +122,7 @@ const spared = keyframes`
 
 const dim = keyframes`
   0%,${pc(LAND_AT)}%{opacity:1}
-  ${pc(LAND_AT + 0.6)}%,100%{opacity:.45}`;
+  ${pc(LAND_AT + 0.6)}%,100%{opacity:.36}`;
 
 const show = (a: number, b: number) => keyframes`
   0%,${pc(a)}% { opacity:0; transform:translateY(4px) }
@@ -205,14 +209,11 @@ const Map = styled.svg`
   .n3 {
     animation: ${spared} ${T}s ease-in-out infinite;
   }
-  .op {
-    fill: ${HOT};
-  }
   .perim {
     fill: none;
-    stroke: #8892ab;
-    stroke-width: 0.5;
-    stroke-dasharray: 2 1.4;
+    stroke: rgba(136, 146, 171, 0.8);
+    stroke-width: 0.4;
+    stroke-dasharray: 2 1.6;
     stroke-linecap: round;
     animation: ${stay(0.2)} ${T}s ease infinite;
   }
@@ -223,39 +224,60 @@ const Map = styled.svg`
   .probe {
     fill: none;
     stroke: ${HOT};
-    stroke-width: 0.3;
+    stroke-width: 0.26;
     stroke-linecap: round;
     stroke-dasharray: 1;
   }
-  .through {
-    fill: none;
-    stroke: ${HOT};
-    stroke-width: 0.9;
-    stroke-linecap: round;
-    stroke-dasharray: 1;
-    animation: ${draw(LAND_AT - 0.5, 0.5)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  .outside {
+    fill: rgba(201, 52, 106, 0.035);
   }
-  .hop1 {
-    fill: none;
-    stroke: ${HOT};
-    stroke-width: 0.9;
-    stroke-linecap: round;
-    stroke-dasharray: 1;
-    animation: ${draw(HOP1_AT, 0.6)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
-  }
+  .through,
+  .hop1,
   .hop2 {
     fill: none;
     stroke: ${HOT};
-    stroke-width: 0.9;
+    stroke-width: 0.62;
     stroke-linecap: round;
     stroke-dasharray: 1;
+  }
+  .trail.through {
+    stroke-width: 2.6;
+    animation: ${draw(LAND_AT - 0.5, 0.5, 0, 0.12)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .trail.hop1 {
+    stroke-width: 2.6;
+    animation: ${draw(HOP1_AT, 0.6, 0, 0.12)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .trail.hop2 {
+    stroke-width: 2.6;
+    animation: ${draw(HOP2_AT, 1.2, 0.42, 0.12)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .through {
+    animation: ${draw(LAND_AT - 0.5, 0.5)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .hop1 {
+    animation: ${draw(HOP1_AT, 0.6)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .hop2 {
     animation: ${draw(HOP2_AT, 1.2, 0.42)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .src {
+    fill: ${HOT};
+  }
+  .ring {
+    fill: none;
+    stroke: ${HOT};
+    stroke-width: 0.35;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ${pulse} 3.4s ease-out infinite;
   }
   text {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 2.9px;
+    font-size: 2.7px;
     letter-spacing: 0.25px;
     text-transform: uppercase;
+    opacity: 0.9;
   }
   .l1 {
     fill: ${HOT};
@@ -298,10 +320,17 @@ const Map = styled.svg`
       transform: scale(1.8);
     }
     .probe {
-      opacity: 0.13;
+      opacity: 0.1;
+    }
+    .trail {
+      opacity: 0.12;
     }
     .hop2 {
       stroke-dashoffset: 0.42;
+    }
+    .ring {
+      animation: none;
+      opacity: 0;
     }
   }
 `;
@@ -310,17 +339,23 @@ const Probe = styled.path<{ $i: number }>`
   animation: ${(x) => probeIn(x.$i)} ${T}s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 `;
 
-/* the reticle closes on the service the third hop was heading for */
+/* the reticle follows the attack, one service behind it, and closes on the one it refuses */
+const at = (p: { x: number; y: number }) => `left:${(p.x / 1.42 - 3.2).toFixed(2)}%; top:${(p.y - 4.2).toFixed(2)}%;`;
+const track = keyframes`
+  0%,${pc(LAND_AT)}% { opacity:0; ${at(E)} }
+  ${pc(LAND_AT + 0.35)}%,${pc(HOP1_AT + 0.4)}% { opacity:1; ${at(E)} }
+  ${pc(HOP1_AT + 0.9)}%,${pc(HOP2_AT + 0.5)}% { opacity:1; ${at(A)} }
+  ${pc(STOP_AT)}%,100% { opacity:1; ${at(Wk)} }`;
+
 const Reticle = styled.div`
   position: absolute;
-  left: ${Wk.x / 1.42 - 3.2}%;
-  top: ${Wk.y - 4.2}%;
   width: 6.4%;
   height: 8.4%;
-  animation: ${stay(STOP_AT)} ${T}s ease infinite;
+  animation: ${track} ${T}s cubic-bezier(0.66, 0, 0.18, 1) infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     opacity: 1;
+    ${at(Wk)}
   }
 
   span {
@@ -356,6 +391,22 @@ const Reticle = styled.div`
     border-left: 0;
     border-top: 0;
     border-radius: 0 0 3px 0;
+  }
+`;
+
+const Hit = styled.i<{ $x: number; $y: number; $a: number }>`
+  position: absolute;
+  left: ${(p) => p.$x / 1.42}%;
+  top: ${(p) => p.$y}%;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 52, 106, 0.2), transparent 68%);
+  animation: ${(p) => stay(p.$a)} ${T}s ease infinite;
+  ${reduce}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
   }
 `;
 
@@ -398,6 +449,11 @@ const Scope = styled.div`
   bottom: 16px;
   min-width: 200px;
   min-height: 62px;
+  animation: ${stay(LAND_AT)} ${T}s ease infinite;
+  ${reduce}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+  }
   border-radius: 10px;
   border: 1px solid rgba(24, 20, 54, 0.1);
   background: rgba(255, 255, 255, 0.94);
@@ -450,9 +506,21 @@ const cut = (a: { x: number; y: number }, b: { x: number; y: number }, r: number
   const d = Math.hypot(dx, dy);
   return { x1: a.x + (dx / d) * r, y1: a.y + (dy / d) * r, x2: b.x - (dx / d) * r, y2: b.y - (dy / d) * r };
 };
-const IN = cut(OP, E, 2.6);
-const H1 = cut(E, A, 2.6);
-const H2 = cut(A, Wk, 2.6);
+const IN = cut(OP, E, 2.4);
+const H1 = cut(E, A, 2.4);
+const H2 = cut(A, Wk, 2.4);
+/* a gentle bow, so the path travels rather than rules */
+const bow = (s: { x1: number; y1: number; x2: number; y2: number }, k: number) => {
+  const mx = (s.x1 + s.x2) / 2;
+  const my = (s.y1 + s.y2) / 2;
+  const dx = s.x2 - s.x1;
+  const dy = s.y2 - s.y1;
+  const d = Math.hypot(dx, dy);
+  return `M${s.x1} ${s.y1} Q${mx - (dy / d) * k} ${my + (dx / d) * k} ${s.x2} ${s.y2}`;
+};
+const D_IN = `M${IN.x1} ${IN.y1} L${IN.x2} ${IN.y2}`;
+const D_H1 = bow(H1, -5);
+const D_H2 = bow(H2, 6);
 
 export const SecurityArt = () => (
   <Frame>
@@ -464,6 +532,7 @@ export const SecurityArt = () => (
           ))}
 
           {/* the perimeter, and the operator outside it */}
+          <rect className='outside' x={0} y={0} width={13.5} height={100} />
           <line className='perim' x1={13.5} y1={1} x2={13.5} y2={99} />
           <text className='lp' x={15.2} y={5.6}>
             perimeter
@@ -473,18 +542,20 @@ export const SecurityArt = () => (
           {MAP.probes.map((t, i) => (
             <Probe key={i} className='probe' d={`M${OP.x} ${OP.y} L${t.x} ${t.y}`} pathLength={1} $i={i} />
           ))}
-          <path className='through' d={`M${IN.x1} ${IN.y1} L${IN.x2} ${IN.y2}`} pathLength={1} />
-          <path className='hop1' d={`M${H1.x1} ${H1.y1} L${H1.x2} ${H1.y2}`} pathLength={1} />
-          <path className='hop2' d={`M${H2.x1} ${H2.y1} L${H2.x2} ${H2.y2}`} pathLength={1} />
+          <path className='trail through' d={D_IN} pathLength={1} />
+          <path className='trail hop1' d={D_H1} pathLength={1} />
+          <path className='trail hop2' d={D_H2} pathLength={1} />
+          <path className='through' d={D_IN} pathLength={1} />
+          <path className='hop1' d={D_H1} pathLength={1} />
+          <path className='hop2' d={D_H2} pathLength={1} />
 
           {MAP.nodes.map((n, i) => (
             <circle key={i} className={`n${n.k}`} cx={n.x} cy={n.y} r={n.r} />
           ))}
 
           {/* the operator */}
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <circle key={`o${i}`} className='op' cx={OP.x - 1.6 + (i % 3) * 1.6} cy={OP.y - 1.6 + Math.floor(i / 3) * 1.6} r={0.55} />
-          ))}
+          <circle className='ring' cx={OP.x} cy={OP.y} r={2.6} />
+          <circle className='src' cx={OP.x} cy={OP.y} r={1.5} />
           <text className='lo' x={OP.x - 3.2} y={OP.y - 4.2}>
             ai operator
           </text>
@@ -519,6 +590,8 @@ export const SecurityArt = () => (
           </Line>
         </Scope>
 
+        <Hit $x={E.x} $y={E.y} $a={LAND_AT} />
+        <Hit $x={A.x} $y={A.y} $a={HOP1_AT + 0.6} />
         <Glow />
         <Halo />
         <Reticle>
