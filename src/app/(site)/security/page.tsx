@@ -50,7 +50,7 @@ const LD = [
       featureList: [
         'Function-level visibility across services',
         'Virtual patching at the function level without a redeploy',
-        'Under 1% CPU across 1.04 million production cores',
+        'Under 1% CPU, measured across more than a million production cores',
         'Open-source node sensor',
       ],
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: '14-day trial' },

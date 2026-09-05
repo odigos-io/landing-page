@@ -859,7 +859,7 @@ export const SecurityContent = () => {
                 ))}
                 <DepthNote>
                   <b>from ebpf</b>
-                  <span>One runtime on each Kubernetes node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU across 1.04 million production cores. The node sensor is open source.</span>
+                  <span>One runtime on each Kubernetes node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU, measured across more than a million production cores. The node sensor is open source.</span>
                 </DepthNote>
               </Depth>
             </Reveal>
@@ -1015,10 +1015,10 @@ export const SecurityContent = () => {
               <Eyebrow>One operator. Every service.</Eyebrow>
             </Reveal>
             <Reveal delay={60}>
-              <h2>Mythos-class attacks, met at the function level.</h2>
+              <h2>AI-powered attacks, met at the function level.</h2>
             </Reveal>
             <Reveal delay={120}>
-              <p>One operator with a Mythos-class model now runs what took a team. See every function call in every service, with nothing in your code, and block the attack where it happens. Start on one service: fourteen days, success criteria written first.</p>
+              <p>One operator with a frontier model now runs what took a team. See every function call in every service, with nothing in your code, and block the attack where it happens. Start on one service: fourteen days, success criteria written first.</p>
             </Reveal>
             <Reveal delay={180}>
               <CloseCtas>

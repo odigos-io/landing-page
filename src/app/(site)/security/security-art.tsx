@@ -678,7 +678,7 @@ export const SecurityArt = () => (
           </Line>
           <Line $a={HOP1_AT + 0.8} $b={STOP_AT - 0.3}>
             <span>
-              <b>CVE-2026-135253</b> found
+              <b>CVE-2022-22963</b> found
             </span>
           </Line>
           <Line $a={STOP_AT}>
