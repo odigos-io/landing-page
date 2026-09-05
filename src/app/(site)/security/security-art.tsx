@@ -65,9 +65,9 @@ const build = () => {
     for (let i = 0; i < n; i++) {
       const a = rnd() * Math.PI * 2;
       const d = 3 + rnd() * 9;
-      const x = cx + Math.cos(a) * d;
-      const y = cy + Math.sin(a) * d * 0.82;
-      nodes.push({ x, y, r: 0.75 + rnd() * 0.85, k: 0 });
+      const x = Math.round((cx + Math.cos(a) * d) * 1000) / 1000;
+      const y = Math.round((cy + Math.sin(a) * d * 0.82) * 1000) / 1000;
+      nodes.push({ x, y, r: Math.round((0.75 + rnd() * 0.85) * 1000) / 1000, k: 0 });
       links.push({ x1: cx, y1: cy, x2: x, y2: y });
       if (x < 44 && ci !== EDGE) face.push({ x, y });
     }
@@ -80,8 +80,13 @@ const build = () => {
     nodes.push({ x: cx, y: cy, r: 1.35, k: ci === EDGE ? 1 : ci === API ? 2 : ci === WORKER ? 3 : 0 });
   });
 
-  /* what it tries, in the order it tries it */
-  const probes = face.sort(() => rnd() - 0.5).slice(0, 26);
+  /* what it tries, in the order it tries it. a fixed shuffle, so the
+     server and the browser agree on it */
+  for (let i = face.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [face[i], face[j]] = [face[j], face[i]];
+  }
+  const probes = face.slice(0, 26);
 
   return { nodes, links, probes };
 };
@@ -135,8 +140,28 @@ const stay = (a: number) => keyframes`
 
 const halo = keyframes`
   0%,${pc(STOP_AT)}%  { opacity:0; transform:scale(.4) }
-  ${pc(STOP_AT + 0.9)}%     { opacity:.5; transform:scale(1) }
-  100%    { opacity:0; transform:scale(1.9) }`;
+  ${pc(STOP_AT + 0.7)}% { opacity:.55; transform:scale(1) }
+  ${pc(STOP_AT + 1.6)}% { opacity:0; transform:scale(2.1) }
+  ${pc(STOP_AT + 1.7)}% { opacity:.4; transform:scale(.6) }
+  ${pc(STOP_AT + 2.9)}%,100% { opacity:0; transform:scale(2.1) }`;
+
+/* the cut: a violet bar snaps across the hop where it dies */
+const cutIn = keyframes`
+  0%,${pc(STOP_AT - 0.05)}% { opacity:0; transform:scale(0) }
+  ${pc(STOP_AT + 0.12)}% { opacity:1; transform:scale(1.2) }
+  ${pc(STOP_AT + 0.3)}%,100% { opacity:1; transform:scale(1) }`;
+
+/* the attack recoils off it, then the whole crimson story goes quiet */
+const hop2In = keyframes`
+  0%,${pc(HOP2_AT)}%{stroke-dashoffset:1;opacity:0}
+  ${pc(HOP2_AT + 0.04)}%{opacity:1}
+  ${pc(HOP2_AT + 1.2)}%{stroke-dashoffset:.42;opacity:1}
+  ${pc(STOP_AT + 0.1)}%{stroke-dashoffset:.42;opacity:1}
+  ${pc(STOP_AT + 0.35)}%,100%{stroke-dashoffset:.5;opacity:1}`;
+
+const settle = keyframes`
+  0%,${pc(STOP_AT + 0.4)}%{opacity:1}
+  ${pc(STOP_AT + 1.2)}%,100%{opacity:.55}`;
 
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 
@@ -250,7 +275,7 @@ const Map = styled.svg`
   }
   .trail.hop2 {
     stroke-width: 2.6;
-    animation: ${draw(HOP2_AT, 1.2, 0.42, 0.12)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+    animation: ${draw(HOP2_AT, 1.2, 0.5, 0.12)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
   }
   .through {
     animation: ${draw(LAND_AT - 0.5, 0.5)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
@@ -259,7 +284,32 @@ const Map = styled.svg`
     animation: ${draw(HOP1_AT, 0.6)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
   }
   .hop2 {
-    animation: ${draw(HOP2_AT, 1.2, 0.42)} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+    animation: ${hop2In} ${T}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .attack {
+    animation: ${settle} ${T}s ease infinite;
+  }
+  .cut {
+    stroke: ${LIT};
+    stroke-width: 0.75;
+    stroke-linecap: round;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ${cutIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .cutglow {
+    stroke: ${LIT};
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    opacity: 0.16;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ${cutIn} ${T}s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .l4 {
+    fill: ${LIT};
+    font-weight: 500;
+    animation: ${stay(STOP_AT + 0.15)} ${T}s ease infinite;
   }
   .src {
     fill: ${HOT};
@@ -326,7 +376,21 @@ const Map = styled.svg`
       opacity: 0.12;
     }
     .hop2 {
-      stroke-dashoffset: 0.42;
+      stroke-dashoffset: 0.5;
+    }
+    .attack {
+      animation: none;
+      opacity: 0.55;
+    }
+    .cut,
+    .cutglow,
+    .l4 {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .cutglow {
+      opacity: 0.18;
     }
     .ring {
       animation: none;
@@ -394,6 +458,11 @@ const Reticle = styled.div`
   }
 `;
 
+const hitGlow = (a: number) => keyframes`
+  0%,${pc(a)}% { opacity:0; transform:scale(.6) }
+  ${pc(a + 0.3)}%,${pc(STOP_AT + 0.4)}% { opacity:1; transform:none }
+  ${pc(STOP_AT + 1.2)}%,100% { opacity:.45; transform:none }`;
+
 const Hit = styled.i<{ $x: number; $y: number; $a: number }>`
   position: absolute;
   left: ${(p) => p.$x / 1.42}%;
@@ -403,7 +472,7 @@ const Hit = styled.i<{ $x: number; $y: number; $a: number }>`
   margin: -32px 0 0 -32px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(201, 52, 106, 0.2), transparent 68%);
-  animation: ${(p) => stay(p.$a)} ${T}s ease infinite;
+  animation: ${(p) => hitGlow(p.$a)} ${T}s ease infinite;
   ${reduce}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -500,11 +569,12 @@ const Line = styled.div<{ $a: number; $b?: number }>`
 `;
 
 
+const r3 = (v: number) => Math.round(v * 1000) / 1000;
 const cut = (a: { x: number; y: number }, b: { x: number; y: number }, r: number) => {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   const d = Math.hypot(dx, dy);
-  return { x1: a.x + (dx / d) * r, y1: a.y + (dy / d) * r, x2: b.x - (dx / d) * r, y2: b.y - (dy / d) * r };
+  return { x1: r3(a.x + (dx / d) * r), y1: r3(a.y + (dy / d) * r), x2: r3(b.x - (dx / d) * r), y2: r3(b.y - (dy / d) * r) };
 };
 const IN = cut(OP, E, 2.4);
 const H1 = cut(E, A, 2.4);
@@ -516,11 +586,26 @@ const bow = (s: { x1: number; y1: number; x2: number; y2: number }, k: number) =
   const dx = s.x2 - s.x1;
   const dy = s.y2 - s.y1;
   const d = Math.hypot(dx, dy);
-  return `M${s.x1} ${s.y1} Q${mx - (dy / d) * k} ${my + (dx / d) * k} ${s.x2} ${s.y2}`;
+  const c = { x: r3(mx - (dy / d) * k), y: r3(my + (dx / d) * k) };
+  return { d: `M${s.x1} ${s.y1} Q${c.x} ${c.y} ${s.x2} ${s.y2}`, c };
 };
 const D_IN = `M${IN.x1} ${IN.y1} L${IN.x2} ${IN.y2}`;
-const D_H1 = bow(H1, -5);
-const D_H2 = bow(H2, 6);
+const D_H1 = bow(H1, -5).d;
+const B2 = bow(H2, 6);
+const D_H2 = B2.d;
+/* where the second hop is stopped: half way along its curve */
+const CUT = (() => {
+  const tt = 0.5;
+  const x = (1 - tt) ** 2 * H2.x1 + 2 * (1 - tt) * tt * B2.c.x + tt ** 2 * H2.x2;
+  const y = (1 - tt) ** 2 * H2.y1 + 2 * (1 - tt) * tt * B2.c.y + tt ** 2 * H2.y2;
+  const tx = 2 * (1 - tt) * (B2.c.x - H2.x1) + 2 * tt * (H2.x2 - B2.c.x);
+  const ty = 2 * (1 - tt) * (B2.c.y - H2.y1) + 2 * tt * (H2.y2 - B2.c.y);
+  const n = Math.hypot(tx, ty);
+  const nx = -ty / n;
+  const ny = tx / n;
+  const r = (v: number) => Math.round(v * 1000) / 1000;
+  return { x1: r(x + nx * 2.7), y1: r(y + ny * 2.7), x2: r(x - nx * 2.7), y2: r(y - ny * 2.7), x: r(x), y: r(y) };
+})();
 
 export const SecurityArt = () => (
   <Frame>
@@ -542,12 +627,16 @@ export const SecurityArt = () => (
           {MAP.probes.map((t, i) => (
             <Probe key={i} className='probe' d={`M${OP.x} ${OP.y} L${t.x} ${t.y}`} pathLength={1} $i={i} />
           ))}
-          <path className='trail through' d={D_IN} pathLength={1} />
-          <path className='trail hop1' d={D_H1} pathLength={1} />
-          <path className='trail hop2' d={D_H2} pathLength={1} />
-          <path className='through' d={D_IN} pathLength={1} />
-          <path className='hop1' d={D_H1} pathLength={1} />
-          <path className='hop2' d={D_H2} pathLength={1} />
+          <g className='attack'>
+            <path className='trail through' d={D_IN} pathLength={1} />
+            <path className='trail hop1' d={D_H1} pathLength={1} />
+            <path className='trail hop2' d={D_H2} pathLength={1} />
+            <path className='through' d={D_IN} pathLength={1} />
+            <path className='hop1' d={D_H1} pathLength={1} />
+            <path className='hop2' d={D_H2} pathLength={1} />
+          </g>
+          <line className='cutglow' x1={CUT.x1} y1={CUT.y1} x2={CUT.x2} y2={CUT.y2} />
+          <line className='cut' x1={CUT.x1} y1={CUT.y1} x2={CUT.x2} y2={CUT.y2} />
 
           {MAP.nodes.map((n, i) => (
             <circle key={i} className={`n${n.k}`} cx={n.x} cy={n.y} r={n.r} />
@@ -569,6 +658,9 @@ export const SecurityArt = () => (
           <text className='l3' x={Wk.x + 9} y={Wk.y + 1}>
             worker · zero-day
           </text>
+          <text className='l4' x={Wk.x - 4.6} y={Wk.y - 6.6}>
+            odigos · policy
+          </text>
         </Map>
 
         <Scope>
@@ -586,7 +678,7 @@ export const SecurityArt = () => (
             <span>
               <b>zero-day</b> found
             </span>
-            <em>refused by policy</em>
+            <em>Odigos refused the call</em>
           </Line>
         </Scope>
 
