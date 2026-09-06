@@ -474,7 +474,7 @@ export const ThreeCutsArt = () => (
         </Runner>
       ))}
     </Disc>
-    <path d={`M${fx(G0[0])} ${fx(G0[1])} A${SC.r} ${SC.r} 0 0 1 ${fx(G1[0])} ${fx(G1[1])}`} fill='none' stroke={VIOLET} strokeWidth={3.4} strokeLinecap='round' />
+    <path d={`M${fx(G0[0])} ${fx(G0[1])} A${SC.r} ${SC.r} 0 0 1 ${fx(G1[0])} ${fx(G1[1])}`} fill='none' stroke='#3f2bc4' strokeWidth={4.6} strokeLinecap='round' />
     <Intruder cx={fx(IN0[0])} cy={fx(IN0[1])} r={4} fill={HOT} stroke='#fff' strokeWidth={1.2} />
     <text x={SC.x} y={SC.y + SC.r + 14} textAnchor='middle' fill={VIOLET} fillOpacity={0.9}>
       block the call
