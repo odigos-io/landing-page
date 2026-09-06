@@ -24,7 +24,7 @@ const Inner = styled(Container)`
 `;
 
 const Head = styled.div`
-  max-width: 680px;
+  max-width: 880px;
   margin-bottom: 64px;
   @media (max-width: 1000px) {
     margin-bottom: 44px;
@@ -112,11 +112,11 @@ const Panel = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 44px 22px 22px;
+  padding: 40px 18px 14px;
   @media (max-width: 700px) {
     aspect-ratio: auto;
-    min-height: 260px;
-    padding: 44px 14px 18px;
+    min-height: 240px;
+    padding: 40px 10px 12px;
   }
 
   &::before {

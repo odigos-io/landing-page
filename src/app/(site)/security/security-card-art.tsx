@@ -3,7 +3,8 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
-/* Four small pictures, one belief each, drawn in the home page's hand. */
+/* Four small pictures, one belief each, drawn in the home page's hand.
+   Each fills its panel; strokes are heavy enough to survive 1440px. */
 
 const HOT = '#c9346a';
 const SLATE = '#8892ab';
@@ -23,42 +24,39 @@ const Art = styled.svg`
   overflow: visible;
   text {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 5px;
+    font-size: 5.2px;
     letter-spacing: 0.4px;
   }
 `;
 
 /* ============================================================
    1. The thing that casts no shadow.
-
-   Every existing control reads the surface. Four ordinary objects rest
-   on it and each throws a shadow, so there is something to find. The
-   fifth throws nothing. A violet sweep clears each shadow in turn,
-   finds nothing under the crimson one, and rings the object itself.
    ============================================================ */
 
 const T1 = 6;
 const p1 = (s: number) => (s / T1) * 100;
 const SWEEP_D = 2.2;
-const OBJ = [36, 66, 96, 126];
-const ATK = 160;
-const xAt = (x: number) => ((x - 22) / (178 - 22)) * SWEEP_D; /* when the sweep reaches x */
+const OBJ = [30, 64, 98, 132];
+const ATK = 172;
+const OY = 64; /* object centre */
+const GROUND = 80;
+const xAt = (x: number) => ((x - 14) / (190 - 14)) * SWEEP_D;
 
 const sweep = keyframes`
   0%{transform:translateX(0);opacity:0}
   3%{opacity:1}
-  ${p1(SWEEP_D)}%{transform:translateX(156px);opacity:1}
-  ${p1(SWEEP_D + 0.3)}%,100%{transform:translateX(156px);opacity:0}`;
+  ${p1(SWEEP_D)}%{transform:translateX(176px);opacity:1}
+  ${p1(SWEEP_D + 0.3)}%,100%{transform:translateX(176px);opacity:0}`;
 
 const shade = (x: number) => keyframes`
-  0%,${p1(xAt(x) - 0.05)}%{opacity:.3}
-  ${p1(xAt(x) + 0.12)}%{opacity:.85}
-  ${p1(xAt(x) + 0.5)}%,100%{opacity:.42}`;
+  0%,${p1(xAt(x) - 0.05)}%{opacity:.34}
+  ${p1(xAt(x) + 0.12)}%{opacity:.9}
+  ${p1(xAt(x) + 0.5)}%,100%{opacity:.5}`;
 
 const bloom = keyframes`
   0%,${p1(xAt(ATK))}%{opacity:0;transform:scale(.5)}
-  ${p1(xAt(ATK) + 0.35)}%{opacity:.7;transform:scale(1)}
-  ${p1(xAt(ATK) + 1.4)}%,100%{opacity:.3;transform:scale(1.15)}`;
+  ${p1(xAt(ATK) + 0.35)}%{opacity:.8;transform:scale(1)}
+  ${p1(xAt(ATK) + 1.4)}%,100%{opacity:.35;transform:scale(1.12)}`;
 
 const Sweep = styled.g`
   animation: ${sweep} ${T1}s cubic-bezier(0.45, 0, 0.35, 1) infinite;
@@ -68,11 +66,11 @@ const Sweep = styled.g`
   }
 `;
 
-const Shade = styled.ellipse<{ $x: number }>`
+const Shade = styled.path<{ $x: number }>`
   animation: ${(p) => shade(p.$x)} ${T1}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: 0.42;
+    opacity: 0.5;
   }
 `;
 
@@ -82,69 +80,73 @@ const Bloom = styled.circle`
   animation: ${bloom} ${T1}s ease-out infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: 0.3;
+    opacity: 0.35;
   }
 `;
+
+/* a cast shadow: an ellipse thrown down and to the right from one light */
+const shadow = (x: number) => `M${x - 6} ${GROUND + 1} C ${x - 3} ${GROUND - 3}, ${x + 22} ${GROUND - 2}, ${x + 26} ${GROUND + 3} C ${x + 24} ${GROUND + 7}, ${x + 2} ${GROUND + 7}, ${x - 6} ${GROUND + 1} Z`;
 
 export const NoShadowArt = () => (
   <Art viewBox='0 0 200 138' aria-hidden>
     <defs>
-      <filter id='soft1' x='-50%' y='-50%' width='200%' height='200%'>
-        <feGaussianBlur stdDeviation='1.5' />
+      <filter id='soft1' x='-30%' y='-60%' width='160%' height='220%'>
+        <feGaussianBlur stdDeviation='1.6' />
       </filter>
       <linearGradient id='sweep1' x1='0' y1='0' x2='0' y2='1'>
         <stop offset='0' stopColor={VIOLET} stopOpacity='0' />
-        <stop offset='0.5' stopColor={VIOLET} stopOpacity='0.55' />
+        <stop offset='0.5' stopColor={VIOLET} stopOpacity='0.6' />
         <stop offset='1' stopColor={VIOLET} stopOpacity='0' />
       </linearGradient>
+      <radialGradient id='obj1' cx='0.35' cy='0.3' r='0.8'>
+        <stop offset='0' stopColor='#fff' />
+        <stop offset='1' stopColor={SLATE} stopOpacity='0.35' />
+      </radialGradient>
     </defs>
 
-    <line x1={22} y1={92} x2={178} y2={92} stroke={INK} strokeOpacity={0.12} strokeWidth={1} />
+    {/* the surface every control reads */}
+    <line x1={12} y1={GROUND} x2={192} y2={GROUND} stroke={INK} strokeOpacity={0.16} strokeWidth={1.4} />
 
     {OBJ.map((x) => (
-      <Shade key={x} cx={x} cy={97} rx={11} ry={2.6} fill={SLATE} filter='url(#soft1)' $x={x} />
+      <Shade key={x} d={shadow(x)} fill={SLATE} filter='url(#soft1)' $x={x} />
     ))}
     {OBJ.map((x) => (
-      <circle key={x} cx={x} cy={82} r={6.5} fill={SLATE} fillOpacity={0.18} stroke={SLATE} strokeWidth={1.2} />
+      <circle key={x} cx={x} cy={OY} r={11} fill='url(#obj1)' stroke={SLATE} strokeWidth={1.8} />
     ))}
 
-    <Bloom cx={ATK} cy={82} r={12} fill='none' stroke={VIOLET} strokeWidth={1} />
-    <circle cx={ATK} cy={82} r={6.5} fill={HOT} fillOpacity={0.14} stroke={HOT} strokeWidth={1.2} />
+    <Bloom cx={ATK} cy={OY} r={19} fill='none' stroke={VIOLET} strokeWidth={1.4} />
+    <circle cx={ATK} cy={OY} r={11} fill={HOT} stroke={HOT} strokeWidth={1.8} />
 
     <Sweep>
-      <rect x={19} y={58} width={6} height={48} fill='url(#sweep1)' opacity={0.5} />
-      <line x1={22} y1={58} x2={22} y2={106} stroke={VIOLET} strokeWidth={1} strokeOpacity={0.7} />
+      <rect x={10} y={30} width={8} height={70} fill='url(#sweep1)' opacity={0.55} />
+      <line x1={14} y1={30} x2={14} y2={100} stroke={VIOLET} strokeWidth={1.4} strokeOpacity={0.75} />
     </Sweep>
 
-    <text x={30} y={114} fill={SLATE} fillOpacity={0.7}>
+    <text x={24} y={112} fill={SLATE} fillOpacity={0.75}>
       side effects
     </text>
-    <text x={152} y={114} fill={HOT} fillOpacity={0.75}>
+    <text x={162} y={112} fill={HOT} fillOpacity={0.85}>
       none
     </text>
   </Art>
 );
 
 /* ============================================================
-   2. Constellation.
-
-   Seven dots, each nothing on its own. A violet line joins them in
-   the order they happened. The closed shape turns crimson: a shard,
-   pointed at the data. Nothing was added. Only the joining made it
-   a shape.
+   2. Seven allowed calls, joined, are a blade.
    ============================================================ */
 
 const T2 = 8;
 const p2 = (s: number) => (s / T2) * 100;
 const PTS: [number, number][] = [
-  [30, 44],
-  [58, 36],
-  [86, 46],
-  [112, 62],
-  [86, 88],
-  [58, 98],
-  [30, 90],
+  [22, 40],
+  [58, 24],
+  [96, 36],
+  [150, 66],
+  [96, 96],
+  [58, 108],
+  [22, 92],
 ];
+const BOX = { x: 150, y: 44, w: 32, h: 44 };
 const CHAIN_AT = 1.2;
 const CHAIN_D = 2.2;
 const CLOSE_AT = CHAIN_AT + CHAIN_D + 0.2;
@@ -157,17 +159,16 @@ const dotIn = (i: number) => keyframes`
 
 const chainIn = keyframes`
   0%,${p2(CHAIN_AT)}%{stroke-dashoffset:1;opacity:0}
-  ${p2(CHAIN_AT + 0.05)}%{opacity:.75}
-  ${p2(CHAIN_AT + CHAIN_D)}%,100%{stroke-dashoffset:0;opacity:.75}`;
+  ${p2(CHAIN_AT + 0.05)}%{opacity:.85}
+  ${p2(CHAIN_AT + CHAIN_D)}%,100%{stroke-dashoffset:0;opacity:.85}`;
 
 const shardIn = keyframes`
   0%,${p2(CLOSE_AT)}%{opacity:0}
   ${p2(CLOSE_AT + 0.5)}%,100%{opacity:1}`;
 
-const aimIn = keyframes`
-  0%,${p2(CLOSE_AT + 0.4)}%{stroke-dashoffset:1;opacity:0}
-  ${p2(CLOSE_AT + 0.45)}%{opacity:.45}
-  ${p2(CLOSE_AT + 1.0)}%,100%{stroke-dashoffset:0;opacity:.45}`;
+const boxHit = keyframes`
+  0%,${p2(CLOSE_AT + 0.3)}%{stroke:${SLATE}}
+  ${p2(CLOSE_AT + 0.7)}%,100%{stroke:${HOT}}`;
 
 const Dot = styled.circle<{ $i: number }>`
   transform-box: fill-box;
@@ -184,7 +185,7 @@ const Chain = styled.polygon`
   ${still}
   @media (prefers-reduced-motion: reduce) {
     stroke-dashoffset: 0;
-    opacity: 0.75;
+    opacity: 0.85;
   }
 `;
 
@@ -196,76 +197,79 @@ const Shard = styled.polygon`
   }
 `;
 
-const Aim = styled.line`
-  animation: ${aimIn} ${T2}s ease infinite;
+const Box = styled.rect`
+  animation: ${boxHit} ${T2}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    stroke-dashoffset: 0;
-    opacity: 0.45;
+    stroke: ${HOT};
   }
 `;
 
 export const ConstellationArt = () => (
   <Art viewBox='0 0 200 138' aria-hidden>
-    <Shard points={PTS.map((p) => p.join(',')).join(' ')} fill={HOT} fillOpacity={0.1} />
-    <Chain points={PTS.map((p) => p.join(',')).join(' ')} fill='none' stroke={VIOLET} strokeWidth={1.2} strokeLinejoin='round' strokeDasharray={1} pathLength={1} />
-    <Aim x1={112} y1={62} x2={150} y2={69} stroke={HOT} strokeWidth={1} strokeDasharray='2 3' pathLength={1} style={{ strokeDasharray: 1 }} />
+    <Shard points={PTS.map((p) => p.join(',')).join(' ')} fill={HOT} fillOpacity={0.13} />
+    <Chain points={PTS.map((p) => p.join(',')).join(' ')} fill='none' stroke={VIOLET} strokeWidth={1.8} strokeLinejoin='round' strokeDasharray={1} pathLength={1} />
     {PTS.map(([x, y], i) => (
-      <Dot key={i} cx={x} cy={y} r={3} fill='#fff' stroke={SLATE} strokeWidth={1.2} $i={i} />
+      <Dot key={i} cx={x} cy={y} r={4} fill='#fff' stroke={SLATE} strokeWidth={1.8} $i={i} />
     ))}
-    <rect x={150} y={58} width={22} height={22} rx={5} fill={SLATE} fillOpacity={0.05} stroke={SLATE} strokeWidth={1.2} />
-    <text x={30} y={118} fill={SLATE} fillOpacity={0.7}>
+    <Box x={BOX.x} y={BOX.y} width={BOX.w} height={BOX.h} rx={7} fill={SLATE} fillOpacity={0.06} stroke={SLATE} strokeWidth={1.8} />
+    <text x={22} y={126} fill={SLATE} fillOpacity={0.75}>
       seven allowed calls
     </text>
-    <text x={150} y={92} fill={SLATE} fillOpacity={0.7}>
+    <text x={150} y={102} fill={SLATE} fillOpacity={0.75}>
       the data
     </text>
   </Art>
 );
 
 /* ============================================================
-   3. Two bodies, one x-ray.
-
-   The same silhouette twice. Left is opaque: you see its edge and the
-   marks where it touches the outside, nothing more. Right is the same
-   outline gone transparent, the calls inside visible as a small tree.
+   3. The same process, opaque and then transparent.
    ============================================================ */
 
 const T3 = 6;
 const p3 = (s: number) => (s / T3) * 100;
+const LB = { x: 14, y: 22, w: 72, h: 84, rx: 22 };
+const RB = { x: 114, y: 22, w: 72, h: 84, rx: 22 };
 const TREE: [number, number][] = [
-  [148, 46],
-  [138, 62],
-  [158, 64],
-  [152, 80],
+  [150, 40],
+  [134, 60],
+  [166, 62],
+  [142, 82],
+  [160, 86],
 ];
-const scanAt = (y: number) => ((y - 34) / (96 - 34)) * 1.8;
+const TREE_LINKS: [number, number][] = [
+  [0, 1],
+  [0, 2],
+  [1, 3],
+  [2, 4],
+];
+const scanAt = (y: number) => ((y - RB.y) / RB.h) * 1.8;
 
 const blink = (i: number) => keyframes`
-  0%,${p3(0.2 + i * 0.4)}%{opacity:.35}
+  0%,${p3(0.2 + i * 0.4)}%{opacity:.5}
   ${p3(0.2 + i * 0.4 + 0.15)}%{opacity:1}
-  ${p3(0.2 + i * 0.4 + 0.6)}%{opacity:.35}
-  ${p3(3.2 + i * 0.4)}%{opacity:.35}
+  ${p3(0.2 + i * 0.4 + 0.6)}%{opacity:.5}
+  ${p3(3.2 + i * 0.4)}%{opacity:.5}
   ${p3(3.2 + i * 0.4 + 0.15)}%{opacity:1}
-  ${p3(3.2 + i * 0.4 + 0.6)}%,100%{opacity:.35}`;
+  ${p3(3.2 + i * 0.4 + 0.6)}%,100%{opacity:.5}`;
 
 const scan = keyframes`
   0%{transform:translateY(0);opacity:0}
   4%{opacity:1}
-  ${p3(1.8)}%{transform:translateY(62px);opacity:1}
-  ${p3(2.1)}%,100%{transform:translateY(62px);opacity:0}`;
+  ${p3(1.8)}%{transform:translateY(${RB.h}px);opacity:1}
+  ${p3(2.1)}%,100%{transform:translateY(${RB.h}px);opacity:0}`;
 
 const nodeIn = (y: number) => keyframes`
   0%,${p3(scanAt(y) - 0.05)}%{opacity:0}
   ${p3(scanAt(y) + 0.1)}%{opacity:1}
-  ${p3(4.4)}%{opacity:1}
-  ${p3(4.9)}%,100%{opacity:0}`;
+  ${p3(4.6)}%{opacity:1}
+  ${p3(5.1)}%,100%{opacity:0}`;
 
-const Tick = styled.line<{ $i: number }>`
+const Mark = styled.g<{ $i: number }>`
   animation: ${(p) => blink(p.$i)} ${T3}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: 0.6;
+    opacity: 0.7;
   }
 `;
 
@@ -290,126 +294,121 @@ export const XrayArt = () => (
     <defs>
       <linearGradient id='scan3' x1='0' y1='0' x2='0' y2='1'>
         <stop offset='0' stopColor={VIOLET} stopOpacity='0' />
-        <stop offset='0.5' stopColor={VIOLET} stopOpacity='0.5' />
+        <stop offset='0.5' stopColor={VIOLET} stopOpacity='0.55' />
         <stop offset='1' stopColor={VIOLET} stopOpacity='0' />
       </linearGradient>
       <clipPath id='body3'>
-        <rect x={120} y={34} width={56} height={62} rx={18} />
+        <rect x={RB.x} y={RB.y} width={RB.w} height={RB.h} rx={RB.rx} />
       </clipPath>
     </defs>
 
-    <line x1={100} y1={24} x2={100} y2={108} stroke={INK} strokeOpacity={0.08} strokeWidth={1} />
+    <line x1={100} y1={18} x2={100} y2={110} stroke={INK} strokeOpacity={0.1} strokeWidth={1.2} />
 
-    {/* the outside of a process, which is all ordinary ebpf gets */}
-    <rect x={24} y={34} width={56} height={62} rx={18} fill={SLATE} fillOpacity={0.16} stroke={SLATE} strokeWidth={1.2} />
-    {[50, 66, 82].map((y, i) => (
-      <Tick key={y} x1={17} y1={y} x2={24} y2={y} stroke={SLATE} strokeWidth={1.4} strokeLinecap='round' $i={i} />
+    {/* opaque: only what touches the outside */}
+    <rect x={LB.x} y={LB.y} width={LB.w} height={LB.h} rx={LB.rx} fill={SLATE} fillOpacity={0.42} stroke={SLATE} strokeWidth={1.8} />
+    {[
+      ['open', 44],
+      ['send', 64],
+      ['read', 84],
+    ].map(([k, y], i) => (
+      <Mark key={k} $i={i}>
+        <line x1={LB.x - 10} y1={y as number} x2={LB.x} y2={y as number} stroke={SLATE} strokeWidth={2} strokeLinecap='round' />
+        <text x={LB.x + 8} y={(y as number) + 1.8} fill={INK} fillOpacity={0.7} style={{ fontSize: 4.6 }}>
+          {k}
+        </text>
+      </Mark>
     ))}
 
-    {/* the same process, read from inside */}
-    <rect x={120} y={34} width={56} height={62} rx={18} fill={VIOLET} fillOpacity={0.04} stroke={VIOLET} strokeWidth={1.2} />
-    {[
-      [0, 1],
-      [0, 2],
-      [2, 3],
-    ].map(([a, b]) => (
+    {/* transparent: the calls inside */}
+    <rect x={RB.x} y={RB.y} width={RB.w} height={RB.h} rx={RB.rx} fill={VIOLET} fillOpacity={0.05} stroke={VIOLET} strokeWidth={1.8} />
+    {TREE_LINKS.map(([a, b]) => (
       <TreeNode key={`${a}${b}`} $y={Math.max(TREE[a][1], TREE[b][1])}>
-        <line x1={TREE[a][0]} y1={TREE[a][1]} x2={TREE[b][0]} y2={TREE[b][1]} stroke={VIOLET} strokeOpacity={0.55} strokeWidth={0.9} />
+        <line x1={TREE[a][0]} y1={TREE[a][1]} x2={TREE[b][0]} y2={TREE[b][1]} stroke={VIOLET} strokeOpacity={0.6} strokeWidth={1.3} />
       </TreeNode>
     ))}
     {TREE.map(([x, y]) => (
       <TreeNode key={`${x}${y}`} $y={y}>
-        <circle cx={x} cy={y} r={2} fill={VIOLET} />
+        <circle cx={x} cy={y} r={3} fill={VIOLET} />
       </TreeNode>
     ))}
     <g clipPath='url(#body3)'>
       <Scan>
-        <rect x={120} y={31} width={56} height={6} fill='url(#scan3)' />
-        <line x1={120} y1={34} x2={176} y2={34} stroke={VIOLET} strokeOpacity={0.45} strokeWidth={1} />
+        <rect x={RB.x} y={RB.y - 4} width={RB.w} height={8} fill='url(#scan3)' />
+        <line x1={RB.x} y1={RB.y} x2={RB.x + RB.w} y2={RB.y} stroke={VIOLET} strokeOpacity={0.5} strokeWidth={1.2} />
       </Scan>
     </g>
 
-    <text x={24} y={120} fill={SLATE} fillOpacity={0.7}>
+    <text x={LB.x} y={120} fill={SLATE} fillOpacity={0.75}>
       other ebpf
     </text>
-    <text x={24} y={129} fill={SLATE} fillOpacity={0.7}>
+    <text x={LB.x} y={129} fill={SLATE} fillOpacity={0.75}>
       sees the outside
     </text>
-    <text x={120} y={120} fill={VIOLET} fillOpacity={0.8}>
+    <text x={RB.x} y={120} fill={VIOLET} fillOpacity={0.85}>
       odigos ebpf
     </text>
-    <text x={120} y={129} fill={VIOLET} fillOpacity={0.8}>
+    <text x={RB.x} y={129} fill={VIOLET} fillOpacity={0.85}>
       sees the calls inside
     </text>
   </Art>
 );
 
 /* ============================================================
-   4. Three cuts.
-
-   Three running services. The first is slashed through and goes
-   dark: kill the process. The second has a wedge torn from its rim
-   and limps: kill the thread. The third is whole, with one short
-   violet segment on its rim, and drops what arrives there while it
-   carries on. Damage shrinking to a point.
+   4. Three responses. The third is the one you use.
    ============================================================ */
 
 const T4 = 8;
 const p4 = (s: number) => (s / T4) * 100;
-const DISC = [
-  { x: 36, y: 62 },
-  { x: 100, y: 62 },
-  { x: 164, y: 62 },
-];
-const R = 23;
-const pol = (cx: number, cy: number, deg: number, r = R) => [cx + r * Math.cos((deg * Math.PI) / 180), cy + r * Math.sin((deg * Math.PI) / 180)] as const;
+const SA = { x: 34, y: 40, r: 15 };
+const SB = { x: 34, y: 92, r: 15 };
+const SC = { x: 136, y: 64, r: 36 };
+const pol = (c: { x: number; y: number; r: number }, deg: number) => [c.x + c.r * Math.cos((deg * Math.PI) / 180), c.y + c.r * Math.sin((deg * Math.PI) / 180)] as const;
 const fx = (n: number) => Math.round(n * 100) / 100;
-const B0 = pol(DISC[1].x, DISC[1].y, -15);
-const B1 = pol(DISC[1].x, DISC[1].y, -75);
-const G0 = pol(DISC[2].x, DISC[2].y, -52);
-const G1 = pol(DISC[2].x, DISC[2].y, -38);
+const B0 = pol(SB, -15);
+const B1 = pol(SB, -75);
+const G0 = pol(SC, -56);
+const G1 = pol(SC, -34);
+const GATE = pol({ ...SC, r: SC.r + 5.5 }, -45);
+const IN0 = [GATE[0] + 34, GATE[1] - 28];
 
 const runA = keyframes`
   0%{transform:rotate(0deg)}
   ${p4(1.2)}%,100%{transform:rotate(-130deg)}`;
 const dimA = keyframes`
   0%,${p4(1.2)}%{opacity:1}
-  ${p4(1.6)}%,100%{opacity:.15}`;
+  ${p4(1.6)}%,100%{opacity:.22}`;
 const runB = keyframes`
   0%{transform:rotate(0deg)}
   100%{transform:rotate(-720deg)}`;
 const dimB = keyframes`
   0%,${p4(1.6)}%{opacity:1}
-  ${p4(2.0)}%,100%{opacity:.4}`;
+  ${p4(2.0)}%,100%{opacity:.45}`;
 const runC = keyframes`
   0%{transform:rotate(0deg)}
   100%{transform:rotate(-720deg)}`;
 
-/* a crimson call slides to the gate and is dropped there, three times a loop */
+/* a crimson call arrives at the gate, stops there, and is gone before the next */
 const intrude = keyframes`
   0%{transform:translate(0,0) scale(1);opacity:0}
-  ${p4(1.4)}%{transform:translate(0,0) scale(1);opacity:.9}
-  ${p4(2.2)}%{transform:translate(-16px,12px) scale(1);opacity:.9}
-  ${p4(2.5)}%{transform:translate(-18px,14px) scale(0);opacity:0}
-  ${p4(3.8)}%{transform:translate(0,0) scale(1);opacity:0}
-  ${p4(3.9)}%{opacity:.9}
-  ${p4(4.7)}%{transform:translate(-16px,12px) scale(1);opacity:.9}
-  ${p4(5.0)}%{transform:translate(-18px,14px) scale(0);opacity:0}
-  ${p4(6.3)}%{transform:translate(0,0) scale(1);opacity:0}
-  ${p4(6.4)}%{opacity:.9}
-  ${p4(7.2)}%{transform:translate(-16px,12px) scale(1);opacity:.9}
-  ${p4(7.5)}%,100%{transform:translate(-18px,14px) scale(0);opacity:0}`;
+  ${p4(0.3)}%{opacity:.95}
+  ${p4(1.3)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
+  ${p4(3.4)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
+  ${p4(3.7)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(0);opacity:0}
+  ${p4(4.0)}%{transform:translate(0,0) scale(1);opacity:0}
+  ${p4(4.3)}%{opacity:.95}
+  ${p4(5.3)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
+  ${p4(7.4)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
+  ${p4(7.7)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(0);opacity:0}
+  100%{transform:translate(0,0) scale(1);opacity:0}`;
 
-const gatePulse = keyframes`
-  0%,${p4(2.4)}%{opacity:.08}
-  ${p4(2.55)}%{opacity:.3}
-  ${p4(3.2)}%{opacity:.08}
-  ${p4(4.9)}%{opacity:.08}
-  ${p4(5.05)}%{opacity:.3}
-  ${p4(5.7)}%{opacity:.08}
-  ${p4(7.4)}%{opacity:.08}
-  ${p4(7.55)}%{opacity:.3}
-  100%{opacity:.08}`;
+const gateGlow = keyframes`
+  0%,${p4(1.2)}%{opacity:.1}
+  ${p4(1.45)}%{opacity:.45}
+  ${p4(3.4)}%{opacity:.2}
+  ${p4(5.2)}%{opacity:.1}
+  ${p4(5.45)}%{opacity:.45}
+  ${p4(7.4)}%{opacity:.2}
+  100%{opacity:.1}`;
 
 const Runner = styled.g<{ $cx: number; $cy: number; $k: 'a' | 'b' | 'c' }>`
   transform-box: view-box;
@@ -422,25 +421,27 @@ const Disc = styled.g<{ $k: 'a' | 'b' | 'c' }>`
   animation: ${(p) => (p.$k === 'a' ? dimA : p.$k === 'b' ? dimB : 'none')} ${T4}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: ${(p) => (p.$k === 'a' ? 0.15 : p.$k === 'b' ? 0.4 : 1)};
+    opacity: ${(p) => (p.$k === 'a' ? 0.22 : p.$k === 'b' ? 0.45 : 1)};
   }
 `;
 
 const Intruder = styled.circle`
   transform-box: view-box;
-  transform-origin: 196px 32px;
-  animation: ${intrude} ${T4}s ease-in infinite;
+  transform-origin: ${fx(IN0[0])}px ${fx(IN0[1])}px;
+  animation: ${intrude} ${T4}s ease-out infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: 0;
+    animation: none;
+    transform: translate(${fx(GATE[0] - IN0[0])}px, ${fx(GATE[1] - IN0[1])}px);
+    opacity: 0.95;
   }
 `;
 
-const HaloC = styled.circle`
-  animation: ${gatePulse} ${T4}s ease infinite;
+const GateGlow = styled.circle`
+  animation: ${gateGlow} ${T4}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: 0.08;
+    opacity: 0.2;
   }
 `;
 
@@ -448,40 +449,39 @@ export const ThreeCutsArt = () => (
   <Art viewBox='0 0 200 138' aria-hidden>
     {/* kill the process */}
     <Disc $k='a'>
-      <circle cx={DISC[0].x} cy={DISC[0].y} r={R} fill='none' stroke={SLATE} strokeOpacity={0.3} strokeWidth={1.4} strokeDasharray='2 3' />
-      <Runner $cx={DISC[0].x} $cy={DISC[0].y} $k='a'>
-        <circle cx={DISC[0].x + R} cy={DISC[0].y} r={2} fill={SLATE} />
+      <circle cx={SA.x} cy={SA.y} r={SA.r} fill='none' stroke={SLATE} strokeOpacity={0.35} strokeWidth={1.6} strokeDasharray='2 3' />
+      <Runner $cx={SA.x} $cy={SA.y} $k='a'>
+        <circle cx={SA.x + SA.r} cy={SA.y} r={2.2} fill={SLATE} />
       </Runner>
     </Disc>
-    <line x1={DISC[0].x - 17} y1={DISC[0].y + 16} x2={DISC[0].x + 17} y2={DISC[0].y - 16} stroke={HOT} strokeWidth={1.6} strokeLinecap='round' />
+    <line x1={SA.x - 10} y1={SA.y + 10} x2={SA.x + 10} y2={SA.y - 10} stroke={HOT} strokeWidth={2} strokeLinecap='round' />
+    <text x={SA.x} y={SA.y + SA.r + 9} textAnchor='middle' fill={SLATE} fillOpacity={0.7} style={{ fontSize: 4.6 }}>
+      kill the process
+    </text>
 
     {/* kill the thread */}
     <Disc $k='b'>
-      <path d={`M${fx(B0[0])} ${fx(B0[1])} A${R} ${R} 0 1 1 ${fx(B1[0])} ${fx(B1[1])}`} fill='none' stroke={SLATE} strokeOpacity={0.55} strokeWidth={1.4} strokeLinecap='round' />
-      <Runner $cx={DISC[1].x} $cy={DISC[1].y} $k='b'>
-        <circle cx={DISC[1].x + R} cy={DISC[1].y} r={2} fill={SLATE} />
+      <path d={`M${fx(B0[0])} ${fx(B0[1])} A${SB.r} ${SB.r} 0 1 1 ${fx(B1[0])} ${fx(B1[1])}`} fill='none' stroke={SLATE} strokeOpacity={0.6} strokeWidth={1.6} strokeLinecap='round' />
+      <Runner $cx={SB.x} $cy={SB.y} $k='b'>
+        <circle cx={SB.x + SB.r} cy={SB.y} r={2.2} fill={SLATE} />
       </Runner>
     </Disc>
-    <line x1={fx(B0[0])} y1={fx(B0[1])} x2={fx(B1[0])} y2={fx(B1[1])} stroke={HOT} strokeOpacity={0.7} strokeWidth={1.2} strokeLinecap='round' />
-
-    {/* block the call */}
-    <HaloC cx={DISC[2].x} cy={DISC[2].y} r={R + 7} fill='none' stroke={VIOLET} strokeWidth={1} />
-    <Disc $k='c'>
-      <circle cx={DISC[2].x} cy={DISC[2].y} r={R} fill='none' stroke={SLATE} strokeOpacity={0.6} strokeWidth={1.4} />
-      <Runner $cx={DISC[2].x} $cy={DISC[2].y} $k='c'>
-        <circle cx={DISC[2].x + R} cy={DISC[2].y} r={2} fill={VIOLET} />
-      </Runner>
-    </Disc>
-    <path d={`M${fx(G0[0])} ${fx(G0[1])} A${R} ${R} 0 0 1 ${fx(G1[0])} ${fx(G1[1])}`} fill='none' stroke={VIOLET} strokeWidth={2.4} strokeLinecap='round' />
-    <Intruder cx={196} cy={32} r={2.4} fill={HOT} />
-
-    <text x={DISC[0].x} y={104} textAnchor='middle' fill={SLATE} fillOpacity={0.55} style={{ letterSpacing: 0.2 }}>
-      kill the process
-    </text>
-    <text x={DISC[1].x} y={104} textAnchor='middle' fill={SLATE} fillOpacity={0.55} style={{ letterSpacing: 0.2 }}>
+    <line x1={fx(B0[0])} y1={fx(B0[1])} x2={fx(B1[0])} y2={fx(B1[1])} stroke={HOT} strokeOpacity={0.8} strokeWidth={1.6} strokeLinecap='round' />
+    <text x={SB.x} y={SB.y + SB.r + 9} textAnchor='middle' fill={SLATE} fillOpacity={0.7} style={{ fontSize: 4.6 }}>
       kill the thread
     </text>
-    <text x={DISC[2].x} y={104} textAnchor='middle' fill={VIOLET} fillOpacity={0.85} style={{ letterSpacing: 0.2 }}>
+
+    {/* block the call: the service stays whole */}
+    <GateGlow cx={fx(GATE[0])} cy={fx(GATE[1])} r={11} fill={VIOLET} />
+    <Disc $k='c'>
+      <circle cx={SC.x} cy={SC.y} r={SC.r} fill={VIOLET} fillOpacity={0.04} stroke={SLATE} strokeOpacity={0.7} strokeWidth={1.8} />
+      <Runner $cx={SC.x} $cy={SC.y} $k='c'>
+        <circle cx={SC.x + SC.r} cy={SC.y} r={2.6} fill={VIOLET} />
+      </Runner>
+    </Disc>
+    <path d={`M${fx(G0[0])} ${fx(G0[1])} A${SC.r} ${SC.r} 0 0 1 ${fx(G1[0])} ${fx(G1[1])}`} fill='none' stroke={VIOLET} strokeWidth={3.4} strokeLinecap='round' />
+    <Intruder cx={fx(IN0[0])} cy={fx(IN0[1])} r={3} fill={HOT} />
+    <text x={SC.x} y={SC.y + SC.r + 14} textAnchor='middle' fill={VIOLET} fillOpacity={0.9}>
       block the call
     </text>
   </Art>
