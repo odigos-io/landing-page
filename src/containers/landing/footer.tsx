@@ -140,7 +140,7 @@ export const LandingFooter = () => {
             <Social href='https://www.linkedin.com/company/odigoss' target='_blank' aria-label='LinkedIn'>
               <Image src='/assets/linkedin.svg' alt='LinkedIn' width={17} height={17} />
             </Social>
-            <Social href='https://x.com/odigosio' target='_blank' aria-label='X'>
+            <Social href='https://x.com/intent/follow?screen_name=odigosio' target='_blank' aria-label='X'>
               <Image src='/assets/x.svg' alt='X' width={15} height={15} />
             </Social>
           </Socials>
