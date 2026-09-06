@@ -45,8 +45,8 @@ const xAt = (x: number) => ((x - 14) / (190 - 14)) * SWEEP_D;
 const sweep = keyframes`
   0%{transform:translateX(0);opacity:0}
   3%{opacity:1}
-  ${p1(SWEEP_D)}%{transform:translateX(176px);opacity:1}
-  ${p1(SWEEP_D + 0.3)}%,100%{transform:translateX(176px);opacity:0}`;
+  ${p1(SWEEP_D)}%{transform:translateX(158px);opacity:1}
+  ${p1(SWEEP_D + 0.4)}%,100%{transform:translateX(158px);opacity:0}`;
 
 const shade = (x: number) => keyframes`
   0%,${p1(xAt(x) - 0.05)}%{opacity:.34}
@@ -55,8 +55,8 @@ const shade = (x: number) => keyframes`
 
 const bloom = keyframes`
   0%,${p1(xAt(ATK))}%{opacity:0;transform:scale(.5)}
-  ${p1(xAt(ATK) + 0.35)}%{opacity:.8;transform:scale(1)}
-  ${p1(xAt(ATK) + 1.4)}%,100%{opacity:.35;transform:scale(1.12)}`;
+  ${p1(xAt(ATK) + 0.35)}%{opacity:.9;transform:scale(1)}
+  ${p1(xAt(ATK) + 1.4)}%,100%{opacity:.75;transform:scale(1)}`;
 
 const Sweep = styled.g`
   animation: ${sweep} ${T1}s cubic-bezier(0.45, 0, 0.35, 1) infinite;
@@ -80,7 +80,7 @@ const Bloom = styled.circle`
   animation: ${bloom} ${T1}s ease-out infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: 0.35;
+    opacity: 0.75;
   }
 `;
 
@@ -114,7 +114,7 @@ export const NoShadowArt = () => (
       <circle key={x} cx={x} cy={OY} r={11} fill='url(#obj1)' stroke={SLATE} strokeWidth={1.8} />
     ))}
 
-    <Bloom cx={ATK} cy={OY} r={19} fill='none' stroke={VIOLET} strokeWidth={1.4} />
+    <Bloom cx={ATK} cy={OY} r={18} fill='none' stroke={VIOLET} strokeWidth={1.8} />
     <circle cx={ATK} cy={OY} r={11} fill={HOT} stroke={HOT} strokeWidth={1.8} />
 
     <Sweep>
@@ -141,7 +141,7 @@ const PTS: [number, number][] = [
   [22, 40],
   [58, 24],
   [96, 36],
-  [150, 66],
+  [149, 66],
   [96, 96],
   [58, 108],
   [22, 92],
@@ -207,7 +207,7 @@ const Box = styled.rect`
 
 export const ConstellationArt = () => (
   <Art viewBox='0 0 200 138' aria-hidden>
-    <Shard points={PTS.map((p) => p.join(',')).join(' ')} fill={HOT} fillOpacity={0.13} />
+    <Shard points={PTS.map((p) => p.join(',')).join(' ')} fill={HOT} fillOpacity={0.07} />
     <Chain points={PTS.map((p) => p.join(',')).join(' ')} fill='none' stroke={VIOLET} strokeWidth={1.8} strokeLinejoin='round' strokeDasharray={1} pathLength={1} />
     {PTS.map(([x, y], i) => (
       <Dot key={i} cx={x} cy={y} r={4} fill='#fff' stroke={SLATE} strokeWidth={1.8} $i={i} />
@@ -305,7 +305,7 @@ export const XrayArt = () => (
     <line x1={100} y1={18} x2={100} y2={110} stroke={INK} strokeOpacity={0.1} strokeWidth={1.2} />
 
     {/* opaque: only what touches the outside */}
-    <rect x={LB.x} y={LB.y} width={LB.w} height={LB.h} rx={LB.rx} fill={SLATE} fillOpacity={0.42} stroke={SLATE} strokeWidth={1.8} />
+    <rect x={LB.x} y={LB.y} width={LB.w} height={LB.h} rx={LB.rx} fill={SLATE} fillOpacity={0.28} stroke={SLATE} strokeWidth={1.8} />
     {[
       ['open', 44],
       ['send', 64],
@@ -313,7 +313,7 @@ export const XrayArt = () => (
     ].map(([k, y], i) => (
       <Mark key={k} $i={i}>
         <line x1={LB.x - 10} y1={y as number} x2={LB.x} y2={y as number} stroke={SLATE} strokeWidth={2} strokeLinecap='round' />
-        <text x={LB.x + 8} y={(y as number) + 1.8} fill={INK} fillOpacity={0.7} style={{ fontSize: 4.6 }}>
+        <text x={LB.x + 9} y={(y as number) + 1.9} fill={INK} fillOpacity={0.9} style={{ fontSize: 5.2, fontWeight: 500 }}>
           {k}
         </text>
       </Mark>
@@ -368,7 +368,7 @@ const B0 = pol(SB, -15);
 const B1 = pol(SB, -75);
 const G0 = pol(SC, -56);
 const G1 = pol(SC, -34);
-const GATE = pol({ ...SC, r: SC.r + 5.5 }, -45);
+const GATE = pol({ ...SC, r: SC.r + 6.5 }, -45);
 const IN0 = [GATE[0] + 34, GATE[1] - 28];
 
 const runA = keyframes`
@@ -392,22 +392,14 @@ const intrude = keyframes`
   0%{transform:translate(0,0) scale(1);opacity:0}
   ${p4(0.3)}%{opacity:.95}
   ${p4(1.3)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  ${p4(3.4)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  ${p4(3.7)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(0);opacity:0}
-  ${p4(4.0)}%{transform:translate(0,0) scale(1);opacity:0}
-  ${p4(4.3)}%{opacity:.95}
-  ${p4(5.3)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  ${p4(7.4)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  ${p4(7.7)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(0);opacity:0}
+  ${p4(7.5)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
+  ${p4(7.8)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(0);opacity:0}
   100%{transform:translate(0,0) scale(1);opacity:0}`;
 
 const gateGlow = keyframes`
   0%,${p4(1.2)}%{opacity:.1}
-  ${p4(1.45)}%{opacity:.45}
-  ${p4(3.4)}%{opacity:.2}
-  ${p4(5.2)}%{opacity:.1}
-  ${p4(5.45)}%{opacity:.45}
-  ${p4(7.4)}%{opacity:.2}
+  ${p4(1.45)}%{opacity:.5}
+  ${p4(7.5)}%{opacity:.25}
   100%{opacity:.1}`;
 
 const Runner = styled.g<{ $cx: number; $cy: number; $k: 'a' | 'b' | 'c' }>`
@@ -474,13 +466,14 @@ export const ThreeCutsArt = () => (
     {/* block the call: the service stays whole */}
     <GateGlow cx={fx(GATE[0])} cy={fx(GATE[1])} r={11} fill={VIOLET} />
     <Disc $k='c'>
-      <circle cx={SC.x} cy={SC.y} r={SC.r} fill={VIOLET} fillOpacity={0.04} stroke={SLATE} strokeOpacity={0.7} strokeWidth={1.8} />
+      <circle cx={SC.x} cy={SC.y} r={SC.r} fill={VIOLET} fillOpacity={0.07} stroke={SLATE} strokeOpacity={0.7} strokeWidth={1.8} />
+      <circle cx={SC.x} cy={SC.y} r={SC.r - 9} fill='none' stroke={VIOLET} strokeOpacity={0.14} strokeWidth={1} strokeDasharray='3 4' />
       <Runner $cx={SC.x} $cy={SC.y} $k='c'>
         <circle cx={SC.x + SC.r} cy={SC.y} r={2.6} fill={VIOLET} />
       </Runner>
     </Disc>
     <path d={`M${fx(G0[0])} ${fx(G0[1])} A${SC.r} ${SC.r} 0 0 1 ${fx(G1[0])} ${fx(G1[1])}`} fill='none' stroke={VIOLET} strokeWidth={3.4} strokeLinecap='round' />
-    <Intruder cx={fx(IN0[0])} cy={fx(IN0[1])} r={3} fill={HOT} />
+    <Intruder cx={fx(IN0[0])} cy={fx(IN0[1])} r={4} fill={HOT} stroke='#fff' strokeWidth={1.2} />
     <text x={SC.x} y={SC.y + SC.r + 14} textAnchor='middle' fill={VIOLET} fillOpacity={0.9}>
       block the call
     </text>

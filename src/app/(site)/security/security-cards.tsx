@@ -132,6 +132,12 @@ const Panel = styled.div`
     position: relative;
     z-index: 1;
   }
+  /* every panel is the same box; the art scales to fit it */
+  > svg {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+  }
 `;
 
 const PanelCap = styled.div`
