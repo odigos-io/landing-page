@@ -428,7 +428,7 @@ const CARDS = [
         Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
       </>
     ),
-    desc: 'Your controls watch for the mess an attack leaves behind: a request that looks wrong, a process touching a file, a log line that reads badly. A targeted attack leaves none of that until it is over. It is a chain of allowed-looking calls spread across services, and no single tool holds the whole picture.',
+    desc: 'Every control you run keys on residue: a request that fails validation, a file opened out of pattern, a log line that reads wrong. A precise attack produces none of that while it runs. It moves as permitted calls across services, and each service sees only its own part. Odigos reads the calls.',
     visual: <ToolTiles />,
   },
   {
@@ -438,17 +438,17 @@ const CARDS = [
         Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
       </>
     ),
-    desc: 'Each operation in a sophisticated attack is ordinary on its own: a request, a lookup, a call into a library. Every control judges one piece, so every dashboard stays green while the attacker is inside. Only the whole transaction is malicious, and Odigos reads the whole transaction.',
+    desc: 'One service resolves an identifier. Another loads the record it was handed. A third returns it. Each call is valid on its own and normal for the service that made it. The attack lives in the order and the arguments, which is the view nothing else keeps.',
     visual: <TraceCard />,
   },
   {
     cap: 'where it attaches',
     title: (
       <>
-        Zero effort for your developers. <span className='mute'>An eBPF sensor unlike any other.</span>
+        Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
       </>
     ),
-    desc: 'Nothing in your code, your process or anyone’s sprint. Most eBPF sensors stop at what the kernel sees. Odigos reads the function calls inside the process, with their arguments and return values, and stitches them across every service. One runtime on each Kubernetes node, under 1% CPU, measured across more than a million production cores.',
+    desc: 'Kernel-level sensors report syscalls, sockets and files, which is the outside of your application. Odigos reads the calls inside the process: names, arguments, return values, across every service, including stripped Go binaries. Nothing is loaded into the process. No code change, no redeploy, under 1% CPU.',
     visual: (
       <DeployWrap>
         <DeployScene />
@@ -462,7 +462,7 @@ const CARDS = [
         Block one function. <span className='mute'>The service stays up.</span>
       </>
     ),
-    desc: 'Detection is baselined on your own traffic: the calls a route normally makes, and the one it never has. The finding names the function, so the policy can too. Refuse the call or change what it returns, scoped to the callers you name, shipped or reverted without a redeploy. Fields you name are redacted at the node.',
+    desc: 'Three responses exist. Kill the thread. Kill the process. Or refuse that one call, or change what it returns, while everything else keeps serving. The first two stop the service along with the attack. The third is the one you will use in production: scoped to named callers, shipped and reverted without a redeploy, deleted when the real fix lands.',
     visual: <FindingCard />,
   },
 ];
@@ -472,8 +472,8 @@ export const SecurityCards = () => (
     <Inner>
       <Reveal>
         <Head>
-          <Eyebrow>How it works</Eyebrow>
-          <h2>What only a function-level sensor can do.</h2>
+          <Eyebrow>Inside the process</Eyebrow>
+          <h2>See every call. Block the malicious one.</h2>
         </Head>
       </Reveal>
       <Rows>
