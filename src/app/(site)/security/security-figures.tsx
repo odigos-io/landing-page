@@ -181,15 +181,14 @@ const Dot = styled.circle<{ $a: number }>`
 
 const GX = 142; /* where the gutter of tool names starts */
 
-export const DeployFigure = () => (
-  <Board>
-    <Strip>
-      <span>zero effort · nothing in your process</span>
-      <span>every call, its argument, its return value</span>
-    </Strip>
-    <Scroll>
-    <Stage $ar='200 / 80' $mw={700}>
-      <Svg viewBox='0 0 200 80' preserveAspectRatio='xMidYMid meet' aria-hidden>
+const DeploySvg = styled.svg`
+  display: block;
+  width: 100%;
+  height: auto;
+`;
+
+export const DeployScene = () => (
+  <DeploySvg viewBox='0 0 200 80' preserveAspectRatio='xMidYMid meet' aria-hidden>
         {/* the network edge */}
         <Region $a={0.2}>
           <Edge x={6} y={5} width={124} height={9} rx={2} />
@@ -259,7 +258,18 @@ export const DeployFigure = () => (
         <Lbl x={GX + 3.5} y={71.7} $a={2.2} $c='rgba(91,67,241,.7)' $s={2.7}>
           on the node, no redeploy
         </Lbl>
-      </Svg>
+  </DeploySvg>
+);
+
+export const DeployFigure = () => (
+  <Board>
+    <Strip>
+      <span>zero effort · nothing in your process</span>
+      <span>every call, its argument, its return value</span>
+    </Strip>
+    <Scroll>
+    <Stage $ar='200 / 80' $mw={700}>
+      <DeployScene />
     </Stage>
     </Scroll>
     <Hint>scroll sideways &rsaquo;</Hint>
@@ -279,7 +289,7 @@ export const DeployFigure = () => (
 
 type Sees = { net?: number; host?: number; img?: number; fnA?: number; fnB?: number; link?: number };
 
-const TOOLS: { k: string; note: string; sees: Sees; us?: boolean }[] = [
+export const TOOLS: { k: string; note: string; sees: Sees; us?: boolean }[] = [
   { k: 'waf', note: 'the request, at the edge', sees: { net: 1 } },
   { k: 'edr', note: 'processes and files on the host', sees: { host: 1, img: 0.7 } },
   { k: 'cnapp', note: 'the image and its configuration', sees: { img: 1 } },
@@ -373,7 +383,7 @@ const TileFoot = styled.div`
   }
 `;
 
-const Scene = ({ sees, us, wide }: { sees: Sees; us?: boolean; wide?: boolean }) => {
+export const Scene = ({ sees, us, wide }: { sees: Sees; us?: boolean; wide?: boolean }) => {
   const o = (k: keyof Sees) => sees[k] ?? DIM;
   const mono = { fontFamily: 'var(--font-mono), monospace', fontSize: 3.1, letterSpacing: 0.25, textTransform: 'uppercase' as const, fill: 'rgba(28,22,51,.55)' };
   /* the wide tile draws two nodes side by side; the same scene, then a second one, so the chain has somewhere to go */
