@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
         title: blog.title,
         description: blog.metadata || blog.description,
         images: [imageUrl],
-        creator: blog.author ? `@${blog.author.replace(/\s+/g, '').toLowerCase()}` : '@odigos_io',
+        creator: blog.author ? `@${blog.author.replace(/\s+/g, '').toLowerCase()}` : '@odigosio',
       },
       alternates: {
         canonical: blogUrl,

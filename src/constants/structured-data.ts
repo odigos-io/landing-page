@@ -12,7 +12,7 @@ export const ORGANIZATION_LD = {
   logo: { '@type': 'ImageObject', url: `${SITE}/icon.png`, width: 512, height: 512 },
   description:
     'Odigos captures the arguments and return values of any function in a live production service, in seconds, with no code change and no redeploy, and exports the result as OpenTelemetry.',
-  sameAs: ['https://github.com/odigos-io/odigos', 'https://www.linkedin.com/company/odigos', 'https://x.com/odigos_io'],
+  sameAs: ['https://github.com/odigos-io/odigos', 'https://www.linkedin.com/company/odigoss', 'https://x.com/odigosio'],
 };
 
 export const WEBSITE_LD = {
