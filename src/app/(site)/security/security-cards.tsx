@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Container, Eyebrow, Reveal } from '@/containers/landing/primitives';
 import { DeployScene, Scene, TOOLS } from './security-figures';
+import { NoShadowArt, ConstellationArt } from './security-card-art';
 
 /* Four things, in the home page's card language: text beside a panel,
    alternating, each panel one compact picture. */
@@ -422,24 +423,24 @@ const DeployWrap = styled.div`
 
 const CARDS = [
   {
-    cap: 'what each tool sees',
+    cap: 'what your tools look for',
     title: (
       <>
         Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
       </>
     ),
     desc: 'Every control you run keys on residue: a request that fails validation, a file opened out of pattern, a log line that reads wrong. A precise attack produces none of that while it runs. It moves as permitted calls across services, and each service sees only its own part. Odigos reads the calls.',
-    visual: <ToolTiles />,
+    visual: <NoShadowArt />,
   },
   {
-    cap: 'one request, today',
+    cap: 'seven calls, one shape',
     title: (
       <>
         Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
       </>
     ),
     desc: 'One service resolves an identifier. Another loads the record it was handed. A third returns it. Each call is valid on its own and normal for the service that made it. The attack lives in the order and the arguments, which is the view nothing else keeps.',
-    visual: <TraceCard />,
+    visual: <ConstellationArt />,
   },
   {
     cap: 'where it attaches',
