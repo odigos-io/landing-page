@@ -113,6 +113,11 @@ export const NoShadowArt = () => (
     {OBJ.map((x) => (
       <circle key={x} cx={x} cy={OY} r={11} fill='url(#obj1)' stroke={SLATE} strokeWidth={1.8} />
     ))}
+    {['waf', 'edr', 'siem', 'adr'].map((k, i) => (
+      <text key={k} x={OBJ[i] + 10} y={GROUND + 17} textAnchor='middle' fill={SLATE} fillOpacity={0.8} style={{ fontSize: 5, letterSpacing: 0.6, textTransform: 'uppercase' }}>
+        {k}
+      </text>
+    ))}
 
     <Bloom cx={ATK} cy={OY} r={18} fill='none' stroke={VIOLET} strokeWidth={1.8} />
     <circle cx={ATK} cy={OY} r={11} fill={HOT} stroke={HOT} strokeWidth={1.8} />
@@ -122,102 +127,137 @@ export const NoShadowArt = () => (
       <line x1={14} y1={30} x2={14} y2={100} stroke={VIOLET} strokeWidth={1.4} strokeOpacity={0.75} />
     </Sweep>
 
-    <text x={24} y={112} fill={SLATE} fillOpacity={0.75}>
-      side effects
-    </text>
-    <text x={162} y={112} fill={HOT} fillOpacity={0.85}>
+    <text x={ATK + 6} y={GROUND + 17} textAnchor='middle' fill={HOT} fillOpacity={0.9} style={{ fontSize: 5, letterSpacing: 0.6, textTransform: 'uppercase' }}>
       none
+    </text>
+    <text x={30} y={122} fill={SLATE} fillOpacity={0.7}>
+      each one waits for a side effect
     </text>
   </Art>
 );
 
 /* ============================================================
-   2. Seven allowed calls, joined, are a blade.
+   2. Five steps, each stamped allowed. Joined in order, one attack.
    ============================================================ */
 
+const OKC = '#2f9e6a';
 const T2 = 8;
 const p2 = (s: number) => (s / T2) * 100;
-const PTS: [number, number][] = [
-  [22, 40],
-  [58, 24],
-  [96, 36],
-  [149, 66],
-  [96, 96],
-  [58, 108],
-  [22, 92],
+const STEPS: { x: number; y: number; k: string }[] = [
+  { x: 24, y: 64, k: 'request' },
+  { x: 56, y: 38, k: 'lookup' },
+  { x: 88, y: 64, k: 'render' },
+  { x: 120, y: 38, k: 'parse' },
+  { x: 152, y: 64, k: 'write' },
 ];
-const BOX = { x: 150, y: 44, w: 32, h: 44 };
-const CHAIN_AT = 1.2;
-const CHAIN_D = 2.2;
-const CLOSE_AT = CHAIN_AT + CHAIN_D + 0.2;
+const VAULT = { x: 172, y: 50, w: 22, h: 28 };
+const CHAIN_AT = 1.8;
+const CHAIN_D = 2.4;
+const HOT_AT = CHAIN_AT + CHAIN_D + 0.3;
 
-const dotIn = (i: number) => keyframes`
-  0%,${p2(0.15 + i * 0.12)}%{opacity:0;transform:scale(.4)}
-  ${p2(0.15 + i * 0.12 + 0.3)}%{opacity:1;transform:scale(1)}
-  ${p2(CLOSE_AT)}%{stroke:${SLATE}}
-  ${p2(CLOSE_AT + 0.3)}%,100%{opacity:1;transform:scale(1);stroke:${HOT}}`;
+const stepIn = (i: number) => keyframes`
+  0%,${p2(0.2 + i * 0.22)}%{opacity:0;transform:scale(.5)}
+  ${p2(0.2 + i * 0.22 + 0.3)}%,100%{opacity:1;transform:scale(1)}`;
 
-const chainIn = keyframes`
-  0%,${p2(CHAIN_AT)}%{stroke-dashoffset:1;opacity:0}
-  ${p2(CHAIN_AT + 0.05)}%{opacity:.85}
-  ${p2(CHAIN_AT + CHAIN_D)}%,100%{stroke-dashoffset:0;opacity:.85}`;
+const tickIn = (i: number) => keyframes`
+  0%,${p2(0.45 + i * 0.22)}%{opacity:0;stroke-dashoffset:1}
+  ${p2(0.45 + i * 0.22 + 0.35)}%,100%{opacity:1;stroke-dashoffset:0}`;
 
-const shardIn = keyframes`
-  0%,${p2(CLOSE_AT)}%{opacity:0}
-  ${p2(CLOSE_AT + 0.5)}%,100%{opacity:1}`;
+const chainDraw = keyframes`
+  0%,${p2(CHAIN_AT)}%{stroke-dashoffset:1;opacity:0;stroke:${VIOLET}}
+  ${p2(CHAIN_AT + 0.05)}%{opacity:.85;stroke:${VIOLET}}
+  ${p2(CHAIN_AT + CHAIN_D)}%{stroke-dashoffset:0;opacity:.85;stroke:${VIOLET}}
+  ${p2(HOT_AT)}%{stroke-dashoffset:0;opacity:1;stroke:${VIOLET}}
+  ${p2(HOT_AT + 0.5)}%,100%{stroke-dashoffset:0;opacity:1;stroke:${HOT}}`;
 
-const boxHit = keyframes`
-  0%,${p2(CLOSE_AT + 0.3)}%{stroke:${SLATE}}
-  ${p2(CLOSE_AT + 0.7)}%,100%{stroke:${HOT}}`;
+const headIn = keyframes`
+  0%,${p2(HOT_AT + 0.3)}%{opacity:0;transform:translateX(-6px)}
+  ${p2(HOT_AT + 0.7)}%,100%{opacity:1;transform:translateX(0)}`;
 
-const Dot = styled.circle<{ $i: number }>`
+const vaultHit = keyframes`
+  0%,${p2(HOT_AT + 0.6)}%{stroke:${SLATE};fill-opacity:.06}
+  ${p2(HOT_AT + 1.0)}%,100%{stroke:${HOT};fill-opacity:.12}`;
+
+const Step = styled.g<{ $i: number }>`
   transform-box: fill-box;
   transform-origin: center;
-  animation: ${(p) => dotIn(p.$i)} ${T2}s ease infinite;
+  animation: ${(p) => stepIn(p.$i)} ${T2}s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  ${still}
+`;
+
+const Tick = styled.path<{ $i: number }>`
+  animation: ${(p) => tickIn(p.$i)} ${T2}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+`;
+
+const ChainLine = styled.path`
+  animation: ${chainDraw} ${T2}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  ${still}
+  @media (prefers-reduced-motion: reduce) {
+    stroke-dashoffset: 0;
+    opacity: 1;
     stroke: ${HOT};
   }
 `;
 
-const Chain = styled.polygon`
-  animation: ${chainIn} ${T2}s cubic-bezier(0.4, 0, 0.3, 1) infinite;
-  ${still}
-  @media (prefers-reduced-motion: reduce) {
-    stroke-dashoffset: 0;
-    opacity: 0.85;
-  }
-`;
-
-const Shard = styled.polygon`
-  animation: ${shardIn} ${T2}s ease infinite;
+const Head2 = styled.path`
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ${headIn} ${T2}s ease-out infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
   }
 `;
 
-const Box = styled.rect`
-  animation: ${boxHit} ${T2}s ease infinite;
+const Vault = styled.rect`
+  animation: ${vaultHit} ${T2}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
     stroke: ${HOT};
+    fill-opacity: 0.12;
   }
 `;
 
+const chainPath = () => {
+  const pts = STEPS.map((s) => [s.x, s.y] as const);
+  let d = `M${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1];
+    const [x1, y1] = pts[i];
+    const mx = (x0 + x1) / 2;
+    d += ` C ${mx} ${y0}, ${mx} ${y1}, ${x1} ${y1}`;
+  }
+  d += ` L${VAULT.x - 4} ${VAULT.y + VAULT.h / 2}`;
+  return d;
+};
+
 export const ConstellationArt = () => (
   <Art viewBox='0 0 200 138' aria-hidden>
-    <Shard points={PTS.map((p) => p.join(',')).join(' ')} fill={HOT} fillOpacity={0.07} />
-    <Chain points={PTS.map((p) => p.join(',')).join(' ')} fill='none' stroke={VIOLET} strokeWidth={1.8} strokeLinejoin='round' strokeDasharray={1} pathLength={1} />
-    {PTS.map(([x, y], i) => (
-      <Dot key={i} cx={x} cy={y} r={4} fill='#fff' stroke={SLATE} strokeWidth={1.8} $i={i} />
+    <ChainLine d={chainPath()} fill='none' strokeWidth={2} strokeLinecap='round' strokeLinejoin='round' strokeDasharray={1} pathLength={1} />
+    <Head2 d={`M${VAULT.x - 9} ${VAULT.y + VAULT.h / 2 - 5} L${VAULT.x - 2} ${VAULT.y + VAULT.h / 2} L${VAULT.x - 9} ${VAULT.y + VAULT.h / 2 + 5} Z`} fill={HOT} />
+    {STEPS.map((s, i) => (
+      <Step key={s.k} $i={i}>
+        <circle cx={s.x} cy={s.y} r={9} fill='#fff' stroke={OKC} strokeWidth={1.8} />
+        <Tick d={`M${s.x - 4} ${s.y} L${s.x - 1} ${s.y + 3.2} L${s.x + 4.5} ${s.y - 3.5}`} fill='none' stroke={OKC} strokeWidth={2} strokeLinecap='round' strokeLinejoin='round' strokeDasharray={1} pathLength={1} $i={i} />
+        <text x={s.x} y={s.y + (i % 2 === 0 ? 17 : -13)} textAnchor='middle' fill={INK} fillOpacity={0.6} style={{ fontSize: 4.8 }}>
+          {s.k}
+        </text>
+      </Step>
     ))}
-    <Box x={BOX.x} y={BOX.y} width={BOX.w} height={BOX.h} rx={7} fill={SLATE} fillOpacity={0.06} stroke={SLATE} strokeWidth={1.8} />
-    <text x={22} y={126} fill={SLATE} fillOpacity={0.75}>
-      seven allowed calls
-    </text>
-    <text x={150} y={102} fill={SLATE} fillOpacity={0.75}>
+    <Vault x={VAULT.x} y={VAULT.y} width={VAULT.w} height={VAULT.h} rx={5} fill={HOT} stroke={SLATE} strokeWidth={1.8} />
+    <text x={VAULT.x + VAULT.w / 2} y={VAULT.y + VAULT.h + 11} textAnchor='middle' fill={SLATE} fillOpacity={0.75} style={{ fontSize: 4.8 }}>
       the data
+    </text>
+    <text x={24} y={118} fill={OKC} fillOpacity={0.9}>
+      five checks
+    </text>
+    <text x={24} y={127} fill={HOT} fillOpacity={0.9}>
+      one attack
     </text>
   </Art>
 );
@@ -231,17 +271,25 @@ const p3 = (s: number) => (s / T3) * 100;
 const LB = { x: 14, y: 22, w: 72, h: 84, rx: 22 };
 const RB = { x: 114, y: 22, w: 72, h: 84, rx: 22 };
 const TREE: [number, number][] = [
-  [150, 40],
-  [134, 60],
-  [166, 62],
-  [142, 82],
-  [160, 86],
+  [150, 36],
+  [136, 50],
+  [164, 52],
+  [128, 66],
+  [146, 66],
+  [172, 68],
+  [138, 82],
+  [156, 84],
+  [150, 96],
 ];
 const TREE_LINKS: [number, number][] = [
   [0, 1],
   [0, 2],
   [1, 3],
-  [2, 4],
+  [1, 4],
+  [2, 5],
+  [3, 6],
+  [4, 7],
+  [7, 8],
 ];
 const scanAt = (y: number) => ((y - RB.y) / RB.h) * 1.8;
 
@@ -326,11 +374,20 @@ export const XrayArt = () => (
         <line x1={TREE[a][0]} y1={TREE[a][1]} x2={TREE[b][0]} y2={TREE[b][1]} stroke={VIOLET} strokeOpacity={0.6} strokeWidth={1.3} />
       </TreeNode>
     ))}
-    {TREE.map(([x, y]) => (
+    {TREE.map(([x, y], i) => (
       <TreeNode key={`${x}${y}`} $y={y}>
-        <circle cx={x} cy={y} r={3} fill={VIOLET} />
+        <circle cx={x} cy={y} r={6} fill={VIOLET} fillOpacity={0.14} />
+        <circle cx={x} cy={y} r={i === 7 ? 3.6 : 2.8} fill={i === 7 ? HOT : VIOLET} />
       </TreeNode>
     ))}
+    <TreeNode $y={84}>
+      <text x={163} y={86} fill={HOT} fillOpacity={0.9} style={{ fontSize: 4 }}>
+        args
+      </text>
+      <text x={163} y={91} fill={HOT} fillOpacity={0.9} style={{ fontSize: 4 }}>
+        return
+      </text>
+    </TreeNode>
     <g clipPath='url(#body3)'>
       <Scan>
         <rect x={RB.x} y={RB.y - 4} width={RB.w} height={8} fill='url(#scan3)' />
@@ -348,136 +405,154 @@ export const XrayArt = () => (
       odigos ebpf
     </text>
     <text x={RB.x} y={129} fill={VIOLET} fillOpacity={0.85}>
-      sees the calls inside
+      sees every call inside
     </text>
   </Art>
 );
 
 /* ============================================================
-   4. Three responses. The third is the one you use.
+   4. The same service three times, as a grid of functions.
+   Kill the process and all of it goes dark. Kill the thread and a whole
+   row goes dark. Block the function and one square goes violet while
+   everything else keeps running.
    ============================================================ */
 
-const T4 = 8;
+const T4 = 5;
 const p4 = (s: number) => (s / T4) * 100;
-const SA = { x: 34, y: 40, r: 15 };
-const SB = { x: 34, y: 92, r: 15 };
-const SC = { x: 136, y: 64, r: 36 };
-const pol = (c: { x: number; y: number; r: number }, deg: number) => [c.x + c.r * Math.cos((deg * Math.PI) / 180), c.y + c.r * Math.sin((deg * Math.PI) / 180)] as const;
-const fx = (n: number) => Math.round(n * 100) / 100;
-const B0 = pol(SB, -15);
-const B1 = pol(SB, -75);
-const G0 = pol(SC, -56);
-const G1 = pol(SC, -34);
-const GATE = pol({ ...SC, r: SC.r + 9.5 }, -45);
-const IN0 = [GATE[0] + 34, GATE[1] - 28];
+const COLS = 5;
+const ROWS = 4;
+const CELL = 5.6;
+const GAP = 2.2;
+const BAD = { r: 1, c: 3 }; /* the malicious call */
+const gridW = COLS * CELL + (COLS - 1) * GAP;
+const gridH = ROWS * CELL + (ROWS - 1) * GAP;
+const SVC4 = [
+  { x: 14, y: 28, k: 'kill the process', s: 0.78 },
+  { x: 14, y: 84, k: 'kill the thread', s: 0.78 },
+  { x: 86, y: 30, k: 'block the function', s: 1.55, hero: true },
+];
+const HIT_AT = 0.7;
+const ACT_AT = 1.7;
 
-const runA = keyframes`
-  0%{transform:rotate(0deg)}
-  ${p4(1.2)}%,100%{transform:rotate(-130deg)}`;
-const dimA = keyframes`
-  0%,${p4(1.2)}%{opacity:1}
-  ${p4(1.6)}%,100%{opacity:.22}`;
-const runB = keyframes`
-  0%{transform:rotate(0deg)}
-  100%{transform:rotate(-720deg)}`;
-const dimB = keyframes`
-  0%,${p4(1.6)}%{opacity:1}
-  ${p4(2.0)}%,100%{opacity:.45}`;
-const runC = keyframes`
-  0%{transform:rotate(0deg)}
-  100%{transform:rotate(-720deg)}`;
+const live = keyframes`
+  0%,100%{opacity:1}
+  50%{opacity:.55}`;
 
-/* a crimson call arrives at the gate, stops there, and is gone before the next */
-const intrude = keyframes`
-  0%{transform:translate(0,0) scale(1);opacity:0}
-  ${p4(0.3)}%{opacity:.95}
-  ${p4(1.3)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  99%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  100%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:0}`;
+const goDark = keyframes`
+  0%,${p4(ACT_AT)}%{opacity:1}
+  ${p4(ACT_AT + 0.5)}%,100%{opacity:.14}`;
 
-const gateGlow = keyframes`
-  0%,${p4(1.2)}%{opacity:.1}
-  ${p4(1.45)}%{opacity:.5}
-  99%{opacity:.25}
-  100%{opacity:.1}`;
+const goBad = keyframes`
+  0%,${p4(HIT_AT)}%{fill:${SLATE};fill-opacity:.35}
+  ${p4(HIT_AT + 0.3)}%,100%{fill:${HOT};fill-opacity:1}`;
 
-const Runner = styled.g<{ $cx: number; $cy: number; $k: 'a' | 'b' | 'c'; $d?: number }>`
-  transform-box: view-box;
-  transform-origin: ${(p) => p.$cx}px ${(p) => p.$cy}px;
-  animation: ${(p) => (p.$k === 'a' ? runA : p.$k === 'b' ? runB : runC)} ${T4}s ${(p) => (p.$k === 'a' ? 'cubic-bezier(0.4, 0, 0.6, 1)' : 'linear')} infinite;
-  animation-delay: ${(p) => -(p.$d ?? 0)}s;
+const goBlocked = keyframes`
+  0%,${p4(ACT_AT)}%{fill:${HOT};fill-opacity:1}
+  ${p4(ACT_AT + 0.4)}%,100%{fill:${VIOLET};fill-opacity:1}`;
+
+const Cell4 = styled.rect<{ $d: number }>`
+  animation: ${live} 2.6s ease-in-out infinite;
+  animation-delay: ${(p) => -p.$d}s;
   ${still}
 `;
 
-const Disc = styled.g<{ $k: 'a' | 'b' | 'c' }>`
-  animation: ${(p) => (p.$k === 'a' ? dimA : p.$k === 'b' ? dimB : 'none')} ${T4}s ease infinite;
+const Dark = styled.g`
+  animation: ${goDark} ${T4}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: ${(p) => (p.$k === 'a' ? 0.22 : p.$k === 'b' ? 0.45 : 1)};
+    opacity: 0.14;
   }
 `;
 
-const Intruder = styled.circle`
-  transform-box: view-box;
-  transform-origin: ${fx(IN0[0])}px ${fx(IN0[1])}px;
-  animation: ${intrude} ${T4}s ease-out infinite;
+const Bad = styled.rect<{ $blocked?: boolean }>`
+  animation: ${(p) => (p.$blocked ? goBlocked : goBad)} ${T4}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    transform: translate(${fx(GATE[0] - IN0[0])}px, ${fx(GATE[1] - IN0[1])}px);
-    opacity: 0.95;
+    fill: ${(p) => (p.$blocked ? VIOLET : HOT)};
+    fill-opacity: 1;
   }
 `;
 
-const GateGlow = styled.circle`
-  animation: ${gateGlow} ${T4}s ease infinite;
+const BadPre = styled.rect`
+  animation: ${goBad} ${T4}s ease infinite;
   ${still}
   @media (prefers-reduced-motion: reduce) {
-    opacity: 0.2;
+    fill: ${HOT};
+    fill-opacity: 1;
   }
 `;
+
+const Shield = styled.rect`
+  animation: ${keyframes`
+    0%,${p4(ACT_AT)}%{opacity:0;transform:scale(.6)}
+    ${p4(ACT_AT + 0.35)}%{opacity:.9;transform:scale(1.15)}
+    ${p4(ACT_AT + 0.6)}%,100%{opacity:.7;transform:scale(1)}`} ${T4}s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  ${still}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.7;
+  }
+`;
+
+const Grid = ({ x, y, s, mode }: { x: number; y: number; s: number; mode: 'process' | 'thread' | 'function' }) => {
+  const cells: React.ReactNode[] = [];
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const cx = c * (CELL + GAP);
+      const cy = r * (CELL + GAP);
+      const isBad = r === BAD.r && c === BAD.c;
+      const d = ((r * COLS + c) * 0.37) % 2.6;
+      if (isBad) {
+        cells.push(
+          mode === 'function' ? (
+            <Bad key={`${r}${c}`} x={cx} y={cy} width={CELL} height={CELL} rx={1.2} $blocked />
+          ) : (
+            <BadPre key={`${r}${c}`} x={cx} y={cy} width={CELL} height={CELL} rx={1.2} />
+          ),
+        );
+      } else {
+        cells.push(<Cell4 key={`${r}${c}`} x={cx} y={cy} width={CELL} height={CELL} rx={1.2} fill={mode === 'function' ? VIOLET : SLATE} fillOpacity={mode === 'function' ? 0.55 : 0.4} $d={d} />);
+      }
+    }
+  }
+  const dark = (r: number) => r === BAD.r;
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s})`}>
+      <rect x={-5} y={-5} width={gridW + 10} height={gridH + 10} rx={5} fill='#fff' stroke={mode === 'function' ? VIOLET : SLATE} strokeOpacity={mode === 'function' ? 0.6 : 0.45} strokeWidth={1.2 / s} />
+      {mode === 'process' ? (
+        <Dark>{cells}</Dark>
+      ) : mode === 'thread' ? (
+        <>
+          {cells.filter((_, i) => !dark(Math.floor(i / COLS)))}
+          <Dark>{cells.filter((_, i) => dark(Math.floor(i / COLS)))}</Dark>
+        </>
+      ) : (
+        <>
+          {cells}
+          <Shield x={BAD.c * (CELL + GAP) - 2.2} y={BAD.r * (CELL + GAP) - 2.2} width={CELL + 4.4} height={CELL + 4.4} rx={2.4} fill='none' stroke={VIOLET} strokeWidth={1.6 / s} />
+        </>
+      )}
+    </g>
+  );
+};
 
 export const ThreeCutsArt = () => (
   <Art viewBox='0 0 200 138' aria-hidden>
-    {/* kill the process */}
-    <Disc $k='a'>
-      <circle cx={SA.x} cy={SA.y} r={SA.r} fill='none' stroke={SLATE} strokeOpacity={0.35} strokeWidth={1.6} strokeDasharray='2 3' />
-      <Runner $cx={SA.x} $cy={SA.y} $k='a'>
-        <circle cx={SA.x + SA.r} cy={SA.y} r={2.2} fill={SLATE} />
-      </Runner>
-    </Disc>
-    <line x1={SA.x - 10} y1={SA.y + 10} x2={SA.x + 10} y2={SA.y - 10} stroke={HOT} strokeWidth={2} strokeLinecap='round' />
-    <text x={SA.x} y={SA.y + SA.r + 9} textAnchor='middle' fill={SLATE} fillOpacity={0.7} style={{ fontSize: 4.6 }}>
-      kill the process
-    </text>
-
-    {/* kill the thread */}
-    <Disc $k='b'>
-      <path d={`M${fx(B0[0])} ${fx(B0[1])} A${SB.r} ${SB.r} 0 1 1 ${fx(B1[0])} ${fx(B1[1])}`} fill='none' stroke={SLATE} strokeOpacity={0.6} strokeWidth={1.6} strokeLinecap='round' />
-      <Runner $cx={SB.x} $cy={SB.y} $k='b'>
-        <circle cx={SB.x + SB.r} cy={SB.y} r={2.2} fill={SLATE} />
-      </Runner>
-    </Disc>
-    <line x1={fx(B0[0])} y1={fx(B0[1])} x2={fx(B1[0])} y2={fx(B1[1])} stroke={HOT} strokeOpacity={0.8} strokeWidth={1.6} strokeLinecap='round' />
-    <text x={SB.x} y={SB.y + SB.r + 9} textAnchor='middle' fill={SLATE} fillOpacity={0.7} style={{ fontSize: 4.6 }}>
-      kill the thread
-    </text>
-
-    {/* block the call: the service stays whole */}
-    <GateGlow cx={fx(GATE[0])} cy={fx(GATE[1])} r={11} fill={VIOLET} />
-    <Disc $k='c'>
-      <circle cx={SC.x} cy={SC.y} r={SC.r} fill={VIOLET} fillOpacity={0.07} stroke={SLATE} strokeOpacity={0.7} strokeWidth={1.8} />
-      <circle cx={SC.x} cy={SC.y} r={SC.r - 9} fill='none' stroke={VIOLET} strokeOpacity={0.14} strokeWidth={1} strokeDasharray='3 4' />
-      {[0, T4 / 6, T4 / 3].map((d) => (
-        <Runner key={d} $cx={SC.x} $cy={SC.y} $k='c' $d={d}>
-          <circle cx={SC.x + SC.r} cy={SC.y} r={2.6} fill={VIOLET} />
-        </Runner>
-      ))}
-    </Disc>
-    <path d={`M${fx(G0[0])} ${fx(G0[1])} A${SC.r} ${SC.r} 0 0 1 ${fx(G1[0])} ${fx(G1[1])}`} fill='none' stroke='#3f2bc4' strokeWidth={4.6} strokeLinecap='round' />
-    <Intruder cx={fx(IN0[0])} cy={fx(IN0[1])} r={4} fill={HOT} stroke='#fff' strokeWidth={1.2} />
-    <text x={SC.x} y={SC.y + SC.r + 14} textAnchor='middle' fill={VIOLET} fillOpacity={0.9}>
-      block the call
-    </text>
+    {SVC4.map((v) => (
+      <g key={v.k}>
+        <Grid x={v.x} y={v.y} s={v.s} mode={v.hero ? 'function' : v.k.includes('process') ? 'process' : 'thread'} />
+        <text
+          x={v.hero ? v.x + (gridW * v.s) / 2 : v.x + (gridW * v.s) / 2}
+          y={v.y + gridH * v.s + (v.hero ? 16 : 12)}
+          textAnchor='middle'
+          fill={v.hero ? VIOLET : SLATE}
+          fillOpacity={v.hero ? 0.95 : 0.75}
+          style={{ fontSize: v.hero ? 5.4 : 4.6, fontWeight: v.hero ? 500 : 400 }}
+        >
+          {v.k}
+        </text>
+      </g>
+    ))}
   </Art>
 );

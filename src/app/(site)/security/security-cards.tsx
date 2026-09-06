@@ -435,11 +435,11 @@ const CARDS = [
         Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
       </>
     ),
-    desc: 'Every control you run waits for residue: a failed validation, a file opened out of pattern, a log line that reads wrong. A precise attack produces none of that until it is over. It moves as permitted calls across services, and each service sees only its own part. Odigos reads the calls.',
+    desc: 'A WAF waits for a request that fails validation. EDR waits for a file opened out of pattern. A SIEM waits for a log line that reads wrong. ADR watches one process, and only its surface. A precise attack gives none of them anything until it is over, because it moves as permitted calls across services. Odigos reads the calls.',
     visual: <NoShadowArt />,
   },
   {
-    cap: 'every call allowed, one shape',
+    cap: 'five green checks, one attack',
     title: (
       <>
         Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
@@ -455,17 +455,17 @@ const CARDS = [
         Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
       </>
     ),
-    desc: 'Kernel-level sensors report syscalls, sockets and files, which is the outside of your application. Odigos reads the calls inside the process: names, arguments, return values, across every service, including stripped Go binaries. Nothing is loaded into the process. No code change, no redeploy. Under 1% CPU, measured across more than a million production cores.',
+    desc: 'Kernel-level sensors see the outside of your application: a socket opened, a file read. Odigos sees what happened inside it: which function ran, what it was handed, what it returned, across every service, in every language. Nothing is added to your code and nothing runs in your process. Under 1% CPU, measured across more than a million production cores.',
     visual: <XrayArt />,
   },
   {
-    cap: 'three responses',
+    cap: 'what each response costs you',
     title: (
       <>
         Block one function. <span className='mute'>The service stays up.</span>
       </>
     ),
-    desc: 'You get three responses. Kill the thread. Kill the process. Or refuse that one call, or change what it returns, while everything else keeps serving. The first two stop the service along with the attack. The third is the one you will use in production: scoped to named callers, shipped and reverted without a redeploy, deleted when the real fix lands.',
+    desc: 'One malicious call, three ways to stop it. Kill the process and every request on that service fails. Kill the thread and every request on it fails. Or refuse that one call, and nothing else notices. The service keeps serving, the policy is scoped to the callers you name, it ships and reverts without a redeploy, and it comes off when the real fix lands.',
     visual: <ThreeCutsArt />,
   },
 ];
