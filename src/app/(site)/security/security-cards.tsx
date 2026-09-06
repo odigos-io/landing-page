@@ -439,7 +439,7 @@ const CARDS = [
     visual: <NoShadowArt />,
   },
   {
-    cap: 'five green checks, one attack',
+    cap: 'every check green, one attack',
     title: (
       <>
         Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
@@ -455,7 +455,7 @@ const CARDS = [
         Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
       </>
     ),
-    desc: 'Kernel-level sensors see the outside of your application: a socket opened, a file read. Odigos sees what happened inside it: which function ran, what it was handed, what it returned, across every service, in every language. Nothing is added to your code and nothing runs in your process. Under 1% CPU, measured across more than a million production cores.',
+    desc: 'Kernel-level sensors see the outside of your application: a socket opened, a file read. Odigos sees what happened inside it: which function ran, what it was handed, what it returned, across every service, in every language. Nothing is added to your code and nothing runs in your process. Under 1% CPU in production, across more than a million cores.',
     visual: <XrayArt />,
   },
   {
@@ -465,7 +465,7 @@ const CARDS = [
         Block one function. <span className='mute'>The service stays up.</span>
       </>
     ),
-    desc: 'One malicious call, three ways to stop it. Kill the process and every request on that service fails. Kill the thread and every request on it fails. Or refuse that one call, and nothing else notices. The service keeps serving, the policy is scoped to the callers you name, it ships and reverts without a redeploy, and it comes off when the real fix lands.',
+    desc: 'One malicious call, three ways to stop it. Kill the process and every request on that service fails. Kill the thread and the request it was serving dies. Or refuse that one call, and nothing else notices. The service keeps serving, the policy is scoped to the callers you name, it ships and reverts without a redeploy, and it comes off when the real fix lands.',
     visual: <ThreeCutsArt />,
   },
 ];
