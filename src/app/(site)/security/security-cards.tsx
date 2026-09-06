@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Container, Eyebrow, Reveal } from '@/containers/landing/primitives';
 import { DeployScene, Scene, TOOLS } from './security-figures';
-import { NoShadowArt, ConstellationArt } from './security-card-art';
+import { NoShadowArt, ConstellationArt, XrayArt, ThreeCutsArt } from './security-card-art';
 
 /* Four things, in the home page's card language: text beside a panel,
    alternating, each panel one compact picture. */
@@ -443,28 +443,24 @@ const CARDS = [
     visual: <ConstellationArt />,
   },
   {
-    cap: 'where it attaches',
+    cap: 'the same process, two ways of seeing',
     title: (
       <>
         Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
       </>
     ),
     desc: 'Kernel-level sensors report syscalls, sockets and files, which is the outside of your application. Odigos reads the calls inside the process: names, arguments, return values, across every service, including stripped Go binaries. Nothing is loaded into the process. No code change, no redeploy, under 1% CPU.',
-    visual: (
-      <DeployWrap>
-        <DeployScene />
-      </DeployWrap>
-    ),
+    visual: <XrayArt />,
   },
   {
-    cap: 'finding, then policy',
+    cap: 'three responses',
     title: (
       <>
         Block one function. <span className='mute'>The service stays up.</span>
       </>
     ),
     desc: 'Three responses exist. Kill the thread. Kill the process. Or refuse that one call, or change what it returns, while everything else keeps serving. The first two stop the service along with the attack. The third is the one you will use in production: scoped to named callers, shipped and reverted without a redeploy, deleted when the real fix lands.',
-    visual: <FindingCard />,
+    visual: <ThreeCutsArt />,
   },
 ];
 
