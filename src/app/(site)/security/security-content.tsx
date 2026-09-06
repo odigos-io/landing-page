@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { LandingHeader, LandingFooter } from '@/containers/landing';
 import { Container, Eyebrow, Reveal, DemoCTA, TrialCTA } from '@/containers/landing/primitives';
 import { SecurityArt } from './security-art';
-import { DeployFigure } from './security-figures';
+import { CoverageFigure, DeployFigure } from './security-figures';
 
 /* ---------------- shared ---------------- */
 const Section = styled.section<{ $alt?: boolean }>`
@@ -126,156 +126,6 @@ const HeroCtas = styled.div`
     > * {
       flex: 1 1 100%;
     }
-  }
-`;
-
-
-/* ---------------- how deep each tool sees ---------------- */
-const Depth = styled.div`
-  margin-top: 48px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--paper-2);
-`;
-
-const DepthHead = styled.div`
-  display: grid;
-  grid-template-columns: 208px repeat(5, 1fr);
-  > * {
-    min-width: 0;
-  }
-  border-bottom: 1px solid var(--line);
-  background: var(--paper-3);
-
-  span {
-    padding: 12px 8px;
-    font-family: var(--font-mono), monospace;
-    font-size: 9.5px;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    text-align: center;
-  }
-  span:first-child {
-    text-align: left;
-    padding-left: 18px;
-  }
-
-  @media (max-width: 780px) {
-    grid-template-columns: repeat(5, 1fr);
-    span {
-      font-size: 7.5px;
-      padding: 9px 3px;
-    }
-    span:first-child {
-      display: none;
-    }
-  }
-`;
-
-const DepthRow = styled.div<{ $us?: boolean }>`
-  display: grid;
-  grid-template-columns: 208px repeat(5, 1fr);
-  > * {
-    min-width: 0;
-  }
-  align-items: center;
-  border-bottom: 1px solid var(--line);
-  background: ${({ $us }) => ($us ? 'rgba(91,67,241,0.055)' : 'transparent')};
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  .who {
-    padding: 0 14px 0 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .k {
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: ${({ $us }) => ($us ? 'var(--accent)' : 'var(--ink)')};
-  }
-  .n {
-    font-size: 12.5px;
-    line-height: 1.35;
-    color: var(--ink-faint);
-  }
-  .cell {
-    height: 62px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .pip {
-    width: calc(100% - 14px);
-    height: ${({ $us }) => ($us ? '10px' : '7px')};
-    border-radius: 6px;
-    background: ${({ $us }) => ($us ? 'var(--accent)' : 'rgba(24,20,54,0.3)')};
-  }
-  .miss {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgba(24, 20, 54, 0.09);
-  }
-
-  @media (max-width: 780px) {
-    grid-template-columns: repeat(5, 1fr);
-    padding: 10px 0 4px;
-    .who {
-      grid-column: 1 / -1;
-      flex-direction: row;
-      align-items: baseline;
-      gap: 8px;
-      padding: 0 12px 4px;
-    }
-    .k {
-      font-size: 9.5px;
-      flex: none;
-    }
-    .n {
-      font-size: 11.5px;
-    }
-    .cell {
-      height: 30px;
-    }
-  }
-  .cell:last-child {
-    padding-right: 10px;
-  }
-`;
-
-const DepthNote = styled.div`
-  display: grid;
-  grid-template-columns: 208px 1fr;
-  > * {
-    min-width: 0;
-  }
-  padding: 14px 18px 16px;
-  border-top: 1px solid var(--line);
-  background: var(--paper-3);
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ink-mute);
-
-  @media (max-width: 780px) {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-
-  b {
-    font-family: var(--font-mono), monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--accent);
   }
 `;
 
@@ -687,24 +537,7 @@ const CloseCtas = styled.div`
 
 /* the controls already in the estate, and where each one stops */
 /* how deep each tool actually reaches, and whether it spans services */
-const runs = (cells: number[]) => {
-  const out: { at: number; len: number; on: boolean }[] = [];
-  cells.forEach((c, i) => {
-    const last = out[out.length - 1];
-    if (last && last.on === !!c && !!c) last.len += 1;
-    else out.push({ at: i, len: 1, on: !!c });
-  });
-  return out;
-};
 
-const LAYERS = ['network', 'host', 'process', 'function', 'cross-service'];
-const DEPTH = [
-  { k: 'waf', cells: [1, 0, 0, 0, 0], note: 'the request at the edge' },
-  { k: 'edr', cells: [0, 1, 0, 0, 0], note: 'processes and files on a host' },
-  { k: 'cnapp', cells: [0, 1, 0, 0, 0], note: 'the image and its configuration' },
-  { k: 'adr', cells: [0, 0, 1, 0, 0], note: 'behaviour inside one application' },
-  { k: 'odigos', cells: [0, 0, 1, 1, 1], note: 'every call, with its arguments, in every service', us: true },
-];
 
 type Span = { svc: string; fn: string; d: number; tag?: string };
 const BASELINE: Span[] = [
@@ -790,37 +623,15 @@ export const SecurityContent = () => {
                   Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
                 </h2>
                 <p>
-                  A WAF sees a request that looks wrong. EDR sees a process touch the host. A SIEM sees what got logged. ADR sees inside one process, and only shallowly. All of it is after the fact,
-                  and a tailored attack leaves none of it until it is finished. Odigos sees as deep as the runtime goes, the function calls the attack is made of, across every service at once.
+                  Your controls watch for the mess an attack leaves behind: a request that looks wrong, a process touching a file it never touches, a log line that reads badly, one application watched from
+                  the inside and only its surface. A targeted attack, written for your stack, leaves none of that until it is over. It is a chain of function calls that each look allowed, spread across
+                  services so no single tool holds the whole picture. Odigos reads those calls where they happen, in every process, with their arguments and return values, stitched across services. Not the
+                  mess afterwards. The attack itself, while it runs.
                 </p>
               </Head>
             </Reveal>
             <Reveal delay={70}>
-              <Depth>
-                <DepthHead>
-                  <span>sees</span>
-                  {LAYERS.map((l) => (
-                    <span key={l}>{l}</span>
-                  ))}
-                </DepthHead>
-                {DEPTH.map((d) => (
-                  <DepthRow key={d.k} $us={d.us}>
-                    <span className='who'>
-                      <span className='k'>{d.k}</span>
-                      <span className='n'>{d.note}</span>
-                    </span>
-                    {runs(d.cells).map((r) => (
-                      <span className='cell' key={r.at} style={{ gridColumn: `span ${r.len}` }}>
-                        {r.on ? <span className='pip' /> : <span className='miss' />}
-                      </span>
-                    ))}
-                  </DepthRow>
-                ))}
-                <DepthNote>
-                  <b>from ebpf</b>
-                  <span>One runtime on each Kubernetes node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU, measured across more than a million production cores. The node sensor is open source.</span>
-                </DepthNote>
-              </Depth>
+              <CoverageFigure />
             </Reveal>
           </Inner>
         </Section>

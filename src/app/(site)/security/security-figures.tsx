@@ -265,3 +265,234 @@ export const DeployFigure = () => (
     <Hint>scroll sideways &rsaquo;</Hint>
   </Board>
 );
+
+/* ============================================================
+   What each tool can see.
+
+   One scene, drawn five times: a request crosses the edge into a node,
+   enters service a, runs through its functions, crosses to service b,
+   and runs one more. Each tile lights only the part of that scene the
+   tool in question can resolve; everything else is in the dark. The
+   attack, in crimson, is the same in every tile. Only the last tile
+   shows all of it.
+   ============================================================ */
+
+type Sees = { net?: number; host?: number; img?: number; fnA?: number; fnB?: number; link?: number };
+
+const TOOLS: { k: string; note: string; sees: Sees; us?: boolean }[] = [
+  { k: 'waf', note: 'the request, at the edge', sees: { net: 1 } },
+  { k: 'edr', note: 'processes and files on the host', sees: { host: 1, img: 0.7 } },
+  { k: 'cnapp', note: 'the image and its configuration', sees: { img: 1 } },
+  { k: 'adr', note: 'inside one process, and only its surface', sees: { img: 0.5, fnA: 0.55 } },
+  { k: 'odigos', note: 'every call in every process, and the chain between them', sees: { net: 0.6, host: 0.8, img: 1, fnA: 1, fnB: 1, link: 1 }, us: true },
+];
+
+const DIM = 0.22;
+
+const Tiles = styled.div`
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  > * {
+    min-width: 0;
+  }
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+`;
+
+const Tile = styled.div<{ $us?: boolean }>`
+  grid-column: ${({ $us }) => ($us ? '1 / -1' : 'auto')};
+  border: 1px solid ${({ $us }) => ($us ? 'rgba(91,67,241,0.35)' : 'var(--line)')};
+  border-radius: var(--r-lg);
+  background: ${({ $us }) => ($us ? 'linear-gradient(180deg, #fdfcff, #f4f1ff)' : 'var(--paper-2)')};
+  box-shadow: ${({ $us }) => ($us ? 'var(--shadow-lift)' : 'none')};
+  overflow: hidden;
+
+  .scene {
+    display: block;
+    width: 100%;
+    aspect-ratio: ${({ $us }) => ($us ? '240 / 64' : '120 / 64')};
+  }
+`;
+
+const TileCap = styled.div<{ $us?: boolean }>`
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 11px 14px 13px;
+  border-top: 1px solid ${({ $us }) => ($us ? 'rgba(91,67,241,0.2)' : 'var(--line)')};
+
+  .k {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: ${({ $us }) => ($us ? 'var(--accent)' : 'var(--ink)')};
+    flex: none;
+  }
+  .n {
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--ink-faint);
+  }
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 3px;
+    padding: 9px 12px 11px;
+  }
+`;
+
+const TileFoot = styled.div`
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--paper-3);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-mute);
+
+  b {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+`;
+
+const Scene = ({ sees, us, wide }: { sees: Sees; us?: boolean; wide?: boolean }) => {
+  const o = (k: keyof Sees) => sees[k] ?? DIM;
+  const mono = { fontFamily: 'var(--font-mono), monospace', fontSize: 3.1, letterSpacing: 0.25, textTransform: 'uppercase' as const, fill: 'rgba(28,22,51,.55)' };
+  /* the wide tile draws two nodes side by side; the same scene, then a second one, so the chain has somewhere to go */
+  const W = wide ? 240 : 120;
+  const A = { x: 26, y: 15, w: 38, h: 40 };
+  const B = { x: 76, y: 15, w: 36, h: 40 };
+  const ticksA = [18, 26, 14, 22, 12];
+  const ticksB = [16, 24, 12, 20];
+  const hit = { a: 2, b: 1 };
+  return (
+    <svg className='scene' viewBox={`0 0 ${W} 64`} preserveAspectRatio='xMidYMid meet' aria-hidden>
+      {/* the request, at the edge */}
+      <g opacity={o('net')}>
+        <line x1={2} y1={34} x2={17} y2={34} stroke={HOT} strokeWidth={1.1} strokeLinecap='round' />
+        <path d='M14.5 31.5 L18 34 L14.5 36.5' fill='none' stroke={HOT} strokeWidth={1.1} strokeLinecap='round' strokeLinejoin='round' />
+      </g>
+
+      {/* the host */}
+      <g opacity={o('host')}>
+        <rect x={20} y={5} width={96} height={54} rx={3} fill='rgba(24,20,54,0.03)' stroke='rgba(24,20,54,0.32)' strokeWidth={0.6} />
+        <text x={24} y={11} style={mono}>
+          node
+        </text>
+      </g>
+
+      {/* the images: what was deployed */}
+      <g opacity={o('img')}>
+        {[A, B].map((r, i) => (
+          <g key={i}>
+            <rect x={r.x} y={r.y} width={r.w} height={r.h} rx={2.5} fill='#fff' stroke='rgba(24,20,54,0.3)' strokeWidth={0.6} />
+            <text x={r.x + 3} y={r.y + 5.6} style={mono}>
+              service {i === 0 ? 'a' : 'b'}
+            </text>
+          </g>
+        ))}
+      </g>
+
+      {/* the functions that ran, inside a */}
+      <g opacity={o('fnA')}>
+        {ticksA.map((w, i) => (
+          <rect key={i} x={A.x + 5} y={A.y + 12 + i * 5.4} width={w} height={2.2} rx={1.1} fill={i === hit.a ? HOT : 'rgba(24,20,54,0.28)'} />
+        ))}
+      </g>
+      {/* and inside b */}
+      <g opacity={o('fnB')}>
+        {ticksB.map((w, i) => (
+          <rect key={i} x={B.x + 5} y={B.y + 12 + i * 5.4} width={w} height={2.2} rx={1.1} fill={i === hit.b ? HOT : 'rgba(24,20,54,0.28)'} />
+        ))}
+        {us && !wide && <rect x={B.x + 5 + ticksB[hit.b] + 1.5} y={B.y + 12 + hit.b * 5.4 - 1.6} width={1.3} height={5.4} rx={0.4} fill={VIOLET} />}
+      </g>
+
+      {/* the chain: a's call reaching b's */}
+      <g opacity={o('link')}>
+        <path
+          d={`M${A.x + 5 + ticksA[hit.a]} ${A.y + 12 + hit.a * 5.4 + 1.1} C ${A.x + A.w + 4} ${A.y + 12 + hit.a * 5.4 + 1.1}, ${B.x - 6} ${B.y + 12 + hit.b * 5.4 + 1.1}, ${B.x + 5} ${B.y + 12 + hit.b * 5.4 + 1.1}`}
+          fill='none'
+          stroke={HOT}
+          strokeWidth={0.9}
+          strokeLinecap='round'
+        />
+      </g>
+
+      {/* the request entering a, drawn last so it sits on top */}
+      <g opacity={Math.max(o('net'), o('fnA'))}>
+        <path d={`M18 34 L${A.x} 34 L${A.x + 5} ${A.y + 12 + hit.a * 5.4 + 1.1}`} fill='none' stroke={HOT} strokeWidth={0.9} strokeLinecap='round' strokeLinejoin='round' opacity={0.85} />
+      </g>
+
+      {wide && (
+        <>
+          <g transform='translate(120 0)' opacity={o('fnB')}>
+            <rect x={20} y={5} width={96} height={54} rx={3} fill='rgba(24,20,54,0.03)' stroke='rgba(24,20,54,0.32)' strokeWidth={0.6} />
+            <text x={24} y={11} style={mono}>
+              node
+            </text>
+            {[A, B].map((r, i) => (
+              <g key={i}>
+                <rect x={r.x} y={r.y} width={r.w} height={r.h} rx={2.5} fill='#fff' stroke='rgba(24,20,54,0.3)' strokeWidth={0.6} />
+                <text x={r.x + 3} y={r.y + 5.6} style={mono}>
+                  service {i === 0 ? 'c' : 'd'}
+                </text>
+                {(i === 0 ? ticksB : ticksA).map((w, j) => (
+                  <rect key={j} x={r.x + 5} y={r.y + 12 + j * 5.4} width={w} height={2.2} rx={1.1} fill={i === 0 && j === 1 ? HOT : 'rgba(24,20,54,0.28)'} />
+                ))}
+              </g>
+            ))}
+            {/* the call that never runs */}
+            <rect x={A.x + 5 + ticksB[1] + 1.5} y={A.y + 12 + 1 * 5.4 - 1.8} width={1.4} height={5.8} rx={0.4} fill={VIOLET} />
+          </g>
+          {/* across the node boundary, from b to c */}
+          <path
+            d={`M${B.x + 5 + ticksB[hit.b]} ${B.y + 12 + hit.b * 5.4 + 1.1} C ${B.x + B.w + 10} ${B.y + 12 + hit.b * 5.4 + 1.1}, ${120 + A.x - 12} ${A.y + 12 + 1 * 5.4 + 1.1}, ${120 + A.x + 5} ${A.y + 12 + 1 * 5.4 + 1.1}`}
+            fill='none'
+            stroke={HOT}
+            strokeWidth={0.9}
+            strokeLinecap='round'
+            opacity={o('link')}
+          />
+        </>
+      )}
+    </svg>
+  );
+};
+
+export const CoverageFigure = () => (
+  <>
+    <Tiles>
+      {TOOLS.map((t) => (
+        <Tile key={t.k} $us={t.us}>
+          <Scene sees={t.sees} us={t.us} wide={t.us} />
+          <TileCap $us={t.us}>
+            <span className='k'>{t.k}</span>
+            <span className='n'>{t.note}</span>
+          </TileCap>
+        </Tile>
+      ))}
+    </Tiles>
+    <TileFoot>
+      <b>from ebpf</b>
+      <span>One runtime on each Kubernetes node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU, measured across more than a million production cores. The node sensor is open source.</span>
+    </TileFoot>
+  </>
+);
