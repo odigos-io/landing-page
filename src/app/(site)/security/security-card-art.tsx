@@ -381,10 +381,10 @@ export const XrayArt = () => (
       </TreeNode>
     ))}
     <TreeNode $y={66}>
-      <text x={153} y={65.5} fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.2, fontWeight: 500 }}>
+      <text x={156} y={65.5} fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.2, fontWeight: 500 }}>
         args
       </text>
-      <text x={153} y={71} fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.2, fontWeight: 500 }}>
+      <text x={156} y={71} fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.2, fontWeight: 500 }}>
         return
       </text>
     </TreeNode>
