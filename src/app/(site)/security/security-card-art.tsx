@@ -368,7 +368,7 @@ const B0 = pol(SB, -15);
 const B1 = pol(SB, -75);
 const G0 = pol(SC, -56);
 const G1 = pol(SC, -34);
-const GATE = pol({ ...SC, r: SC.r + 6.5 }, -45);
+const GATE = pol({ ...SC, r: SC.r + 9.5 }, -45);
 const IN0 = [GATE[0] + 34, GATE[1] - 28];
 
 const runA = keyframes`
@@ -401,10 +401,11 @@ const gateGlow = keyframes`
   99%{opacity:.25}
   100%{opacity:.1}`;
 
-const Runner = styled.g<{ $cx: number; $cy: number; $k: 'a' | 'b' | 'c' }>`
+const Runner = styled.g<{ $cx: number; $cy: number; $k: 'a' | 'b' | 'c'; $d?: number }>`
   transform-box: view-box;
   transform-origin: ${(p) => p.$cx}px ${(p) => p.$cy}px;
   animation: ${(p) => (p.$k === 'a' ? runA : p.$k === 'b' ? runB : runC)} ${T4}s ${(p) => (p.$k === 'a' ? 'cubic-bezier(0.4, 0, 0.6, 1)' : 'linear')} infinite;
+  animation-delay: ${(p) => -(p.$d ?? 0)}s;
   ${still}
 `;
 
@@ -467,9 +468,11 @@ export const ThreeCutsArt = () => (
     <Disc $k='c'>
       <circle cx={SC.x} cy={SC.y} r={SC.r} fill={VIOLET} fillOpacity={0.07} stroke={SLATE} strokeOpacity={0.7} strokeWidth={1.8} />
       <circle cx={SC.x} cy={SC.y} r={SC.r - 9} fill='none' stroke={VIOLET} strokeOpacity={0.14} strokeWidth={1} strokeDasharray='3 4' />
-      <Runner $cx={SC.x} $cy={SC.y} $k='c'>
-        <circle cx={SC.x + SC.r} cy={SC.y} r={2.6} fill={VIOLET} />
-      </Runner>
+      {[0, T4 / 6, T4 / 3].map((d) => (
+        <Runner key={d} $cx={SC.x} $cy={SC.y} $k='c' $d={d}>
+          <circle cx={SC.x + SC.r} cy={SC.y} r={2.6} fill={VIOLET} />
+        </Runner>
+      ))}
     </Disc>
     <path d={`M${fx(G0[0])} ${fx(G0[1])} A${SC.r} ${SC.r} 0 0 1 ${fx(G1[0])} ${fx(G1[1])}`} fill='none' stroke={VIOLET} strokeWidth={3.4} strokeLinecap='round' />
     <Intruder cx={fx(IN0[0])} cy={fx(IN0[1])} r={4} fill={HOT} stroke='#fff' strokeWidth={1.2} />
