@@ -143,6 +143,30 @@ const PrimaryBtn = styled.button<{ $size?: 'sm' | 'md' }>`
   }
 `;
 
+const SecondaryBtn = styled.button<{ $size?: 'sm' | 'md' }>`
+  ${buttonBase};
+  background: var(--paper-2);
+  color: var(--ink);
+  border-color: var(--line-strong);
+  ${({ $size }) => $size === 'sm' && 'height: 42px; padding: 0 18px; font-size: 14px; border-radius: 11px;'}
+  &:hover {
+    border-color: var(--ink);
+    background: var(--paper-2);
+  }
+`;
+
+const PrimaryLink = styled(Link)<{ $size?: 'sm' | 'md' }>`
+  ${buttonBase};
+  background: var(--ink);
+  color: var(--paper-2);
+  box-shadow: 0 1px 2px rgba(18, 18, 21, 0.18), 0 12px 26px -14px rgba(18, 18, 21, 0.5);
+  ${({ $size }) => $size === 'sm' && 'height: 42px; padding: 0 18px; font-size: 14px; border-radius: 11px;'}
+  &:hover {
+    background: #000;
+    box-shadow: 0 1px 2px rgba(18, 18, 21, 0.2), 0 16px 34px -14px rgba(18, 18, 21, 0.55);
+  }
+`;
+
 const SecondaryLink = styled(Link)<{ $size?: 'sm' | 'md' }>`
   ${buttonBase};
   background: var(--paper-2);
@@ -164,11 +188,12 @@ const Arrow = () => (
 export const HUBSPOT_DEMO_URL =
   'https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/redirect?encryptedPayload=AVxigLKKpYFkaGHLV2SjisuKL8vGZv8GBmHLZBbEO8WEPKpvVFGLbCJ75h5TYp0EunqgNph6y6otczaQIcIVW%2Bjg6QKGujbcqjfJbc0ppMX0vfLpYVru76VnnU3%2FWnz91xJehZPt8GVQCH9oQWAKvhLTOMypjCua0VKp16%2Bf%2BFCDMSrqktcXUfrk&webInteractiveContentId=208657275164&portalId=50932826';
 
-export const TrialCTA = ({ size = 'md', label = 'Start 14-day trial' }: { size?: 'sm' | 'md'; label?: string }) => {
+export const TrialCTA = ({ size = 'md', label = 'Start 14-day trial', variant = 'primary' }: { size?: 'sm' | 'md'; label?: string; variant?: 'primary' | 'secondary' }) => {
   const setModal = useModalStore((s) => s.setModal);
   const { trackClick } = usePlausible();
+  const Btn = variant === 'primary' ? PrimaryBtn : SecondaryBtn;
   return (
-    <PrimaryBtn
+    <Btn
       $size={size}
       data-track='cta'
       data-track-label={label}
@@ -178,16 +203,18 @@ export const TrialCTA = ({ size = 'md', label = 'Start 14-day trial' }: { size?:
       }}
     >
       {label}
-      <Arrow />
-    </PrimaryBtn>
+      {variant === 'primary' && <Arrow />}
+    </Btn>
   );
 };
 
-export const DemoCTA = ({ size = 'md', label = 'Get a demo' }: { size?: 'sm' | 'md'; label?: string }) => {
+export const DemoCTA = ({ size = 'md', label = 'Get a demo', variant = 'secondary' }: { size?: 'sm' | 'md'; label?: string; variant?: 'primary' | 'secondary' }) => {
   const { trackClick } = usePlausible();
+  const Btn = variant === 'primary' ? PrimaryLink : SecondaryLink;
   return (
-    <SecondaryLink href={HUBSPOT_DEMO_URL} $size={size} data-track='cta' data-track-label={label} onClick={() => trackClick(label)}>
+    <Btn href={HUBSPOT_DEMO_URL} $size={size} data-track='cta' data-track-label={label} onClick={() => trackClick(label)}>
       {label}
-    </SecondaryLink>
+      {variant === 'primary' && <Arrow />}
+    </Btn>
   );
 };
