@@ -99,23 +99,6 @@ const Text = styled.div`
   }
 `;
 
-const Tags = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 22px;
-`;
-
-const Chip = styled.span`
-  font-family: var(--font-mono), monospace;
-  font-size: 11.5px;
-  letter-spacing: 0.02em;
-  color: var(--ink-mute);
-  padding: 6px 11px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  background: var(--paper-2);
-`;
 
 const Panel = styled.div`
   position: relative;
@@ -446,7 +429,6 @@ const CARDS = [
       </>
     ),
     desc: 'Your controls watch for the mess an attack leaves behind: a request that looks wrong, a process touching a file, a log line that reads badly. A targeted attack leaves none of that until it is over. It is a chain of allowed-looking calls spread across services, and no single tool holds the whole picture.',
-    tags: ['after the fact', 'one layer each', 'never the chain'],
     visual: <ToolTiles />,
   },
   {
@@ -457,7 +439,6 @@ const CARDS = [
       </>
     ),
     desc: 'Each operation in a sophisticated attack is ordinary on its own: a request, a lookup, a call into a library. Every control judges one piece, so every dashboard stays green while the attacker is inside. Only the whole transaction is malicious, and Odigos reads the whole transaction.',
-    tags: ['every call, every service', 'arguments and return values', 'the chain as a chain'],
     visual: <TraceCard />,
   },
   {
@@ -468,7 +449,6 @@ const CARDS = [
       </>
     ),
     desc: 'Nothing in your code, your process or anyone’s sprint. Most eBPF sensors stop at what the kernel sees. Odigos reads the function calls inside the process, with their arguments and return values, and stitches them across every service. One runtime on each Kubernetes node, under 1% CPU, measured across more than a million production cores.',
-    tags: ['no code changes', 'no sdk, no sidecar', 'java · node · python · go', 'open source'],
     visual: (
       <DeployWrap>
         <DeployScene />
@@ -483,7 +463,6 @@ const CARDS = [
       </>
     ),
     desc: 'Detection is baselined on your own traffic: the calls a route normally makes, and the one it never has. The finding names the function, so the policy can too. Refuse the call or change what it returns, scoped to the callers you name, shipped or reverted without a redeploy. Fields you name are redacted at the node.',
-    tags: ['virtual patching', 'scoped to callers', 'no redeploy', 'redacted at the node'],
     visual: <FindingCard />,
   },
 ];
@@ -505,11 +484,6 @@ export const SecurityCards = () => (
                 <span className='idx'>{String(i + 1).padStart(2, '0')} / 04</span>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
-                <Tags>
-                  {f.tags.map((t) => (
-                    <Chip key={t}>{t}</Chip>
-                  ))}
-                </Tags>
               </Text>
               <div className='visual'>
                 <Panel>
