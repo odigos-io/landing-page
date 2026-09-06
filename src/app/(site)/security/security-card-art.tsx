@@ -377,14 +377,14 @@ export const XrayArt = () => (
     {TREE.map(([x, y], i) => (
       <TreeNode key={`${x}${y}`} $y={y}>
         <circle cx={x} cy={y} r={6} fill={VIOLET} fillOpacity={0.14} />
-        <circle cx={x} cy={y} r={i === 6 ? 3.6 : 2.8} fill={i === 6 ? HOT : VIOLET} />
+        <circle cx={x} cy={y} r={i === 4 ? 3.6 : 2.8} fill={i === 4 ? HOT : VIOLET} />
       </TreeNode>
     ))}
-    <TreeNode $y={82}>
-      <text x={131} y={81} textAnchor='end' fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.4, fontWeight: 500 }}>
+    <TreeNode $y={66}>
+      <text x={153} y={65.5} fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.2, fontWeight: 500 }}>
         args
       </text>
-      <text x={131} y={87} textAnchor='end' fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.4, fontWeight: 500 }}>
+      <text x={153} y={71} fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.2, fontWeight: 500 }}>
         return
       </text>
     </TreeNode>
