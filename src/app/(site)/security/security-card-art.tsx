@@ -144,13 +144,13 @@ const OKC = '#2f9e6a';
 const T2 = 8;
 const p2 = (s: number) => (s / T2) * 100;
 const STEPS: { x: number; y: number; k: string }[] = [
-  { x: 24, y: 64, k: 'request' },
-  { x: 56, y: 38, k: 'lookup' },
-  { x: 88, y: 64, k: 'render' },
-  { x: 120, y: 38, k: 'parse' },
-  { x: 152, y: 64, k: 'write' },
+  { x: 24, y: 62, k: 'request' },
+  { x: 56, y: 52, k: 'lookup' },
+  { x: 88, y: 62, k: 'render' },
+  { x: 120, y: 52, k: 'parse' },
+  { x: 152, y: 62, k: 'write' },
 ];
-const VAULT = { x: 172, y: 50, w: 22, h: 28 };
+const VAULT = { x: 172, y: 44, w: 22, h: 28 };
 const CHAIN_AT = 1.8;
 const CHAIN_D = 2.4;
 const HOT_AT = CHAIN_AT + CHAIN_D + 0.3;
@@ -377,14 +377,14 @@ export const XrayArt = () => (
     {TREE.map(([x, y], i) => (
       <TreeNode key={`${x}${y}`} $y={y}>
         <circle cx={x} cy={y} r={6} fill={VIOLET} fillOpacity={0.14} />
-        <circle cx={x} cy={y} r={i === 7 ? 3.6 : 2.8} fill={i === 7 ? HOT : VIOLET} />
+        <circle cx={x} cy={y} r={i === 6 ? 3.6 : 2.8} fill={i === 6 ? HOT : VIOLET} />
       </TreeNode>
     ))}
-    <TreeNode $y={84}>
-      <text x={163} y={86} fill={HOT} fillOpacity={0.9} style={{ fontSize: 4 }}>
+    <TreeNode $y={82}>
+      <text x={131} y={81} textAnchor='end' fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.4, fontWeight: 500 }}>
         args
       </text>
-      <text x={163} y={91} fill={HOT} fillOpacity={0.9} style={{ fontSize: 4 }}>
+      <text x={131} y={87} textAnchor='end' fill={HOT} fillOpacity={0.95} style={{ fontSize: 4.4, fontWeight: 500 }}>
         return
       </text>
     </TreeNode>
@@ -464,6 +464,18 @@ const Dark = styled.g`
   }
 `;
 
+const dead = keyframes`
+  0%,${p4(ACT_AT)}%{opacity:0}
+  ${p4(ACT_AT + 0.5)}%,100%{opacity:.55}`;
+
+const Dead = styled.rect`
+  animation: ${dead} ${T4}s ease infinite;
+  ${still}
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.55;
+  }
+`;
+
 const Bad = styled.rect<{ $blocked?: boolean }>`
   animation: ${(p) => (p.$blocked ? goBlocked : goBad)} ${T4}s ease infinite;
   ${still}
@@ -521,7 +533,10 @@ const Grid = ({ x, y, s, mode }: { x: number; y: number; s: number; mode: 'proce
     <g transform={`translate(${x} ${y}) scale(${s})`}>
       <rect x={-5} y={-5} width={gridW + 10} height={gridH + 10} rx={5} fill='#fff' stroke={mode === 'function' ? VIOLET : SLATE} strokeOpacity={mode === 'function' ? 0.6 : 0.45} strokeWidth={1.2 / s} />
       {mode === 'process' ? (
-        <Dark>{cells}</Dark>
+        <>
+          <Dark>{cells}</Dark>
+          <Dead x={-5} y={-5} width={gridW + 10} height={gridH + 10} rx={5} fill={INK} fillOpacity={0.5} />
+        </>
       ) : mode === 'thread' ? (
         <>
           {cells.filter((_, i) => !dark(Math.floor(i / COLS)))}
