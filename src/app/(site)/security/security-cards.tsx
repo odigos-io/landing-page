@@ -429,11 +429,11 @@ const CARDS = [
         Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
       </>
     ),
-    desc: 'Every control you run keys on residue: a request that fails validation, a file opened out of pattern, a log line that reads wrong. A precise attack produces none of that while it runs. It moves as permitted calls across services, and each service sees only its own part. Odigos reads the calls.',
+    desc: 'Every control you run waits for residue: a failed validation, a file opened out of pattern, a log line that reads wrong. A precise attack produces none of that until it is over. It moves as permitted calls across services, and each service sees only its own part. Odigos reads the calls.',
     visual: <NoShadowArt />,
   },
   {
-    cap: 'seven calls, one shape',
+    cap: 'every call allowed, one shape',
     title: (
       <>
         Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
@@ -449,7 +449,7 @@ const CARDS = [
         Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
       </>
     ),
-    desc: 'Kernel-level sensors report syscalls, sockets and files, which is the outside of your application. Odigos reads the calls inside the process: names, arguments, return values, across every service, including stripped Go binaries. Nothing is loaded into the process. No code change, no redeploy, under 1% CPU.',
+    desc: 'Kernel-level sensors report syscalls, sockets and files, which is the outside of your application. Odigos reads the calls inside the process: names, arguments, return values, across every service, including stripped Go binaries. Nothing is loaded into the process. No code change, no redeploy. Under 1% CPU, measured across more than a million production cores.',
     visual: <XrayArt />,
   },
   {
@@ -459,7 +459,7 @@ const CARDS = [
         Block one function. <span className='mute'>The service stays up.</span>
       </>
     ),
-    desc: 'Three responses exist. Kill the thread. Kill the process. Or refuse that one call, or change what it returns, while everything else keeps serving. The first two stop the service along with the attack. The third is the one you will use in production: scoped to named callers, shipped and reverted without a redeploy, deleted when the real fix lands.',
+    desc: 'You get three responses. Kill the thread. Kill the process. Or refuse that one call, or change what it returns, while everything else keeps serving. The first two stop the service along with the attack. The third is the one you will use in production: scoped to named callers, shipped and reverted without a redeploy, deleted when the real fix lands.',
     visual: <ThreeCutsArt />,
   },
 ];
