@@ -727,16 +727,23 @@ export const SecurityArt = () => (
               <b>SSRF</b> found
             </span>
           </Line>
-          <Line $a={HOP1_AT + 0.8} $b={STOP_AT - 0.3}>
+          <Line $a={HOP1_AT + 0.8} $b={HOP2_AT}>
             <span>
               <b>CVE-2022-22963</b> found
             </span>
           </Line>
+          <Line $a={HOP2_AT + 0.3} $b={STOP_AT - 0.3}>
+            <span>
+              <b>zero-day</b> found
+            </span>
+          </Line>
           <Line $a={STOP_AT}>
+            <span>
+              <b>zero-day</b> found
+            </span>
             <em>
               <b>Odigos</b> blocked the call
             </em>
-            <span>zero-day found</span>
           </Line>
         </Scope>
 
