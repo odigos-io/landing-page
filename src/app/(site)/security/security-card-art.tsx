@@ -33,7 +33,7 @@ const Art = styled.svg`
    1. The thing that casts no shadow.
    ============================================================ */
 
-const T1 = 6;
+const T1 = 5;
 const p1 = (s: number) => (s / T1) * 100;
 const SWEEP_D = 2.2;
 const OBJ = [30, 64, 98, 132];
@@ -392,14 +392,13 @@ const intrude = keyframes`
   0%{transform:translate(0,0) scale(1);opacity:0}
   ${p4(0.3)}%{opacity:.95}
   ${p4(1.3)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  ${p4(7.5)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
-  ${p4(7.8)}%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(0);opacity:0}
-  100%{transform:translate(0,0) scale(1);opacity:0}`;
+  99%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:.95}
+  100%{transform:translate(${fx(GATE[0] - IN0[0])}px,${fx(GATE[1] - IN0[1])}px) scale(1);opacity:0}`;
 
 const gateGlow = keyframes`
   0%,${p4(1.2)}%{opacity:.1}
   ${p4(1.45)}%{opacity:.5}
-  ${p4(7.5)}%{opacity:.25}
+  99%{opacity:.25}
   100%{opacity:.1}`;
 
 const Runner = styled.g<{ $cx: number; $cy: number; $k: 'a' | 'b' | 'c' }>`
