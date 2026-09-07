@@ -3,7 +3,7 @@ import React from 'react';
 import { SecurityContent } from './security-content';
 
 const TITLE = 'Odigos Security: See into the runtime. Block AI-powered attacks.';
-const DESC = 'eBPF runtime security for Kubernetes. Odigos reads every function call in every service, with nothing in your code, and blocks AI-powered attacks at the function level.';
+const DESC = 'Odigos sees every function call in every service, on Kubernetes, VMs and bare metal, with nothing in your code, and blocks AI-powered attacks at the function level.';
 const URL = 'https://odigos.io/security';
 const OG = '/og.png';
 
@@ -43,7 +43,7 @@ const LD = [
       '@type': 'SoftwareApplication',
       name: 'Odigos',
       applicationCategory: 'SecurityApplication',
-      operatingSystem: 'Kubernetes',
+      operatingSystem: 'Linux',
       url: 'https://odigos.io',
       description: DESC,
       featureList: [

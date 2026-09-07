@@ -10,9 +10,9 @@ const body = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600', '7
 const URI = 'https://odigos.io',
   ICON = '/icon.png',
   OG = '/og.png',
-  TITLE = 'Odigos · Dynamic telemetry for AI agents',
-  DESCRIPTION = 'Ask production a question nobody set it up to answer. Odigos reads the arguments and return values of any function in a live service, in seconds, with no code change.',
-  KEYWORDS = ['dynamic telemetry', 'dynamic instrumentation', 'eBPF', 'AI SRE', 'AI agents', 'production debugging', 'OpenTelemetry', 'observability', 'distributed tracing', 'incident resolution', 'runtime context'];
+  TITLE = 'Odigos · The production context platform',
+  DESCRIPTION = 'Odigos records what ran inside every running service, with nothing in your code, and gives it live to the engineers and AI agents that run production. Observability and security on one production context platform.',
+  KEYWORDS = ['dynamic telemetry', 'dynamic instrumentation', 'eBPF', 'AI SRE', 'AI agents', 'production debugging', 'OpenTelemetry', 'observability', 'distributed tracing', 'incident resolution', 'production context'];
 
 export const metadata: Metadata = {
   metadataBase: new URL(URI),

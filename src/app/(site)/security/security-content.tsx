@@ -289,17 +289,17 @@ export const SecurityContent = () => {
           <HeroInner>
             <div>
               <Reveal>
-                <Eyebrow>eBPF runtime security for Kubernetes</Eyebrow>
+                <Eyebrow>Security on the production context platform</Eyebrow>
               </Reveal>
               <Reveal delay={60}>
                 <HeroH1>
-                  Nation-state firepower <em>is now a subscription.</em>
+                  Nation-state firepower <em>is now an AI subscription.</em>
                 </HeroH1>
               </Reveal>
               <Reveal delay={120}>
                 <HeroSub>
-                  One operator, one model, every variant, chained inside a single request. <b>Odigos lets you see into the runtime like never before and block AI-powered attacks at the function level</b>,
-                  with nothing in your code.
+                  One attacker with a frontier model now does what took a team. <b>Odigos sees into the runtime like never before and blocks AI-powered attacks at the function level</b>, with
+                  nothing in your code.
                 </HeroSub>
               </Reveal>
               <Reveal delay={180}>
@@ -336,7 +336,7 @@ export const SecurityContent = () => {
             </Reveal>
             <Reveal delay={230}>
               <CloseNote>
-                One command, one service, no code change. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
+                Same platform, same install as <a href='/observability'>observability</a>. One command, one service, no code change. <a href='https://docs.odigos.io/quickstart/introduction'>Read the deployment guide</a>.
               </CloseNote>
             </Reveal>
           </CloseInner>

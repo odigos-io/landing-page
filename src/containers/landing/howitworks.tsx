@@ -224,8 +224,8 @@ export const LandingHowItWorks = () => {
         <Reveal>
           <Head>
             <Eyebrow>How it works</Eyebrow>
-            <h2>The first thing you ask it is something your stack has never answered.</h2>
-            <p>One command. Odigos maps the environment, attaches its own eBPF runtime, and starts answering questions nobody set your stack up to answer. It produces OpenTelemetry from every service with no code change and sends it to any backend you already run, replacing nothing.</p>
+            <h2>One command. Nothing changes in your applications.</h2>
+            <p>Odigos installs on the cluster, finds every service, and starts producing OpenTelemetry from all of them with no code change. One Fortune 500 swapped out the bytecode agent in its process on 1.04 million cores and measured the difference. The backends you already pay for keep getting fed.</p>
           </Head>
         </Reveal>
 
@@ -255,8 +255,8 @@ export const LandingHowItWorks = () => {
                 <Num>2</Num>
                 <StepTag>Capture</StepTag>
               </StepTop>
-              <StepTitle>Inside the process, not at the syscall</StepTitle>
-              <StepDesc>Our own eBPF runtime reads what is actually happening inside each process: the functions running, the queries they make, the arguments they carry. Nothing is wired into your apps.</StepDesc>
+              <StepTitle>Inside the application, outside your code</StepTitle>
+              <StepDesc>Our own eBPF runtime reads what happens inside each service as it runs: the code paths taken, the queries made, the values carried. Nothing is wired into your applications.</StepDesc>
               <Chips>
                 <span className='chip live'>eBPF probe attached</span>
                 <span className='chip'>arguments</span>
@@ -270,8 +270,8 @@ export const LandingHowItWorks = () => {
                 <Num>3</Num>
                 <StepTag>Ask</StepTag>
               </StepTop>
-              <StepTitle>Ask, and keep asking</StepTitle>
-              <StepDesc>What did that function return. Which arguments did the failing requests carry. Which query did the slow path actually run. Anything missing is captured live, then exported as OpenTelemetry into whatever you already run.</StepDesc>
+              <StepTitle>Autofocus on the drift</StepTitle>
+              <StepDesc>When a service drifts, Autofocus captures deeper on that path before anyone asks. Anything else is captured live on request. All of it exports as OpenTelemetry into whatever you already run, and into the AI agents that do the asking.</StepDesc>
               <Dests>
                 <span className='d'>Datadog</span>
                 <span className='d'>Grafana</span>

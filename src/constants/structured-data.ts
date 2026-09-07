@@ -37,11 +37,11 @@ export const SOFTWARE_LD = {
   softwareHelp: 'https://docs.odigos.io',
   publisher: { '@id': `${SITE}/#organization` },
   description:
-    'Ask production a question nobody set it up to answer. Odigos attaches to any function in a running service with its own eBPF runtime and returns the arguments and return values in seconds, with no code change.',
+    'The production context platform. Odigos records what ran inside every running service with its own eBPF runtime, nothing in your code, and gives it live to the engineers and AI agents that run production, for observability and security.',
   featureList: [
     'Capture any function in a live service with no redeploy',
     'Out of process eBPF at under 1% CPU overhead',
-    'Automatic language detection across Go, Java, Python, .NET, JavaScript, PHP and Ruby',
+    'Automatic language detection across Go, Java, Python, Node.js, Rust, C++ and stripped static binaries',
     'Exports OpenTelemetry to any destination you already run',
     'PII masking, attribute deletion and sampling inside your own cluster',
     'RBAC over who may capture what, on which workloads',

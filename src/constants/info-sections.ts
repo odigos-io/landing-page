@@ -78,13 +78,13 @@ export const INFO_SECTIONS_2 = [
     imageSrc: '/assets/renders/product_section_3.png',
   },
   {
-    title: 'Odigos Tower: one control plane for every fleet.',
+    title: 'Odigos Central: one control plane for every fleet.',
     descriptions: ['Manage, scale, and govern your entire OpenTelemetry pipeline without touching application code.'],
     bullets: ['Apply instrumentation policies across the organization', 'Centralized control across Kubernetes, Virtual Machines, and Bare Metal', 'Centralized authentication and RBAC'],
     imageSrc: '/assets/renders/product_section_4.png',
   },
   {
-    title: 'Odigos Data Streams: your telemetry, your rules.',
+    title: 'Odigos Pipeline: your telemetry, your rules.',
     descriptions: ['Shape every signal and send it anywhere. No vendor owns your data again.'],
     bullets: [
       '<strong>Enrich & Transform</strong> data with custom attributes, masking, and aggregation',
@@ -95,7 +95,7 @@ export const INFO_SECTIONS_2 = [
     imageSrc: '/assets/renders/product_section_5.png',
   },
   {
-    title: 'Odigos Dynamic Rules: trace what matters, the moment it matters.',
+    title: 'Odigos Autofocus: capture what matters, the moment it matters.',
     descriptions: ['Turn deep tracing on for a critical path in real time. No code changes. No redeploy.'],
     bullets: [
       '<strong>Real-time Adjustments:</strong> React to changing needs on the fly',

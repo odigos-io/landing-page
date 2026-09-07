@@ -169,48 +169,92 @@ const PanelCap = styled.div`
   }
 `;
 
-const FEATURES = [
+export type FeatureItem = {
+  cap: string;
+  title: string;
+  desc: string;
+  visual: React.ReactNode;
+  tags: string[];
+};
+
+/* Home: what production context has to be before an agent can act on it.
+   Written for the people who buy the platform, not the people who wire it. */
+const FEATURES: FeatureItem[] = [
+  {
+    cap: 'Complete',
+    title: 'Every service on day one. Even the ones nobody owns.',
+    desc: 'One install covers the estate: the modern services, the fifteen-year-old Java, the stripped Go binaries most tools skip, the third-party code with no owner. No code changes, no rollout program, no team left to instrument by hand. Whoever asks sees all of production, not the parts someone got to.',
+    visual: <BinaryVisual />,
+    tags: ['every language', 'legacy and modern', 'no code changes'],
+  },
+  {
+    cap: 'Odigos Autofocus',
+    title: 'It senses where the fire is, and looks there first.',
+    desc: 'The moment a service drifts, Odigos Autofocus starts capturing deeper evidence on that path: what the code did, with what inputs, on the requests that failed. By the time anyone asks, the answer is already there. Ask about anything else and it captures that too, in seconds, with no redeploy. Inside the limits your team approved, every capture audited.',
+    visual: <AiVisual />,
+    tags: ['Autofocus', 'answered in seconds', 'no redeploys'],
+  },
+  {
+    cap: 'Safe',
+    title: 'Out of process. Out of your blast radius.',
+    desc: 'Odigos never enters your process. A bad question, or a bad release of ours, reaches our sensor and stops there. Every capture names the workload and the code it may read, has a named approver under role-based access, masks sensitive values before anything leaves your cluster, and lands in your audit trail. AI agents work inside the same limits as your engineers, and every question they ask is logged. Policies are written and approved by people.',
+    visual: <SafeVisual />,
+    tags: ['out of process', 'named approver', 'audited, masked in-cluster'],
+  },
+];
+
+/* Technology page: the same three rows, written for engineers. */
+export const TECH_FEATURES: FeatureItem[] = [
   {
     cap: 'A different kind of eBPF',
     title: 'eBPF was built for the kernel. We made it see inside the application.',
-    desc: 'Off-the-shelf eBPF sees syscalls and network traffic. Ours reads inside the process: the functions that ran, the queries they made, the arguments they carried. Including a stripped, statically linked Go binary, which is the case every other approach gives up on. Nothing loads into your application to do it.',
+    desc: 'Off-the-shelf eBPF sees syscalls and network traffic. Ours reads inside the process: the functions that ran, the queries they made, the arguments they carried. Including a stripped, statically linked Go binary, which is the case most tools give up on. Nothing loads into your application to do it.',
     visual: <BinaryVisual />,
     tags: ['our own eBPF runtime', 'every language', 'function-level depth'],
   },
   {
-    cap: 'Captured on demand',
-    title: 'Decide what to capture while the incident is still open.',
-    desc: 'Point at a function nobody ever set up to be watched, and Odigos starts capturing it inside running production: its arguments, what it returned, the calls underneath it. Seconds, not a deploy cycle. This is the whole difference between an agent that can investigate and a model that has to guess.',
+    cap: 'Odigos Autofocus',
+    title: 'It follows the drift into the code before anyone asks.',
+    desc: 'When a service starts to degrade, Autofocus moves capture onto that path on its own: the functions that ran, their arguments, what they returned, the calls underneath. Point at any other function and it captures that too, inside running production, in seconds. Scope, masking and approval are set once by your team; every capture lands in the audit trail.',
     visual: <AiVisual />,
-    tags: ['no redeploys', 'captured on demand', 'safe in production'],
+    tags: ['Autofocus', 'no redeploys', 'safe in production'],
   },
   {
     cap: 'Safe on all of production',
     title: 'Out of process. Out of your blast radius.',
-    desc: 'Every other way of getting this depth runs inside your process, one bad agent release away from taking the app down with it. Ours never touches your process. Under 1% CPU, safe to leave on across the whole estate, with RBAC and policy controls over what may be captured and by whom.',
+    desc: 'Other ways of getting this depth run inside your process, one bad agent release away from taking the app down with it. Ours never touches your process. Under 1% CPU, safe to leave on across the whole estate, with RBAC and policy controls over what may be captured and by whom.',
     visual: <SafeVisual />,
     tags: ['out of process', 'no agent in your app', 'RBAC & governance'],
   },
 ];
 
-export const LandingFeatures = () => {
+type RowsProps = {
+  eyebrow: string;
+  title: React.ReactNode;
+  lede?: string;
+  items: FeatureItem[];
+};
+
+export const FeatureRows = ({ eyebrow, title, lede, items }: RowsProps) => {
   return (
     <Section>
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>The part that took years</Eyebrow>
-            <h2>Everyone else&rsquo;s eBPF stops at the syscall.</h2>
-            <p>Our own eBPF runtime reads what is actually happening inside a running process. Whatever you ask for, it captures on demand and exports as OpenTelemetry.</p>
+            <Eyebrow>{eyebrow}</Eyebrow>
+            <h2>{title}</h2>
+            {lede && <p>{lede}</p>}
           </Head>
         </Reveal>
 
         <Rows>
-          {FEATURES.map((f, i) => (
+          {items.map((f, i) => (
             <Reveal key={f.title}>
               <Row $flip={i % 2 === 1}>
                 <Text className='text'>
-                  <span className='idx'>{String(i + 1).padStart(2, '0')} / 03</span>
+                  <span className='idx'>
+                    {String(i + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
+                  </span>
                   <h3>{f.title}</h3>
                   <p>{f.desc}</p>
                   <Tags>
@@ -233,3 +277,12 @@ export const LandingFeatures = () => {
     </Section>
   );
 };
+
+export const LandingFeatures = () => (
+  <FeatureRows
+    eyebrow='What production context means'
+    title='Three things telemetry was never built to do.'
+    lede='They decide whether production answers, or someone guesses. For an engineer, a security policy, or the agent that wrote the code.'
+    items={FEATURES}
+  />
+);

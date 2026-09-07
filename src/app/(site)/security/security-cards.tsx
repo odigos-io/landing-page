@@ -435,7 +435,7 @@ const CARDS = [
         Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
       </>
     ),
-    desc: 'A WAF waits for a request that fails validation. EDR waits for a file opened out of pattern. A SIEM waits for a log line that reads wrong. ADR watches one process, and only its surface. A precise attack gives none of them anything until it is over, because it moves as permitted calls across services. Odigos reads the calls.',
+    desc: 'A WAF waits for a bad request. EDR waits for an odd file. A SIEM waits for a wrong log line. ADR watches one process. A precise attack gives them nothing, because it moves as permitted calls across services. Odigos reads the calls.',
     visual: <NoShadowArt />,
   },
   {
@@ -445,7 +445,7 @@ const CARDS = [
         Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
       </>
     ),
-    desc: 'One service resolves an identifier. Another loads the record it was handed. A third returns it. Each call is valid on its own and normal for the service that made it. The attack lives in the order and the arguments, which is the view nothing else keeps.',
+    desc: 'One service resolves an identifier. Another loads the record it was handed. A third returns it. Each call is valid on its own and normal for the service that made it. The attack lives in the order and the arguments, a view your other tools do not keep.',
     visual: <ConstellationArt />,
   },
   {
@@ -455,7 +455,7 @@ const CARDS = [
         Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
       </>
     ),
-    desc: 'Kernel-level sensors see the outside of your application: a socket opened, a file read. Odigos sees what happened inside it: which function ran, what it was handed, what it returned, across every service, in every language. Nothing is added to your code and nothing runs in your process. Under 1% CPU in production, across more than a million cores.',
+    desc: 'Kernel sensors see the outside of your app: a socket, a file. Odigos sees inside it: which function ran, what it was handed, what it returned, in every service and language. Nothing in your code, nothing in your process, under 1% CPU across more than a million cores.',
     visual: <XrayArt />,
   },
   {
@@ -465,7 +465,7 @@ const CARDS = [
         Block one function. <span className='mute'>The service stays up.</span>
       </>
     ),
-    desc: 'One malicious call, three ways to stop it. Kill the process and every request on that service fails. Kill the thread and the request it was serving dies. Or refuse that one call, and nothing else notices. The service keeps serving, the policy is scoped to the callers you name, it ships and reverts without a redeploy, and it comes off when the real fix lands.',
+    desc: 'Kill the process and every request on that service fails. Kill the thread and the request dies. Refuse the one call and nothing else notices. The service keeps serving. The policy your team approved ships and reverts without a redeploy.',
     visual: <ThreeCutsArt />,
   },
 ];

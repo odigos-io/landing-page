@@ -78,8 +78,8 @@ const Copy = styled.div`
 
 const H1 = styled.h1`
   margin: 26px 0 0;
-  font-size: clamp(32px, 4vw, 50px);
-  line-height: 1.22;
+  font-size: clamp(36px, 4.6vw, 60px);
+  line-height: 1.08;
   padding-bottom: 0.1em;
   font-weight: 600;
   letter-spacing: -0.04em;
@@ -134,14 +134,16 @@ export const LandingHero = () => {
       <Bloom />
       <Grid>
         <Copy>
-          <Eyebrow>Dynamic telemetry, decided at the moment you ask</Eyebrow>
+          <Eyebrow>The production context platform</Eyebrow>
           <H1>
-            <span>Let your agents</span>
+            <span>Production context.</span>
             <span>
-              <em>interrogate production.</em>
+              <em>For every decision.</em>
             </span>
           </H1>
-          <Sub>Ask production <b>a question nobody set it up to answer</b>. Any function in any running service, answered in seconds, with no code change.</Sub>
+          <Sub>
+            Odigos records what runs inside every service, live, with nothing in your code. <b>Your engineers, AI agents and security teams get the evidence they need.</b>
+          </Sub>
           <Ctas>
             <TrialCTA />
             <DemoCTA />

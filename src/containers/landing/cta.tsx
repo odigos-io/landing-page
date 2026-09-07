@@ -163,8 +163,8 @@ export const LandingCTA = () => {
           <Card>
             <Mesh />
             <Glow />
-            <Eyebrow>One command. Any Kubernetes cluster.</Eyebrow>
-            <Title>Bring us the question your stack can&rsquo;t answer.</Title>
+            <Eyebrow>One command. Kubernetes, VMs, bare metal.</Eyebrow>
+            <Title>Install today. First answer tomorrow. Security on the same install.</Title>
             <Ctas>
               <Primary
                 data-track='cta'
@@ -183,7 +183,7 @@ export const LandingCTA = () => {
                 Get a demo
               </Ghost>
             </Ctas>
-            <Note>Our own eBPF. Nothing enters your process.</Note>
+            <Note>One record, every purpose. One service, fourteen days, success criteria written first.</Note>
           </Card>
         </Reveal>
       </Band>

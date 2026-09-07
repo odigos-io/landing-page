@@ -7,6 +7,7 @@ import {
   LandingLogos,
   LandingOldWay,
   LandingFeatures,
+  LandingPlatform,
   LandingProduct,
   LandingProof,
   LandingHowItWorks,
@@ -22,10 +23,11 @@ const HomeContent = () => {
       <main>
         <LandingHero />
         <LandingLogos />
+        <LandingPlatform />
         <LandingOldWay />
         <LandingFeatures />
-        <LandingProduct />
         <LandingHowItWorks />
+        <LandingProduct />
         <LandingProof />
         <LandingCTA />
         <LandingBlogs />
