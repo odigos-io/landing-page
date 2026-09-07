@@ -132,7 +132,7 @@ export const LandingFooter = () => {
       <Top>
         <Brand>
           <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={128} height={29} />
-          <p>The runtime context platform. Our own eBPF runtime captures whatever your engineers or your agents ask for, live in production, and exports it as OpenTelemetry you always own.</p>
+          <p>The production context platform. Odigos records what ran inside every service, live, with nothing in your code, for the engineers, AI agents and security policies that run production. Exported as OpenTelemetry you own.</p>
           <Socials>
             <Social href={GITHUB_LINK} target='_blank' aria-label='GitHub'>
               <Image src='/assets/github.svg' alt='GitHub' width={17} height={17} />
@@ -147,8 +147,10 @@ export const LandingFooter = () => {
         </Brand>
 
         <Col>
-          <h3>Product</h3>
-          <Link href='/product'>Product</Link>
+          <h3>Platform</h3>
+          <Link href='/observability'>Observability</Link>
+          <Link href='/security'>Security</Link>
+          <Link href='/technology'>Technology</Link>
           <Link href='/pricing'>Pricing</Link>
           <Link href='/roi-calculator'>ROI Calculator</Link>
           <Link href={DOCS_LINK} target='_blank'>Documentation</Link>

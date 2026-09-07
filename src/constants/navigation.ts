@@ -11,10 +11,6 @@ interface NavItem {
 
 export const NAVIGATION: NavItem[] = [
   {
-    label: 'Product',
-    href: '/product',
-  },
-  {
     label: 'Security',
     href: '/security',
   },
@@ -62,10 +58,11 @@ export interface NavGroup {
    four, the bar fits on a laptop again. */
 export const NAV_GROUPS: NavGroup[] = [
   {
-    label: 'Product',
+    label: 'Platform',
     items: [
-      { label: 'Overview', href: '/product', blurb: 'What Odigos captures, and how' },
-      { label: 'Security', href: '/security', blurb: 'See into the runtime. Block AI-powered attacks.' },
+      { label: 'Observability', href: '/observability', blurb: 'Engineers and AI agents ask production for root cause' },
+      { label: 'Security', href: '/security', blurb: 'A policy your team approved blocks the attack call' },
+      { label: 'Technology', href: '/technology', blurb: 'Our own eBPF, and what it reads inside the process' },
       { label: 'Comparisons', href: '/comparisons', blurb: 'How the approaches actually differ' },
     ],
   },

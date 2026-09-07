@@ -130,11 +130,11 @@ export const LandingProof = () => {
           <Slab>
             <Glow />
             <Copy>
-              <Eyebrow $light>Measured in production</Eyebrow>
+              <Eyebrow $light>Benchmarked by a customer</Eyebrow>
               <h2>
-                Cheaper than the agent <span className='mute'>you are already running.</span>
+                A Fortune 500 ran it across a million cores. <span className='mute'>Up to 27.6% less CPU than the bytecode agent it replaced.</span>
               </h2>
-              <p>eBPF runs outside your process, so depth stops costing you throughput. One Fortune 500 customer benchmarked us against their legacy bytecode agent on the same traces, across 1.04 million cores. Another, one of the largest retailers in the world, built its own regression agent in-house on this data.</p>
+              <p>Odigos runs outside your applications, so depth stops costing you throughput. One Fortune 500 customer benchmarked it against the bytecode agent already in their process, on the same traces, across 1.04 million cores. One of the largest retailers in the world built its own regression-finding AI agent on this data. Security runs on the same sensor and the same install, with no second agent to approve.</p>
             </Copy>
 
             <Stats>
@@ -151,7 +151,7 @@ export const LandingProof = () => {
                   <em>27.6%</em>
                 </span>
                 <span className='t'>
-                  less CPU than their legacy bytecode agent at the top of the range they measured, <b>on identical traces</b>, on their own hardware.
+                  less CPU than the bytecode agent at the top of the range they measured, <b>on identical traces</b>, on their own hardware.
                 </span>
               </Stat>
               <Stat>
@@ -159,7 +159,7 @@ export const LandingProof = () => {
                   <em>1.04M</em>
                 </span>
                 <span className='t'>
-                  cores under measurement when they ran it. <b>Zero code changes to capture something new.</b>
+                  cores under measurement when they ran it. <b>New question. No new code.</b>
                 </span>
               </Stat>
             </Stats>

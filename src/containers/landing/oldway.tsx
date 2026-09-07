@@ -32,6 +32,13 @@ const Head = styled.div`
     display: block;
     color: var(--ink-faint);
   }
+  p {
+    margin: 20px 0 0;
+    max-width: 640px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
 `;
 
 const Pair = styled.div`
@@ -249,10 +256,13 @@ export const LandingOldWay = () => {
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>When your agent hits missing data</Eyebrow>
+            <Eyebrow>The wait</Eyebrow>
             <h2>
-              Both agents need the same value. <span className='mute'>Only one can go and get it.</span>
+              Same incident, two AI agents. <span className='mute'>One opens a pull request. One answers.</span>
             </h2>
+            <p>
+              The one that can only read what someone logged in advance adds a log line and waits for the bug to happen again. The one on Odigos asks production what the code did. Hours to days against seconds, on every incident, on every team.
+            </p>
           </Head>
         </Reveal>
 

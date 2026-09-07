@@ -351,16 +351,16 @@ const Ctas = styled.div`
 ----------------------------------------------------------------- */
 const MISSION_BEATS = [
   {
-    title: 'The problem changed.',
-    body: 'AI writes the code now, and it ships to production faster than any team can watch it. The tools meant to catch it were built twenty years ago, for software people typed by hand.',
+    title: 'Production changed. Its tools did not.',
+    body: 'Coding agents ship faster than any team can watch. One attacker with a model now does what took a team, moving as permitted calls between services. Logs record what someone predicted would matter. Neither was predicted.',
   },
   {
-    title: 'We rebuilt the layer underneath.',
-    body: 'Out-of-process eBPF that sees inside any running service, captures any signal on demand, and physically cannot take production down. Deep, safe, and dynamic at the same time, for the first time.',
+    title: 'One record, from outside the process.',
+    body: 'Our own eBPF runtime records what ran inside every service, from outside the process, with nothing in your code. Every language, including legacy Java and stripped Go binaries. Under 1% CPU, exported as OpenTelemetry you own.',
   },
   {
-    title: 'Every AI in production will need it.',
-    body: 'We built it first, and it already runs inside some of the most demanding production environments on earth.',
+    title: 'One record, every purpose.',
+    body: 'Record production once. Every purpose reads from it. An engineer or an AI agent after a page. A policy your team approved on every call. A coding agent after every deploy. It runs in production at 11 enterprises.',
   },
 ];
 
@@ -373,23 +373,23 @@ const CapIcon = ({ d }: { d: string }) => (
 const CAPABILITIES = [
   {
     icon: 'M3 12h4l3 8 4-16 3 8h4',
-    title: 'Deep by default',
-    body: 'Out-of-process eBPF reaches inside any running service to read the signals other agents never see, no SDK and no code changes required.',
+    title: 'Inside the application',
+    body: 'Ordinary eBPF sees the kernel: a socket, a file. Ours reads inside the process: which function ran, what it was handed, what it returned. Every language, nothing in your code.',
   },
   {
     icon: 'M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z',
-    title: 'Safe by design',
-    body: 'Running out of process means an issue in observability physically cannot take production down. Depth without the blast radius.',
+    title: 'Outside the process',
+    body: 'Odigos never enters your process. A bad question, or a bad release of ours, stops at our sensor. Every capture has a named approver, masking, and an audit trail.',
   },
   {
     icon: 'M4 7h16M4 12h16M4 17h10M18 14v6M15 17h6',
-    title: 'Dynamic on demand',
-    body: 'Turn any signal on or off at runtime. Capture exactly what a question needs, when it is asked, without a redeploy.',
+    title: 'Odigos Autofocus',
+    body: 'When a service drifts, Odigos captures deeper on that path on its own: arguments, return values, the calls underneath. Point at any function and it captures that too. Seconds, not a deploy cycle.',
   },
   {
     icon: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M18 18l-2.5-2.5M6 18l2.5-2.5M18 6l-2.5 2.5',
-    title: 'Built for AI-era scale',
-    body: 'The same platform runs inside some of the most demanding production environments on earth, ready for the AI that runs them next.',
+    title: 'Proven at scale',
+    body: 'A Fortune 500 benchmarked it on 1.04 million cores: up to 27.6% less CPU than its bytecode agent. 11 enterprises run it in production. SOC 2 audited.',
   },
 ];
 
@@ -403,11 +403,11 @@ const AboutContent = () => {
           <HeroInner>
             <Reveal>
               <HeroCopy>
-                <Eyebrow>We are Odigos</Eyebrow>
-                <h1>We brought observability to AI.</h1>
+                <Eyebrow>About Odigos</Eyebrow>
+                <h1>We built the record of what production did.</h1>
                 <p>
-                  AI writes the code now, and it ships faster than any team can watch it. We rebuilt the layer underneath so the systems running production
-                  can finally see themselves. Deep, safe, and dynamic at the same time, for the first time.
+                  Odigos is the production context platform. Our own eBPF runtime records what ran inside every service, on which request, with what inputs and result. Nothing in your code, from
+                  outside the process. Engineers, AI agents and policies your team approved read from that one record.
                 </p>
               </HeroCopy>
             </Reveal>
@@ -425,8 +425,8 @@ const AboutContent = () => {
             <Reveal>
               <Head>
                 <Eyebrow>Our mission</Eyebrow>
-                <h2>The observability layer for software that writes itself.</h2>
-                <p>The tools meant to catch production were built for code people typed by hand. We rebuilt the layer underneath for the way software ships now.</p>
+                <h2>AI is on both sides of production now.</h2>
+                <p>Coding agents write it. Attackers with a model probe it. The tools watching production were built for code people typed by hand, and they record what someone thought to log.</p>
               </Head>
             </Reveal>
             <MissionGrid>
@@ -449,8 +449,8 @@ const AboutContent = () => {
             <Reveal>
               <Head>
                 <Eyebrow>What we build</Eyebrow>
-                <h2>Deep, safe, and dynamic at the same time.</h2>
-                <p>Three things were always a trade-off in observability. Out-of-process eBPF lets us deliver all three at once.</p>
+                <h2>Deep inside the application. Never in it.</h2>
+                <p>Depth used to mean risk. Safety meant shallow. Reading from outside the process with our own eBPF removed that trade-off, at a scale of a million cores.</p>
               </Head>
             </Reveal>
             <ValueGrid>
@@ -476,7 +476,7 @@ const AboutContent = () => {
               <Head>
                 <Eyebrow>Investors</Eyebrow>
                 <h2>Backed by infrastructure investors.</h2>
-                <p>The funds that backed the last generation of infrastructure companies are backing the one that replaces them.</p>
+                <p>The funds that backed the last generation of infrastructure companies are backing the production context platform.</p>
               </Head>
             </Reveal>
             <InvestorGrid>
@@ -503,9 +503,9 @@ const AboutContent = () => {
                 <span className='mesh' />
                 <span className='glow' />
                 <Eyebrow $light>Start today</Eyebrow>
-                <h2>See your production the way an AI would.</h2>
+                <h2>Install today. First answer tomorrow.</h2>
                 <p className='lead'>
-                  Root cause in seconds, not days. No redeploy, no war room. Start a 14-day trial or get a walkthrough with the team that built it.
+                  One command on Kubernetes, VMs or bare metal. Success criteria written first, on one service. Start a 14-day trial, or get a walkthrough from the team that built the runtime.
                 </p>
                 <Ctas>
                   <TrialCTA />

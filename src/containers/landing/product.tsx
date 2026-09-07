@@ -112,17 +112,29 @@ const Notes = styled.div`
   }
 `;
 
-export const LandingProduct = () => {
+type ProductProps = {
+  eyebrow?: string;
+  title?: React.ReactNode;
+  desc?: string;
+};
+
+export const LandingProduct = ({
+  eyebrow = 'Governed by design',
+  title = (
+    <>
+      One question someone approved. <span className='mute'>One answer from production.</span>
+    </>
+  ),
+  desc = 'A capture names a workload and the code it may read. It is scoped, reversible, approved under role-based access, and masked for sensitive values before it leaves your cluster. Reading a value out of production is a decision your organisation made, with an audit trail, not a side effect of an AI agent.',
+}: ProductProps) => {
   return (
     <Section>
       <Inner>
         <Reveal>
           <Head>
-            <Eyebrow>What a capture actually is</Eyebrow>
-            <h2>
-              Every capture is one line <span className='mute'>you can read.</span>
-            </h2>
-            <p>A capture names a workload and a function. It is scoped per cluster, reversible, and governed by RBAC, so reading a value out of production is an action somebody authorised rather than a side effect of an agent.</p>
+            <Eyebrow>{eyebrow}</Eyebrow>
+            <h2>{title}</h2>
+            <p>{desc}</p>
           </Head>
         </Reveal>
 

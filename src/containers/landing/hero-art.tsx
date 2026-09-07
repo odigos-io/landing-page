@@ -488,9 +488,7 @@ const Foot = styled.div`
   @media (max-width: 1000px) {
     padding: 13px 16px 15px;
   }
-
 `;
-
 
 /* the estate, drawn once from a fixed seed so hydration matches */
 const CLUSTERS: [number, number, number][] = [
@@ -516,8 +514,8 @@ const MID: [number, number, number, number] = [8.5, 18, 73.9, 66];
 
 const inBox = (x: number, y: number, b: [number, number, number, number]) => x >= b[0] && x <= b[0] + b[2] && y >= b[1] && y <= b[1] + b[3];
 
-const build = () => {
-  let s = 20260830;
+const build = (seed: number) => {
+  let s = seed;
   const rnd = () => {
     s = (s * 1103515245 + 12345) % 2147483648;
     return s / 2147483648;
@@ -529,8 +527,12 @@ const build = () => {
     for (let i = 0; i < n; i++) {
       const a = rnd() * Math.PI * 2;
       const d = 3 + rnd() * 9;
-      nodes.push({ x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d * 0.82, r: 0.75 + rnd() * 0.85 });
-      links.push({ x1: cx, y1: cy, x2: cx + Math.cos(a) * d, y2: cy + Math.sin(a) * d * 0.82 });
+      /* rounded so the server and the browser serialise the same digits */
+      const x = Math.round((cx + Math.cos(a) * d) * 1000) / 1000;
+      const y = Math.round((cy + Math.sin(a) * d * 0.82) * 1000) / 1000;
+      const r = Math.round((0.75 + rnd() * 0.85) * 1000) / 1000;
+      nodes.push({ x, y, r });
+      links.push({ x1: cx, y1: cy, x2: x, y2: y });
     }
     const next = CLUSTERS[(ci + 3) % CLUSTERS.length];
     links.push({ x1: cx, y1: cy, x2: next[0], y2: next[1] });
@@ -552,147 +554,214 @@ const build = () => {
   return { nodes, links, kind };
 };
 
-const MAP = build();
+/* one estate per seed, built once, so every page gets its own scatter of
+   services drawn in the same hand */
+const MAPS: Record<number, ReturnType<typeof build>> = {};
+const estate = (seed: number) => {
+  if (!MAPS[seed]) MAPS[seed] = build(seed);
+  return MAPS[seed];
+};
 
-export const HeroArt = () => (
-  <Frame>
-    <Panel>
-      <Field>
-        <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid slice' aria-hidden>
-          {MAP.links.map((l, i) => (
-            <line key={i} className='link' x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
-          ))}
-          {MAP.nodes.map((n, i) => (
-            <circle key={i} className={`n${MAP.kind[i]}`} cx={n.x} cy={n.y} r={n.r} />
-          ))}
-        </Map>
+/* The same instrument tells a different investigation on each page. The
+   estate, the reticle and the scope choreography never change; only what
+   the scope shows at the end and what the footer narrates. */
+export type HeroStory = {
+  seed: number;
+  caps: [string, string, string, string, string];
+  steps: [string, string, string, { dead: string; then: string }, string, string, string];
+  valsCap: string;
+  vals: React.ReactNode;
+  found: string;
+  ctx: string;
+};
 
-        <Scope>
-          <Sheet $a={2} $b={15}>
-            <div className='cap'>metrics</div>
-            <div className='body'>
-              <svg viewBox='0 0 120 34' width='100%' height='34' fill='none' aria-hidden>
-                <path d='M0 22 L14 18 L28 21 L42 15 L56 19 L70 16 L84 20 L98 12 L112 26 L120 30' stroke='rgba(24,20,54,0.28)' strokeWidth='1.6' strokeLinejoin='round' />
-                <path d='M98 12 L112 26 L120 30' stroke='#5b43f1' strokeWidth='1.8' strokeLinejoin='round' />
-                <line x1='0' y1='33' x2='120' y2='33' stroke='rgba(24,20,54,0.1)' strokeWidth='1' />
-              </svg>
-            </div>
-          </Sheet>
+export const HOME_STORY: HeroStory = {
+  seed: 20260830,
+  caps: ['metrics', 'traces', 'logs', 'traces', 'profile'],
+  steps: [
+    'checkout revenue is down 12%',
+    'following a checkout that completed',
+    'whatever that path already records',
+    { dead: 'nothing here', then: 'backing out, trying elsewhere' },
+    'trying the promo path',
+    'finding out which functions ran',
+    'dynamically instrumenting applyDiscount()',
+  ],
+  valsCap: 'function values',
+  vals: (
+    <>
+      code <em>&quot;BLACK50&quot;</em>
+      <br />
+      rule <b>nil</b>
+      <br />
+      returned <b>0.00</b>
+    </>
+  ),
+  found: 'cause found',
+  ctx: 'the rule lookup came back empty',
+};
 
-          <Sheet $a={16} $b={27}>
-            <div className='cap'>traces</div>
-            <div className='body'>
-              <Bars>
-                <i style={{ width: '92%' }} />
-                <i style={{ width: '58%', marginLeft: '8%' }} />
-                <i style={{ width: '34%', marginLeft: '16%' }} />
-                <i style={{ width: '46%', marginLeft: '12%' }} />
-              </Bars>
-            </div>
-          </Sheet>
+export const TECHNOLOGY_STORY: HeroStory = {
+  seed: 20260907,
+  caps: ['process', 'binary', 'symbols', 'layout', 'frame'],
+  steps: [
+    'what did applyDiscount return on order 4471',
+    'resolving the service and its binary',
+    'stripped, statically linked Go, no symbols',
+    { dead: 'no debug info', then: 'reading the binary layout instead' },
+    'locating the function and its frame',
+    'attaching an eBPF probe, outside the process',
+    'reading arguments and the return value',
+  ],
+  valsCap: 'captured out of process',
+  vals: (
+    <>
+      code <em>&quot;BLACK50&quot;</em>
+      <br />
+      returned <b>0.00</b>
+      <br />
+      cost <b>0.4% CPU</b>
+    </>
+  ),
+  found: 'captured',
+  ctx: 'nothing loaded into the application to do it',
+};
 
-          <Sheet $a={28} $b={39}>
-            <div className='cap'>logs</div>
-            <div className='body'>
-              <Bars>
-                <i style={{ width: '88%' }} />
-                <i style={{ width: '96%' }} />
-                <i style={{ width: '71%' }} />
-                <i style={{ width: '83%' }} />
-              </Bars>
-            </div>
-          </Sheet>
+export const HeroArt = ({ story = HOME_STORY }: { story?: HeroStory }) => {
+  const MAP = estate(story.seed);
+  return (
+    <Frame>
+      <Panel>
+        <Field>
+          <Map viewBox='0 0 142 100' preserveAspectRatio='xMidYMid slice' aria-hidden>
+            {MAP.links.map((l, i) => (
+              <line key={i} className='link' x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+            ))}
+            {MAP.nodes.map((n, i) => (
+              <circle key={i} className={`n${MAP.kind[i]}`} cx={n.x} cy={n.y} r={n.r} />
+            ))}
+          </Map>
 
-          <Sheet $a={51} $b={61}>
-            <div className='cap'>traces</div>
-            <div className='body'>
-              <Bars>
-                <i style={{ width: '94%' }} />
-                <i style={{ width: '40%', marginLeft: '6%' }} />
-                <i className='on' style={{ width: '22%', marginLeft: '14%' }} />
-                <i style={{ width: '66%', marginLeft: '10%' }} />
-              </Bars>
-            </div>
-          </Sheet>
+          <Scope>
+            <Sheet $a={2} $b={15}>
+              <div className='cap'>{story.caps[0]}</div>
+              <div className='body'>
+                <svg viewBox='0 0 120 34' width='100%' height='34' fill='none' aria-hidden>
+                  <path d='M0 22 L14 18 L28 21 L42 15 L56 19 L70 16 L84 20 L98 12 L112 26 L120 30' stroke='rgba(24,20,54,0.28)' strokeWidth='1.6' strokeLinejoin='round' />
+                  <path d='M98 12 L112 26 L120 30' stroke='#5b43f1' strokeWidth='1.8' strokeLinejoin='round' />
+                  <line x1='0' y1='33' x2='120' y2='33' stroke='rgba(24,20,54,0.1)' strokeWidth='1' />
+                </svg>
+              </div>
+            </Sheet>
 
-          <Sheet $a={62} $b={71}>
-            <div className='cap'>profile</div>
-            <div className='body'>
-              <Flame>
-                <div className='row'>
-                  <i className='on' style={{ left: '34%', width: '14%' }} />
-                </div>
-                <div className='row'>
-                  <i style={{ left: '6%', width: '14%' }} />
-                  <i style={{ left: '30%', width: '20%' }} />
-                  <i style={{ left: '62%', width: '12%' }} />
-                </div>
-                <div className='row'>
-                  <i style={{ left: '2%', width: '22%' }} />
-                  <i style={{ left: '26%', width: '26%' }} />
-                  <i style={{ left: '60%', width: '20%' }} />
-                </div>
-                <div className='row'>
-                  <i style={{ left: '0%', width: '56%' }} />
-                  <i style={{ left: '58%', width: '36%' }} />
-                </div>
-                <div className='row'>
-                  <i style={{ left: '0%', width: '100%' }} />
-                </div>
-              </Flame>
-            </div>
-          </Sheet>
+            <Sheet $a={16} $b={27}>
+              <div className='cap'>{story.caps[1]}</div>
+              <div className='body'>
+                <Bars>
+                  <i style={{ width: '92%' }} />
+                  <i style={{ width: '58%', marginLeft: '8%' }} />
+                  <i style={{ width: '34%', marginLeft: '16%' }} />
+                  <i style={{ width: '46%', marginLeft: '12%' }} />
+                </Bars>
+              </div>
+            </Sheet>
 
-          <Sheet $a={73}>
-            <div className='cap'>function values</div>
-            <div className='body'>
-              <Vals>
-                code <em>&quot;BLACK50&quot;</em>
-                <br />
-                rule <b>nil</b>
-                <br />
-                returned <b>0.00</b>
-              </Vals>
-            </div>
-          </Sheet>
-        </Scope>
+            <Sheet $a={28} $b={39}>
+              <div className='cap'>{story.caps[2]}</div>
+              <div className='body'>
+                <Bars>
+                  <i style={{ width: '88%' }} />
+                  <i style={{ width: '96%' }} />
+                  <i style={{ width: '71%' }} />
+                  <i style={{ width: '83%' }} />
+                </Bars>
+              </div>
+            </Sheet>
 
-        <Glow />
-        <Halo />
-        <Reticle>
-          <span />
-          <span />
-          <span />
-          <span />
-        </Reticle>
+            <Sheet $a={51} $b={61}>
+              <div className='cap'>{story.caps[3]}</div>
+              <div className='body'>
+                <Bars>
+                  <i style={{ width: '94%' }} />
+                  <i style={{ width: '40%', marginLeft: '6%' }} />
+                  <i className='on' style={{ width: '22%', marginLeft: '14%' }} />
+                  <i style={{ width: '66%', marginLeft: '10%' }} />
+                </Bars>
+              </div>
+            </Sheet>
 
-      </Field>
+            <Sheet $a={62} $b={71}>
+              <div className='cap'>{story.caps[4]}</div>
+              <div className='body'>
+                <Flame>
+                  <div className='row'>
+                    <i className='on' style={{ left: '34%', width: '14%' }} />
+                  </div>
+                  <div className='row'>
+                    <i style={{ left: '6%', width: '14%' }} />
+                    <i style={{ left: '30%', width: '20%' }} />
+                    <i style={{ left: '62%', width: '12%' }} />
+                  </div>
+                  <div className='row'>
+                    <i style={{ left: '2%', width: '22%' }} />
+                    <i style={{ left: '26%', width: '26%' }} />
+                    <i style={{ left: '60%', width: '20%' }} />
+                  </div>
+                  <div className='row'>
+                    <i style={{ left: '0%', width: '56%' }} />
+                    <i style={{ left: '58%', width: '36%' }} />
+                  </div>
+                  <div className='row'>
+                    <i style={{ left: '0%', width: '100%' }} />
+                  </div>
+                </Flame>
+              </div>
+            </Sheet>
 
-      <Foot>
-        <Step>
-          <svg className='mark' width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
-            <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
-          </svg>
-          <S0>checkout revenue is down 12%</S0>
-          <S1>following a checkout that completed</S1>
-          <S2>whatever that path already records</S2>
-          <S3 className='dead'>
-            <s>nothing here</s> backing out, trying elsewhere
-          </S3>
-          <S4>trying the promo path</S4>
-          <S5>finding out which functions ran</S5>
-          <S6>dynamically instrumenting applyDiscount()</S6>
-        </Step>
-        <Answer>
-          <Found>
-            <svg width='12' height='12' viewBox='0 0 14 14' fill='none' aria-hidden>
-              <path d='M2 7.4 5.2 10.5 12 3.5' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
+            <Sheet $a={73}>
+              <div className='cap'>{story.valsCap}</div>
+              <div className='body'>
+                <Vals>{story.vals}</Vals>
+              </div>
+            </Sheet>
+          </Scope>
+
+          <Glow />
+          <Halo />
+          <Reticle>
+            <span />
+            <span />
+            <span />
+            <span />
+          </Reticle>
+        </Field>
+
+        <Foot>
+          <Step>
+            <svg className='mark' width='11' height='11' viewBox='0 0 12 12' fill='none' aria-hidden>
+              <path d='M6 0.6c.35 2.6 2.44 4.69 5.04 5.04v.72C8.44 6.71 6.35 8.8 6 11.4h-.72C4.93 8.8 2.84 6.71.24 6.36v-.72C2.84 5.29 4.93 3.2 5.28.6z' fill='currentColor' />
             </svg>
-            cause found
-          </Found>
-          <span className='ctx'>the rule lookup came back empty</span>
-        </Answer>
-      </Foot>
-    </Panel>
-  </Frame>
-);
+            <S0>{story.steps[0]}</S0>
+            <S1>{story.steps[1]}</S1>
+            <S2>{story.steps[2]}</S2>
+            <S3 className='dead'>
+              <s>{story.steps[3].dead}</s> {story.steps[3].then}
+            </S3>
+            <S4>{story.steps[4]}</S4>
+            <S5>{story.steps[5]}</S5>
+            <S6>{story.steps[6]}</S6>
+          </Step>
+          <Answer>
+            <Found>
+              <svg width='12' height='12' viewBox='0 0 14 14' fill='none' aria-hidden>
+                <path d='M2 7.4 5.2 10.5 12 3.5' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
+              </svg>
+              {story.found}
+            </Found>
+            <span className='ctx'>{story.ctx}</span>
+          </Answer>
+        </Foot>
+      </Panel>
+    </Frame>
+  );
+};

@@ -5,6 +5,7 @@ export * from './oldway';
 export * from './howitworks';
 export * from './product';
 export * from './features';
+export * from './platform';
 export * from './proof';
 export * from './blogs';
 export * from './prose';

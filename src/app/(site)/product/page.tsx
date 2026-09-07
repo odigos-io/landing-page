@@ -1,10 +1,6 @@
-'use client';
+import { permanentRedirect } from 'next/navigation';
 
-import React from 'react';
-import { ProductContent } from './product-content';
-
-const Product = () => {
-  return <ProductContent />;
-};
-
-export default Product;
+/* The product overview merged into the observability page. */
+export default function Product() {
+  permanentRedirect('/observability');
+}
