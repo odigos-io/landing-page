@@ -833,7 +833,7 @@ export const PricingContent = () => {
                     Get a demo
                   </CtaGhost>
                 </CtaButtons>
-                <CtaNote>Our own eBPF · Exports to OpenTelemetry, zero lock-in · No code changes</CtaNote>
+                <CtaNote>Odigos DeepBPF · Exports to OpenTelemetry, zero lock-in · No code changes</CtaNote>
               </CtaCard>
             </Reveal>
           </Container>

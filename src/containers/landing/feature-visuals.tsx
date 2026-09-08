@@ -459,6 +459,8 @@ const Evidence = styled.div`
   }
   .live {
     margin-left: auto;
+    flex: none;
+    white-space: nowrap;
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -534,7 +536,7 @@ export const AiVisual = () => (
         <span>
           <b>stack + 14 spans</b> returned
         </span>
-        <span className='live'>live</span>
+        <span className='live'>in policy</span>
       </Evidence>
     </Flow>
   </Wrap>

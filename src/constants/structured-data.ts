@@ -37,7 +37,7 @@ export const SOFTWARE_LD = {
   softwareHelp: 'https://docs.odigos.io',
   publisher: { '@id': `${SITE}/#organization` },
   description:
-    'The production context platform. Odigos records what ran inside every running service with its own eBPF runtime, nothing in your code, and gives it live to the engineers and AI agents that run production, for observability and security.',
+    'The production context platform. Odigos records what ran inside every running service with Odigos DeepBPF, its own eBPF runtime, nothing in your code, and gives it live to the engineers and AI agents that run production, for observability and security.',
   featureList: [
     'Capture any function in a live service with no redeploy',
     'Out of process eBPF at under 1% CPU overhead',

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { LandingHeader, LandingFooter, LandingProduct, LandingHowItWorks, LandingCTA, FeatureRows, TECH_FEATURES } from '@/containers/landing';
+import { LandingHeader, LandingFooter, LandingProduct, LandingHowItWorks, LandingCTA, LandingPlatform, FeatureRows, TECH_FEATURES } from '@/containers/landing';
 import { PageHero } from '@/containers/landing/page-hero';
 import { HeroArt, TECHNOLOGY_STORY } from '@/containers/landing/hero-art';
 import { Container, Eyebrow, Reveal, TrialCTA } from '@/containers/landing/primitives';
@@ -132,7 +132,7 @@ export const TechnologyContent = () => {
           }
           sub={
             <>
-              Our own eBPF runtime reads what happens inside a running process: <b>the functions that ran, the arguments they carried, the values they returned, in every language.</b> Whatever you ask
+              <b>Odigos DeepBPF</b> reads what happens inside a running process: <b>the functions that ran, the arguments they carried, the values they returned, in every language.</b> Whatever you ask
               for, it captures on request, and Autofocus captures on its own the moment a service drifts. Everything exports as OpenTelemetry. Nothing loads into your application to do it.
             </>
           }
@@ -158,6 +158,8 @@ export const TechnologyContent = () => {
         />
 
         <LandingHowItWorks />
+
+        <LandingPlatform />
 
         <Section>
           <Inner>

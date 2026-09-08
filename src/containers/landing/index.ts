@@ -6,6 +6,8 @@ export * from './howitworks';
 export * from './product';
 export * from './features';
 export * from './platform';
+export * from './fit';
+export * from './doors';
 export * from './proof';
 export * from './blogs';
 export * from './prose';

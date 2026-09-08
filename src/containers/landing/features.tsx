@@ -210,7 +210,7 @@ export const TECH_FEATURES: FeatureItem[] = [
     title: 'eBPF was built for the kernel. We made it see inside the application.',
     desc: 'Off-the-shelf eBPF sees syscalls and network traffic. Ours reads inside the process: the functions that ran, the queries they made, the arguments they carried. Including a stripped, statically linked Go binary, which is the case most tools give up on. Nothing loads into your application to do it.',
     visual: <BinaryVisual />,
-    tags: ['our own eBPF runtime', 'every language', 'function-level depth'],
+    tags: ['Odigos DeepBPF', 'every language', 'function-level depth'],
   },
   {
     cap: 'Odigos Autofocus',
