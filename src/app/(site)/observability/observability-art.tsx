@@ -3,116 +3,47 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-/* One incident, two outcomes, on one chart, and the reason said out loud.
+/* Keep going.
 
-   Grey, without Odigos: latency climbs, the page comes at 03:12 with a
-   graph and three log lines. Nothing from inside the code was captured,
-   so the fix lands at 05:40.
+   The trace waterfall every buyer already reads: four spans, four
+   durations. Then the line where most traces end. Below it, Odigos keeps
+   going: the functions inside that one service, and then the call itself,
+   with the value it returned.
 
-   Violet, with Odigos: the latency starts drifting at 02:52. Odigos sees
-   the drift twenty minutes before the alert and turns up capture on that
-   path. So when the same page comes at 03:12, the root cause is already
-   recorded. Fixed 03:31. One thought at a time, held long enough to read. */
+   Four beats, one direction, downward. No timeline, no incident clock.
+   The payoff is the returned 0.00, and it lands last. */
 
-const T = '24s';
+const T = '15s';
 
-/* chart space 1000 x 330; baseline y 262, plateau y 110, SLO y 196 */
-const RISE = 'M-5 262 L140 262 C175 262 190 215 199 196 C212 168 218 110 232 110';
-const WITHOUT = `${RISE} L262 112 L300 108 L340 112 L380 108 L420 113 L460 108 L500 112 L540 109 L580 113 L620 108 L660 112 L700 109 L740 113 L780 108 L820 112 L850 110 L878 110 C886 110 884 262 892 262 L1005 262`;
-const WITH = `${RISE} L262 112 L290 110 L300 110 C308 110 306 262 315 262 L1005 262`;
-const WEDGE = 'M315 262 L300 110 L340 112 L380 108 L420 113 L460 108 L500 112 L540 109 L580 113 L620 108 L660 112 L700 109 L740 113 L780 108 L820 112 L850 110 L878 110 C886 110 884 262 892 262 Z';
-
-const X_DRIFT = 14;
-const X_PAGE = 23;
-const X_FIX = 31.5;
-const X_LATE = 89.2;
-const Y_PLATEAU = 33.3;
-const Y_BASE = 79.4;
-const Y_SLO = 59.4;
-
-/* the line draws at 0.25 loop percent per x percent and pauses while a
-   thought is on screen, so every label appears when the line reaches it */
-const R = 0.25;
-const G_START = 2;
-const G_DRIFT = G_START + X_DRIFT * R; /* 5.5 */
-const G_PAGE = 16; /* the climb from the drift to the page takes ~2.5 s */
-const G_RESUME = 24;
-const G_LATE = G_RESUME + (X_LATE - X_PAGE) * R; /* 40.5 */
-const G_END = 43;
-const HAND = 45.5;
-const V_START = 51;
-const V_DRIFT = V_START + X_DRIFT * R; /* 54.5 */
-const V_PAGE = 70.5; /* the climb takes ~3.8 s and the thoughts land along it */
-const V_PAGE_RESUME = 80;
-const V_FIX = V_PAGE_RESUME + (X_FIX - X_PAGE) * R; /* 82.1 */
-const V_END = 88;
-const PAYOFF = 89.5;
-
-const drawG = keyframes`
-  0%, ${G_START}% { width: 0; }
-  ${G_DRIFT}% { width: ${X_DRIFT}%; animation-timing-function: ease-in-out; }
-  ${G_PAGE}%, ${G_RESUME}% { width: ${X_PAGE}%; }
-  ${G_END}%, 100% { width: 100%; }
-`;
-const drawV = keyframes`
-  0%, ${V_START}% { width: 0; }
-  ${V_DRIFT}% { width: ${X_DRIFT}%; animation-timing-function: ease-in-out; }
-  ${V_PAGE}%, ${V_PAGE_RESUME}% { width: ${X_PAGE}%; }
-  ${V_FIX}% { width: ${X_FIX}%; }
-  ${V_END}%, 100% { width: 100%; }
-`;
-/* appear at `at`; optionally fall to `to` after `off` */
-const show = (at: number, off = 0, to = 0.5) => keyframes`
-  0%, ${at}% { opacity: 0; margin-top: 3px; }
-  ${at + 1}%${off ? `, ${off}%` : ', 100%'} { opacity: 1; margin-top: 0; }
-  ${off ? `${off + 1.5}%, 100% { opacity: ${to}; margin-top: 0; }` : ''}
-`;
-const ghost = keyframes`
-  0%, ${HAND}% { stroke: #b5b1a6; }
-  ${HAND + 2.5}%, 100% { stroke: #dedbd3; }
-`;
-const caption = keyframes`
-  0%, ${HAND + 0.8}% { opacity: 0; margin-top: 4px; }
-  ${HAND + 2}%, ${V_START - 0.3}% { opacity: 1; margin-top: 0; }
-  ${V_START + 1.2}%, 100% { opacity: 0; margin-top: 0; }
-`;
-const wedge = keyframes`
-  0%, ${PAYOFF}% { fill-opacity: 0; }
-  ${PAYOFF + 2.5}%, 100% { fill-opacity: 1; }
-`;
-const pulse = keyframes`
-  0%, ${V_PAGE}% { box-shadow: 0 0 0 4px rgba(255, 93, 143, 0.2); }
-  ${V_PAGE + 0.8}% { box-shadow: 0 0 0 11px rgba(255, 93, 143, 0.28); }
-  ${V_PAGE + 2.5}%, 100% { box-shadow: 0 0 0 4px rgba(255, 93, 143, 0.2); }
-`;
-const veil = keyframes`
-  0%, 97.5% { opacity: 0; margin-top: 1px; }
-  100% { opacity: 1; margin-top: 0; }
-`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 
-const kPage = show(G_PAGE);
-const kLate = show(G_LATE, HAND);
-const kBub1 = show(G_PAGE, HAND, 0.5);
-const kBub1a = show(G_PAGE + 2.6, HAND, 0.5);
-const kBub1b = show(G_PAGE + 5.2, HAND, 0.5);
-const kBub1Off = keyframes`
-  0%, ${PAYOFF - 1}% { opacity: 1; margin-top: 0; }
-  ${PAYOFF + 1}%, 100% { opacity: 0; margin-top: 1px; }
+/* every keyframe also moves stroke-dashoffset, a main-thread property, so
+   headless capture advances the loop the same way a browser does */
+const rise = (from: number, to: number) => keyframes`
+  0%, ${from}% { opacity: 0; margin-top: 6px; stroke-dashoffset: 0; }
+  ${to}%, 94% { opacity: 1; margin-top: 0; stroke-dashoffset: 1; }
+  100% { opacity: 0; margin-top: 6px; stroke-dashoffset: 0; }
 `;
-const kLegendV = show(HAND + 0.8);
-const kDrift = show(V_DRIFT);
-const kBub2 = show(V_DRIFT);
-/* thought one: four beats, then it steps aside for thought two */
-const kT1 = show(V_DRIFT, V_PAGE - 0.8, 0);
-const kT1a = show(V_DRIFT + 4, V_PAGE - 0.8, 0);
-const kT1b = show(V_DRIFT + 8, V_PAGE - 0.8, 0);
-const kT1c = show(V_DRIFT + 12, V_PAGE - 0.8, 0);
-const kT2 = show(V_PAGE);
-const kT2a = show(V_PAGE + 2.6);
-const kT2b = show(V_PAGE + 5.4);
-const kFix = show(V_FIX);
-const kSoon = show(PAYOFF + 1);
+const open = (from: number, to: number) => keyframes`
+  0%, ${from}% { opacity: 0; transform: scaleY(0.04); stroke-dashoffset: 0; }
+  ${to}%, 94% { opacity: 1; transform: scaleY(1); stroke-dashoffset: 1; }
+  100% { opacity: 0; transform: scaleY(0.04); stroke-dashoffset: 0; }
+`;
+const land = keyframes`
+  0%, 46% { opacity: 0; transform: scale(0.72); stroke-dashoffset: 0; }
+  53% { opacity: 1; transform: scale(1.06); stroke-dashoffset: 0.5; }
+  57%, 94% { opacity: 1; transform: scale(1); stroke-dashoffset: 1; }
+  100% { opacity: 0; transform: scale(0.72); stroke-dashoffset: 0; }
+`;
+
+const kC1 = open(4, 13);
+const kL2a = rise(9, 17);
+const kL2b = rise(12, 20);
+const kL2c = rise(15, 23);
+const kC2 = open(25, 35);
+const kL3 = rise(29, 39);
+const kCall = rise(38, 46);
+const kFoot = rise(56, 62);
 
 const Frame = styled.div`
   position: relative;
@@ -125,577 +56,220 @@ const Frame = styled.div`
 const Panel = styled.div`
   position: relative;
   width: 100%;
-  background: var(--paper-2);
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 22px;
   box-shadow: var(--shadow-panel);
-  padding: 20px 22px 16px;
   overflow: hidden;
-  container-type: inline-size;
-`;
-
-const Head = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 22px;
-  margin-bottom: 16px;
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--ink-mute);
-  .title {
-    white-space: nowrap;
-  }
-  .legend {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  .legend span {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    height: 22px;
-  }
-  .legend span::before {
-    content: '';
-    width: 14px;
-    height: 2px;
-    border-radius: 1px;
-    background: #b5b1a6;
-  }
-  .legend .v {
-    padding: 0 10px 0 9px;
-    border-radius: 999px;
-    background: var(--ink);
-    color: #fff;
-    opacity: 0;
-    animation: ${kLegendV} ${T} linear infinite;
-  }
-  .legend .v::before {
-    background: var(--accent);
-  }
-  @container (max-width: 480px) {
-    .title {
-      display: none;
-    }
-  }
-`;
-
-const Chart = styled.div`
-  position: relative;
-  height: 330px;
-  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 100% 20%, 13.4% 100%;
-  background-position: 0 100%, 4.2% 0;
-
-  .slo {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: ${Y_SLO}%;
-    border-top: 1px dashed rgba(201, 52, 106, 0.35);
-  }
-  .slo b {
-    position: absolute;
-    left: 0;
-    top: -15px;
-    font: 500 10.5px/1 var(--font-mono), monospace;
-    letter-spacing: 0.08em;
-    color: var(--hot-ink);
-  }
-  .ticks {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(${Y_BASE}% + 44px);
-    font: 400 10.5px/1 var(--font-mono), monospace;
-    letter-spacing: 0.06em;
-    color: var(--ink-faint);
-  }
-  .ticks span {
-    position: absolute;
-    transform: translateX(-50%);
-  }
-
-  .reveal {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    overflow: hidden;
-  }
-  .reveal.g {
-    animation: ${drawG} ${T} linear infinite;
-    z-index: 1;
-  }
-  .reveal.v {
-    animation: ${drawV} ${T} linear infinite;
-    z-index: 2;
-  }
-  .layer {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100cqw;
-  }
   svg {
-    position: absolute;
-    inset: 0;
+    display: block;
     width: 100%;
-    height: 100%;
-    overflow: visible;
+    height: auto;
   }
-  .curve {
-    fill: none;
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-  }
-  .curve.g {
-    stroke: #b5b1a6;
-    animation: ${ghost} ${T} linear infinite;
-  }
-  .curve.v {
-    stroke: var(--accent);
-  }
-  .wedge {
-    fill: rgba(91, 67, 241, 0.07);
-    fill-opacity: 0;
-    animation: ${wedge} ${T} linear infinite;
-  }
-
-  .caption {
-    position: absolute;
-    left: ${(X_FIX + X_LATE) / 2 + 2}%;
-    top: calc(${Y_PLATEAU}% + 46px);
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font: 500 13px/1.3 var(--font-display), sans-serif;
-    color: var(--ink);
-    text-align: center;
-    opacity: 0;
-    z-index: 3;
-    animation: ${caption} ${T} linear infinite;
-  }
-  .caption small {
-    display: block;
-    margin-top: 4px;
-    font: 400 10.5px/1 var(--font-mono), monospace;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .pt {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 0;
-    z-index: 3;
+  .c1,
+  .l2a,
+  .l2b,
+  .l2c,
+  .c2,
+  .l3,
+  .call,
+  .zero,
+  .foot {
     opacity: 0;
   }
-  .pt i {
-    position: absolute;
-    left: -4.5px;
-    width: 9px;
-    height: 9px;
-    margin-top: -4.5px;
-    border-radius: 50%;
-    border: 1.5px solid #fff;
-    box-sizing: border-box;
+  .c1 {
+    transform-box: view-box;
+    transform-origin: 393px 94px;
+    animation: ${kC1} ${T} cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
   }
-  .pt > span {
-    position: absolute;
-    white-space: nowrap;
-    font: 500 10.5px/1.4 var(--font-mono), monospace;
-    letter-spacing: 0.04em;
+  .l2a {
+    animation: ${kL2a} ${T} ease-out infinite;
   }
-  .pt > span b {
-    font-weight: 500;
+  .l2b {
+    animation: ${kL2b} ${T} ease-out infinite;
   }
-  .page {
-    left: ${X_PAGE}%;
-    animation: ${kPage} ${T} linear infinite;
+  .l2c {
+    animation: ${kL2c} ${T} ease-out infinite;
   }
-  .page i {
-    top: ${Y_PLATEAU}%;
-    background: var(--hot);
-    box-shadow: 0 0 0 4px rgba(255, 93, 143, 0.2);
-    animation: ${pulse} ${T} linear infinite;
+  .c2 {
+    transform-box: view-box;
+    transform-origin: 335px 149px;
+    animation: ${kC2} ${T} cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
   }
-  .page span {
-    right: 10px;
-    top: calc(${Y_PLATEAU}% - 8px);
-    color: var(--hot-ink);
+  .l3 {
+    animation: ${kL3} ${T} cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
   }
-  .late {
-    left: ${X_LATE}%;
-    animation: ${kLate} ${T} linear infinite;
+  .call {
+    animation: ${kCall} ${T} ease-out infinite;
   }
-  .late i {
-    top: ${Y_BASE}%;
-    background: #b5b1a6;
-    box-shadow: 0 0 0 4px rgba(181, 177, 166, 0.25);
+  .zero {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ${land} ${T} cubic-bezier(0.2, 0.9, 0.3, 1.4) infinite;
   }
-  .late span {
-    right: 0;
-    top: calc(${Y_BASE}% + 12px);
-    color: var(--ink-soft);
-  }
-  .drift {
-    left: ${X_DRIFT}%;
-    animation: ${kDrift} ${T} linear infinite;
-  }
-  .drift i {
-    top: ${Y_BASE}%;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px rgba(91, 67, 241, 0.2);
-  }
-  .drift span {
-    left: 10px;
-    top: calc(${Y_BASE}% + 12px);
-    color: var(--accent);
-  }
-  .fix {
-    left: ${X_FIX}%;
-    animation: ${kFix} ${T} linear infinite;
-  }
-  .fix i {
-    top: ${Y_BASE}%;
-    background: var(--signal);
-    box-shadow: 0 0 0 4px rgba(17, 168, 119, 0.2);
-  }
-  .fix span {
-    left: 12px;
-    top: calc(${Y_BASE}% - 20px);
-    color: var(--signal);
-  }
-
-  /* what you know at 03:12: one bubble per act, above the plateau */
-  .bub {
-    position: absolute;
-    top: 6px;
-    z-index: 4;
-    padding: 10px 13px 11px;
-    border-radius: 12px;
-    font: 400 12px/17px var(--font-mono), monospace;
-    letter-spacing: 0;
-    white-space: nowrap;
-    opacity: 0;
-  }
-  .bubwrap {
-    position: absolute;
-    inset: 0;
-    animation: ${kBub1Off} ${T} linear infinite;
-  }
-  .bub div {
-    opacity: 0;
-  }
-  .bub .t1,
-  .bub .t2 {
-    opacity: 1;
-  }
-  .bub b {
-    font-weight: 500;
-  }
-  .bub.one {
-    left: calc(${X_PAGE}% + 16px);
-    top: calc(${Y_PLATEAU}% + 22px);
-    background: var(--paper-2);
-    border: 1px solid var(--line-strong);
-    color: var(--ink-mute);
-    box-shadow: 0 12px 24px -18px rgba(24, 20, 54, 0.3);
-    animation: ${kBub1} ${T} linear infinite;
-  }
-  .bub.one .h {
-    color: var(--hot-ink);
-    font-weight: 500;
-    animation: ${kBub1} ${T} linear infinite;
-  }
-  .bub.one .a {
-    animation: ${kBub1a} ${T} linear infinite;
-  }
-  .bub.one .b {
-    color: var(--ink);
-    animation: ${kBub1b} ${T} linear infinite;
-  }
-  .bub.two {
-    right: 0;
-    min-width: 296px;
-    min-height: 89px;
-    background: var(--panel);
-    border: 1px solid var(--panel-line);
-    color: var(--panel-mute);
-    box-shadow: 0 18px 30px -18px rgba(11, 11, 13, 0.6);
-    animation: ${kBub2} ${T} linear infinite;
-  }
-  .bub.two b {
-    color: var(--panel-ink);
-  }
-  .bub.two .h {
-    color: #c9bfff;
-    font-weight: 500;
-  }
-  .bub.two .t2 {
-    position: absolute;
-    left: 13px;
-    top: 10px;
-  }
-  .bub.two .t1 .h {
-    animation: ${kT1} ${T} linear infinite;
-  }
-  .bub.two .t1 .a {
-    animation: ${kT1a} ${T} linear infinite;
-  }
-  .bub.two .t1 .b {
-    animation: ${kT1b} ${T} linear infinite;
-  }
-  .bub.two .t1 .c {
-    animation: ${kT1c} ${T} linear infinite;
-  }
-  .bub.two .t2 .h {
-    color: var(--hot);
-    animation: ${kT2} ${T} linear infinite;
-  }
-  .bub.two .t2 .a {
-    animation: ${kT2a} ${T} linear infinite;
-  }
-  .bub.two .t2 .b {
-    color: #fff;
-    animation: ${kT2b} ${T} linear infinite;
-  }
-  .bub.two .t2 .b b {
-    color: var(--signal-bright);
-  }
-
-  .soon {
-    position: absolute;
-    left: ${(X_FIX + X_LATE) / 2 + 2}%;
-    top: calc(${Y_PLATEAU}% + 30px);
-    transform: translateX(-50%);
-    text-align: center;
-    white-space: nowrap;
-    z-index: 3;
-    opacity: 0;
-    animation: ${kSoon} ${T} linear infinite;
-  }
-  .soon b {
-    display: block;
-    font-size: 26px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .soon small {
-    display: block;
-    margin-top: 6px;
-    font: 400 11px/1 var(--font-mono), monospace;
-    letter-spacing: 0.03em;
-    color: var(--ink-mute);
-  }
-  .veil {
-    position: absolute;
-    inset: -40px -24px -24px;
-    background: var(--paper-2);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 6;
-    animation: ${veil} ${T} linear infinite;
-  }
-  .short {
-    display: none;
+  .foot {
+    animation: ${kFoot} ${T} ease-out infinite;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    * {
-      animation: none !important;
-    }
-    .reveal {
-      width: 100% !important;
-    }
-    .curve.g {
-      stroke: #dedbd3;
-    }
-    .pt,
-    .soon,
-    .bub.two,
-    .bub.two .t2 div {
+    g {
       opacity: 1;
+      animation: none;
+      transform: none;
+      margin-top: 0;
     }
-    .bub.two .t1 div {
-      opacity: 0;
-    }
-    .late,
-    .bub.one,
-    .bub.one div {
-      opacity: 0.55;
-    }
-    .caption {
-      opacity: 0;
-    }
-    .wedge {
-      fill-opacity: 1;
-    }
-    .veil {
-      opacity: 0;
-    }
-  }
-
-  @container (max-width: 480px) {
-    height: 250px;
-    background-size: 100% 25%, 20% 100%;
-    .long {
-      display: none;
-    }
-    .short {
-      display: inline;
-    }
-    .ticks,
-    .slo b,
-    .soon small,
-    .bubwrap,
-    .caption small {
-      display: none;
-    }
-    .soon b {
-      font-size: 18px;
-    }
-    .soon {
-      top: calc(${Y_PLATEAU}% + 22px);
-    }
-    .caption {
-      top: calc(${Y_PLATEAU}% + 30px);
-      font-size: 12px;
-    }
-    .fix span {
-      top: calc(${Y_BASE}% + 26px);
-      left: 0;
-    }
-    .bub.two {
-      left: 0;
-      top: auto;
-      bottom: -6px;
-      transform: translateY(100%);
-    }
-  }
-`;
-
-const Dock = styled.div`
-  @container (max-width: 480px) {
-    height: 104px;
   }
 `;
 
 export const ObservabilityArt = () => (
   <Frame>
-    <Panel role='img' aria-label='One incident, two outcomes. Without Odigos the engineer is paged at 03:12 with a graph and three log lines, nothing from inside the code was captured, and the outage ends at 05:40. With Odigos, the drift was seen twenty minutes before the alert and capture was turned up, so the page came with the root cause already recorded and the outage ended at 03:31.'>
-      <Head>
-        <span className='title'>p99 latency, checkout</span>
-        <div className='legend'>
-          <span className='g'>without Odigos</span>
-          <span className='v'>with Odigos</span>
-        </div>
-      </Head>
+    <Panel
+      role='img'
+      aria-label='A trace waterfall of four services, then a dashed line reading most traces end here. Below it Odigos keeps going: the functions inside the promo service, and then the call itself, applyDiscount with the code BLACK50 and a cart of 49.00, which returned 0.00 at promo.go line 41. The row for BLACK50 was not found, and 312 orders were affected.'
+    >
+      <svg viewBox='0 0 640 460' width='640' height='460' shapeRendering='geometricPrecision' aria-hidden>
+        <defs>
+          <linearGradient id='oaLens1' x1='0' y1='0' x2='0' y2='1'>
+            <stop offset='0' stopColor='#ece9ff' stopOpacity='0.35' />
+            <stop offset='1' stopColor='#ece9ff' stopOpacity='0.85' />
+          </linearGradient>
+          <linearGradient id='oaLens2' x1='0' y1='0' x2='0' y2='1'>
+            <stop offset='0' stopColor='#ffffff' stopOpacity='0.95' />
+            <stop offset='1' stopColor='#ece9ff' stopOpacity='0.75' />
+          </linearGradient>
+          <filter id='oaLift' x='-20%' y='-20%' width='140%' height='150%'>
+            <feDropShadow dx='0' dy='10' stdDeviation='14' floodColor='#121215' floodOpacity='0.13' />
+          </filter>
+        </defs>
 
-      <Chart aria-hidden>
-        <div className='slo'>
-          <b>SLO 800 ms</b>
-        </div>
-        <div className='ticks'>
-          <span style={{ left: '17.6%' }}>03:00</span>
-          <span style={{ left: '44.5%' }}>04:00</span>
-          <span style={{ left: '71.3%' }}>05:00</span>
-        </div>
+        <g className='c2'>
+          <polygon points='158,149 512,149 614,234 74,234' fill='url(#oaLens2)' />
+          <line x1='158' y1='149' x2='74' y2='234' stroke='#5b43f1' strokeOpacity='0.22' strokeWidth='1' />
+          <line x1='512' y1='149' x2='614' y2='234' stroke='#5b43f1' strokeOpacity='0.22' strokeWidth='1' />
+        </g>
 
-        <div className='reveal g'>
-          <div className='layer'>
-            <svg viewBox='0 0 1000 330' preserveAspectRatio='none' aria-hidden>
-              <path className='curve g' d={WITHOUT} />
-            </svg>
-          </div>
-        </div>
-        <div className='reveal v'>
-          <div className='layer'>
-            <svg viewBox='0 0 1000 330' preserveAspectRatio='none' aria-hidden>
-              <path className='wedge' d={WEDGE} />
-              <path className='curve v' d={WITH} />
-            </svg>
-          </div>
-        </div>
+        <g className='c1'>
+          <polygon points='354,94 433,94 540,138 158,138' fill='url(#oaLens1)' />
+          <line x1='354' y1='94' x2='158' y2='138' stroke='#5b43f1' strokeOpacity='0.3' strokeWidth='1' />
+          <line x1='433' y1='94' x2='540' y2='138' stroke='#5b43f1' strokeOpacity='0.3' strokeWidth='1' />
+        </g>
 
-        <div className='caption'>
-          Same incident, replayed
-          <small>now with Odigos</small>
-        </div>
+        <g className='l1' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <rect x='126' y='28' width='414' height='9' rx='4.5' fill='#f4f2ec' />
+          <rect x='126' y='47' width='414' height='9' rx='4.5' fill='#f4f2ec' />
+          <rect x='126' y='66' width='414' height='9' rx='4.5' fill='#f4f2ec' />
+          <rect x='126' y='85' width='414' height='9' rx='4.5' fill='#f4f2ec' />
 
-        <div className='pt page'>
-          <i />
-          <span>
-            <b>03:12</b> paged
-          </span>
-        </div>
-        <div className='pt late'>
-          <i />
-          <span>
-            <b>05:40</b> fixed
-          </span>
-        </div>
-        <div className='pt drift'>
-          <i />
-          <span>
-            <b>02:52</b> <span className='long'>drift begins</span>
-          </span>
-        </div>
-        <div className='pt fix'>
-          <i />
-          <span>
-            <b>03:31</b> fixed
-          </span>
-        </div>
+          <rect x='126' y='28' width='414' height='9' rx='4.5' fill='#d8d4c9' />
+          <rect x='141' y='47' width='375' height='9' rx='4.5' fill='#d8d4c9' />
+          <rect x='165' y='66' width='23' height='9' rx='4.5' fill='#d8d4c9' />
+          <rect x='354' y='85' width='79' height='9' rx='4.5' fill='#ece9ff' stroke='#5b43f1' strokeWidth='1.25' />
 
-        <div className='bubwrap'>
-          <div className='bub one'>
-            <div className='h'>03:12 · paged</div>
-            <div className='a'>What you have: a graph, 3 log lines.</div>
-            <div className='b'>Nothing captured from inside the code.</div>
-          </div>
-        </div>
-        <div className='bub two'>
-          <div className='t1'>
-            <div className='h'>02:52 · latency drifting on checkout</div>
-            <div className='a'>
-              Raised trace sampling <b>1% to 90%</b>
-            </div>
-            <div className='b'>
-              Instrumented <b>applyDiscount()</b>
-            </div>
-            <div className='c'>
-              Captured <b>arguments and return values</b>
-            </div>
-          </div>
-          <div className='t2'>
-            <div className='h'>03:12 · paged</div>
-            <div className='a'>Root cause already recorded:</div>
-            <div className='b'>
-              <b>applyDiscount()</b> runs 1 query per item
-            </div>
-          </div>
-        </div>
+          <text x='26' y='35.5' fontSize='11' fill='#6d6d75'>
+            POST /checkout
+          </text>
+          <text x='26' y='54.5' fontSize='11' fill='#6d6d75'>
+            cart-api
+          </text>
+          <text x='26' y='73.5' fontSize='11' fill='#6d6d75'>
+            orders-db
+          </text>
+          <text x='26' y='92.5' fontSize='11' fill='#121215'>
+            promo-svc
+          </text>
 
-        <div className='soon'>
-          <b>2h 9m sooner</b>
-          <small>the answer was waiting when the page came</small>
-        </div>
-        <div className='veil' />
-      </Chart>
-      <Dock />
+          <text x='614' y='35.5' fontSize='11' fill='#6d6d75' textAnchor='end'>
+            214 ms
+          </text>
+          <text x='614' y='54.5' fontSize='11' fill='#6d6d75' textAnchor='end'>
+            194 ms
+          </text>
+          <text x='614' y='73.5' fontSize='11' fill='#6d6d75' textAnchor='end'>
+            12 ms
+          </text>
+          <text x='614' y='92.5' fontSize='11' fill='#121215' textAnchor='end'>
+            41 ms
+          </text>
+        </g>
+
+        <g className='bnd' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <text x='26' y='119.5' fontSize='11' fill='#716e66'>
+            most traces end here
+          </text>
+          <line x1='168' y1='116' x2='614' y2='116' stroke='#d8d4c9' strokeWidth='1' strokeDasharray='3 4' />
+        </g>
+
+        <g className='l2a' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <rect x='158' y='138' width='382' height='11' rx='5.5' fill='#ffffff' stroke='#e8e5dd' strokeWidth='1' />
+          <rect x='158' y='138' width='354' height='11' rx='5.5' fill='#5b43f1' />
+          <text x='50' y='147.5' fontSize='12' fill='#121215'>
+            applyDiscount
+          </text>
+          <text x='614' y='147.5' fontSize='12' fill='#121215' textAnchor='end'>
+            38 ms
+          </text>
+        </g>
+
+        <g className='l2b' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <rect x='158' y='162' width='382' height='11' rx='5.5' fill='#ffffff' stroke='#e8e5dd' strokeWidth='1' />
+          <rect x='186' y='162' width='224' height='11' rx='5.5' fill='#d8d4c9' />
+          <text x='62' y='171.5' fontSize='12' fill='#6d6d75'>
+            rules.Fetch
+          </text>
+          <text x='614' y='171.5' fontSize='12' fill='#6d6d75' textAnchor='end'>
+            24 ms
+          </text>
+        </g>
+
+        <g className='l2c' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <rect x='158' y='186' width='382' height='11' rx='5.5' fill='#ffffff' stroke='#e8e5dd' strokeWidth='1' />
+          <rect x='205' y='186' width='47' height='11' rx='5.5' fill='#d8d4c9' />
+          <text x='74' y='195.5' fontSize='12' fill='#6d6d75'>
+            cache.Get
+          </text>
+          <text x='614' y='195.5' fontSize='12' fill='#6d6d75' textAnchor='end'>
+            5 ms
+          </text>
+        </g>
+
+        <g className='l3' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <rect x='74' y='234' width='540' height='206' rx='14' fill='#0b0b0d' filter='url(#oaLift)' />
+          <rect x='100' y='248' width='488' height='4' rx='2' fill='#5b43f1' />
+          <text x='100' y='279' fontSize='12' fill='#ffffff' fillOpacity='0.46'>
+            promo.go:41
+          </text>
+          <text x='588' y='279' fontSize='12' fill='#ffffff' fillOpacity='0.46' textAnchor='end'>
+            deploy 4812
+          </text>
+        </g>
+
+        <g className='call' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <text x='100' y='322' fontSize='24' fill='#ffffff' fillOpacity='0.92'>
+            applyDiscount(
+            <tspan fill='#1fd793' fillOpacity='1'>&quot;BLACK50&quot;</tspan>, 49.00)
+          </text>
+          <text x='100' y='382' fontSize='22' fill='#ffffff' fillOpacity='0.46'>
+            returned
+          </text>
+        </g>
+
+        <g className='zero' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <text x='218' y='382' fontSize='42' fill='#ff5d8f'>
+            0.00
+          </text>
+        </g>
+
+        <g className='foot' fontFamily='var(--font-mono), ui-monospace, monospace'>
+          <line x1='100' y1='402' x2='588' y2='402' stroke='#ffffff' strokeOpacity='0.1' strokeWidth='1' />
+          <text x='100' y='423' fontSize='12' fill='#ffffff' fillOpacity='0.46'>
+            rules[
+            <tspan fill='#1fd793' fillOpacity='0.75'>&quot;BLACK50&quot;</tspan>] not found
+          </text>
+          <text x='588' y='423' fontSize='12' fill='#ffffff' fillOpacity='0.46' textAnchor='end'>
+            312 orders affected
+          </text>
+        </g>
+      </svg>
     </Panel>
   </Frame>
 );
