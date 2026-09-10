@@ -3,7 +3,7 @@ import React from 'react';
 import { SOFTWARE_LD, ldScript } from '@/constants';
 import { ObservabilityContent } from './observability-content';
 
-const TITLE = 'Odigos Observability: Wake up to the root cause, not the alert.';
+const TITLE = 'Wake up to the root cause, not the alert | Odigos';
 const DESC = 'Every service traced from day one with no code changes. When one drifts, Odigos Autofocus captures what the code did while it happens, so engineers and AI agents wake up to the root cause.';
 const URL = 'https://odigos.io/observability';
 const OG = '/og.png';

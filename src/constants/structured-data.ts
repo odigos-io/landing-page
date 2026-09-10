@@ -11,7 +11,7 @@ export const ORGANIZATION_LD = {
   url: SITE,
   logo: { '@type': 'ImageObject', url: `${SITE}/icon.png`, width: 512, height: 512 },
   description:
-    'Odigos captures the arguments and return values of any function in a live production service, in seconds, with no code change and no redeploy, and exports the result as OpenTelemetry.',
+    'Odigos is the production context platform. It records what ran inside every running service with Odigos DeepBPF, its own eBPF runtime that needs nothing in your code, and gives it live to the engineers, AI agents and security policies that run production.',
   sameAs: ['https://github.com/odigos-io/odigos', 'https://www.linkedin.com/company/odigoss', 'https://x.com/odigosio'],
 };
 
@@ -48,7 +48,7 @@ export const SOFTWARE_LD = {
   ],
   offers: [
     { '@type': 'Offer', name: 'Open Source', price: '0', priceCurrency: 'USD', url: `${SITE}/pricing` },
-    { '@type': 'Offer', name: 'Enterprise', priceCurrency: 'USD', url: `${SITE}/pricing`, availability: 'https://schema.org/InStock' },
+    { '@type': 'Offer', name: 'Enterprise', url: `${SITE}/pricing`, availability: 'https://schema.org/InStock' },
   ],
 };
 

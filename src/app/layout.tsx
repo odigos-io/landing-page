@@ -11,7 +11,7 @@ const URI = 'https://odigos.io',
   ICON = '/icon.png',
   OG = '/og.png',
   TITLE = 'Odigos · The production context platform',
-  DESCRIPTION = 'Odigos records what ran inside every running service, with nothing in your code, and gives it live to the engineers and AI agents that run production. Observability and security on one production context platform.',
+  DESCRIPTION = 'Odigos records what ran inside every running service, with nothing in your code, and gives it live to the engineers and AI agents that run production.',
   KEYWORDS = ['dynamic telemetry', 'dynamic instrumentation', 'eBPF', 'AI SRE', 'AI agents', 'production debugging', 'OpenTelemetry', 'observability', 'distributed tracing', 'incident resolution', 'production context'];
 
 export const metadata: Metadata = {
