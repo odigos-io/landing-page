@@ -22,15 +22,20 @@ const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY
 
 /* every keyframe moves a main-thread property as well as opacity, so a
    headless capture advances the loop the way a browser does */
+/* text never renders at partial opacity: it is hidden, then cut straight to
+   full strength and slides into place. A half faded label would fail a
+   contrast audit at whatever moment the audit happens to sample. */
 const rise = (from: number, to: number) => keyframes`
-  0%, ${from}% { opacity: 0; margin-top: calc(10 * var(--px)); }
-  ${to}%, 95% { opacity: 1; margin-top: 0; }
-  100% { opacity: 0; margin-top: calc(10 * var(--px)); }
+  0%, ${from}% { opacity: 0; visibility: hidden; margin-top: calc(10 * var(--px)); }
+  ${from + 0.01}% { opacity: 1; visibility: visible; }
+  ${to}%, 95% { opacity: 1; visibility: visible; margin-top: 0; }
+  100% { opacity: 0; visibility: hidden; margin-top: calc(10 * var(--px)); }
 `;
 const fade = (from: number, to: number) => keyframes`
-  0%, ${from}% { opacity: 0; margin-top: calc(3 * var(--px)); }
-  ${to}%, 95% { opacity: 1; margin-top: 0; }
-  100% { opacity: 0; margin-top: calc(3 * var(--px)); }
+  0%, ${from}% { opacity: 0; visibility: hidden; margin-top: calc(3 * var(--px)); }
+  ${from + 0.01}% { opacity: 1; visibility: visible; }
+  ${to}%, 95% { opacity: 1; visibility: visible; margin-top: 0; }
+  100% { opacity: 0; visibility: hidden; margin-top: calc(3 * var(--px)); }
 `;
 const sweep = (from: number, to: number) => keyframes`
   0%, ${from}% { width: 0%; opacity: 0.4; }
@@ -43,10 +48,11 @@ const drawWire = keyframes`
   100% { stroke-dashoffset: 200; opacity: 0; }
 `;
 const land = keyframes`
-  0%, 68% { opacity: 0; margin-top: calc(8 * var(--px)); transform: scale(0.8); }
-  75% { opacity: 1; margin-top: 0; transform: scale(1.05); }
-  79%, 95% { opacity: 1; margin-top: 0; transform: scale(1); }
-  100% { opacity: 0; margin-top: calc(8 * var(--px)); transform: scale(0.8); }
+  0%, 68% { opacity: 0; visibility: hidden; margin-top: calc(8 * var(--px)); transform: scale(0.8); }
+  68.01% { opacity: 1; visibility: visible; }
+  75% { opacity: 1; visibility: visible; margin-top: 0; transform: scale(1.05); }
+  79%, 95% { opacity: 1; visibility: visible; margin-top: 0; transform: scale(1); }
+  100% { opacity: 0; visibility: hidden; margin-top: calc(8 * var(--px)); transform: scale(0.8); }
 `;
 const ping = keyframes`
   0%, 6% { box-shadow: 0 0 0 0 rgba(255, 93, 143, 0.5); }
@@ -334,7 +340,7 @@ const Panel = styled.div`
     margin-left: auto;
     font-family: var(--mono);
     font-size: calc(11 * var(--px));
-    color: var(--accent);
+    color: #3b2bb8;
     background: var(--accent-soft);
     border-radius: calc(5 * var(--px));
     padding: calc(2 * var(--px)) calc(6 * var(--px));
@@ -446,6 +452,7 @@ const Panel = styled.div`
     .rich .big {
       animation: none;
       opacity: 1;
+      visibility: visible;
       margin-top: 0;
       stroke-dashoffset: 0;
     }
@@ -480,7 +487,7 @@ export const ObservabilityArt = () => (
       role='img'
       aria-label='One alert at 03:12, checkout degraded and revenue down 12 percent, wakes two engineers. The screen without Odigos holds a p99 latency line, two log lines that say only POST slash checkout 200, and the words cause was never recorded. It resolved in 4 hours 12 minutes. The screen with Odigos has been recording deeply since 02:41 and holds the function applyDiscount at promo.go line 41, the call applyDiscount with BLACK50 and 49.00 which returned 0.00, the query that came back with 0 rows, 312 orders charged full price, and deploy 4812. It resolved in 9 minutes.'
     >
-      <div className='alert'>
+      <div className='alert' aria-hidden>
         <span className='dot' />
         <span className='t'>03:12</span>
         <span className='sep' />
@@ -494,7 +501,7 @@ export const ObservabilityArt = () => (
         <circle cx='452' cy='112' r='2.6' fill='#5b43f1' />
       </svg>
 
-      <section className='screen thin'>
+      <section className='screen thin' aria-hidden>
         <div className='bar'>
           <div className='lights'>
             <i />
@@ -551,7 +558,7 @@ export const ObservabilityArt = () => (
         </div>
       </section>
 
-      <section className='screen rich'>
+      <section className='screen rich' aria-hidden>
         <div className='bar'>
           <div className='lights'>
             <i />
