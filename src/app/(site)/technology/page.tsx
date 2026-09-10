@@ -4,7 +4,8 @@ import { SOFTWARE_LD, ldScript } from '@/constants';
 import { TechnologyContent } from './technology-content';
 
 const TITLE = 'Deep Application Visibility. Outside the Process. | Odigos DeepBPF';
-const DESC = 'Odigos DeepBPF captures functions, arguments and return values across Java, Python, Node.js and Go from outside the application, using kernel-verified eBPF.';
+const DESC =
+  'Odigos DeepBPF captures functions, arguments and return values across Java, Python, Node.js, Go and .NET from outside the application, using kernel-verified eBPF.';
 const URL = 'https://odigos.io/technology';
 const OG = '/og.png';
 

@@ -32,7 +32,7 @@ new traffic. This was a demo application, not a reported customer incident.
 ## How it runs
 
 Odigos DeepBPF captures functions, arguments and return values across Java, Python,
-Node.js and Go entirely from outside the application. It does not load instrumentation
+Node.js, Go and .NET entirely from outside the application. It does not load instrumentation
 into the application's runtime. Linux checks eBPF programs before they are loaded,
 including memory-access, helper-use and control-flow constraints. The verifier checks
 program behavior; customer capture scope, access permissions and data handling remain
@@ -41,6 +41,10 @@ Odigos controls.
 Teams configure instrumentation scope and access. Pipeline controls include masking,
 attribute processing and sampling before export. Telemetry goes to the configured
 OpenTelemetry destinations, alongside the existing observability stack.
+
+Odigos Central provides one control plane across Kubernetes, virtual machines and
+bare metal. Teams manage capture scope, masking and approval centrally, with
+authentication, role-based access and an audit trail in one place.
 
 ## Security investigation and response
 

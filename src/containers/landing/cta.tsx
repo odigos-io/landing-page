@@ -179,12 +179,12 @@ const CONTENT: Record<
   },
   security: {
     eyebrow: 'Production context for security',
-    title: 'Bring one attack path into focus.',
+    title: 'Understand the attack. Contain the threat.',
     primaryLabel: 'Talk to our security team',
     primaryHref: HUBSPOT_DEMO_URL,
     secondaryLabel: 'Explore the technology',
     secondaryHref: '/technology',
-    note: 'Trace the behavior. Define the scope. Evaluate a policy with your team.',
+    note: 'See the evidence, assess the blast radius and explore the right response for your team.',
   },
   'coding-agents': {
     eyebrow: 'Odigos Enterprise MCP',

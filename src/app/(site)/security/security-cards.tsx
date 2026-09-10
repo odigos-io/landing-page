@@ -65,15 +65,17 @@ const Request = styled.div`
   gap: 14px 24px;
   flex-wrap: wrap;
   border-bottom: 1px solid var(--line);
+  strong {
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 500;
+    color: var(--ink);
+  }
   code {
     font-family: var(--font-mono), monospace;
     font-size: 15px;
     font-weight: 500;
     color: var(--ink);
-  }
-  span {
-    font-size: 13px;
-    color: var(--ink-mute);
   }
   @media (max-width: 600px) {
     padding: 20px 22px;
@@ -127,21 +129,24 @@ const Path = styled.div`
     background: var(--accent);
     box-shadow: 0 0 0 4px var(--accent-soft);
   }
+  li strong {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 500;
+    color: var(--ink);
+  }
   code {
+    display: block;
     font-family: var(--font-mono), monospace;
     font-size: 13px;
     line-height: 1.65;
-    color: var(--ink);
+    color: var(--ink-mute);
     overflow-wrap: anywhere;
   }
   li:last-child code {
     color: var(--accent);
-  }
-  p {
-    margin: 7px 0 0;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--ink-soft);
   }
   .selected {
     display: inline-block;
@@ -166,10 +171,9 @@ const Evidence = styled.div`
   }
   h3 {
     margin: 0;
-    font-family: var(--font-mono), monospace;
-    font-size: 18px;
-    line-height: 1.5;
-    font-weight: 500;
+    font-size: 23px;
+    line-height: 1.25;
+    font-weight: 600;
     color: #fff;
     overflow-wrap: anywhere;
   }
@@ -208,7 +212,7 @@ const Evidence = styled.div`
   @media (max-width: 600px) {
     padding: 28px 22px;
     h3 {
-      font-size: 16px;
+      font-size: 21px;
     }
   }
 `;
@@ -406,13 +410,6 @@ const Response = styled.div`
   }
 `;
 const ResponseCopy = styled.div`
-  .label {
-    display: block;
-    margin-bottom: 16px;
-    color: var(--accent);
-    font-size: 14px;
-    font-weight: 600;
-  }
   h3 {
     margin: 0;
     max-width: 24ch;
@@ -428,6 +425,10 @@ const ResponseCopy = styled.div`
     font-size: 16px;
     line-height: 1.65;
     color: var(--ink-soft);
+  }
+  p strong {
+    color: var(--ink);
+    font-weight: 600;
   }
   .lifecycle {
     font-size: 14px;
@@ -462,11 +463,14 @@ const Policy = styled.div`
   }
   dd {
     margin: 0;
-    font-family: var(--font-mono), monospace;
-    font-size: 12.5px;
+    font-size: 14px;
     line-height: 1.65;
     color: var(--ink);
     overflow-wrap: anywhere;
+  }
+  dd code {
+    font-family: var(--font-mono), monospace;
+    font-size: 12.5px;
   }
   .outcome {
     margin-top: 12px;
@@ -542,69 +546,65 @@ export const SecurityCards = () => (
   <Section aria-labelledby='security-investigation-title'>
     <Inner>
       <Head>
-        <h2 id='security-investigation-title'>A support ticket should not read a database secret.</h2>
+        <h2 id='security-investigation-title'>Understand the attack.</h2>
         <p>
-          See the function that ran, the value it read and the request that led there. Your team can investigate the behavior, then decide where to enforce a
-          policy.
+          Connect the incoming request to the application actions it triggered and the data it reached. Your security team and AI investigators get the
+          evidence to establish what happened and choose a response.
         </p>
       </Head>
 
       <Inspection>
         <Request>
+          <strong>Example: a request reaches a database secret</strong>
           <code>POST /api/tickets</code>
-          <span>Authenticated customer request</span>
         </Request>
         <InspectionBody>
           <Path>
-            <h3>Follow the caller path</h3>
+            <h3>How the request reached the secret</h3>
             <ol>
               <li>
+                <strong>A customer submits a support ticket.</strong>
                 <code>
                   TicketController.
                   <wbr />
                   create
                 </code>
-                <p>Create a support ticket.</p>
               </li>
               <li>
+                <strong>The application renders the supplied text.</strong>
                 <code>
                   TemplateRenderer.
                   <wbr />
                   render
                 </code>
-                <p>Render the customer-provided description.</p>
               </li>
               <li>
+                <strong>The template reads a database secret.</strong>
                 <code>
                   EnvironmentLookup.
                   <wbr />
                   read
                 </code>
-                <p>The template reaches an environment variable lookup.</p>
-                <span className='selected'>Inspect the argument and return value</span>
+                <span className='selected'>Observed access to sensitive information</span>
               </li>
             </ol>
           </Path>
           <Evidence>
-            <span className='label'>Inside the sensitive call</span>
-            <h3>
-              EnvironmentLookup.
-              <wbr />
-              read
-            </h3>
+            <span className='label'>What the captured evidence shows</span>
+            <h3>A database credential was read.</h3>
             <dl>
               <div>
-                <dt>Argument</dt>
+                <dt>Requested secret</dt>
                 <dd>&quot;DATABASE_URL&quot;</dd>
               </div>
               <div>
-                <dt>Return value · redacted for this example</dt>
+                <dt>Returned credential · redacted for this example</dt>
                 <dd className='sensitive'>&quot;postgres://[masked]/appdb&quot;</dd>
               </div>
             </dl>
             <p>
-              <strong>A customer-controlled template reached a database secret.</strong> Engineers and AI agents can use the request, caller and captured values
-              to investigate the path.
+              <strong>That credential could give access to database data.</strong> Check whether it was used beyond this request and whether database data
+              was exposed.
             </p>
           </Evidence>
         </InspectionBody>
@@ -612,14 +612,14 @@ export const SecurityCards = () => (
       </Inspection>
 
       <Scope aria-labelledby='security-scope-title'>
-        <h3 id='security-scope-title'>See what else could be in danger.</h3>
+        <h3 id='security-scope-title'>Assess the blast radius.</h3>
         <p>
-          Odigos shows the service map and all communications made by the affected service. Follow those connections to understand the potential blast radius
-          and decide which services, messages and data need investigation.
+          Odigos maps all communications with the affected service. See which connected systems and data may also be at risk, and use those connections to
+          decide where to investigate next.
         </p>
         <ServiceMap>
           <div className='map-heading'>
-            <strong>Communications with tickets-api</strong>
+            <strong>Connections to the affected service</strong>
             <span>Illustrative service map</span>
           </div>
           <div className='map'>
@@ -631,13 +631,13 @@ export const SecurityCards = () => (
             <div className='node affected'>
               <span className='state'>Affected service</span>
               <h4>tickets-api</h4>
-              <p>The observed template path read DATABASE_URL.</p>
+              <p>A database credential was accessed in this service.</p>
             </div>
             <div className='peers'>
               <div className='node'>
                 <p className='connection'>Database communication</p>
                 <h4>appdb</h4>
-                <span className='review'>Check for use of the exposed credential.</span>
+                <span className='review'>Check whether the credential was used to access data.</span>
               </div>
               <div className='node'>
                 <p className='connection'>Service requests</p>
@@ -652,64 +652,71 @@ export const SecurityCards = () => (
             </div>
           </div>
           <figcaption>
-            <strong>The secret read is observed. Downstream exposure needs evidence.</strong> These communication paths identify what to investigate next;
-            they do not establish that connected services were compromised or database contents were accessed.
+            <strong>The secret access is confirmed in this example. Exposure of connected systems is still unconfirmed.</strong> These connections identify
+            where to investigate; they do not by themselves prove data theft or compromise.
           </figcaption>
         </ServiceMap>
       </Scope>
 
       <Response>
         <ResponseCopy>
-          <span className='label'>Function-level virtual patching</span>
-          <h3>Block the offending call with a virtual patch.</h3>
+          <h3>Contain the threat.</h3>
           <p>
-            Your team approves a policy for the function and caller that exposed the secret. Odigos refuses matching calls, applying the mitigation where the
-            attack reaches the vulnerable function.
+            <strong>Function-level virtual patching blocks the application operation the attack depends on.</strong> Your team approves a rule that stops
+            matching calls, so you can apply the mitigation before a code release.
           </p>
-          <p className='lifecycle'>Deploy or revert the virtual patch without an application release. Remove it when the permanent code fix is deployed.</p>
+          <p>
+            Review which legitimate requests also use that operation. A targeted rule can leave other service traffic running while your team prepares the
+            permanent fix.
+          </p>
+          <p className='lifecycle'>Deploy or revert the virtual patch as needed. Remove it when the permanent fix is deployed.</p>
         </ResponseCopy>
         <Policy>
-          <h4>Virtual patch · illustrative policy scope</h4>
+          <h4>Example virtual patch: block template access to environment variables</h4>
           <dl>
+            <div>
+              <dt>Block</dt>
+              <dd>Environment-variable lookups from the template-rendering code</dd>
+            </div>
             <div>
               <dt>Function</dt>
               <dd>
-                EnvironmentLookup.
-                <wbr />
-                read
+                <code>
+                  EnvironmentLookup.
+                  <wbr />
+                  read
+                </code>
               </dd>
             </div>
             <div>
-              <dt>Caller</dt>
+              <dt>Called by</dt>
               <dd>
-                TemplateRenderer.
-                <wbr />
-                render
+                <code>
+                  TemplateRenderer.
+                  <wbr />
+                  render
+                </code>
               </dd>
-            </div>
-            <div>
-              <dt>Action</dt>
-              <dd>Refuse the matching call</dd>
             </div>
           </dl>
           <div className='outcome'>
-            Matching lookups are refused. <strong>The service can keep handling other traffic.</strong>
+            The rule blocks these lookups, including the observed database-secret read. <strong>Other service traffic can continue.</strong>
           </div>
         </Policy>
       </Response>
       <BroaderResponse>
         <div>
-          <h4>Choose a broader stop when the evidence calls for it.</h4>
-          <p>Match the response to the attack’s scope and the work that would be interrupted.</p>
+          <h4>Stop a thread or process when a wider response is needed.</h4>
+          <p>These options can interrupt legitimate application work. Choose based on the spread of the attack and the service disruption your team can accept.</p>
         </div>
         <dl>
           <div>
             <dt>Stop the thread</dt>
-            <dd>Stop the thread executing the suspicious path. Work running on that thread stops with it.</dd>
+            <dd>Stops the thread executing the attack and interrupts the work running on that thread.</dd>
           </div>
           <div>
             <dt>Stop the process</dt>
-            <dd>Stop the affected process when the response needs a wider boundary. Its other threads and requests are interrupted too.</dd>
+            <dd>Stops the affected process, including its other threads and requests. This interrupts more application work than stopping one thread.</dd>
           </div>
         </dl>
       </BroaderResponse>

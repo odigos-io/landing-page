@@ -53,8 +53,8 @@ const NEXT = {
     label: 'Explore coding agents',
   },
   security: {
-    title: 'See how Odigos reaches the function.',
-    body: 'Explore the runtime instrumentation, capture controls and deployment model behind the investigation.',
+    title: 'Deep visibility. Outside the application.',
+    body: 'See how DeepBPF inspects running applications from the outside, with kernel-enforced constraints and capture controls for your team.',
     href: '/technology',
     label: 'Explore the technology',
   },

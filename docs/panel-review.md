@@ -158,3 +158,20 @@ The technical reviewer found no material copy issues. The design reviewer inspec
 Final production build (including TypeScript), zero-warning ESLint, whitespace and fixed-baseline preservation checks passed. All five core routes return HTTP 200 with one H1 and their expected canonical URL. Root inspected the changed sections on desktop and at 320px, including Security map, patch policy and both broader mitigation options. No horizontal document overflow was observed. Viewport override was reset after review. No form submission or deployment.
 
 Latest local preview: **http://127.0.0.1:3111/**. Screenshots are under `landing-review/round-5/` in the visualizations directory recorded above.
+
+## Round 6 — Shorter Home, restored Central, clearer Security
+
+Owner feedback: the checkout example was too prominent on Home, DeepBPF should include .NET, the removed Central section should return, and Security needed clearer language for CISOs and technical leaders.
+
+- Removed the detailed checkout panel from Home. The compact AI-investigation promise now leads directly into the protected agent conversations. The React capture remains available behind a keyboard-operable evidence disclosure on Coding Agents, with its recreation label and original source link.
+- Added .NET to the Technology hero, diagram, depth explanation, metadata, structured data and machine-readable summary.
+- Restored a dedicated Odigos Central section and fleet diagram, supported by the original main content and the checked-in Central launch post. The current incident workflow, Autofocus and pipeline sections remain intact.
+- Rewrote the Security body around “Understand the attack,” “Assess the blast radius,” and “Contain the threat.” Plain-language outcomes precede class names. Virtual patching remains the primary response; broader thread/process options explain their interruption scope. Navigation and closing actions use the same language.
+
+The adversarial source review confirmed that Central restores existing capabilities and that .NET is consistently included. It found a policy-scope ambiguity: function-and-caller matching was presented as a secret-specific filter. The final example explicitly blocks environment lookups from the template renderer, including the observed secret read. The review also prompted descriptive wording for the recreated capture reason and a corrected responsive-image size.
+
+Root visually checked desktop and 320px layouts and exercised the optional evidence disclosure with the keyboard. The buyer reviewer inspected Home and Central screenshots; the design reviewer inspected Home, Security, Central and Coding evidence screenshots. Neither found an additional material blocker. Root corrected and rechecked one adjacent-label spacing issue in the Security example. This targeted review assigns no new numerical score.
+
+Final production build with TypeScript, zero-warning ESLint, whitespace and protected-content checks passed. Public tunnel checks covered all five core pages and the Central article, including the requested content additions/removal and one H1 per route. No horizontal page overflow was observed at 320px. The browser's temporary viewport override was reset. No form submission or production deployment.
+
+The preview remains on port 3111 behind the existing temporary Cloudflare tunnel. Previously cached pages need a refresh to show the new build. Screenshots are in `landing-review/round-6/` under the visualizations directory recorded above.

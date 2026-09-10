@@ -8,6 +8,7 @@ import { LandingHeader, LandingFooter, LandingCTA } from '@/containers/landing';
 import { PageHero } from '@/containers/landing/page-hero';
 import { Container, DemoCTA } from '@/containers/landing/primitives';
 import { CodingAgentsArt } from './coding-agents-art';
+import { CaptureVisual } from '@/containers/landing/capture-visual';
 
 const MCP_DOCS = 'https://docs.odigos.io/enterprise/mcp/overview';
 const DocsLink = styled(Link)`
@@ -135,6 +136,25 @@ const Case = styled.div`
     gap: 36px;
   }
 `;
+const CapturedEvidence = styled.details`
+  margin-top: 24px;
+  border-top: 1px solid var(--line-strong);
+  summary {
+    padding: 18px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .capture-panel {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+`;
 const Verification = styled.figure`
   width: 100%;
   max-width: 480px;
@@ -228,6 +248,15 @@ export const CodingAgentsContent = () => (
                 A successful rollout is the start of verification.
               </p>
               <Link href='/blog/cursormcpblog'>Read the complete walkthrough</Link>
+              <CapturedEvidence>
+                <summary>Inspect the captured evidence</summary>
+                <div className='capture-panel'>
+                  <CaptureVisual />
+                </div>
+                <a href='/assets/blogs/cursormcpblog/jaeger-trace-step-7.png' target='_blank' rel='noopener noreferrer'>
+                  View the original capture
+                </a>
+              </CapturedEvidence>
             </div>
             <Verification>
               <span className='label'>OdiShop demo · Cursor verification</span>
@@ -243,7 +272,7 @@ export const CodingAgentsContent = () => (
                   alt='Cursor verifies the OdiShop checkout after deploying the region-aware fix.'
                   width={797}
                   height={951}
-                  sizes='(max-width: 480px) 100vw, 352px'
+                  sizes='(max-width: 480px) 100vw, 480px'
                 />
               </a>
               <figcaption>

@@ -2,7 +2,7 @@
 
 ## Product-owner clarification, September 10, 2026
 
-The owner confirmed that DeepBPF deeply inspects Java, Python, Node.js and Go entirely from outside application processes. The prior Technology page incorrectly used an instrumentation-engine catalog to explain DeepBPF. That text, related link, metadata and machine-readable summary have been replaced. Historical blog content is not rewritten.
+The owner confirmed that DeepBPF deeply inspects Java, Python, Node.js, Go and .NET entirely from outside application processes, adding .NET in the subsequent review. The prior Technology page incorrectly used an instrumentation-engine catalog to explain DeepBPF. That text, related link, metadata and machine-readable summary have been replaced. Historical blog content is not rewritten.
 
 The owner also confirmed:
 
@@ -31,10 +31,10 @@ The Technology diagram distinguishes application process, kernel program checks/
 
 ## Design scope
 
-Home: replace only the unclear bitmap in the approved investigation section with a responsive React recreation of the documented OdiShop function capture. Preserve the original source link and recreation label.
+Home: the owner subsequently rejected the prominence of the detailed checkout example. Keep the AI promise compact before the protected conversations. The responsive React recreation now lives in the optional “Inspect the captured evidence” disclosure on Coding Agents, retaining its original source link and recreation label.
 
-Security: preserve the existing investigation and protected hero; add a service communication map and expand mitigation, visually prioritizing function-level virtual patching. The map is illustrative, and potential exposure is distinguished from confirmed compromise.
+Security: preserve the protected hero and lead the body with incident decisions for CISOs and technical leaders. Explain the investigation in plain language before code symbols, retain the service communication map and prioritize function-level virtual patching. The map is illustrative, and potential exposure is distinguished from confirmed compromise. The illustrated function-and-caller policy blocks environment lookups from the template renderer; it does not claim a narrower argument filter.
 
 Technology: preserve the established paper/violet/dark-panel typography, but replace the generic instrumentation workflow with the DeepBPF external-capture and eBPF verification story. Keep the actual console for the separate topic of team-controlled capture scope.
 
-The rest of Home, all Observability content and the original three protected heroes/conversations remain unchanged in this iteration.
+Observability: restore the named Odigos Central section from the original approved product content, with fleet management and central controls. Keep the incident automation, Autofocus and pipeline story intact. The original three protected heroes and side-by-side conversations remain unchanged.

@@ -213,7 +213,7 @@ export const CaptureVisual = () => (
       <div>
         <div className='decision-label'>Returned decision</div>
         <code className='return-value'>allowed = <b>false</b></code>
-        <div className='reason'>reason: skew_exceeded</div>
+        <div className='reason'>Reason: skew exceeded</div>
       </div>
       <span className='rejected'>
         <svg width='15' height='15' viewBox='0 0 15 15' fill='none' aria-hidden>

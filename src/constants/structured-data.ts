@@ -41,7 +41,7 @@ export const SOFTWARE_LD = {
   featureList: [
     'Targeted function capture on supported running workloads without an instrumentation release',
     'DeepBPF captures application context from outside the process using kernel-verified eBPF',
-    'Deep application visibility across Java, Python, Node.js and Go from outside the application',
+    'Deep application visibility across Java, Python, Node.js, Go and .NET from outside the application',
     'Exports OpenTelemetry to any destination you already run',
     'PII masking, attribute deletion and sampling inside your own cluster',
     'RBAC over who may capture what, on which workloads',

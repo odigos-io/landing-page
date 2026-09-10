@@ -111,8 +111,8 @@ const DOORS = [
   },
   {
     category: 'Security',
-    title: 'Find the call behind the attack.',
-    body: 'Follow an ordinary-looking request into dangerous behavior. Inspect the evidence, then enforce a team-approved policy at the offending call.',
+    title: 'Understand the attack. Limit the damage.',
+    body: 'See what an attack did inside your application, which connected services may be at risk, and where to apply a virtual patch.',
     href: '/security',
   },
   {

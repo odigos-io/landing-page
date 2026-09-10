@@ -10,23 +10,23 @@ The original website was audited against origin/main `5025e64`, fetched Septembe
 
 ## Page jobs
 
-- **Home:** show the chosen promise and an actual function capture, contrast the two protected agent conversations, connect the evidence to three outcomes, and invite a concrete AI demo.
-- **Observability:** explain predefined manual/conventional automatic coverage versus investigation-directed instrumentation. Show a requested capture, then independently demonstrate incident-driven temporary capture and removal. Keep Autofocus distinct from the documented Dynatrace workflow.
-- **Security:** follow one ordinary request into a sensitive operation. Engineers and agents investigate the function, caller and values; the team approves any scoped enforcement.
-- **Coding Agents:** carry the runtime finding into a targeted code change, then check new traffic after deployment. Explain the agent, Enterprise MCP and backend connection compactly.
-- **Technology:** show where a function-level observation adds information beyond a request span, how runtime engines collect and export evidence, and what the operator configures.
+- **Home:** state the chosen promise briefly, bring the two protected agent conversations forward, connect the evidence to three outcomes, and invite a concrete AI demo. Keep the detailed checkout capture off the homepage.
+- **Observability:** explain predefined manual/conventional automatic coverage versus investigation-directed instrumentation. Show a requested capture, then independently demonstrate incident-driven temporary capture and removal. Keep Autofocus distinct from the documented Dynatrace workflow, and restore Odigos Central as the named control plane for fleet management and governance.
+- **Security:** help CISOs and technical leaders understand the attack, assess the blast radius and contain the threat. Put readable decisions before supporting code symbols. Explain virtual patching first, then the broader thread/process options.
+- **Coding Agents:** carry the runtime finding into a targeted code change, then check new traffic after deployment. Keep the detailed capture available as optional supporting evidence. Explain the agent, Enterprise MCP and backend connection compactly.
+- **Technology:** explain DeepBPF's external visibility into Java, Python, Node.js, Go and .NET, the eBPF execution boundary and the separate controls configured by the operator.
 
 ## Structure and design
 
 Existing palette: paper `#fbfaf7`, surface `#ffffff`, ink `#121215`, violet `#5b43f1`, evidence green `#0c7a58`, panel `#0b0b0d`. Geist carries the prose and headings; Geist Mono identifies code and values. Retain the existing spacing and width system.
 
-The homepage artifact is a React recreation of the actual Jaeger capture from the checked-in OdiShop walkthrough. It renders the selected function and 47 ms / 10 ms decision as readable text, labels the recreation and links the original image. Security uses a clearly illustrative request inspection. Technology illustrates the application process and external DeepBPF capture, with eBPF load-time verification in the kernel. The actual Odigos console illustrates the separate workload/data-scope controls. No stock imagery or new animation system is added.
+The detailed React recreation of the actual Jaeger capture now lives behind “Inspect the captured evidence” on Coding Agents. It renders the selected function and 47 ms / 10 ms decision as readable text, labels the recreation and links the original image. Home uses a compact introduction before its protected conversations. Security uses a clearly illustrative request inspection. Technology illustrates the application process and external DeepBPF capture, with eBPF load-time verification in the kernel. The actual Odigos console illustrates the separate workload/data-scope controls. No stock imagery or new animation system is added.
 
 ```text
 HOME
 original hero
 customer logo carousel
-AI investigation promise → mechanism + actual captured values
+compact AI investigation promise
 original agents without / with Odigos conversations
 three outcome links
 Stop guessing. Ask production. → AI demo
@@ -36,25 +36,28 @@ original hero
 predefined manual/automatic coverage ↔ dynamic capture
 OdiMall incident lifecycle: open → deeper evidence → remove rules
 compact Autofocus and operational details
+Odigos Central: fleet management, capture policies and access
 next question: carry the finding into a code change
 
 SECURITY
 original hero
-ordinary request → sensitive function → captured values
-team-approved policy → scoped result
+understand the attack → readable illustrative evidence
+assess the blast radius → affected-service communications
+contain the threat → virtual patch, thread and process options
 technology / security demo
 
 CODING AGENTS
 agent investigation hero
 runtime evidence → regional policy fix → verified traffic
+optional captured-evidence detail
 agent + Enterprise MCP + backend, with capture access
 agent demo
 
 TECHNOLOGY
-request span → application decision → selected arguments and return
-runtime discovery → targeted capture → OpenTelemetry export
+external application context: Java, Python, Node.js, Go and .NET
+AI investigation → eBPF execution boundary → DeepBPF depth
 actual console: sources, rules, actions, destinations
-deployment, runtime coverage and access
+team-controlled scope and access
 ```
 
 The new sequence replaces separate brochure-like cards and repeated plumbing explanations. The recency-driven homepage blog grid is removed; relevant walkthrough links sit next to the claims they substantiate. Cross-page links answer the reader's next question instead of repeating a generic platform pitch or linking to the current page.
@@ -74,7 +77,7 @@ The new sequence replaces separate brochure-like cards and repeated plumbing exp
 - New capture observes subsequent matching traffic. It does not recover previously unrecorded requests. Activation time and the arrival of relevant traffic are different.
 - `blogs/mcp-based-auto-remediation-davis-ai-to-odigos-mcp-server-and-back-again.mdx` demonstrates OdiMall, Dynatrace workflows and MCP. Problem-open automation adds payload/code capture; problem-close automation removes rules. There was no LLM in that loop. It is not proof of Autofocus behavior.
 - Autofocus is described conservatively from existing product copy. A more specific trigger/capture/result example has been requested from the owner; none has been invented.
-- The owner clarified that DeepBPF deeply inspects Java, Python, Node.js and Go entirely from outside application processes. The Technology page no longer uses the instrumentation-engine catalog to describe DeepBPF. See `docs/deepbpf-technology-evidence.md` for this correction and the verified Linux source boundaries.
+- The owner clarified that DeepBPF deeply inspects Java, Python, Node.js, Go and .NET entirely from outside application processes. The Technology page no longer uses the instrumentation-engine catalog to describe DeepBPF. See `docs/deepbpf-technology-evidence.md` for this correction and the verified Linux source boundaries.
 - Linux checks eBPF programs before loading them; the verifier does not approve model reasoning or customer data-access policies. Avoid zero-overhead or zero-risk guarantees.
 - Security's functions, request and values are labeled illustrative. Policy approval belongs to the team. No autonomous blocking or verified attack outcome is implied.
 - The homepage closes with an AI demo and Enterprise MCP documentation, avoiding an unverified claim that a particular trial includes MCP access.
@@ -89,8 +92,8 @@ The new sequence replaces separate brochure-like cards and repeated plumbing exp
 
 ## Latest owner refinements
 
-Home and Observability were approved. Home changes are limited to replacing the unclear screenshot with a React capture view. The rest of Home and all Observability content remain as approved.
+The owner rejected the prominence of the checkout example on Home. Its detailed capture is removed from Home and remains available on Coding Agents. The compact AI promise leads directly into the protected conversations. The owner also requested restoration of the named Odigos Central section on Observability.
 
-Security now maps the affected service and its communications to support blast-radius assessment. It highlights function-level virtual patching and offers stopping a thread or process as broader responses. Connected services are potential investigation targets, not automatically confirmed compromised.
+Security leads with the decisions facing CISOs and technical leaders: understand the attack, assess the blast radius and contain the threat. It maps the affected service and its communications, highlights function-level virtual patching and explains stopping a thread or process as broader responses. Connected services are potential investigation targets, not automatically confirmed compromised.
 
-Technology now centers DeepBPF: deep Java, Python, Node.js and Go context from outside the application, an eBPF execution boundary checked by Linux, and separate team-controlled scope and permissions. Program verification details link directly to reviewed Linux v6.18 source sections.
+Technology now centers DeepBPF: deep Java, Python, Node.js, Go and .NET context from outside the application, an eBPF execution boundary checked by Linux, and separate team-controlled scope and permissions. Program verification details link directly to reviewed Linux v6.18 source sections.

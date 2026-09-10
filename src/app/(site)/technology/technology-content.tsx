@@ -208,6 +208,7 @@ const OutsideView = () => (
         <span>Python</span>
         <span>Node.js</span>
         <span>Go</span>
+        <span>.NET</span>
       </div>
       <div className='values'>
         <span>functions</span>
@@ -382,8 +383,8 @@ export const TechnologyContent = () => (
         title='Deep inside your application. Entirely outside its process.'
         sub={
           <>
-            <b>AI investigations need a sandbox.</b> Odigos DeepBPF captures functions, arguments and return values across Java, Python, Node.js and Go—from
-            outside the application, through kernel-verified eBPF.
+            <b>AI investigations need a sandbox.</b> Odigos DeepBPF captures functions, arguments and return values across Java, Python, Node.js, Go and
+            .NET—from outside the application, through kernel-verified eBPF.
           </>
         }
         visual={<OutsideView />}
@@ -430,8 +431,8 @@ export const TechnologyContent = () => (
             <div>
               <h3>The depth comes from DeepBPF.</h3>
               <p>
-                The eBPF sandbox provides the execution boundary. Odigos DeepBPF adds the runtime understanding to see deep into Java, Python, Node.js and Go
-                entirely from outside their processes.
+                The eBPF sandbox provides the execution boundary. Odigos DeepBPF adds the runtime understanding to see deep into Java, Python, Node.js, Go and
+                .NET entirely from outside their processes.
               </p>
             </div>
             <dl>

@@ -148,6 +148,178 @@ const Proactive = styled.div`
     padding: 24px;
   }
 `;
+const Central = styled.section`
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: center;
+  gap: 64px;
+  margin-top: 72px;
+  padding-top: 64px;
+  border-top: 1px solid var(--line-strong);
+  > * {
+    min-width: 0;
+  }
+  h2 {
+    margin: 0;
+    max-width: 24ch;
+    font-size: clamp(30px, 3.5vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  h2 span {
+    display: block;
+  }
+  p {
+    margin: 22px 0 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 850px) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 56px;
+    padding-top: 48px;
+  }
+`;
+const CentralDiagram = styled.figure`
+  margin: 0;
+  padding: 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--paper-2);
+  .control-plane {
+    padding: 26px;
+    border: 1px solid #39313f;
+    border-radius: 14px;
+    background: var(--panel);
+    color: #f4f0fa;
+  }
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  ul {
+    display: grid;
+    gap: 15px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    color: #d8d0e5;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  li::before {
+    content: '';
+    flex: 0 0 5px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #ae96ef;
+    transform: translateY(-2px);
+  }
+  .connector {
+    width: 1px;
+    height: 26px;
+    margin-inline: auto;
+    background: #c7bbe8;
+  }
+  .fleet {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    padding-top: 18px;
+  }
+  .fleet::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc((100% - 24px) / 6);
+    right: calc((100% - 24px) / 6);
+    height: 1px;
+    background: #c7bbe8;
+  }
+  .environment {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 58px;
+    padding: 10px 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 9px;
+    background: var(--paper-3);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .environment::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -19px;
+    width: 1px;
+    height: 18px;
+    background: #c7bbe8;
+  }
+  figcaption {
+    margin-top: 18px;
+    color: var(--ink-mute);
+    font-size: 13px;
+    line-height: 1.55;
+    text-align: center;
+  }
+  @media (max-width: 500px) {
+    padding: 20px;
+    .control-plane {
+      padding: 22px 20px;
+    }
+    .connector {
+      margin-left: 16px;
+    }
+    .fleet {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 0 0 0 33px;
+    }
+    .fleet::before {
+      left: 16px;
+      right: auto;
+      top: 0;
+      bottom: 26px;
+      width: 1px;
+      height: auto;
+    }
+    .environment {
+      min-height: 52px;
+      justify-content: start;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .environment::before {
+      top: 50%;
+      left: -18px;
+      width: 17px;
+      height: 1px;
+    }
+    figcaption {
+      text-align: left;
+    }
+  }
+`;
 const DemoLink = styled(Link)`
   display: inline-flex;
   align-items: center;
@@ -221,6 +393,39 @@ export const ObservabilityPlatform = () => (
           and agents can begin investigating as that extra evidence arrives in the backend.
         </p>
       </Proactive>
+      <Central aria-labelledby='central-title'>
+        <div>
+          <h2 id='central-title'>
+            Odigos Central.
+            <span>One control plane for every fleet.</span>
+          </h2>
+          <p>
+            An investigation may target one function. Odigos Central gives your team one place to manage and govern capture across every Odigos installation.
+          </p>
+          <p>
+            View fleet health and versions, manage configuration across environments, and keep team access and capture rules under central control. The
+            control plane runs in your infrastructure.
+          </p>
+          <DemoLink href='/blog/odigos-central'>Explore Odigos Central</DemoLink>
+        </div>
+        <CentralDiagram aria-label='Odigos Central applies organization-wide controls across Kubernetes, virtual machines and bare metal'>
+          <div className='control-plane'>
+            <h3>Organization-wide controls</h3>
+            <ul>
+              <li>Capture scope and approval</li>
+              <li>Sensitive-value masking</li>
+              <li>Authentication, RBAC and audit trail</li>
+            </ul>
+          </div>
+          <div className='connector' aria-hidden />
+          <div className='fleet'>
+            <div className='environment'>Kubernetes</div>
+            <div className='environment'>Virtual machines</div>
+            <div className='environment'>Bare metal</div>
+          </div>
+          <figcaption>One view across your connected environments.</figcaption>
+        </CentralDiagram>
+      </Central>
       <Operations>
         <h3>Keep your stack. Give it deeper evidence.</h3>
         <dl>
