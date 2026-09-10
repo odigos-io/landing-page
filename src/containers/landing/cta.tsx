@@ -5,14 +5,11 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { ModalType, useModalStore } from '@/store';
 import { usePlausible } from '@/hooks';
-import { Container, Reveal } from './primitives';
-
-const HUBSPOT_DEMO_URL =
-  'https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/redirect?encryptedPayload=AVxigLKKpYFkaGHLV2SjisuKL8vGZv8GBmHLZBbEO8WEPKpvVFGLbCJ75h5TYp0EunqgNph6y6otczaQIcIVW%2Bjg6QKGujbcqjfJbc0ppMX0vfLpYVru76VnnU3%2FWnz91xJehZPt8GVQCH9oQWAKvhLTOMypjCua0VKp16%2Bf%2BFCDMSrqktcXUfrk&webInteractiveContentId=208657275164&portalId=50932826';
+import { Container, Reveal, HUBSPOT_DEMO_URL } from './primitives';
 
 const Section = styled.section`
   background: var(--paper);
-  padding: 28px 0 0;
+  padding: 56px 0;
 `;
 
 const Band = styled(Container)``;
@@ -82,6 +79,7 @@ const Title = styled.h2`
   font-weight: 600;
   letter-spacing: -0.035em;
   color: #fff;
+  text-wrap: balance;
 `;
 
 const Ctas = styled.div`
@@ -107,7 +105,9 @@ const Primary = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  transition: transform 0.12s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.2s ease;
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
   &:hover {
     box-shadow: 0 14px 38px -10px rgba(0, 0, 0, 0.6);
@@ -136,25 +136,71 @@ const Ghost = styled(Link)`
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
   &:hover {
     border-color: rgba(255, 255, 255, 0.45);
     background: rgba(255, 255, 255, 0.08);
   }
 `;
 
-const Note = styled.p`
-  position: relative;
-  margin: 22px 0 0;
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--panel-mute);
+const PrimaryLink = styled(Ghost)`
+  background: var(--paper-2);
+  color: var(--ink);
+  border-color: var(--paper-2);
+  &:hover {
+    background: #ece9ff;
+    border-color: #ece9ff;
+  }
 `;
 
-export const LandingCTA = () => {
+const Note = styled.p`
+  position: relative;
+  margin: 22px auto 0;
+  max-width: 54ch;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #c9c7d1;
+`;
+
+const CONTENT: Record<
+  'platform' | 'security' | 'coding-agents',
+  { eyebrow: string; title: string; primaryLabel: string; primaryHref: string | null; secondaryLabel: string; secondaryHref: string; note: string }
+> = {
+  platform: {
+    eyebrow: 'The Production Context Platform',
+    title: 'Stop guessing. Ask production.',
+    primaryLabel: 'Book an AI demo',
+    primaryHref: HUBSPOT_DEMO_URL,
+    secondaryLabel: 'Explore Odigos MCP',
+    secondaryHref: 'https://docs.odigos.io/enterprise/mcp/overview',
+    note: 'One agent. One service. See how Odigos helps answer a production question.',
+  },
+  security: {
+    eyebrow: 'Production context for security',
+    title: 'Bring one attack path into focus.',
+    primaryLabel: 'Talk to our security team',
+    primaryHref: HUBSPOT_DEMO_URL,
+    secondaryLabel: 'Explore the technology',
+    secondaryHref: '/technology',
+    note: 'Trace the behavior. Define the scope. Evaluate a policy with your team.',
+  },
+  'coding-agents': {
+    eyebrow: 'Odigos Enterprise MCP',
+    title: 'Bring a production question to your next coding session.',
+    primaryLabel: 'See it with your agent',
+    primaryHref: HUBSPOT_DEMO_URL,
+    secondaryLabel: 'Read the MCP setup guide',
+    secondaryHref: 'https://docs.odigos.io/enterprise/mcp/overview',
+    note: 'Connect your agent, your instrumentation and your telemetry backend.',
+  },
+};
+
+export const LandingCTA = ({ audience = 'platform' }: { audience?: keyof typeof CONTENT }) => {
   const setModal = useModalStore((s) => s.setModal);
   const { trackClick } = usePlausible();
+  const content = CONTENT[audience];
 
   return (
     <Section>
@@ -163,27 +209,38 @@ export const LandingCTA = () => {
           <Card>
             <Mesh />
             <Glow />
-            <Eyebrow>14-day trial</Eyebrow>
-            <Title>Ask production. Get the answer.</Title>
+            <Eyebrow>{content.eyebrow}</Eyebrow>
+            <Title>{content.title}</Title>
             <Ctas>
-              <Primary
-                data-track='cta'
-                data-track-label='Start 14-day trial'
-                onClick={() => {
-                  trackClick('Start 14-day trial');
-                  setModal(ModalType.TRIAL);
-                }}
-              >
-                Start 14-day trial
-                <svg width='16' height='16' viewBox='0 0 16 16' fill='none' aria-hidden>
-                  <path d='M3 8h9M8.5 3.5 13 8l-4.5 4.5' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' strokeLinejoin='round' />
-                </svg>
-              </Primary>
-              <Ghost href={HUBSPOT_DEMO_URL} data-track='cta' data-track-label='Get a demo' onClick={() => trackClick('Get a demo')}>
-                Get a demo
+              {content.primaryHref ? (
+                <PrimaryLink
+                  href={content.primaryHref}
+                  data-track='cta'
+                  data-track-label={content.primaryLabel}
+                  onClick={() => trackClick(content.primaryLabel)}
+                >
+                  {content.primaryLabel}
+                </PrimaryLink>
+              ) : (
+                <Primary
+                  data-track='cta'
+                  data-track-label='Start 14-day trial'
+                  onClick={() => {
+                    trackClick('Start 14-day trial');
+                    setModal(ModalType.TRIAL);
+                  }}
+                >
+                  Start 14-day trial
+                  <svg width='16' height='16' viewBox='0 0 16 16' fill='none' aria-hidden>
+                    <path d='M3 8h9M8.5 3.5 13 8l-4.5 4.5' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' strokeLinejoin='round' />
+                  </svg>
+                </Primary>
+              )}
+              <Ghost href={content.secondaryHref} data-track='cta' data-track-label={content.secondaryLabel} onClick={() => trackClick(content.secondaryLabel)}>
+                {content.secondaryLabel}
               </Ghost>
             </Ctas>
-            <Note>One command. Every service. Nothing in your code.</Note>
+            <Note>{content.note}</Note>
           </Card>
         </Reveal>
       </Band>

@@ -60,9 +60,10 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Platform',
     items: [
-      { label: 'Observability', href: '/observability', blurb: 'Engineers and AI agents ask production for root cause' },
-      { label: 'Security', href: '/security', blurb: 'A policy your team approved blocks the attack call' },
-      { label: 'Technology', href: '/technology', blurb: 'Odigos DeepBPF, and what it reads inside the process' },
+      { label: 'Observability', href: '/observability', blurb: 'Give investigations the evidence they are missing' },
+      { label: 'Security', href: '/security', blurb: 'See runtime behavior and stop the offending call' },
+      { label: 'Coding Agents', href: '/coding-agents', blurb: 'Investigate production, fix code and verify' },
+      { label: 'Technology', href: '/technology', blurb: 'The runtime access behind AI investigations' },
       { label: 'Comparisons', href: '/comparisons', blurb: 'How the approaches differ' },
     ],
   },

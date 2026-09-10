@@ -1,232 +1,246 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
-import { Container, Eyebrow, Reveal } from '@/containers/landing/primitives';
-
-/* The three parts of the platform an observability buyer asks about after
-   the demo: the control plane, the pipeline, and Autofocus. Moved here from
-   the old product overview so one page carries the whole story. */
+import { Container } from '@/containers/landing/primitives';
 
 const Section = styled.section`
   background: var(--paper-3);
   border-bottom: 1px solid var(--line);
 `;
-
 const Inner = styled(Container)`
-  padding-top: 96px;
-  padding-bottom: 96px;
-  @media (max-width: 1000px) {
-    padding-top: 64px;
-    padding-bottom: 64px;
+  padding-block: 88px;
+  @media (max-width: 850px) {
+    padding-block: 64px;
   }
 `;
-
-const Head = styled.div`
-  max-width: 820px;
-  margin-bottom: 44px;
-  h2 {
-    margin: 18px 0 0;
-    font-size: clamp(28px, 3.6vw, 46px);
-    line-height: 1.05;
-    font-weight: 600;
-    letter-spacing: -0.035em;
-    color: var(--ink);
+const EvidenceLoop = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+  .label {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 500;
   }
-  h2 .mute {
-    display: block;
-    color: var(--ink-faint);
+  h2 {
+    margin: 16px 0 0;
+    font-size: clamp(30px, 3.5vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+    text-wrap: balance;
   }
   p {
-    margin: 20px 0 0;
-    max-width: 640px;
-    font-size: 18px;
-    line-height: 1.6;
+    margin: 22px 0 0;
+    font-size: 17px;
+    line-height: 1.65;
     color: var(--ink-soft);
   }
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  @media (max-width: 900px) {
+  @media (max-width: 850px) {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
 `;
-
-const Card = styled.div`
-  padding: 32px 30px;
-  border: 1px solid var(--line);
+const Sequence = styled.ol`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-lg);
+  overflow: hidden;
   background: var(--paper-2);
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.2s ease;
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
-    border-color: var(--line-strong);
+  li {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 20px;
+    padding: 26px 30px;
   }
-  .ic {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: var(--paper-3);
-    border: 1px solid var(--line);
+  li + li {
+    border-top: 1px solid var(--line);
+  }
+  svg {
     color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 2px;
   }
+  strong {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  p {
+    margin: 7px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  li:last-child {
+    background: var(--accent-soft);
+  }
+  @media (max-width: 500px) {
+    li {
+      padding: 24px;
+      gap: 15px;
+    }
+  }
+`;
+const Operations = styled.div`
+  margin-top: 64px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line-strong);
   h3 {
-    margin: 20px 0 0;
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    margin: 28px 0 18px;
+  }
+  dt {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  dd {
+    margin: 10px 0 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 14px;
+    color: var(--accent);
+    text-underline-offset: 4px;
+  }
+  @media (max-width: 750px) {
+    dl {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+`;
+const Proactive = styled.div`
+  margin-top: 40px;
+  padding: 26px 30px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  h3 {
+    margin: 0;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    color: var(--ink);
   }
-  & > p {
-    margin: 11px 0 0;
+  p {
+    margin: 12px 0 0;
+    max-width: 92ch;
     font-size: 15.5px;
-    line-height: 1.6;
-    color: var(--ink-mute);
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 500px) {
+    padding: 24px;
   }
 `;
-
-const Bullets = styled.ul`
-  margin: 18px 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+const DemoLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 18px;
+  color: var(--accent);
+  font-size: 14px;
+  text-underline-offset: 4px;
 `;
-
-const Bullet = styled.li`
-  display: grid;
-  grid-template-columns: 16px 1fr;
-  gap: 10px;
-  font-size: 14.5px;
-  line-height: 1.5;
-  color: var(--ink-mute);
-  .dot {
-    margin-top: 8px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--signal-bright);
-  }
-  b {
-    color: var(--ink);
-    font-weight: 600;
-  }
-`;
-
-const CentralIcon = () => (
-  <svg width='22' height='22' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-    <rect x='4' y='3' width='16' height='5' rx='1.4' stroke='currentColor' strokeWidth='1.6' />
-    <rect x='4' y='14' width='16' height='5' rx='1.4' stroke='currentColor' strokeWidth='1.6' />
-    <path d='M8 5.5h.01M8 16.5h.01' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
+const Pulse = () => (
+  <svg width='24' height='24' viewBox='0 0 24 24' fill='none' aria-hidden>
+    <path d='M2 12h5l3-7 4 14 3-7h5' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' strokeLinejoin='round' />
   </svg>
 );
-
-const PipelineIcon = () => (
-  <svg width='22' height='22' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-    <path d='M3 7h11M3 12h18M3 17h8' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' />
-    <circle cx='18' cy='7' r='2.2' stroke='currentColor' strokeWidth='1.6' />
-    <circle cx='15' cy='17' r='2.2' stroke='currentColor' strokeWidth='1.6' />
+const Capture = () => (
+  <svg width='24' height='24' viewBox='0 0 24 24' fill='none' aria-hidden>
+    <path d='M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 12h8m-4-4v8' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' />
   </svg>
 );
-
-const AutofocusIcon = () => (
-  <svg width='22' height='22' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-    <path d='M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' />
-    <circle cx='12' cy='12' r='2.4' stroke='currentColor' strokeWidth='1.6' />
+const Evidence = () => (
+  <svg width='24' height='24' viewBox='0 0 24 24' fill='none' aria-hidden>
+    <path d='M5 3h10l4 4v14H5zM9 11h6m-6 4h6' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' strokeLinejoin='round' />
   </svg>
 );
-
-const PILLARS = [
-  {
-    icon: <CentralIcon />,
-    title: 'Odigos Central',
-    desc: 'One control plane for every fleet. Manage, scale and govern the whole estate without touching application code.',
-    bullets: [
-      <>
-        <b>Capture scope, masking and approval</b> set once, across the organization
-      </>,
-      <>
-        <b>One view</b> across Kubernetes, virtual machines and bare metal
-      </>,
-      <>
-        <b>Authentication, RBAC and audit trail</b> in one place
-      </>,
-    ],
-  },
-  {
-    icon: <PipelineIcon />,
-    title: 'Pipeline',
-    desc: 'Your telemetry, your rules. Shape every signal in your own cluster and send it anywhere. No vendor owns your data.',
-    bullets: [
-      <>
-        <b>Enrich and transform</b> with custom attributes, masking and aggregation
-      </>,
-      <>
-        <b>Sampling</b> that keeps what matters and cuts the bill
-      </>,
-      <>
-        <b>Send anywhere:</b> any OpenTelemetry backend, zero lock-in
-      </>,
-    ],
-  },
-  {
-    icon: <AutofocusIcon />,
-    title: 'Odigos Autofocus',
-    desc: 'It senses where the fire is and looks there first. When a service drifts, capture deepens on that path before anyone asks.',
-    bullets: [
-      <>
-        <b>Follows the drift:</b> deeper capture starts the moment a service degrades
-      </>,
-      <>
-        <b>On request too:</b> any function, any service, in seconds, without a redeploy
-      </>,
-      <>
-        <b>Inside your limits:</b> scope and approval set once, every capture audited
-      </>,
-    ],
-  },
-];
 
 export const ObservabilityPlatform = () => (
   <Section>
     <Inner>
-      <Reveal>
-        <Head>
-          <Eyebrow>The platform underneath</Eyebrow>
-          <h2>
-            One install. <span className='mute'>Governed end to end.</span>
-          </h2>
-          <p>Central control, your data on your terms, and capture that moves to the problem on its own. From ten services to tens of thousands without changing how teams work.</p>
-        </Head>
-      </Reveal>
-      <Grid>
-        {PILLARS.map((p, i) => (
-          <Reveal key={p.title} delay={i * 60}>
-            <Card>
-              <span className='ic'>{p.icon}</span>
-              <h3>{p.title}</h3>
-              <p>{p.desc}</p>
-              <Bullets>
-                {p.bullets.map((b, bi) => (
-                  <Bullet key={bi}>
-                    <span className='dot' />
-                    <span>{b}</span>
-                  </Bullet>
-                ))}
-              </Bullets>
-            </Card>
-          </Reveal>
-        ))}
-      </Grid>
+      <EvidenceLoop>
+        <div>
+          <span className='label'>OdiMall demo · Dynatrace workflows + Odigos MCP</span>
+          <h2>Go deeper during the incident. Return to baseline after.</h2>
+          <p>
+            Your incident automation can ask Odigos for more evidence, too. In the OdiMall demo, a Dynatrace workflow added temporary capture when a problem
+            opened and removed it when the problem closed.
+          </p>
+          <p>
+            New failing traces carried payloads and code context into the same backend. Detailed capture lasted for the investigation. This demo used configured
+            automation, with no LLM in the loop.
+          </p>
+          <DemoLink href='/blog/mcp-based-auto-remediation-davis-ai-to-odigos-mcp-server-and-back-again'>See the Dynatrace + Odigos demonstration</DemoLink>
+        </div>
+        <Sequence aria-label='Documented OdiMall incident automation example'>
+          <li>
+            <Pulse />
+            <div>
+              <strong>Problem opens in Dynatrace</strong>
+              <p>A workflow calls a webhook that requests temporary instrumentation through Odigos MCP.</p>
+            </div>
+          </li>
+          <li>
+            <Capture />
+            <div>
+              <strong>New traces carry the missing detail</strong>
+              <p>HTTP payloads, messaging payloads and supported code attributes appear without restarting pods.</p>
+            </div>
+          </li>
+          <li>
+            <Evidence />
+            <div>
+              <strong>Problem closes. Temporary rules come off.</strong>
+              <p>The workflow removes the rules through MCP. Capture returns to its baseline.</p>
+            </div>
+          </li>
+        </Sequence>
+      </EvidenceLoop>
+      <Proactive>
+        <h3>Autofocus can start before an agent asks.</h3>
+        <p>
+          Odigos Autofocus deepens capture when a service’s behavior changes, collecting functions, arguments and return values on the affected path. Engineers
+          and agents can begin investigating as that extra evidence arrives in the backend.
+        </p>
+      </Proactive>
+      <Operations>
+        <h3>Keep your stack. Give it deeper evidence.</h3>
+        <dl>
+          <div>
+            <dt>Automatic coverage to start</dt>
+            <dd>Discover and instrument running services without adding instrumentation to application code. Follow requests across supported runtimes.</dd>
+          </div>
+          <div>
+            <dt>Your existing telemetry backend</dt>
+            <dd>Send traces, metrics and logs as OpenTelemetry. Keep the dashboards, alerts and investigation tools your team already uses.</dd>
+          </div>
+          <div>
+            <dt>Your team controls the capture</dt>
+            <dd>
+              Set scope, permissions and masking centrally. Review capture activity and remove temporary instrumentation when it has answered the question.
+            </dd>
+          </div>
+        </dl>
+        <Link href='/technology'>Explore runtime coverage and capture controls</Link>
+      </Operations>
     </Inner>
   </Section>
 );

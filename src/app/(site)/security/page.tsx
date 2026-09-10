@@ -3,7 +3,7 @@ import React from 'react';
 import { SecurityContent } from './security-content';
 
 const TITLE = 'See into the runtime. Block AI attacks | Odigos';
-const DESC = 'Odigos sees every function call in every service, on Kubernetes, VMs and bare metal, with nothing in your code, and blocks AI-powered attacks at the function level.';
+const DESC = 'Investigate runtime behavior, map an affected service’s communications to understand blast radius, and respond with function-level virtual patching or thread and process mitigation.';
 const URL = 'https://odigos.io/security';
 const OG = '/og.png';
 
@@ -50,7 +50,8 @@ const LD = [
       featureList: [
         'Function-level visibility across services',
         'Virtual patching at the function level without a redeploy',
-        'Under 1% CPU, measured across more than a million production cores',
+        'Service communication maps for blast-radius assessment',
+        'Thread and process mitigation options',
         'Open-source node sensor',
       ],
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: '14-day trial' },

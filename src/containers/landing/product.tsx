@@ -60,56 +60,25 @@ const Shot = styled.div`
 
   /* the screenshot is 1440 wide; on phones it would become unreadable mush, so
      it scrolls sideways inside its own frame instead of shrinking. The scroll
-     starts past the first column so the frame opens on the part that matters,
-     and the right edge fades so it reads as scrollable rather than cropped. */
+     starts at the first column so every control remains reachable. */
   @media (max-width: 720px) {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     img {
       width: 1040px;
       max-width: none;
-      margin-left: -232px;
-    }
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 56px;
-      z-index: 2;
-      pointer-events: none;
-      background: linear-gradient(90deg, rgba(11, 11, 13, 0), rgba(11, 11, 13, 0.85));
     }
   }
 `;
 
-const Notes = styled.div`
-  margin-top: 26px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  @media (max-width: 860px) {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  div {
-    border-top: 1px solid var(--line-strong);
-    padding-top: 14px;
-  }
-  h3 {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-  p {
-    margin: 6px 0 0;
-    font-size: 13.5px;
-    line-height: 1.55;
-    color: var(--ink-mute);
-  }
+const FullSize = styled.a`
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 18px;
+  color: var(--accent);
+  font-size: 14px;
+  text-underline-offset: 4px;
 `;
 
 type ProductProps = {
@@ -139,11 +108,19 @@ export const LandingProduct = ({
         </Reveal>
 
         <Reveal delay={70}>
-          <Shot>
-            <Image src='/assets/renders/product_preview.png' alt='The Odigos console: detected sources, in-flight actions and export destinations for a production cluster' width={1440} height={900} sizes='(max-width: 1200px) 100vw, 1200px' />
+          <Shot tabIndex={0} role='region' aria-label='Odigos console screenshot; scroll horizontally to inspect all controls'>
+            <Image
+              src='/assets/renders/product_preview.png'
+              alt='The Odigos console: detected sources, in-flight actions and export destinations for a production cluster'
+              width={1440}
+              height={900}
+              sizes='(max-width: 1200px) 100vw, 1200px'
+            />
           </Shot>
+          <FullSize href='/assets/renders/product_preview.png' target='_blank' rel='noopener noreferrer'>
+            Open the full-size console
+          </FullSize>
         </Reveal>
-
       </Inner>
     </Section>
   );

@@ -4,7 +4,7 @@ import { SOFTWARE_LD, ldScript } from '@/constants';
 import { ObservabilityContent } from './observability-content';
 
 const TITLE = 'Wake up to the root cause, not the alert | Odigos';
-const DESC = 'Every service traced from day one with no code changes. When one drifts, Odigos Autofocus captures what the code did while it happens, so engineers and AI agents wake up to the root cause.';
+const DESC = 'Give AI investigations the evidence they are missing. Odigos combines automatic coverage with dynamic instrumentation, exporting new runtime evidence to your existing telemetry backend.';
 const URL = 'https://odigos.io/observability';
 const OG = '/og.png';
 
