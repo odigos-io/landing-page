@@ -6,11 +6,8 @@ import {
   LandingHero,
   LandingLogos,
   LandingOldWay,
-  LandingFeatures,
-  LandingPlatform,
-  LandingProduct,
-  LandingProof,
-  LandingHowItWorks,
+  LandingFit,
+  LandingDoors,
   LandingBlogs,
   LandingCTA,
   LandingFooter,
@@ -23,12 +20,9 @@ const HomeContent = () => {
       <main>
         <LandingHero />
         <LandingLogos />
-        <LandingPlatform />
         <LandingOldWay />
-        <LandingFeatures />
-        <LandingHowItWorks />
-        <LandingProduct />
-        <LandingProof />
+        <LandingFit />
+        <LandingDoors />
         <LandingCTA />
         <LandingBlogs />
       </main>

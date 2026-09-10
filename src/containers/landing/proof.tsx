@@ -132,9 +132,9 @@ export const LandingProof = () => {
             <Copy>
               <Eyebrow $light>Benchmarked by a customer</Eyebrow>
               <h2>
-                A Fortune 500 ran it across a million cores. <span className='mute'>Up to 27.6% less CPU than the bytecode agent it replaced.</span>
+                A Fortune 500 measured it on a million cores. <span className='mute'>Cheaper at peak than the bytecode agent it replaced.</span>
               </h2>
-              <p>Odigos runs outside your applications, so depth stops costing you throughput. One Fortune 500 customer benchmarked it against the bytecode agent already in their process, on the same traces, across 1.04 million cores. One of the largest retailers in the world built its own regression-finding AI agent on this data. Security runs on the same sensor and the same install, with no second agent to approve.</p>
+              <p>A customer built its own regression-finding AI agent on the same record.</p>
             </Copy>
 
             <Stats>
@@ -143,27 +143,19 @@ export const LandingProof = () => {
                   &lt; <em>1%</em>
                 </span>
                 <span className='t'>
-                  CPU overhead, out of process. <b>Safe to leave on across all of production.</b>
+                  CPU. <b>Left on across all of production.</b>
                 </span>
               </Stat>
               <Stat>
                 <span className='n'>
-                  <em>27.6%</em>
+                  up to <em>27.6%</em>
                 </span>
                 <span className='t'>
-                  less CPU than the bytecode agent at the top of the range they measured, <b>on identical traces</b>, on their own hardware.
-                </span>
-              </Stat>
-              <Stat>
-                <span className='n'>
-                  <em>1.04M</em>
-                </span>
-                <span className='t'>
-                  cores under measurement when they ran it. <b>New question. No new code.</b>
+                  less CPU. <b>Same traces, their hardware.</b>
                 </span>
               </Stat>
             </Stats>
-            <Note>// 11 enterprises in production, SOC 2 audited</Note>
+            <Note>// 11 enterprises in production</Note>
           </Slab>
         </Reveal>
       </Inner>

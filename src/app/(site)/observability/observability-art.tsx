@@ -3,699 +3,630 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-/* One incident, two outcomes, on one chart, and the reason said out loud.
+/* 03:12, two screens.
 
-   Grey, without Odigos: latency climbs, the page comes at 03:12 with a
-   graph and three log lines. Nothing from inside the code was captured,
-   so the fix lands at 05:40.
+   One alert wakes two people. The screen on the left holds what metrics
+   and logs can tell you, which is almost nothing, and the cause was never
+   recorded. The screen on the right holds what Odigos had already
+   recorded before anything was wrong: the function, the real call and the
+   value it returned, the query that found nothing, the orders, the deploy.
 
-   Violet, with Odigos: the latency starts drifting at 02:52. Odigos sees
-   the drift twenty minutes before the alert and turns up capture on that
-   path. So when the same page comes at 03:12, the root cause is already
-   recorded. Fixed 03:31. One thought at a time, held long enough to read. */
+   The consequence sits under each: 4h 12m against 9 min.
 
-const T = '24s';
+   Sizes use a --px unit tied to the container width, so the whole
+   composition scales with the hero slot. */
 
-/* chart space 1000 x 330; baseline y 262, plateau y 110, SLO y 196 */
-const RISE = 'M-5 262 L140 262 C175 262 190 215 199 196 C212 168 218 110 232 110';
-const WITHOUT = `${RISE} L262 112 L300 108 L340 112 L380 108 L420 113 L460 108 L500 112 L540 109 L580 113 L620 108 L660 112 L700 109 L740 113 L780 108 L820 112 L850 110 L878 110 C886 110 884 262 892 262 L1005 262`;
-const WITH = `${RISE} L262 112 L290 110 L300 110 C308 110 306 262 315 262 L1005 262`;
-const WEDGE = 'M315 262 L300 110 L340 112 L380 108 L420 113 L460 108 L500 112 L540 109 L580 113 L620 108 L660 112 L700 109 L740 113 L780 108 L820 112 L850 110 L878 110 C886 110 884 262 892 262 Z';
+const T = '14s';
 
-const X_DRIFT = 14;
-const X_PAGE = 23;
-const X_FIX = 31.5;
-const X_LATE = 89.2;
-const Y_PLATEAU = 33.3;
-const Y_BASE = 79.4;
-const Y_SLO = 59.4;
-
-/* the line draws at 0.25 loop percent per x percent and pauses while a
-   thought is on screen, so every label appears when the line reaches it */
-const R = 0.25;
-const G_START = 2;
-const G_DRIFT = G_START + X_DRIFT * R; /* 5.5 */
-const G_PAGE = 16; /* the climb from the drift to the page takes ~2.5 s */
-const G_RESUME = 24;
-const G_LATE = G_RESUME + (X_LATE - X_PAGE) * R; /* 40.5 */
-const G_END = 43;
-const HAND = 45.5;
-const V_START = 51;
-const V_DRIFT = V_START + X_DRIFT * R; /* 54.5 */
-const V_PAGE = 70.5; /* the climb takes ~3.8 s and the thoughts land along it */
-const V_PAGE_RESUME = 80;
-const V_FIX = V_PAGE_RESUME + (X_FIX - X_PAGE) * R; /* 82.1 */
-const V_END = 88;
-const PAYOFF = 89.5;
-
-const drawG = keyframes`
-  0%, ${G_START}% { width: 0; }
-  ${G_DRIFT}% { width: ${X_DRIFT}%; animation-timing-function: ease-in-out; }
-  ${G_PAGE}%, ${G_RESUME}% { width: ${X_PAGE}%; }
-  ${G_END}%, 100% { width: 100%; }
-`;
-const drawV = keyframes`
-  0%, ${V_START}% { width: 0; }
-  ${V_DRIFT}% { width: ${X_DRIFT}%; animation-timing-function: ease-in-out; }
-  ${V_PAGE}%, ${V_PAGE_RESUME}% { width: ${X_PAGE}%; }
-  ${V_FIX}% { width: ${X_FIX}%; }
-  ${V_END}%, 100% { width: 100%; }
-`;
-/* appear at `at`; optionally fall to `to` after `off` */
-const show = (at: number, off = 0, to = 0.5) => keyframes`
-  0%, ${at}% { opacity: 0; margin-top: 3px; }
-  ${at + 1}%${off ? `, ${off}%` : ', 100%'} { opacity: 1; margin-top: 0; }
-  ${off ? `${off + 1.5}%, 100% { opacity: ${to}; margin-top: 0; }` : ''}
-`;
-const ghost = keyframes`
-  0%, ${HAND}% { stroke: #b5b1a6; }
-  ${HAND + 2.5}%, 100% { stroke: #dedbd3; }
-`;
-const caption = keyframes`
-  0%, ${HAND + 0.8}% { opacity: 0; margin-top: 4px; }
-  ${HAND + 2}%, ${V_START - 0.3}% { opacity: 1; margin-top: 0; }
-  ${V_START + 1.2}%, 100% { opacity: 0; margin-top: 0; }
-`;
-const wedge = keyframes`
-  0%, ${PAYOFF}% { fill-opacity: 0; }
-  ${PAYOFF + 2.5}%, 100% { fill-opacity: 1; }
-`;
-const pulse = keyframes`
-  0%, ${V_PAGE}% { box-shadow: 0 0 0 4px rgba(255, 93, 143, 0.2); }
-  ${V_PAGE + 0.8}% { box-shadow: 0 0 0 11px rgba(255, 93, 143, 0.28); }
-  ${V_PAGE + 2.5}%, 100% { box-shadow: 0 0 0 4px rgba(255, 93, 143, 0.2); }
-`;
-const veil = keyframes`
-  0%, 97.5% { opacity: 0; margin-top: 1px; }
-  100% { opacity: 1; margin-top: 0; }
-`;
 const float = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}`;
 
-const kPage = show(G_PAGE);
-const kLate = show(G_LATE, HAND);
-const kBub1 = show(G_PAGE, HAND, 0.5);
-const kBub1a = show(G_PAGE + 2.6, HAND, 0.5);
-const kBub1b = show(G_PAGE + 5.2, HAND, 0.5);
-const kBub1Off = keyframes`
-  0%, ${PAYOFF - 1}% { opacity: 1; margin-top: 0; }
-  ${PAYOFF + 1}%, 100% { opacity: 0; margin-top: 1px; }
+/* every keyframe moves a main-thread property as well as opacity, so a
+   headless capture advances the loop the way a browser does */
+/* text never renders at partial opacity: it is hidden, then cut straight to
+   full strength and slides into place. A half faded label would fail a
+   contrast audit at whatever moment the audit happens to sample. */
+const rise = (from: number, to: number) => keyframes`
+  0%, ${from}% { opacity: 0; visibility: hidden; margin-top: calc(10 * var(--px)); }
+  ${from + 0.01}% { opacity: 1; visibility: visible; }
+  ${to}%, 95% { opacity: 1; visibility: visible; margin-top: 0; }
+  100% { opacity: 0; visibility: hidden; margin-top: calc(10 * var(--px)); }
 `;
-const kLegendV = show(HAND + 0.8);
-const kDrift = show(V_DRIFT);
-const kBub2 = show(V_DRIFT);
-/* thought one: four beats, then it steps aside for thought two */
-const kT1 = show(V_DRIFT, V_PAGE - 0.8, 0);
-const kT1a = show(V_DRIFT + 4, V_PAGE - 0.8, 0);
-const kT1b = show(V_DRIFT + 8, V_PAGE - 0.8, 0);
-const kT1c = show(V_DRIFT + 12, V_PAGE - 0.8, 0);
-const kT2 = show(V_PAGE);
-const kT2a = show(V_PAGE + 2.6);
-const kT2b = show(V_PAGE + 5.4);
-const kFix = show(V_FIX);
-const kSoon = show(PAYOFF + 1);
+const fade = (from: number, to: number) => keyframes`
+  0%, ${from}% { opacity: 0; visibility: hidden; margin-top: calc(3 * var(--px)); }
+  ${from + 0.01}% { opacity: 1; visibility: visible; }
+  ${to}%, 95% { opacity: 1; visibility: visible; margin-top: 0; }
+  100% { opacity: 0; visibility: hidden; margin-top: calc(3 * var(--px)); }
+`;
+const sweep = (from: number, to: number) => keyframes`
+  0%, ${from}% { width: 0%; opacity: 0.4; }
+  ${to}%, 95% { width: 100%; opacity: 1; }
+  100% { width: 0%; opacity: 0.4; }
+`;
+const drawWire = keyframes`
+  0%, 6% { stroke-dashoffset: 200; opacity: 0; }
+  16%, 95% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 200; opacity: 0; }
+`;
+const land = keyframes`
+  0%, 68% { opacity: 0; visibility: hidden; margin-top: calc(8 * var(--px)); transform: scale(0.8); }
+  68.01% { opacity: 1; visibility: visible; }
+  75% { opacity: 1; visibility: visible; margin-top: 0; transform: scale(1.05); }
+  79%, 95% { opacity: 1; visibility: visible; margin-top: 0; transform: scale(1); }
+  100% { opacity: 0; visibility: hidden; margin-top: calc(8 * var(--px)); transform: scale(0.8); }
+`;
+const ping = keyframes`
+  0%, 6% { box-shadow: 0 0 0 0 rgba(255, 93, 143, 0.5); }
+  12% { box-shadow: 0 0 0 calc(7 * var(--px)) rgba(255, 93, 143, 0); }
+  100% { box-shadow: 0 0 0 calc(4 * var(--px)) rgba(255, 93, 143, 0.18); }
+`;
+
+const kAlert = rise(0, 6);
+const kWireDot = fade(14, 18);
+const kThin = rise(10, 19);
+const kThinBody = fade(16, 24);
+const kThinFoot = fade(24, 30);
+const kRich = rise(32, 42);
+const kR1 = fade(48, 54);
+const kR2 = fade(51, 57);
+const kR3 = fade(54, 60);
+const kR4 = fade(57, 63);
+const kR5 = fade(60, 66);
+const kRichLab = fade(64, 69);
+const kD1 = sweep(38, 50);
+const kD2 = sweep(41, 53);
+const kD3 = sweep(44, 56);
 
 const Frame = styled.div`
   position: relative;
   animation: ${float} 9s ease-in-out infinite;
+
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
 `;
 
 const Panel = styled.div`
+  --px: 0.15625cqw;
+  --sans: var(--font-display), system-ui, sans-serif;
+  --mono: var(--font-mono), ui-monospace, monospace;
+
   position: relative;
   width: 100%;
-  background: var(--paper-2);
+  aspect-ratio: 640 / 460;
+  container-type: inline-size;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 22px;
+  background: radial-gradient(120% 78% at 50% -6%, var(--paper-2) 0%, var(--paper) 52%, var(--paper-3) 100%);
   box-shadow: var(--shadow-panel);
-  padding: 20px 22px 16px;
-  overflow: hidden;
-  container-type: inline-size;
-`;
+  font-family: var(--sans);
+  color: var(--ink);
 
-const Head = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 22px;
-  margin-bottom: 16px;
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--ink-mute);
-  .title {
-    white-space: nowrap;
-  }
-  .legend {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  .legend span {
+  /* ---------------- the shared alert ---------------- */
+  .alert {
+    position: absolute;
+    left: 50%;
+    top: calc(20 * var(--px));
+    margin-left: calc(-172 * var(--px));
+    z-index: 6;
     display: flex;
     align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    height: 22px;
-  }
-  .legend span::before {
-    content: '';
-    width: 14px;
-    height: 2px;
-    border-radius: 1px;
-    background: #b5b1a6;
-  }
-  .legend .v {
-    padding: 0 10px 0 9px;
-    border-radius: 999px;
-    background: var(--ink);
-    color: #fff;
-    opacity: 0;
-    animation: ${kLegendV} ${T} linear infinite;
-  }
-  .legend .v::before {
-    background: var(--accent);
-  }
-  @container (max-width: 480px) {
-    .title {
-      display: none;
-    }
-  }
-`;
-
-const Chart = styled.div`
-  position: relative;
-  height: 330px;
-  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 100% 20%, 13.4% 100%;
-  background-position: 0 100%, 4.2% 0;
-
-  .slo {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: ${Y_SLO}%;
-    border-top: 1px dashed rgba(201, 52, 106, 0.35);
-  }
-  .slo b {
-    position: absolute;
-    left: 0;
-    top: -15px;
-    font: 500 10.5px/1 var(--font-mono), monospace;
-    letter-spacing: 0.08em;
-    color: var(--hot-ink);
-  }
-  .ticks {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(${Y_BASE}% + 44px);
-    font: 400 10.5px/1 var(--font-mono), monospace;
-    letter-spacing: 0.06em;
-    color: var(--ink-faint);
-  }
-  .ticks span {
-    position: absolute;
-    transform: translateX(-50%);
-  }
-
-  .reveal {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    overflow: hidden;
-  }
-  .reveal.g {
-    animation: ${drawG} ${T} linear infinite;
-    z-index: 1;
-  }
-  .reveal.v {
-    animation: ${drawV} ${T} linear infinite;
-    z-index: 2;
-  }
-  .layer {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100cqw;
-  }
-  svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  }
-  .curve {
-    fill: none;
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-  }
-  .curve.g {
-    stroke: #b5b1a6;
-    animation: ${ghost} ${T} linear infinite;
-  }
-  .curve.v {
-    stroke: var(--accent);
-  }
-  .wedge {
-    fill: rgba(91, 67, 241, 0.07);
-    fill-opacity: 0;
-    animation: ${wedge} ${T} linear infinite;
-  }
-
-  .caption {
-    position: absolute;
-    left: ${(X_FIX + X_LATE) / 2 + 2}%;
-    top: calc(${Y_PLATEAU}% + 46px);
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font: 500 13px/1.3 var(--font-display), sans-serif;
-    color: var(--ink);
-    text-align: center;
-    opacity: 0;
-    z-index: 3;
-    animation: ${caption} ${T} linear infinite;
-  }
-  .caption small {
-    display: block;
-    margin-top: 4px;
-    font: 400 10.5px/1 var(--font-mono), monospace;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .pt {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 0;
-    z-index: 3;
-    opacity: 0;
-  }
-  .pt i {
-    position: absolute;
-    left: -4.5px;
-    width: 9px;
-    height: 9px;
-    margin-top: -4.5px;
-    border-radius: 50%;
-    border: 1.5px solid #fff;
-    box-sizing: border-box;
-  }
-  .pt > span {
-    position: absolute;
-    white-space: nowrap;
-    font: 500 10.5px/1.4 var(--font-mono), monospace;
-    letter-spacing: 0.04em;
-  }
-  .pt > span b {
-    font-weight: 500;
-  }
-  .page {
-    left: ${X_PAGE}%;
-    animation: ${kPage} ${T} linear infinite;
-  }
-  .page i {
-    top: ${Y_PLATEAU}%;
-    background: var(--hot);
-    box-shadow: 0 0 0 4px rgba(255, 93, 143, 0.2);
-    animation: ${pulse} ${T} linear infinite;
-  }
-  .page span {
-    right: 10px;
-    top: calc(${Y_PLATEAU}% - 8px);
-    color: var(--hot-ink);
-  }
-  .late {
-    left: ${X_LATE}%;
-    animation: ${kLate} ${T} linear infinite;
-  }
-  .late i {
-    top: ${Y_BASE}%;
-    background: #b5b1a6;
-    box-shadow: 0 0 0 4px rgba(181, 177, 166, 0.25);
-  }
-  .late span {
-    right: 0;
-    top: calc(${Y_BASE}% + 12px);
-    color: var(--ink-soft);
-  }
-  .drift {
-    left: ${X_DRIFT}%;
-    animation: ${kDrift} ${T} linear infinite;
-  }
-  .drift i {
-    top: ${Y_BASE}%;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px rgba(91, 67, 241, 0.2);
-  }
-  .drift span {
-    left: 10px;
-    top: calc(${Y_BASE}% + 12px);
-    color: var(--accent);
-  }
-  .fix {
-    left: ${X_FIX}%;
-    animation: ${kFix} ${T} linear infinite;
-  }
-  .fix i {
-    top: ${Y_BASE}%;
-    background: var(--signal);
-    box-shadow: 0 0 0 4px rgba(17, 168, 119, 0.2);
-  }
-  .fix span {
-    left: 12px;
-    top: calc(${Y_BASE}% - 20px);
-    color: var(--signal);
-  }
-
-  /* what you know at 03:12: one bubble per act, above the plateau */
-  .bub {
-    position: absolute;
-    top: 6px;
-    z-index: 4;
-    padding: 10px 13px 11px;
-    border-radius: 12px;
-    font: 400 12px/17px var(--font-mono), monospace;
-    letter-spacing: 0;
-    white-space: nowrap;
-    opacity: 0;
-  }
-  .bubwrap {
-    position: absolute;
-    inset: 0;
-    animation: ${kBub1Off} ${T} linear infinite;
-  }
-  .bub div {
-    opacity: 0;
-  }
-  .bub .t1,
-  .bub .t2 {
-    opacity: 1;
-  }
-  .bub b {
-    font-weight: 500;
-  }
-  .bub.one {
-    left: calc(${X_PAGE}% + 16px);
-    top: calc(${Y_PLATEAU}% + 22px);
+    gap: calc(9 * var(--px));
+    padding: calc(8 * var(--px)) calc(15 * var(--px)) calc(8 * var(--px)) calc(12 * var(--px));
     background: var(--paper-2);
     border: 1px solid var(--line-strong);
-    color: var(--ink-mute);
-    box-shadow: 0 12px 24px -18px rgba(24, 20, 54, 0.3);
-    animation: ${kBub1} ${T} linear infinite;
+    border-radius: 999px;
+    box-shadow: 0 calc(10 * var(--px)) calc(22 * var(--px)) calc(-14 * var(--px)) rgba(18, 18, 21, 0.35);
+    white-space: nowrap;
+    opacity: 0;
+    animation: ${kAlert} ${T} cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
   }
-  .bub.one .h {
-    color: var(--hot-ink);
-    font-weight: 500;
-    animation: ${kBub1} ${T} linear infinite;
+  .alert .dot {
+    width: calc(8 * var(--px));
+    height: calc(8 * var(--px));
+    border-radius: 50%;
+    background: var(--hot);
+    animation: ${ping} ${T} ease-out infinite;
   }
-  .bub.one .a {
-    animation: ${kBub1a} ${T} linear infinite;
-  }
-  .bub.one .b {
+  .alert .t {
+    font-family: var(--mono);
+    font-size: calc(13 * var(--px));
+    font-weight: 600;
     color: var(--ink);
-    animation: ${kBub1b} ${T} linear infinite;
   }
-  .bub.two {
-    right: 0;
-    min-width: 296px;
-    min-height: 89px;
-    background: var(--panel);
-    border: 1px solid var(--panel-line);
-    color: var(--panel-mute);
-    box-shadow: 0 18px 30px -18px rgba(11, 11, 13, 0.6);
-    animation: ${kBub2} ${T} linear infinite;
+  .alert .sep {
+    width: 1px;
+    height: calc(12 * var(--px));
+    background: var(--line-strong);
   }
-  .bub.two b {
-    color: var(--panel-ink);
-  }
-  .bub.two .h {
-    color: #c9bfff;
-    font-weight: 500;
-  }
-  .bub.two .t2 {
-    position: absolute;
-    left: 13px;
-    top: 10px;
-  }
-  .bub.two .t1 .h {
-    animation: ${kT1} ${T} linear infinite;
-  }
-  .bub.two .t1 .a {
-    animation: ${kT1a} ${T} linear infinite;
-  }
-  .bub.two .t1 .b {
-    animation: ${kT1b} ${T} linear infinite;
-  }
-  .bub.two .t1 .c {
-    animation: ${kT1c} ${T} linear infinite;
-  }
-  .bub.two .t2 .h {
-    color: var(--hot);
-    animation: ${kT2} ${T} linear infinite;
-  }
-  .bub.two .t2 .a {
-    animation: ${kT2a} ${T} linear infinite;
-  }
-  .bub.two .t2 .b {
-    color: #fff;
-    animation: ${kT2b} ${T} linear infinite;
-  }
-  .bub.two .t2 .b b {
-    color: var(--signal-bright);
+  .alert .msg {
+    font-size: calc(12.5 * var(--px));
+    color: var(--ink-soft);
   }
 
-  .soon {
+  .wires {
     position: absolute;
-    left: ${(X_FIX + X_LATE) / 2 + 2}%;
-    top: calc(${Y_PLATEAU}% + 30px);
-    transform: translateX(-50%);
-    text-align: center;
-    white-space: nowrap;
-    z-index: 3;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .wires path {
+    stroke-dasharray: 200;
+    animation: ${drawWire} ${T} ease-out infinite;
+  }
+  .wires circle {
     opacity: 0;
-    animation: ${kSoon} ${T} linear infinite;
+    animation: ${kWireDot} ${T} ease-out infinite;
   }
-  .soon b {
-    display: block;
-    font-size: 26px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .soon small {
-    display: block;
-    margin-top: 6px;
-    font: 400 11px/1 var(--font-mono), monospace;
-    letter-spacing: 0.03em;
-    color: var(--ink-mute);
-  }
-  .veil {
+
+  /* ---------------- the two screens ---------------- */
+  .screen {
     position: absolute;
-    inset: -40px -24px -24px;
+    border-radius: calc(13 * var(--px));
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
     background: var(--paper-2);
     opacity: 0;
-    pointer-events: none;
-    z-index: 6;
-    animation: ${veil} ${T} linear infinite;
   }
-  .short {
-    display: none;
+  .screen .bar {
+    height: calc(29 * var(--px));
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--px));
+    padding: 0 calc(12 * var(--px));
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #ffffff, #fcfbf8);
+  }
+  .screen .lights {
+    display: flex;
+    gap: calc(4 * var(--px));
+  }
+  .screen .lights i {
+    width: calc(6 * var(--px));
+    height: calc(6 * var(--px));
+    border-radius: 50%;
+    background: var(--line-strong);
+    display: block;
+  }
+  .screen .name {
+    font-size: calc(12 * var(--px));
+  }
+  .screen .body {
+    padding: calc(13 * var(--px)) calc(14 * var(--px));
+  }
+  .screen .lab {
+    font-size: calc(11 * var(--px));
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .screen .big {
+    font-family: var(--mono);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    word-spacing: -0.16em;
+    margin-top: calc(5 * var(--px));
+  }
+
+  /* the thin screen */
+  .thin {
+    left: calc(24 * var(--px));
+    top: calc(96 * var(--px));
+    width: calc(284 * var(--px));
+    height: calc(296 * var(--px));
+    z-index: 2;
+    background: #fdfcfa;
+    transform: perspective(1500px) rotateY(6deg) rotateZ(-1.4deg);
+    box-shadow: 0 calc(14 * var(--px)) calc(32 * var(--px)) calc(-18 * var(--px)) rgba(18, 18, 21, 0.3);
+    animation: ${kThin} ${T} cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  }
+  .thin .name {
+    color: var(--ink-mute);
+  }
+  .thin .col {
+    width: calc(226 * var(--px));
+    opacity: 0;
+    animation: ${kThinBody} ${T} ease-out infinite;
+  }
+  .sparse {
+    display: flex;
+    flex-direction: column;
+    gap: calc(3 * var(--px));
+  }
+  .sparse i {
+    display: block;
+    height: calc(4 * var(--px));
+    border-radius: 1px;
+    position: relative;
+  }
+  .sparse i::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(1.5 * var(--px));
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--line-strong) 0 calc(1.6 * var(--px)), transparent calc(1.6 * var(--px)) calc(4.2 * var(--px)));
+  }
+  .sparse .have {
+    position: absolute;
+    top: 0;
+    width: calc(1.6 * var(--px));
+    height: calc(4 * var(--px));
+    background: var(--ink-soft);
+    border-radius: 1px;
+    z-index: 2;
+  }
+  .metric {
+    display: flex;
+    align-items: flex-end;
+    gap: calc(8 * var(--px));
+    margin-top: calc(14 * var(--px));
+  }
+  .metric span {
+    font-family: var(--mono);
+    font-size: calc(11 * var(--px));
+    color: var(--ink-mute);
+    padding-bottom: calc(2 * var(--px));
+  }
+  .metric svg {
+    width: calc(104 * var(--px));
+    height: calc(27 * var(--px));
+  }
+  .log {
+    font-family: var(--mono);
+    font-size: calc(11.5 * var(--px));
+    color: var(--ink-soft);
+    line-height: calc(17 * var(--px));
+  }
+  .void {
+    position: relative;
+    height: calc(56 * var(--px));
+    margin-top: calc(12 * var(--px));
+  }
+  .void .r {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px dashed var(--line);
+  }
+  .void .say {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+  }
+  .void .say b {
+    font-weight: 450;
+    font-size: calc(12.5 * var(--px));
+    color: var(--ink-faint);
+    background: #fdfcfa;
+    padding: calc(2 * var(--px)) calc(8 * var(--px)) calc(2 * var(--px)) 0;
+  }
+  .thin .foot {
+    margin-top: calc(10 * var(--px));
+    padding-top: calc(10 * var(--px));
+    border-top: 1px solid var(--line);
+    opacity: 0;
+    animation: ${kThinFoot} ${T} ease-out infinite;
+  }
+  .thin .big {
+    font-size: calc(38 * var(--px));
+    color: var(--ink);
+  }
+
+  /* the rich screen */
+  .rich {
+    left: calc(282 * var(--px));
+    top: calc(112 * var(--px));
+    width: calc(332 * var(--px));
+    height: calc(294 * var(--px));
+    z-index: 4;
+    transform: perspective(1500px) rotateY(-5deg) rotateZ(1.1deg);
+    box-shadow: 0 calc(34 * var(--px)) calc(56 * var(--px)) calc(-22 * var(--px)) rgba(18, 18, 21, 0.34);
+    animation: ${kRich} ${T} cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  }
+  .rich .lights i:first-child {
+    background: var(--accent);
+  }
+  .rich .name {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .rich .since {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: calc(11 * var(--px));
+    color: #3b2bb8;
+    background: var(--accent-soft);
+    border-radius: calc(5 * var(--px));
+    padding: calc(2 * var(--px)) calc(6 * var(--px));
+  }
+  .dense {
+    display: flex;
+    flex-direction: column;
+    gap: calc(3 * var(--px));
+  }
+  .dense i {
+    display: block;
+    height: calc(4 * var(--px));
+    border-radius: 1px;
+    width: 0;
+  }
+  .dense .d1 {
+    background: repeating-linear-gradient(90deg, var(--accent) 0 calc(1.6 * var(--px)), transparent calc(1.6 * var(--px)) calc(4.2 * var(--px)));
+    animation: ${kD1} ${T} cubic-bezier(0.3, 0.7, 0.3, 1) infinite;
+  }
+  .dense .d2 {
+    background: repeating-linear-gradient(90deg, #8a78f5 0 calc(1.6 * var(--px)), transparent calc(1.6 * var(--px)) calc(3.8 * var(--px)));
+    animation: ${kD2} ${T} cubic-bezier(0.3, 0.7, 0.3, 1) infinite;
+  }
+  .dense .d3 {
+    background: repeating-linear-gradient(90deg, #b3a7f8 0 calc(1.6 * var(--px)), transparent calc(1.6 * var(--px)) calc(4.6 * var(--px)));
+    animation: ${kD3} ${T} cubic-bezier(0.3, 0.7, 0.3, 1) infinite;
+  }
+  .rows {
+    margin-top: calc(12 * var(--px));
+    border-top: 1px solid var(--line);
+  }
+  .row {
+    padding: calc(4.5 * var(--px)) 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: calc(11.5 * var(--px));
+    line-height: calc(15 * var(--px));
+    color: var(--ink-soft);
+    letter-spacing: -0.012em;
+    display: flex;
+    gap: calc(7 * var(--px));
+    align-items: baseline;
+    opacity: 0;
+  }
+  .row .k {
+    color: var(--ink-mute);
+    flex: none;
+  }
+  .row .v {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .row .bad {
+    color: var(--hot-ink);
+    font-weight: 600;
+  }
+  .row .ok {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .row .far {
+    margin-left: auto;
+    flex: none;
+  }
+  .row.q {
+    display: block;
+  }
+  .row.r1 {
+    animation: ${kR1} ${T} ease-out infinite;
+  }
+  .row.r2 {
+    animation: ${kR2} ${T} ease-out infinite;
+  }
+  .row.r3 {
+    animation: ${kR3} ${T} ease-out infinite;
+  }
+  .row.r4 {
+    animation: ${kR4} ${T} ease-out infinite;
+  }
+  .row.r5 {
+    animation: ${kR5} ${T} ease-out infinite;
+  }
+  .rich .foot {
+    margin-top: calc(8 * var(--px));
+  }
+  .rich .lab {
+    opacity: 0;
+    animation: ${kRichLab} ${T} ease-out infinite;
+  }
+  .rich .big {
+    font-size: calc(46 * var(--px));
+    color: var(--signal-ink);
+    margin-top: calc(4 * var(--px));
+    transform-origin: left center;
+    opacity: 0;
+    animation: ${land} ${T} cubic-bezier(0.2, 0.9, 0.3, 1.4) infinite;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    * {
-      animation: none !important;
-    }
-    .reveal {
-      width: 100% !important;
-    }
-    .curve.g {
-      stroke: #dedbd3;
-    }
-    .pt,
-    .soon,
-    .bub.two,
-    .bub.two .t2 div {
+    .alert,
+    .alert .dot,
+    .wires path,
+    .wires circle,
+    .screen,
+    .thin .col,
+    .thin .foot,
+    .dense i,
+    .dense .d1,
+    .dense .d2,
+    .dense .d3,
+    .row,
+    .row.r1,
+    .row.r2,
+    .row.r3,
+    .row.r4,
+    .row.r5,
+    .rich .lab,
+    .rich .big {
+      animation: none;
       opacity: 1;
+      visibility: visible;
+      margin-top: 0;
+      stroke-dashoffset: 0;
     }
-    .bub.two .t1 div {
-      opacity: 0;
+    .alert .dot {
+      box-shadow: 0 0 0 calc(4 * var(--px)) rgba(255, 93, 143, 0.18);
     }
-    .late,
-    .bub.one,
-    .bub.one div {
-      opacity: 0.55;
+    .dense i,
+    .dense .d1,
+    .dense .d2,
+    .dense .d3 {
+      width: 100%;
     }
-    .caption {
-      opacity: 0;
+    .rich .big {
+      transform: none;
+      margin-top: calc(4 * var(--px));
     }
-    .wedge {
-      fill-opacity: 1;
+    .thin .foot {
+      margin-top: calc(10 * var(--px));
     }
-    .veil {
-      opacity: 0;
+    .rich .foot {
+      margin-top: calc(8 * var(--px));
     }
-  }
-
-  @container (max-width: 480px) {
-    height: 250px;
-    background-size: 100% 25%, 20% 100%;
-    .long {
-      display: none;
+    .rows {
+      margin-top: calc(12 * var(--px));
     }
-    .short {
-      display: inline;
+    .metric {
+      margin-top: calc(14 * var(--px));
     }
-    .ticks,
-    .slo b,
-    .soon small,
-    .bubwrap,
-    .caption small {
-      display: none;
+    .void {
+      margin-top: calc(12 * var(--px));
     }
-    .soon b {
-      font-size: 18px;
-    }
-    .soon {
-      top: calc(${Y_PLATEAU}% + 22px);
-    }
-    .caption {
-      top: calc(${Y_PLATEAU}% + 30px);
-      font-size: 12px;
-    }
-    .fix span {
-      top: calc(${Y_BASE}% + 26px);
-      left: 0;
-    }
-    .bub.two {
-      left: 0;
-      top: auto;
-      bottom: -6px;
-      transform: translateY(100%);
-    }
-  }
-`;
-
-const Dock = styled.div`
-  @container (max-width: 480px) {
-    height: 104px;
   }
 `;
 
 export const ObservabilityArt = () => (
   <Frame>
-    <Panel role='img' aria-label='One incident, two outcomes. Without Odigos the engineer is paged at 03:12 with a graph and three log lines, nothing from inside the code was captured, and the outage ends at 05:40. With Odigos, the drift was seen twenty minutes before the alert and capture was turned up, so the page came with the root cause already recorded and the outage ended at 03:31.'>
-      <Head>
-        <span className='title'>p99 latency, checkout</span>
-        <div className='legend'>
-          <span className='g'>without Odigos</span>
-          <span className='v'>with Odigos</span>
-        </div>
-      </Head>
+    <Panel
+      role='img'
+      aria-label='One alert at 03:12, checkout degraded and revenue down 12 percent, wakes two engineers. The screen without Odigos holds a p99 latency line, two log lines that say only POST slash checkout 200, and the words cause was never recorded. It resolved in 4 hours 12 minutes. The screen with Odigos has been recording deeply since 02:41 and holds the function applyDiscount at promo.go line 41, the call applyDiscount with BLACK50 and 49.00 which returned 0.00, the query that came back with 0 rows, 312 orders charged full price, and deploy 4812. It resolved in 9 minutes.'
+    >
+      <div className='alert' aria-hidden>
+        <span className='dot' />
+        <span className='t'>03:12</span>
+        <span className='sep' />
+        <span className='msg'>checkout degraded, revenue down 12%</span>
+      </div>
 
-      <Chart aria-hidden>
-        <div className='slo'>
-          <b>SLO 800 ms</b>
-        </div>
-        <div className='ticks'>
-          <span style={{ left: '17.6%' }}>03:00</span>
-          <span style={{ left: '44.5%' }}>04:00</span>
-          <span style={{ left: '71.3%' }}>05:00</span>
-        </div>
+      <svg className='wires' viewBox='0 0 640 460' fill='none' preserveAspectRatio='none' aria-hidden>
+        <path d='M287 50 C 246 62, 196 68, 158 88' stroke='#d8d4c9' strokeWidth='1' />
+        <path d='M353 50 C 398 70, 425 92, 452 111' stroke='#d8d4c9' strokeWidth='1' />
+        <circle cx='158' cy='89' r='2.6' fill='#d8d4c9' />
+        <circle cx='452' cy='112' r='2.6' fill='#5b43f1' />
+      </svg>
 
-        <div className='reveal g'>
-          <div className='layer'>
-            <svg viewBox='0 0 1000 330' preserveAspectRatio='none' aria-hidden>
-              <path className='curve g' d={WITHOUT} />
-            </svg>
+      <section className='screen thin' aria-hidden>
+        <div className='bar'>
+          <div className='lights'>
+            <i />
+            <i />
+            <i />
           </div>
+          <div className='name'>without Odigos</div>
         </div>
-        <div className='reveal v'>
-          <div className='layer'>
-            <svg viewBox='0 0 1000 330' preserveAspectRatio='none' aria-hidden>
-              <path className='wedge' d={WEDGE} />
-              <path className='curve v' d={WITH} />
-            </svg>
-          </div>
-        </div>
-
-        <div className='caption'>
-          Same incident, replayed
-          <small>now with Odigos</small>
-        </div>
-
-        <div className='pt page'>
-          <i />
-          <span>
-            <b>03:12</b> paged
-          </span>
-        </div>
-        <div className='pt late'>
-          <i />
-          <span>
-            <b>05:40</b> fixed
-          </span>
-        </div>
-        <div className='pt drift'>
-          <i />
-          <span>
-            <b>02:52</b> <span className='long'>drift begins</span>
-          </span>
-        </div>
-        <div className='pt fix'>
-          <i />
-          <span>
-            <b>03:31</b> fixed
-          </span>
-        </div>
-
-        <div className='bubwrap'>
-          <div className='bub one'>
-            <div className='h'>03:12 · paged</div>
-            <div className='a'>What you have: a graph, 3 log lines.</div>
-            <div className='b'>Nothing captured from inside the code.</div>
-          </div>
-        </div>
-        <div className='bub two'>
-          <div className='t1'>
-            <div className='h'>02:52 · latency drifting on checkout</div>
-            <div className='a'>
-              Raised trace sampling <b>1% to 90%</b>
+        <div className='body'>
+          <div className='col'>
+            <div className='sparse'>
+              <i>
+                <span className='have' style={{ left: 0 }} />
+                <span className='have' style={{ left: 'calc(21 * var(--px))' }} />
+                <span className='have' style={{ left: 'calc(46 * var(--px))' }} />
+              </i>
+              <i />
+              <i />
             </div>
-            <div className='b'>
-              Instrumented <b>applyDiscount()</b>
+
+            <div className='metric'>
+              <span>p99</span>
+              <svg viewBox='0 0 104 27' fill='none' aria-hidden>
+                <path
+                  d='M1 21 L11 20 L21 21 L31 19 L41 20 L51 18 L61 19 L71 14 L81 9 L91 6 L103 4'
+                  stroke='#d8d4c9'
+                  strokeWidth='1.25'
+                  strokeLinejoin='round'
+                  strokeLinecap='round'
+                />
+              </svg>
             </div>
-            <div className='c'>
-              Captured <b>arguments and return values</b>
+
+            <div style={{ marginTop: 'calc(9 * var(--px))' }}>
+              <div className='log'>03:11:58&nbsp; POST /checkout 200</div>
+              <div className='log'>03:12:04&nbsp; POST /checkout 200</div>
             </div>
-          </div>
-          <div className='t2'>
-            <div className='h'>03:12 · paged</div>
-            <div className='a'>Root cause already recorded:</div>
-            <div className='b'>
-              <b>applyDiscount()</b> runs 1 query per item
+
+            <div className='void'>
+              <div className='r' style={{ top: 'calc(6 * var(--px))' }} />
+              <div className='r' style={{ top: 'calc(20 * var(--px))' }} />
+              <div className='r' style={{ top: 'calc(34 * var(--px))' }} />
+              <div className='r' style={{ top: 'calc(48 * var(--px))' }} />
+              <div className='say'>
+                <b>cause was never recorded</b>
+              </div>
+            </div>
+
+            <div className='foot'>
+              <div className='lab'>resolved in</div>
+              <div className='big'>4h 12m</div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className='soon'>
-          <b>2h 9m sooner</b>
-          <small>the answer was waiting when the page came</small>
+      <section className='screen rich' aria-hidden>
+        <div className='bar'>
+          <div className='lights'>
+            <i />
+            <i />
+            <i />
+          </div>
+          <div className='name'>with Odigos</div>
+          <div className='since'>deep since 02:41</div>
         </div>
-        <div className='veil' />
-      </Chart>
-      <Dock />
+        <div className='body'>
+          <div className='dense'>
+            <i className='d1' />
+            <i className='d2' />
+            <i className='d3' />
+          </div>
+
+          <div className='rows'>
+            <div className='row r1'>
+              <span className='k'>func</span>
+              <span className='v'>applyDiscount</span>
+              <span className='far k'>promo.go:41</span>
+            </div>
+            <div className='row r2'>
+              <span>
+                applyDiscount(<span className='ok'>&quot;BLACK50&quot;</span>, 49.00) &#8594; <span className='bad'>0.00</span>
+              </span>
+            </div>
+            <div className='row q r3'>
+              <div>SELECT rate FROM promo_rules</div>
+              <div style={{ display: 'flex' }}>
+                <span>WHERE code = &quot;BLACK50&quot;</span>
+                <span className='bad' style={{ marginLeft: 'auto' }}>
+                  0 rows
+                </span>
+              </div>
+            </div>
+            <div className='row r4'>
+              <span className='v'>312</span>
+              <span>orders charged full price</span>
+            </div>
+            <div className='row r5'>
+              <span className='k'>deploy</span>
+              <span className='v'>4812</span>
+            </div>
+          </div>
+
+          <div className='foot'>
+            <div className='lab'>resolved in</div>
+            <div className='big'>9 min</div>
+          </div>
+        </div>
+      </section>
     </Panel>
   </Frame>
 );

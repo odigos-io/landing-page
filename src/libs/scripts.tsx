@@ -21,7 +21,7 @@ const Scripts = () => {
           `,
         }}
       />
-      <Script id='hs-script-loader' strategy='lazyOnload' src='//js.hs-scripts.com/50932826.js' />
+      <Script id='hs-script-loader' strategy='lazyOnload' src='https://js.hs-scripts.com/50932826.js' />
       <Script id='cookieyes-banner' strategy='afterInteractive' src='https://cdn-cookieyes.com/client_data/b873ab43d440c7e433a75c19/script.js' />
       <Script id='redodev-integration' strategy='lazyOnload'>
         {`

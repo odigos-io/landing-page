@@ -163,8 +163,8 @@ export const LandingCTA = () => {
           <Card>
             <Mesh />
             <Glow />
-            <Eyebrow>One command. Kubernetes, VMs, bare metal.</Eyebrow>
-            <Title>Install today. First answer tomorrow. Security on the same install.</Title>
+            <Eyebrow>14-day trial</Eyebrow>
+            <Title>Ask production. Get the answer.</Title>
             <Ctas>
               <Primary
                 data-track='cta'
@@ -183,7 +183,7 @@ export const LandingCTA = () => {
                 Get a demo
               </Ghost>
             </Ctas>
-            <Note>One record, every purpose. One service, fourteen days, success criteria written first.</Note>
+            <Note>One command. Every service. Nothing in your code.</Note>
           </Card>
         </Reveal>
       </Band>

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import styled, { keyframes } from 'styled-components';
 import { Container, Eyebrow, Reveal } from './primitives';
 
@@ -368,168 +367,6 @@ const Svc = styled.span<{ $old?: boolean }>`
   }
 `;
 
-/* ---------------- the two doors ---------------- */
-const Doors = styled.div`
-  margin-top: 22px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 18px;
-  @media (max-width: 1100px) {
-    grid-template-columns: 1fr 1fr;
-  }
-  @media (max-width: 760px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Door = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--paper-2);
-  box-shadow: var(--shadow-soft);
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.25s ease;
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
-    border-color: var(--line-strong);
-  }
-  &:hover .go {
-    color: var(--accent);
-  }
-  &:hover .go svg {
-    transform: translateX(3px);
-  }
-`;
-
-const Prompt = styled.div`
-  padding: 18px 22px 16px;
-  background: var(--panel);
-  border-bottom: 1px solid var(--panel-line);
-  font-family: var(--font-mono), monospace;
-  .q {
-    display: flex;
-    gap: 10px;
-    font-size: 13px;
-    line-height: 1.55;
-    color: #fff;
-  }
-  .q .pmt {
-    color: var(--accent);
-    flex: none;
-  }
-  .a {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-    font-size: 12.5px;
-    line-height: 1.55;
-    color: var(--panel-mute);
-  }
-  .a .pmt {
-    color: var(--signal-bright);
-    flex: none;
-  }
-  .a b {
-    color: var(--panel-ink);
-    font-weight: 500;
-  }
-`;
-
-const DoorBody = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 22px 22px 22px;
-  .k {
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  h3 {
-    margin: 10px 0 0;
-    font-size: clamp(20px, 2.2vw, 25px);
-    line-height: 1.15;
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    color: var(--ink);
-  }
-  p {
-    margin: 12px 0 0;
-    font-size: 15.5px;
-    line-height: 1.6;
-    color: var(--ink-soft);
-  }
-  .go {
-    margin-top: auto;
-    padding-top: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--ink);
-    transition: color 0.2s ease;
-  }
-  .go svg {
-    transition: transform 0.2s ease;
-  }
-`;
-
-const Arrow = () => (
-  <svg width='16' height='16' viewBox='0 0 16 16' fill='none' aria-hidden>
-    <path d='M3 8h9M8.5 3.5 13 8l-4.5 4.5' stroke='currentColor' strokeWidth='1.6' strokeLinecap='round' strokeLinejoin='round' />
-  </svg>
-);
-
-const DOORS = [
-  {
-    k: '01 / Observability',
-    q: 'Why did checkout fail for these customers, and what changed?',
-    a: (
-      <>
-        <b>Discount code missing from the rules table</b> since the 14:02 deploy. 312 orders paid full price. Fix is one row.
-      </>
-    ),
-    title: 'The cause from the code, not a guess from a graph.',
-    body: 'Every trace from every service on day one. When the trace runs out, an engineer or an AI agent asks production what the code did on the failing request and has it in seconds. The cause is found in minutes, without a deploy.',
-    href: '/observability',
-    cta: 'Explore observability',
-  },
-  {
-    k: '02 / Security',
-    q: 'Which of ten thousand permitted calls is the attack, and can we refuse just that one?',
-    a: (
-      <>
-        <b>One reflective call in the ticket service</b>, reached through a normal session. Policy refuses that call. Service still serving.
-      </>
-    ),
-    title: 'Block the attack call. Keep the service.',
-    body: 'An AI-driven attack moves as permitted calls between services. WAF, EDR and SIEM each see a permitted call. Odigos records every call and enforces a policy your team approved: it refuses the call the policy names, and nothing else. The service keeps serving. Scoped to the callers you name, the policy ships and reverts without a redeploy and comes off when the fix lands.',
-    href: '/security',
-    cta: 'Explore security',
-  },
-  {
-    k: '03 / Coding agents',
-    q: 'Did the retry change I shipped at 14:30 do what I meant?',
-    a: (
-      <>
-        <b>No. Every failed payment now retries against the slow region.</b> Latency on payments-api is 3x since the deploy. Revert one flag.
-      </>
-    ),
-    title: 'Wrote it at 14:30. Checked it at 14:31.',
-    body: 'Claude Code, Cursor, Copilot and the agents you build ship faster than anyone can watch. After each deploy they ask the record what their change did on real requests, so the fix is in the next commit, not the next incident. Same approvals, masking and audit as an engineer.',
-    href: '/observability#coding-agents',
-    cta: 'Explore coding agents',
-  },
-];
-
 export const LandingPlatform = () => {
   return (
     <Section>
@@ -538,7 +375,7 @@ export const LandingPlatform = () => {
           <Head>
             <Eyebrow>The platform, in one picture</Eyebrow>
             <h2>
-              Record production once. <span className='mute'>Debug it, defend it, and check what you shipped.</span>
+              Record production once. <span className='mute'>Everything reads from it.</span>
             </h2>
             <p>
               Logs and metrics record what someone predicted would matter. Incidents and attacks are the cases nobody predicted. Odigos keeps one record of what happened inside every running service,
@@ -625,7 +462,7 @@ export const LandingPlatform = () => {
             <Flow>
               <Lane $dir='up' $delay={0.4}>
                 <span className='dot' />
-                <span className='lbl'>our own eBPF · nothing in your code</span>
+                <span className='lbl'>Odigos DeepBPF · nothing in your code</span>
               </Lane>
               <Lane $dir='up' $delay={1.3}>
                 <span className='dot' />
@@ -668,34 +505,6 @@ export const LandingPlatform = () => {
               <span className='note'>and the 4,000 services behind them</span>
             </Prod>
           </Diagram>
-        </Reveal>
-
-        <Reveal delay={140}>
-          <Doors>
-            {DOORS.map((d) => (
-              <Door key={d.href} href={d.href}>
-                <Prompt>
-                  <div className='q'>
-                    <span className='pmt' aria-hidden>❯</span>
-                    <span>{d.q}</span>
-                  </div>
-                  <div className='a'>
-                    <span className='pmt' aria-hidden>✓</span>
-                    <span>{d.a}</span>
-                  </div>
-                </Prompt>
-                <DoorBody>
-                  <span className='k'>{d.k}</span>
-                  <h3>{d.title}</h3>
-                  <p>{d.body}</p>
-                  <span className='go'>
-                    {d.cta}
-                    <Arrow />
-                  </span>
-                </DoorBody>
-              </Door>
-            ))}
-          </Doors>
         </Reveal>
       </Inner>
     </Section>

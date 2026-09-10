@@ -459,6 +459,8 @@ const Evidence = styled.div`
   }
   .live {
     margin-left: auto;
+    flex: none;
+    white-space: nowrap;
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -512,7 +514,7 @@ export const AiVisual = () => (
           <div className='t'>AI agent</div>
           <div className='s'>investigating</div>
         </Node>
-        <Line viewBox='0 0 380 80' preserveAspectRatio='none'>
+        <Line viewBox='0 0 380 80' preserveAspectRatio='none' aria-hidden>
           <path d='M 104 40 L 276 40' />
           <circle r='3.5' />
         </Line>
@@ -534,7 +536,7 @@ export const AiVisual = () => (
         <span>
           <b>stack + 14 spans</b> returned
         </span>
-        <span className='live'>live</span>
+        <span className='live'>in policy</span>
       </Evidence>
     </Flow>
   </Wrap>

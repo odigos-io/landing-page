@@ -67,7 +67,7 @@ export const CUSTOMERS = [
 export const INVESTORS = [
   {
     name: 'Mango capital',
-    description: 'Renowned for their strategic insights in infrastructure and developer tools, Mango Capital empowers our growth with their unparalleled expertise and dedicated support.',
+    description: 'Mango Capital backs our growth with deep expertise in infrastructure and developer tools.',
     url: 'https://mangocapitalinc.com',
     image: '/assets/partners/mango_capital.svg',
   },

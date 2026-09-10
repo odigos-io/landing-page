@@ -256,7 +256,7 @@ export const LandingHowItWorks = () => {
                 <StepTag>Capture</StepTag>
               </StepTop>
               <StepTitle>Inside the application, outside your code</StepTitle>
-              <StepDesc>Our own eBPF runtime reads what happens inside each service as it runs: the code paths taken, the queries made, the values carried. Nothing is wired into your applications.</StepDesc>
+              <StepDesc>Odigos DeepBPF reads what happens inside each service as it runs: the code paths taken, the queries made, the values carried. Nothing is wired into your applications.</StepDesc>
               <Chips>
                 <span className='chip live'>eBPF probe attached</span>
                 <span className='chip'>arguments</span>

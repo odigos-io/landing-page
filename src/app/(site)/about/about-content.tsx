@@ -356,7 +356,7 @@ const MISSION_BEATS = [
   },
   {
     title: 'One record, from outside the process.',
-    body: 'Our own eBPF runtime records what ran inside every service, from outside the process, with nothing in your code. Every language, including legacy Java and stripped Go binaries. Under 1% CPU, exported as OpenTelemetry you own.',
+    body: 'Odigos DeepBPF records what ran inside every service, from outside the process, with nothing in your code. Every language, including legacy Java and stripped Go binaries. Under 1% CPU, exported as OpenTelemetry you own.',
   },
   {
     title: 'One record, every purpose.',
@@ -406,7 +406,7 @@ const AboutContent = () => {
                 <Eyebrow>About Odigos</Eyebrow>
                 <h1>We built the record of what production did.</h1>
                 <p>
-                  Odigos is the production context platform. Our own eBPF runtime records what ran inside every service, on which request, with what inputs and result. Nothing in your code, from
+                  Odigos is the production context platform. Odigos DeepBPF records what ran inside every service, on which request, with what inputs and result. Nothing in your code, from
                   outside the process. Engineers, AI agents and policies your team approved read from that one record.
                 </p>
               </HeroCopy>
@@ -450,7 +450,7 @@ const AboutContent = () => {
               <Head>
                 <Eyebrow>What we build</Eyebrow>
                 <h2>Deep inside the application. Never in it.</h2>
-                <p>Depth used to mean risk. Safety meant shallow. Reading from outside the process with our own eBPF removed that trade-off, at a scale of a million cores.</p>
+                <p>Depth used to mean risk. Safety meant shallow. Reading from outside the process with Odigos DeepBPF removed that trade-off, at the scale a customer benchmarked it, 1.04 million cores.</p>
               </Head>
             </Reveal>
             <ValueGrid>
