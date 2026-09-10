@@ -134,7 +134,7 @@ export const LandingProof = () => {
               <h2>
                 A Fortune 500 measured it on a million cores. <span className='mute'>Cheaper at peak than the bytecode agent it replaced.</span>
               </h2>
-              <p>One of the world's largest retailers built a regression-finding AI agent on the same record.</p>
+              <p>A customer built its own regression-finding AI agent on the same record.</p>
             </Copy>
 
             <Stats>
