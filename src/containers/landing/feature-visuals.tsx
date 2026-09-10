@@ -514,7 +514,7 @@ export const AiVisual = () => (
           <div className='t'>AI agent</div>
           <div className='s'>investigating</div>
         </Node>
-        <Line viewBox='0 0 380 80' preserveAspectRatio='none'>
+        <Line viewBox='0 0 380 80' preserveAspectRatio='none' aria-hidden>
           <path d='M 104 40 L 276 40' />
           <circle r='3.5' />
         </Line>

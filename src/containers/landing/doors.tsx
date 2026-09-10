@@ -91,7 +91,7 @@ const Prompt = styled.div`
     color: #fff;
   }
   .q .pmt {
-    color: var(--accent);
+    color: #8a78f5;
     flex: none;
   }
   .a {
@@ -166,7 +166,7 @@ const DOORS = [
     q: 'Why did checkout fail, and what changed?',
     a: (
       <>
-        <b>BLACK50 missing from the rules table</b> since 14:02. 312 orders paid full price.
+        <b>BLACK50 missing from the rules table</b> since 02:58. 312 orders paid full price.
       </>
     ),
     title: 'Root cause, not a guess.',

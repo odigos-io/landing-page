@@ -79,6 +79,7 @@ const kD3 = sweep(44, 56);
 const Frame = styled.div`
   position: relative;
   animation: ${float} 9s ease-in-out infinite;
+
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -86,7 +87,7 @@ const Frame = styled.div`
 
 const Panel = styled.div`
   --px: 0.15625cqw;
-  --sans: var(--font-sans), system-ui, sans-serif;
+  --sans: var(--font-display), system-ui, sans-serif;
   --mono: var(--font-mono), ui-monospace, monospace;
 
   position: relative;
@@ -441,13 +442,22 @@ const Panel = styled.div`
 
   @media (prefers-reduced-motion: reduce) {
     .alert,
+    .alert .dot,
     .wires path,
     .wires circle,
     .screen,
     .thin .col,
     .thin .foot,
     .dense i,
+    .dense .d1,
+    .dense .d2,
+    .dense .d3,
     .row,
+    .row.r1,
+    .row.r2,
+    .row.r3,
+    .row.r4,
+    .row.r5,
     .rich .lab,
     .rich .big {
       animation: none;
@@ -456,7 +466,13 @@ const Panel = styled.div`
       margin-top: 0;
       stroke-dashoffset: 0;
     }
-    .dense i {
+    .alert .dot {
+      box-shadow: 0 0 0 calc(4 * var(--px)) rgba(255, 93, 143, 0.18);
+    }
+    .dense i,
+    .dense .d1,
+    .dense .d2,
+    .dense .d3 {
       width: 100%;
     }
     .rich .big {

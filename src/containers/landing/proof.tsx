@@ -148,7 +148,7 @@ export const LandingProof = () => {
               </Stat>
               <Stat>
                 <span className='n'>
-                  <em>27.6%</em>
+                  up to <em>27.6%</em>
                 </span>
                 <span className='t'>
                   less CPU. <b>Same traces, their hardware.</b>

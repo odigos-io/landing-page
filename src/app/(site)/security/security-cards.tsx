@@ -455,7 +455,7 @@ const CARDS = [
         Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
       </>
     ),
-    desc: 'Kernel sensors see the outside of your app: a socket, a file. Odigos sees inside it: which function ran, what it was handed, what it returned, in every service and language. Nothing in your code, nothing in your process, under 1% CPU across more than a million cores.',
+    desc: 'Kernel sensors see the outside of your app: a socket, a file. Odigos DeepBPF sees inside it: which function ran, what it was handed, what it returned, in every service and language. Nothing in your code, nothing in your process, under 1% CPU when a customer benchmarked it on 1.04 million cores.',
     visual: <XrayArt />,
   },
   {

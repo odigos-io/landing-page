@@ -177,32 +177,6 @@ export type FeatureItem = {
   tags: string[];
 };
 
-/* Home: what production context has to be before an agent can act on it.
-   Written for the people who buy the platform, not the people who wire it. */
-const FEATURES: FeatureItem[] = [
-  {
-    cap: 'Complete',
-    title: 'Every service on day one. Even the ones nobody owns.',
-    desc: 'One install covers the estate: the modern services, the fifteen-year-old Java, the stripped Go binaries most tools skip, the third-party code with no owner. No code changes, no rollout program, no team left to instrument by hand. Whoever asks sees all of production, not the parts someone got to.',
-    visual: <BinaryVisual />,
-    tags: ['every language', 'legacy and modern', 'no code changes'],
-  },
-  {
-    cap: 'Odigos Autofocus',
-    title: 'It senses where the fire is, and looks there first.',
-    desc: 'The moment a service drifts, Odigos Autofocus starts capturing deeper evidence on that path: what the code did, with what inputs, on the requests that failed. By the time anyone asks, the answer is already there. Ask about anything else and it captures that too, in seconds, with no redeploy. Inside the limits your team approved, every capture audited.',
-    visual: <AiVisual />,
-    tags: ['Autofocus', 'answered in seconds', 'no redeploys'],
-  },
-  {
-    cap: 'Safe',
-    title: 'Out of process. Out of your blast radius.',
-    desc: 'Odigos never enters your process. A bad question, or a bad release of ours, reaches our sensor and stops there. Every capture names the workload and the code it may read, has a named approver under role-based access, masks sensitive values before anything leaves your cluster, and lands in your audit trail. AI agents work inside the same limits as your engineers, and every question they ask is logged. Policies are written and approved by people.',
-    visual: <SafeVisual />,
-    tags: ['out of process', 'named approver', 'audited, masked in-cluster'],
-  },
-];
-
 /* Technology page: the same three rows, written for engineers. */
 export const TECH_FEATURES: FeatureItem[] = [
   {
@@ -222,9 +196,9 @@ export const TECH_FEATURES: FeatureItem[] = [
   {
     cap: 'Safe on all of production',
     title: 'Out of process. Out of your blast radius.',
-    desc: 'Other ways of getting this depth run inside your process, one bad agent release away from taking the app down with it. Ours never touches your process. Under 1% CPU, safe to leave on across the whole estate, with RBAC and policy controls over what may be captured and by whom.',
+    desc: 'Other ways of getting this depth run inside your process, one bad in-process agent release away from taking the app down with it. Ours never touches your process. Under 1% CPU, safe to leave on across the whole estate, with RBAC and policy controls over what may be captured and by whom.',
     visual: <SafeVisual />,
-    tags: ['out of process', 'no agent in your app', 'RBAC & governance'],
+    tags: ['out of process', 'no in-process agent', 'RBAC & governance'],
   },
 ];
 
@@ -277,12 +251,3 @@ export const FeatureRows = ({ eyebrow, title, lede, items }: RowsProps) => {
     </Section>
   );
 };
-
-export const LandingFeatures = () => (
-  <FeatureRows
-    eyebrow='What production context means'
-    title='Three things telemetry was never built to do.'
-    lede='They decide whether production answers, or someone guesses. For an engineer, a security policy, or the agent that wrote the code.'
-    items={FEATURES}
-  />
-);

@@ -127,7 +127,7 @@ const Body = styled.div`
 const CARDS: { title: string; body: string; visual: React.ReactNode; scale?: number }[] = [
   {
     title: 'Every service on day one',
-    body: 'Every language, every version, every binary. Even the ones nobody owns. One command. Nothing in your code.',
+    body: 'Every language, every version, every binary. Even the ones nobody owns. One command.',
     visual: <BinaryVisual />,
     scale: 0.66,
   },

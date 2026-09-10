@@ -141,7 +141,7 @@ const FINDS = [
     q: 'Why did every order with BLACK50 pay full price?',
     a: (
       <>
-        <b>BLACK50 is missing from the rules table.</b> The discount path returns zero, silently, for 312 orders since 14:02.
+        <b>BLACK50 is missing from the rules table.</b> The discount path returns zero, silently, for 312 orders since 02:58.
       </>
     ),
     t: 'seconds · no deploy',
@@ -223,7 +223,7 @@ export const ObservabilityContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>What agents find</Eyebrow>
+                <Eyebrow>What AI agents find</Eyebrow>
                 <h2>
                   Three incidents. <span className='mute'>Zero deploys.</span>
                 </h2>

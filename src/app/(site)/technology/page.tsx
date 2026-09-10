@@ -4,7 +4,7 @@ import { SOFTWARE_LD, ldScript } from '@/constants';
 import { TechnologyContent } from './technology-content';
 
 const TITLE = 'Odigos Technology: eBPF that sees inside the application.';
-const DESC = 'Odigos DeepBPF, our own eBPF runtime, reads what happens inside a running process, in every language, with nothing loaded into your application. Function-level depth, Odigos Autofocus that captures deeper the moment a service drifts, exported as OpenTelemetry, under 1% CPU.';
+const DESC = 'Odigos DeepBPF reads what happens inside a running process, in every language, with nothing loaded into your application. Function-level depth, Odigos Autofocus that captures deeper the moment a service drifts, exported as OpenTelemetry, under 1% CPU.';
 const URL = 'https://odigos.io/technology';
 const OG = '/og.png';
 

@@ -2,7 +2,8 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { LandingHeader, LandingFooter, LandingProduct, LandingHowItWorks, LandingCTA, LandingPlatform, FeatureRows, TECH_FEATURES } from '@/containers/landing';
+import { LandingHeader, LandingFooter, LandingProduct, LandingHowItWorks, LandingCTA, FeatureRows, TECH_FEATURES } from '@/containers/landing';
+import { LandingPlatform } from '@/containers/landing/platform';
 import { PageHero } from '@/containers/landing/page-hero';
 import { HeroArt, TECHNOLOGY_STORY } from '@/containers/landing/hero-art';
 import { Container, Eyebrow, Reveal, TrialCTA } from '@/containers/landing/primitives';

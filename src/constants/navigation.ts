@@ -63,7 +63,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: 'Observability', href: '/observability', blurb: 'Engineers and AI agents ask production for root cause' },
       { label: 'Security', href: '/security', blurb: 'A policy your team approved blocks the attack call' },
       { label: 'Technology', href: '/technology', blurb: 'Odigos DeepBPF, and what it reads inside the process' },
-      { label: 'Comparisons', href: '/comparisons', blurb: 'How the approaches actually differ' },
+      { label: 'Comparisons', href: '/comparisons', blurb: 'How the approaches differ' },
     ],
   },
   {
