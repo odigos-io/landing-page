@@ -3,8 +3,9 @@ import React from 'react';
 import { SOFTWARE_LD, ldScript } from '@/constants';
 import { TechnologyContent } from './technology-content';
 
-const TITLE = 'Odigos Technology: eBPF that sees inside the application.';
-const DESC = 'Odigos DeepBPF reads what happens inside a running process, in every language, with nothing loaded into your application. Function-level depth, under 1% CPU.';
+const TITLE = 'Deep Application Visibility. Outside the Process. | Odigos DeepBPF';
+const DESC =
+  'Odigos DeepBPF captures functions, arguments and return values across Java, Python, Node.js, Go and .NET from outside the application, using kernel-verified eBPF.';
 const URL = 'https://odigos.io/technology';
 const OG = '/og.png';
 

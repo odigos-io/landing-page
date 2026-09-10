@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { CUSTOMERS } from '@/constants';
 import { Container } from './primitives';
 
@@ -26,25 +26,65 @@ const Label = styled.p`
   color: var(--ink-mute);
 `;
 
-const Wall = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 36px 8px;
+const travel = keyframes`
+  to { transform: translateX(-50%); }
+`;
+
+const Viewport = styled.div`
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+  &:hover > div {
+    animation-play-state: paused;
+  }
   @media (max-width: 520px) {
-    gap: 28px 4px;
+    mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    mask-image: none;
   }
 `;
 
-const Logo = styled.div`
-  flex: 0 0 176px;
+const Track = styled.div`
+  display: flex;
+  width: max-content;
+  animation: ${travel} 36s linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    width: 100%;
+  }
+`;
+
+const Group = styled.ul`
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  @media (prefers-reduced-motion: reduce) {
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px 0;
+    &[aria-hidden='true'] {
+      display: none;
+    }
+  }
+`;
+
+const Logo = styled.li`
+  flex: 0 0 184px;
+  width: 184px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 34px;
+  height: 42px;
   @media (max-width: 520px) {
-    flex-basis: 44%;
+    flex-basis: 152px;
+    width: 152px;
+  }
+  @media (max-width: 520px) and (prefers-reduced-motion: reduce) {
+    flex-basis: 50%;
   }
   img {
     filter: brightness(0);
@@ -62,16 +102,22 @@ const Logo = styled.div`
 
 export const LandingLogos = () => {
   return (
-    <Section>
+    <Section aria-label='Customers'>
       <Inner>
-          <Label>Running in production at</Label>
-          <Wall>
-            {CUSTOMERS.map(({ src, alt, width, height }) => (
-              <Logo key={alt} aria-label={alt}>
-                <Image src={src} alt={alt} width={Math.round(width * 0.82)} height={Math.round(height * 0.82)} />
-              </Logo>
+        <Label>Running in production at</Label>
+        <Viewport>
+          <Track>
+            {[false, true].map((duplicate) => (
+              <Group key={String(duplicate)} aria-hidden={duplicate || undefined}>
+                {CUSTOMERS.map(({ src, alt, width, height }) => (
+                  <Logo key={alt}>
+                    <Image src={src} alt={duplicate ? '' : alt} width={Math.round(width * 0.82)} height={Math.round(height * 0.82)} />
+                  </Logo>
+                ))}
+              </Group>
             ))}
-          </Wall>
+          </Track>
+        </Viewport>
       </Inner>
     </Section>
   );

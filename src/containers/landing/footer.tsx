@@ -132,7 +132,7 @@ export const LandingFooter = () => {
       <Top>
         <Brand>
           <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={128} height={29} />
-          <p>The production context platform. Odigos records what ran inside every service, live, with nothing in your code, for the engineers, AI agents and security policies that run production. Exported as OpenTelemetry you own.</p>
+          <p>The Production Context Platform. Give AI the power to investigate production.</p>
           <Socials>
             <Social href={GITHUB_LINK} target='_blank' aria-label='GitHub'>
               <Image src='/assets/github.svg' alt='GitHub' width={17} height={17} />
@@ -148,8 +148,10 @@ export const LandingFooter = () => {
 
         <Col>
           <h3>Platform</h3>
+          <Link href='/'>Overview</Link>
           <Link href='/observability'>Observability</Link>
           <Link href='/security'>Security</Link>
+          <Link href='/coding-agents'>Coding Agents</Link>
           <Link href='/technology'>Technology</Link>
           <Link href='/pricing'>Pricing</Link>
           <Link href='/roi-calculator'>ROI Calculator</Link>

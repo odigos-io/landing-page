@@ -1,17 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  LandingHeader,
-  LandingHero,
-  LandingLogos,
-  LandingOldWay,
-  LandingFit,
-  LandingDoors,
-  LandingBlogs,
-  LandingCTA,
-  LandingFooter,
-} from '@/containers/landing';
+import { LandingHeader, LandingHero, LandingLogos, LandingOldWay, LandingFit, LandingDoors, LandingCTA, LandingFooter } from '@/containers/landing';
 
 const HomeContent = () => {
   return (
@@ -20,11 +10,10 @@ const HomeContent = () => {
       <main>
         <LandingHero />
         <LandingLogos />
-        <LandingOldWay />
         <LandingFit />
+        <LandingOldWay />
         <LandingDoors />
         <LandingCTA />
-        <LandingBlogs />
       </main>
       <LandingFooter />
     </div>

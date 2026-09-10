@@ -2,502 +2,724 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Container, Eyebrow, Reveal } from '@/containers/landing/primitives';
-import { DeployScene, Scene, TOOLS } from './security-figures';
-import { NoShadowArt, ConstellationArt, XrayArt, ThreeCutsArt } from './security-card-art';
-
-/* Four things, in the home page's card language: text beside a panel,
-   alternating, each panel one compact picture. */
+import { Container } from '@/containers/landing/primitives';
 
 const Section = styled.section`
   background: var(--paper-3);
   border-bottom: 1px solid var(--line);
 `;
-
 const Inner = styled(Container)`
-  padding-top: 96px;
-  padding-bottom: 96px;
-  @media (max-width: 1000px) {
-    padding-top: 64px;
-    padding-bottom: 64px;
+  padding-top: 88px;
+  padding-bottom: 88px;
+  @media (max-width: 850px) {
+    padding-top: 60px;
+    padding-bottom: 60px;
   }
 `;
-
 const Head = styled.div`
   max-width: 880px;
-  margin-bottom: 64px;
-  @media (max-width: 1000px) {
-    margin-bottom: 44px;
-  }
   h2 {
-    margin: 18px 0 0;
-    font-size: clamp(28px, 3.6vw, 46px);
-    line-height: 1.06;
+    margin: 0;
+    max-width: 25ch;
+    font-size: clamp(30px, 3.8vw, 48px);
+    line-height: 1.08;
     font-weight: 600;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
     color: var(--ink);
   }
+  p {
+    max-width: 65ch;
+    margin: 24px 0 0;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
 `;
-
-const Rows = styled.div`
+const Inspection = styled.figure`
+  margin: 44px 0 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--paper-2);
+  box-shadow: var(--shadow-soft);
+  figcaption {
+    padding: 16px 28px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-mute);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  @media (max-width: 600px) {
+    margin-top: 32px;
+    figcaption {
+      padding: 16px 22px;
+    }
+  }
+`;
+const Request = styled.div`
+  padding: 22px 28px;
   display: flex;
-  flex-direction: column;
-  gap: 28px;
-`;
-
-const Row = styled.article<{ $flip: boolean }>`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 56px;
-  padding: 36px 0;
-  border-top: 1px solid var(--line);
+  justify-content: space-between;
+  gap: 14px 24px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  strong {
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  code {
+    font-family: var(--font-mono), monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  @media (max-width: 600px) {
+    padding: 20px 22px;
+  }
+`;
+const InspectionBody = styled.div`
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
   > * {
     min-width: 0;
   }
-  & > .text {
-    order: ${({ $flip }) => ($flip ? 2 : 1)};
-  }
-  & > .visual {
-    order: ${({ $flip }) => ($flip ? 1 : 2)};
-  }
-  @media (max-width: 1000px) {
+  @media (max-width: 850px) {
     grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 28px 0;
-    & > .text,
-    & > .visual {
-      order: unset;
-    }
   }
 `;
-
-const Text = styled.div`
-  .idx {
-    font-family: var(--font-mono), monospace;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    color: var(--ink-faint);
-  }
+const Path = styled.div`
+  padding: 34px 32px;
   h3 {
-    margin: 16px 0 0;
-    font-size: clamp(22px, 2.5vw, 29px);
-    line-height: 1.14;
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.2;
     font-weight: 600;
-    letter-spacing: -0.025em;
-    color: var(--ink);
-    max-width: 22ch;
+    letter-spacing: -0.02em;
   }
-  h3 .mute {
-    color: var(--ink-faint);
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 28px 0 0;
   }
-  p {
-    margin: 16px 0 0;
-    font-size: 16.5px;
-    line-height: 1.6;
-    color: var(--ink-soft);
-    max-width: 46ch;
+  li {
+    position: relative;
+    padding: 0 0 28px 23px;
+    margin-left: 4px;
+    border-left: 1px solid var(--line-strong);
   }
-`;
-
-
-const Panel = styled.div`
-  position: relative;
-  border-radius: var(--r-lg);
-  background: linear-gradient(180deg, var(--paper-2), var(--paper));
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-soft);
-  overflow: hidden;
-  aspect-ratio: 1.45 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 18px 14px;
-  @media (max-width: 700px) {
-    aspect-ratio: auto;
-    min-height: 240px;
-    padding: 40px 10px 12px;
-  }
-
-  &::before {
+  li::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 38px 38px;
-    -webkit-mask-image: radial-gradient(80% 80% at 50% 50%, #000, transparent 78%);
-    mask-image: radial-gradient(80% 80% at 50% 50%, #000, transparent 78%);
-  }
-  > * {
-    position: relative;
-    z-index: 1;
-  }
-  /* every panel is the same box; the art scales to fit it */
-  > svg {
-    height: 100%;
-    width: auto;
-    max-width: 100%;
-  }
-`;
-
-const PanelCap = styled.div`
-  position: absolute;
-  top: 14px;
-  left: 16px;
-  z-index: 2;
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  &::before {
-    content: '';
-    width: 5px;
-    height: 5px;
+    top: 6px;
+    left: -4px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: var(--signal);
+    background: #92909a;
   }
-`;
-
-/* ---- 1. what each tool sees ---- */
-const Tiles = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-`;
-
-const Tile = styled.div`
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--paper-2);
-  overflow: hidden;
-  .scene {
+  li:last-child {
+    padding-bottom: 0;
+    border-color: transparent;
+  }
+  li:last-child::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  li strong {
     display: block;
-    width: 100%;
-    aspect-ratio: 120 / 64;
+    margin-bottom: 7px;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 500;
+    color: var(--ink);
   }
-  .cap {
-    display: flex;
-    gap: 8px;
-    align-items: baseline;
-    padding: 7px 10px 9px;
-    border-top: 1px solid var(--line);
-    font-size: 11px;
-    line-height: 1.35;
-    color: var(--ink-faint);
-    b {
-      font-family: var(--font-mono), monospace;
-      font-size: 9.5px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: var(--ink);
-      flex: none;
+  code {
+    display: block;
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-mute);
+    overflow-wrap: anywhere;
+  }
+  li:last-child code {
+    color: var(--accent);
+  }
+  .selected {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  @media (max-width: 600px) {
+    padding: 28px 22px;
+  }
+`;
+const Evidence = styled.div`
+  padding: 34px 32px;
+  background: var(--panel);
+  color: var(--panel-ink);
+  .label {
+    display: block;
+    margin-bottom: 14px;
+    color: #c1b9dd;
+    font-size: 13px;
+  }
+  h3 {
+    margin: 0;
+    font-size: 23px;
+    line-height: 1.25;
+    font-weight: 600;
+    color: #fff;
+    overflow-wrap: anywhere;
+  }
+  dl {
+    margin: 28px 0 0;
+  }
+  dl > div {
+    padding: 18px 0;
+    border-top: 1px solid #34333d;
+  }
+  dt {
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #c1becb;
+  }
+  dd {
+    margin: 0;
+    font-family: var(--font-mono), monospace;
+    font-size: 14px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+  .sensitive {
+    color: #f6a4bf;
+  }
+  p {
+    margin: 12px 0 0;
+    color: #c1becb;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  p strong {
+    color: #fff;
+    font-weight: 500;
+  }
+  @media (max-width: 600px) {
+    padding: 28px 22px;
+    h3 {
+      font-size: 21px;
     }
   }
 `;
-
-const ToolTiles = () => (
-  <Tiles>
-    {TOOLS.filter((t) => !t.us).map((t) => (
-      <Tile key={t.k}>
-        <Scene sees={t.sees} />
-        <div className='cap'>
-          <b>{t.k}</b>
-          <span>{t.note}</span>
-        </div>
-      </Tile>
-    ))}
-  </Tiles>
-);
-
-/* ---- 2. one request, today ---- */
-const Trace = styled.div`
-  width: 100%;
-  max-width: 460px;
-  border: 1px solid rgba(201, 52, 106, 0.28);
-  border-radius: 12px;
+const Scope = styled.section`
+  margin-top: 76px;
+  h3 {
+    margin: 0;
+    max-width: 30ch;
+    font-size: clamp(27px, 3.2vw, 40px);
+    line-height: 1.12;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  > p {
+    margin: 20px 0 0;
+    max-width: 70ch;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 850px) {
+    margin-top: 52px;
+  }
+`;
+const ServiceMap = styled.figure`
+  margin: 32px 0 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
   background: var(--paper-2);
-  box-shadow: var(--shadow-lift);
   overflow: hidden;
-`;
-
-const TraceHead = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(201, 52, 106, 0.05);
-  font-family: var(--font-mono), monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--hot-ink);
-  .n {
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--ink-faint);
+  .map-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px 28px;
+    flex-wrap: wrap;
+    padding: 19px 28px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-mute);
   }
-`;
-
-const TraceRow = styled.div<{ $d: number; $tag?: string }>`
-  display: grid;
-  grid-template-columns: 44px 1fr auto;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 14px 6px ${({ $d }) => 14 + $d * 14}px;
-  border-bottom: 1px solid var(--line);
-  background: ${({ $tag }) => ($tag?.endsWith('refused') ? 'rgba(91,67,241,0.06)' : $tag ? 'rgba(201,52,106,0.05)' : 'transparent')};
-  &:last-child {
-    border-bottom: none;
+  .map-heading strong {
+    color: var(--ink);
+    font-weight: 500;
   }
-  .svc {
+  .map {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr 1.15fr;
+    align-items: center;
+    gap: 40px;
+    padding: 36px 28px;
+  }
+  .map > * {
+    min-width: 0;
+  }
+  .node {
+    position: relative;
+    padding: 20px;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--paper);
+  }
+  .node h4 {
+    margin: 0;
     font-family: var(--font-mono), monospace;
-    font-size: 8.5px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #8892ab;
-  }
-  .fn {
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    color: ${({ $tag }) => ($tag?.endsWith('refused') ? 'var(--accent)' : $tag ? 'var(--hot-ink)' : 'var(--ink)')};
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 500;
     overflow-wrap: anywhere;
   }
-  .tag {
-    font-family: var(--font-mono), monospace;
-    font-size: 8.5px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    padding: 2px 7px;
-    border-radius: 999px;
-    color: ${({ $tag }) => ($tag?.endsWith('refused') ? '#fff' : 'var(--hot-ink)')};
-    background: ${({ $tag }) => ($tag?.endsWith('refused') ? 'var(--accent)' : 'rgba(201,52,106,0.1)')};
+  .node p {
+    margin: 7px 0 0;
+    color: var(--ink-soft);
+    font-size: 13px;
+    line-height: 1.6;
   }
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr auto;
-    .svc {
+  .node .connection {
+    margin-bottom: 9px;
+    color: var(--ink-mute);
+    font-size: 12px;
+  }
+  .affected {
+    border: 1.5px solid var(--hot-ink);
+    background: rgba(201, 52, 106, 0.06);
+  }
+  .affected .state {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--hot-ink);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .affected h4 {
+    font-size: 17px;
+  }
+  .gateway::after,
+  .affected::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 40px;
+    border-top: 1px solid var(--ink-faint);
+  }
+  .affected::after {
+    width: 20px;
+  }
+  .peers {
+    position: relative;
+    display: grid;
+    gap: 16px;
+  }
+  .peers::before {
+    content: '';
+    position: absolute;
+    top: 56px;
+    bottom: 56px;
+    left: -20px;
+    border-left: 1px solid var(--ink-faint);
+  }
+  .peers .node::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    width: 20px;
+    border-top: 1px solid var(--ink-faint);
+  }
+  .peers .node {
+    padding: 16px 18px;
+  }
+  .peers .review {
+    display: block;
+    margin-top: 7px;
+    color: var(--ink-mute);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  figcaption {
+    padding: 18px 28px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  figcaption strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  @media (max-width: 850px) {
+    .map {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .affected {
+      grid-column: 1 / -1;
+      grid-row: 1;
+    }
+    .gateway {
+      align-self: start;
+    }
+    .gateway::after,
+    .affected::after,
+    .peers::before,
+    .peers .node::before {
       display: none;
     }
   }
-`;
-
-const OBSERVED = [
-  { svc: 'edge', fn: 'POST /api/tickets', d: 0 },
-  { svc: 'edge', fn: 'fetch(url)', d: 1, tag: 'ssrf' },
-  { svc: 'api', fn: 'TicketController.create', d: 1 },
-  { svc: 'api', fn: 'TemplateRenderer.render', d: 2 },
-  { svc: 'api', fn: 'SpelExpressionParser.parse', d: 3, tag: 'new · cve' },
-  { svc: 'api', fn: 'ReflectiveMethodExecutor.execute', d: 3, tag: 'new' },
-  { svc: 'worker', fn: 'Job.run', d: 2, tag: 'zero-day · refused' },
-];
-
-const TraceCard = () => (
-  <Trace>
-    <TraceHead>
-      <span>today · one request</span>
-      <span className='n'>every line allowed on its own</span>
-    </TraceHead>
-    {OBSERVED.map((r, i) => (
-      <TraceRow key={i} $d={r.d} $tag={r.tag}>
-        <span className='svc'>{r.svc}</span>
-        <span className='fn'>{r.fn}</span>
-        {r.tag ? <span className='tag'>{r.tag}</span> : <span />}
-      </TraceRow>
-    ))}
-  </Trace>
-);
-
-/* ---- 4. the finding, and the policy it becomes ---- */
-const Finding = styled.div`
-  width: 100%;
-  max-width: 440px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--paper-2);
-  box-shadow: var(--shadow-lift);
-  overflow: hidden;
-`;
-
-const FindingBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper-3);
-  font-family: var(--font-mono), monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  .hot {
-    color: var(--hot-ink);
-  }
-`;
-
-const Field = styled.div<{ $hot?: boolean }>`
-  display: grid;
-  grid-template-columns: 74px 1fr;
-  gap: 10px;
-  align-items: baseline;
-  padding: 7px 14px;
-  background: ${({ $hot }) => ($hot ? 'rgba(201,52,106,0.06)' : 'transparent')};
-  > * {
-    min-width: 0;
-  }
-  .k {
-    font-family: var(--font-mono), monospace;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .v {
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    line-height: 1.45;
-    overflow-wrap: anywhere;
-    color: ${({ $hot }) => ($hot ? 'var(--hot-ink)' : 'var(--ink)')};
-  }
-`;
-
-const FindingFoot = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 9px 14px;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  color: var(--ink-faint);
-  .act {
-    color: var(--accent);
-    font-weight: 500;
-  }
-`;
-
-const EVIDENCE = [
-  { k: 'service', v: 'tickets-api · java' },
-  { k: 'function', v: 'SpelExpressionParser.parse' },
-  { k: 'called with', v: '"${T(java.lang.System).getenv(\'DATABASE_URL\')}"', hot: true },
-  { k: 'returned', v: '"postgres://svc_worker:••••••••@prod-db-01/appdb"', hot: true },
-  { k: 'reached by', v: 'POST /api/tickets · an ordinary customer session' },
-];
-
-const FindingCard = () => (
-  <Finding>
-    <FindingBar>
-      <span>finding · example</span>
-      <span className='hot'>secret read · recorded</span>
-    </FindingBar>
-    {EVIDENCE.map((r) => (
-      <Field key={r.k} $hot={r.hot}>
-        <span className='k'>{r.k}</span>
-        <span className='v'>{r.v}</span>
-      </Field>
-    ))}
-    <FindingFoot>
-      <span className='act'>block this call</span>
-      <span>one function, no redeploy</span>
-    </FindingFoot>
-  </Finding>
-);
-
-/* ---- 3. where it attaches ---- */
-const DeployWrap = styled.div`
-  width: 100%;
-  /* on a phone the drawing keeps its size and scrolls sideways inside the panel */
-  @media (max-width: 700px) {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
-    mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent calc(100% - 6px));
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent calc(100% - 6px));
-    > svg {
-      min-width: 560px;
+  @media (max-width: 560px) {
+    .map {
+      grid-template-columns: 1fr;
+      padding: 24px 22px;
+      gap: 16px;
+    }
+    .map-heading,
+    figcaption {
+      padding-left: 22px;
+      padding-right: 22px;
     }
   }
 `;
-
-const CARDS = [
-  {
-    cap: 'what your tools look for',
-    title: (
-      <>
-        Your tools see side effects. <span className='mute'>A targeted attack has none.</span>
-      </>
-    ),
-    desc: 'A WAF waits for a bad request. EDR waits for an odd file. A SIEM waits for a wrong log line. ADR watches one process. A precise attack gives them nothing, because it moves as permitted calls across services. Odigos reads the calls.',
-    visual: <NoShadowArt />,
-  },
-  {
-    cap: 'every check green, one attack',
-    title: (
-      <>
-        Every step looks legitimate. <span className='mute'>The whole transaction is the attack.</span>
-      </>
-    ),
-    desc: 'One service resolves an identifier. Another loads the record it was handed. A third returns it. Each call is valid on its own and normal for the service that made it. The attack lives in the order and the arguments, a view your other tools do not keep.',
-    visual: <ConstellationArt />,
-  },
-  {
-    cap: 'the same process, two ways of seeing',
-    title: (
-      <>
-        Ordinary eBPF sees the kernel. <span className='mute'>Odigos sees the function.</span>
-      </>
-    ),
-    desc: 'Kernel sensors see the outside of your app: a socket, a file. Odigos DeepBPF sees inside it: which function ran, what it was handed, what it returned, in every service and language. Nothing in your code, nothing in your process, under 1% CPU when a customer benchmarked it on 1.04 million cores.',
-    visual: <XrayArt />,
-  },
-  {
-    cap: 'what each response costs you',
-    title: (
-      <>
-        Block one function. <span className='mute'>The service stays up.</span>
-      </>
-    ),
-    desc: 'Kill the process and every request on that service fails. Kill the thread and the request dies. Refuse the one call and nothing else notices. The service keeps serving. The policy your team approved ships and reverts without a redeploy.',
-    visual: <ThreeCutsArt />,
-  },
-];
+const Response = styled.div`
+  margin-top: 76px;
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: center;
+  gap: 56px;
+  > * {
+    min-width: 0;
+  }
+  @media (max-width: 850px) {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 44px;
+  }
+`;
+const ResponseCopy = styled.div`
+  h3 {
+    margin: 0;
+    max-width: 24ch;
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.12;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  p {
+    margin: 20px 0 0;
+    max-width: 53ch;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  p strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .lifecycle {
+    font-size: 14px;
+    color: var(--ink-mute);
+  }
+`;
+const Policy = styled.div`
+  padding: 26px 28px;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-lg);
+  background: var(--paper-2);
+  h4 {
+    margin: 0 0 22px;
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  dl {
+    margin: 0;
+  }
+  dl > div {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+  dt {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+  dd {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  dd code {
+    font-family: var(--font-mono), monospace;
+    font-size: 12.5px;
+  }
+  .outcome {
+    margin-top: 12px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-strong);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .outcome strong {
+    color: var(--signal-ink);
+    font-weight: 600;
+  }
+  @media (max-width: 600px) {
+    padding: 24px 22px;
+    dl > div {
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+  }
+`;
+const BroaderResponse = styled.div`
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line-strong);
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 56px;
+  > * {
+    min-width: 0;
+  }
+  h4 {
+    margin: 0;
+    max-width: 26ch;
+    font-size: 22px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  p {
+    margin: 12px 0 0;
+    max-width: 49ch;
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  dl {
+    margin: 0;
+  }
+  dl > div + div {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  dt {
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 600;
+  }
+  dd {
+    margin: 8px 0 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  @media (max-width: 850px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+`;
 
 export const SecurityCards = () => (
-  <Section>
+  <Section aria-labelledby='security-investigation-title'>
     <Inner>
-      <Reveal>
-        <Head>
-          <Eyebrow>Inside the process</Eyebrow>
-          <h2>See every call. Block the malicious one.</h2>
-        </Head>
-      </Reveal>
-      <Rows>
-        {CARDS.map((f, i) => (
-          <Reveal key={f.cap}>
-            <Row $flip={i % 2 === 1}>
-              <Text className='text'>
-                <span className='idx'>{String(i + 1).padStart(2, '0')} / 04</span>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-              </Text>
-              <div className='visual'>
-                <Panel>
-                  <PanelCap>{f.cap}</PanelCap>
-                  {f.visual}
-                </Panel>
+      <Head>
+        <h2 id='security-investigation-title'>Understand the attack.</h2>
+        <p>
+          Connect the incoming request to the application actions it triggered and the data it reached. Your security team and AI investigators get the
+          evidence to establish what happened and choose a response.
+        </p>
+      </Head>
+
+      <Inspection>
+        <Request>
+          <strong>Example: a request reaches a database secret</strong>
+          <code>POST /api/tickets</code>
+        </Request>
+        <InspectionBody>
+          <Path>
+            <h3>How the request reached the secret</h3>
+            <ol>
+              <li>
+                <strong>A customer submits a support ticket.</strong>
+                <code>
+                  TicketController.
+                  <wbr />
+                  create
+                </code>
+              </li>
+              <li>
+                <strong>The application renders the supplied text.</strong>
+                <code>
+                  TemplateRenderer.
+                  <wbr />
+                  render
+                </code>
+              </li>
+              <li>
+                <strong>The template reads a database secret.</strong>
+                <code>
+                  EnvironmentLookup.
+                  <wbr />
+                  read
+                </code>
+                <span className='selected'>Observed access to sensitive information</span>
+              </li>
+            </ol>
+          </Path>
+          <Evidence>
+            <span className='label'>What the captured evidence shows</span>
+            <h3>A database credential was read.</h3>
+            <dl>
+              <div>
+                <dt>Requested secret</dt>
+                <dd>&quot;DATABASE_URL&quot;</dd>
               </div>
-            </Row>
-          </Reveal>
-        ))}
-      </Rows>
+              <div>
+                <dt>Returned credential · redacted for this example</dt>
+                <dd className='sensitive'>&quot;postgres://[masked]/appdb&quot;</dd>
+              </div>
+            </dl>
+            <p>
+              <strong>That credential could give access to database data.</strong> Check whether it was used beyond this request and whether database data
+              was exposed.
+            </p>
+          </Evidence>
+        </InspectionBody>
+        <figcaption>Illustrative investigation. Application functions, request details and values are examples.</figcaption>
+      </Inspection>
+
+      <Scope aria-labelledby='security-scope-title'>
+        <h3 id='security-scope-title'>Assess the blast radius.</h3>
+        <p>
+          Odigos maps all communications with the affected service. See which connected systems and data may also be at risk, and use those connections to
+          decide where to investigate next.
+        </p>
+        <ServiceMap>
+          <div className='map-heading'>
+            <strong>Connections to the affected service</strong>
+            <span>Illustrative service map</span>
+          </div>
+          <div className='map'>
+            <div className='node gateway'>
+              <p className='connection'>Incoming requests</p>
+              <h4>api-gateway</h4>
+              <p>Forwards customer requests to tickets-api.</p>
+            </div>
+            <div className='node affected'>
+              <span className='state'>Affected service</span>
+              <h4>tickets-api</h4>
+              <p>A database credential was accessed in this service.</p>
+            </div>
+            <div className='peers'>
+              <div className='node'>
+                <p className='connection'>Database communication</p>
+                <h4>appdb</h4>
+                <span className='review'>Check whether the credential was used to access data.</span>
+              </div>
+              <div className='node'>
+                <p className='connection'>Service requests</p>
+                <h4>identity-api</h4>
+                <span className='review'>Inspect requests from the affected service.</span>
+              </div>
+              <div className='node'>
+                <p className='connection'>Messaging</p>
+                <h4>notification-worker</h4>
+                <span className='review'>Review messages sent along this path.</span>
+              </div>
+            </div>
+          </div>
+          <figcaption>
+            <strong>The secret access is confirmed in this example. Exposure of connected systems is still unconfirmed.</strong> These connections identify
+            where to investigate; they do not by themselves prove data theft or compromise.
+          </figcaption>
+        </ServiceMap>
+      </Scope>
+
+      <Response>
+        <ResponseCopy>
+          <h3>Contain the threat.</h3>
+          <p>
+            <strong>Function-level virtual patching blocks the application operation the attack depends on.</strong> Your team approves a rule that stops
+            matching calls, so you can apply the mitigation before a code release.
+          </p>
+          <p>
+            Review which legitimate requests also use that operation. A targeted rule can leave other service traffic running while your team prepares the
+            permanent fix.
+          </p>
+          <p className='lifecycle'>Deploy or revert the virtual patch as needed. Remove it when the permanent fix is deployed.</p>
+        </ResponseCopy>
+        <Policy>
+          <h4>Example virtual patch: block template access to environment variables</h4>
+          <dl>
+            <div>
+              <dt>Block</dt>
+              <dd>Environment-variable lookups from the template-rendering code</dd>
+            </div>
+            <div>
+              <dt>Function</dt>
+              <dd>
+                <code>
+                  EnvironmentLookup.
+                  <wbr />
+                  read
+                </code>
+              </dd>
+            </div>
+            <div>
+              <dt>Called by</dt>
+              <dd>
+                <code>
+                  TemplateRenderer.
+                  <wbr />
+                  render
+                </code>
+              </dd>
+            </div>
+          </dl>
+          <div className='outcome'>
+            The rule blocks these lookups, including the observed database-secret read. <strong>Other service traffic can continue.</strong>
+          </div>
+        </Policy>
+      </Response>
+      <BroaderResponse>
+        <div>
+          <h4>Stop a thread or process when a wider response is needed.</h4>
+          <p>These options can interrupt legitimate application work. Choose based on the spread of the attack and the service disruption your team can accept.</p>
+        </div>
+        <dl>
+          <div>
+            <dt>Stop the thread</dt>
+            <dd>Stops the thread executing the attack and interrupts the work running on that thread.</dd>
+          </div>
+          <div>
+            <dt>Stop the process</dt>
+            <dd>Stops the affected process, including its other threads and requests. This interrupts more application work than stopping one thread.</dd>
+          </div>
+        </dl>
+      </BroaderResponse>
     </Inner>
   </Section>
 );

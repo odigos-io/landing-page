@@ -99,6 +99,13 @@ const Visual = styled.div`
   min-width: 0;
 `;
 
+const Note = styled.p`
+  margin: 18px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-mute);
+`;
+
 type Props = {
   eyebrow: string;
   title: React.ReactNode;
@@ -106,9 +113,10 @@ type Props = {
   visual: React.ReactNode;
   primary?: React.ReactNode;
   secondary?: React.ReactNode;
+  note?: React.ReactNode;
 };
 
-export const PageHero = ({ eyebrow, title, sub, visual, primary = <TrialCTA />, secondary = <DemoCTA /> }: Props) => (
+export const PageHero = ({ eyebrow, title, sub, visual, primary = <TrialCTA />, secondary = <DemoCTA />, note }: Props) => (
   <HeroSection>
     <HeroBackdrop />
     <HeroBloom />
@@ -129,6 +137,7 @@ export const PageHero = ({ eyebrow, title, sub, visual, primary = <TrialCTA />, 
             {secondary}
           </HeroCtas>
         </Reveal>
+        {note && <Note>{note}</Note>}
       </div>
       <Reveal delay={140}>
         <Visual>{visual}</Visual>

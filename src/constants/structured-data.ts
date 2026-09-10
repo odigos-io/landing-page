@@ -11,7 +11,7 @@ export const ORGANIZATION_LD = {
   url: SITE,
   logo: { '@type': 'ImageObject', url: `${SITE}/icon.png`, width: 512, height: 512 },
   description:
-    'Odigos is the production context platform. It records what ran inside every running service with Odigos DeepBPF, its own eBPF runtime that needs nothing in your code, and gives it live to the engineers, AI agents and security policies that run production.',
+    'Odigos gives AI the power to investigate production. Its Production Context Platform lets agents request missing evidence from running code to investigate incidents, understand attacks and verify code changes.',
   sameAs: ['https://github.com/odigos-io/odigos', 'https://www.linkedin.com/company/odigoss', 'https://x.com/odigosio'],
 };
 
@@ -37,14 +37,15 @@ export const SOFTWARE_LD = {
   softwareHelp: 'https://docs.odigos.io',
   publisher: { '@id': `${SITE}/#organization` },
   description:
-    'The production context platform. Odigos records what ran inside every running service with Odigos DeepBPF, its own eBPF runtime that needs nothing in your code, and gives it live to the engineers and AI agents that run production, for observability and security.',
+    'The Production Context Platform for AI investigations. Start with OpenTelemetry, then let engineers and agents request targeted runtime evidence as the investigation needs it.',
   featureList: [
-    'Capture any function in a live service with no redeploy',
-    'Out of process eBPF at under 1% CPU overhead',
-    'Automatic language detection across Go, Java, Python, Node.js, Rust, C++ and stripped static binaries',
+    'Targeted function capture on supported running workloads without an instrumentation release',
+    'DeepBPF captures application context from outside the process using kernel-verified eBPF',
+    'Deep application visibility across Java, Python, Node.js, Go and .NET from outside the application',
     'Exports OpenTelemetry to any destination you already run',
     'PII masking, attribute deletion and sampling inside your own cluster',
     'RBAC over who may capture what, on which workloads',
+    'MCP instrumentation controls for coding agents with Odigos Enterprise',
   ],
   offers: [
     { '@type': 'Offer', name: 'Open Source', price: '0', priceCurrency: 'USD', url: `${SITE}/pricing` },

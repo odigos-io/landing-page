@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useContactForm } from '@/hooks';
 import { isFreeEmail, validateEmail } from '@/functions';
@@ -235,17 +235,35 @@ export const LandingTrialModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) return;
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const card = cardRef.current;
+    card?.querySelector<HTMLInputElement>('input[name="firstName"]')?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
+      if (e.key !== 'Tab') return;
+      const elements = Array.from(card?.querySelectorAll<HTMLElement>('a[href], button, input:not([type="hidden"]), select, textarea, [tabindex="0"]') || [])
+        .filter((element) => !element.matches(':disabled') && element.getClientRects().length > 0);
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !card?.contains(document.activeElement))) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !card?.contains(document.activeElement))) {
+        e.preventDefault();
+        first?.focus();
+      }
     };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      if (trigger?.isConnected && trigger.getClientRects().length > 0) trigger.focus();
+      else document.querySelector<HTMLButtonElement>('[aria-controls="mobile-nav"]')?.focus();
     };
   }, [isOpen, onClose]);
 
@@ -293,7 +311,7 @@ export const LandingTrialModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
   return (
     <div className='landing-root'>
       <Overlay onClick={close} />
-      <Card role='dialog' aria-modal='true' aria-label='Start your 14-day trial'>
+      <Card ref={cardRef} role='dialog' aria-modal='true' aria-label='Start your 14-day trial'>
         <Close type='button' aria-label='Close' onClick={close}>
           ×
         </Close>
@@ -326,7 +344,7 @@ export const LandingTrialModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
               <Honeypot value={honeypot} onChange={handleHoneypotChange} />
               <Field>
                 name
-                <input name='firstName' autoFocus placeholder='John Doe' value={formData.firstName} onChange={onChange} disabled={isLoading} />
+                <input name='firstName' placeholder='John Doe' value={formData.firstName} onChange={onChange} disabled={isLoading} />
                 {formErrors.firstName && <span className='err'>{formErrors.firstName}</span>}
               </Field>
               <Field>

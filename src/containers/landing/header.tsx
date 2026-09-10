@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { NAV_GROUPS } from '@/constants';
+import { useModalStore } from '@/store';
 import { Container, TrialCTA, DemoCTA } from './primitives';
 
 const Bar = styled.header<{ $scrolled: boolean }>`
@@ -62,7 +63,9 @@ const NavTrigger = styled.button<{ $open: boolean }>`
   font-weight: 450;
   color: ${({ $open }) => ($open ? 'var(--ink)' : 'var(--ink-soft)')};
   cursor: pointer;
-  transition: color 0.18s ease, background 0.18s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
   &:hover {
     color: var(--ink);
     background: rgba(18, 18, 21, 0.045);
@@ -183,6 +186,11 @@ const Sheet = styled.div<{ $open: boolean }>`
   display: ${({ $open }) => ($open ? 'flex' : 'none')};
   flex-direction: column;
   padding: 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  > * {
+    flex-shrink: 0;
+  }
 `;
 
 const SheetTop = styled.div`
@@ -225,6 +233,8 @@ const SheetLink = styled(Link)`
 
 const SheetCtas = styled.div`
   margin-top: auto;
+  padding-top: 24px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -238,6 +248,8 @@ export const LandingHeader = () => {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!menu) return;
@@ -263,9 +275,34 @@ export const LandingHeader = () => {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const trigger = burgerRef.current;
+    document.body.style.overflow = 'hidden';
+    const focusable = () => Array.from(sheetRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') || []);
+    focusable()[0]?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+      if (event.key !== 'Tab') return;
+      const elements = focusable();
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
     return () => {
-      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      // A trial opened from this sheet owns focus and the scroll lock now.
+      if (!useModalStore.getState().modal) {
+        document.body.style.overflow = previousOverflow;
+        trigger?.focus();
+      }
     };
   }, [open]);
 
@@ -327,14 +364,14 @@ export const LandingHeader = () => {
               <TrialCTA size='sm' />
             </Right>
 
-            <Burger aria-label='Open menu' aria-expanded={open} aria-controls='mobile-nav' onClick={() => setOpen(true)}>
+            <Burger ref={burgerRef} aria-label='Open menu' aria-expanded={open} aria-controls='mobile-nav' onClick={() => setOpen(true)}>
               <span />
             </Burger>
           </Row>
         </Container>
       </Bar>
 
-      <Sheet id='mobile-nav' $open={open}>
+      <Sheet ref={sheetRef} id='mobile-nav' role='dialog' aria-modal='true' aria-label='Site navigation' $open={open}>
         <SheetTop>
           <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={120} height={27} />
           <Close aria-label='Close menu' onClick={() => setOpen(false)}>

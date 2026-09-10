@@ -1,51 +1,66 @@
 # Odigos
 
-> Odigos generates OpenTelemetry from any service with no code change, and captures
-> the arguments and return values of any function in live production in seconds,
-> without a redeploy. It exports to any OpenTelemetry backend you already run.
+> Odigos gives AI the power to investigate production. Its Production Context
+> Platform lets agents request missing evidence from running code, investigate
+> the cause and verify a fix against subsequent traffic.
 
-## What Odigos is
+## What Odigos does
 
-Odigos is an open source, eBPF-based OpenTelemetry distribution. Point it at a Kubernetes
-cluster and every service starts producing OpenTelemetry traces, metrics and logs without
-anyone editing code, adding an SDK, or redeploying. It detects each service's language
-automatically and instruments Go, Java, Python, .NET, JavaScript, PHP and Ruby, including
-compiled Go binaries that are stripped and statically linked.
-
-Because the data is OpenTelemetry, it goes wherever you already send telemetry: Datadog,
-New Relic, Honeycomb, Grafana Cloud, Splunk, Jaeger, Tempo, Loki, SigNoz, S3, or any other
-OTLP endpoint. There is no proprietary format and no lock-in. Odigos runs alongside your
-existing observability stack rather than replacing it.
+Odigos discovers and instruments supported running workloads and exports telemetry
+as OpenTelemetry to configured backends. Engineers and AI agents can request
+additional function capture when the existing telemetry does not answer a question.
+This connects observability, security investigations and coding workflows to runtime
+evidence from the same platform.
 
 ## What makes it different
 
-Conventional OpenTelemetry instrumentation is decided when the code is written. Whatever
-spans, metrics and log lines exist today were chosen months ago by someone who did not know
-which incident was coming, so when a question turns on a value nobody recorded, the only way
-to answer it is to change the code and ship a release.
+Manual instrumentation and conventional automatic integrations provide predefined
+capture points. AI can search that telemetry, but a missing function or value requires
+additional instrumentation. Odigos lets an investigation change what gets captured
+on supported running workloads without shipping an instrumentation release.
+New capture observes subsequent matching traffic; it does not recover unrecorded history.
 
-Odigos decides what to capture at the moment you ask. An engineer or an AI agent can point
-at any function in a running service and get back the arguments it was called with and the
-value it returned, in about a second, with nothing redeployed. That closes the investigation
-loop for agents: instead of opening a pull request and waiting for a deploy to obtain one
-more fact, the agent queries production directly and keeps going.
+With Odigos Enterprise MCP, an agent can inspect services, control profiling and request
+capture rules. The agent queries resulting traces through the customer's telemetry
+backend. MCP controls instrumentation; it is not a replacement trace store.
+
+The documented OdiShop demo used Cursor, Odigos and Jaeger. Targeted function capture
+revealed a global 10 ms replica-skew threshold rejecting healthy eu-west checkouts.
+Cursor proposed a region-aware code change and verified the deployed behavior against
+new traffic. This was a demo application, not a reported customer incident.
 
 ## How it runs
 
-Capture runs out of process in eBPF at under 1% CPU overhead. Nothing is loaded into the
-application, so an Odigos failure cannot take a customer application down with it. Data is
-governed inside the customer's own cluster: RBAC controls who may capture what and on which
-workloads, and PII masking, attribute deletion and sampling run in flight before anything
-leaves the cluster.
+Odigos DeepBPF captures functions, arguments and return values across Java, Python,
+Node.js, Go and .NET entirely from outside the application. It does not load instrumentation
+into the application's runtime. Linux checks eBPF programs before they are loaded,
+including memory-access, helper-use and control-flow constraints. The verifier checks
+program behavior; customer capture scope, access permissions and data handling remain
+Odigos controls.
+
+Teams configure instrumentation scope and access. Pipeline controls include masking,
+attribute processing and sampling before export. Telemetry goes to the configured
+OpenTelemetry destinations, alongside the existing observability stack.
+
+Odigos Central provides one control plane across Kubernetes, virtual machines and
+bare metal. Teams manage capture scope, masking and approval centrally, with
+authentication, role-based access and an audit trail in one place.
+
+## Security investigation and response
+
+Odigos maps the communications of an affected service to help teams assess blast radius
+and identify other services that may be in danger. A communicating peer is not automatically
+proven compromised. Mitigation options include stopping a thread, stopping a process,
+and virtually patching an offending function without an application release.
 
 ## Common questions
 
-- Does it require code changes? No. No SDK, no annotations, no redeploy.
-- What does it produce? OpenTelemetry, exported to any OTLP destination you configure.
-- What is the overhead? Under 1% CPU, measured out of process across 1.04 million cores.
-- Which languages? Go, Java, Python, .NET, JavaScript, PHP and Ruby, detected automatically.
-- Does it replace Datadog or Grafana? No. It feeds them.
-- Is it open source? Yes, Apache 2.0, with a commercial Enterprise tier.
+- Does it require application code changes? DeepBPF collects application context from outside the process without loading instrumentation into the application.
+- What does it produce? OpenTelemetry, exported to configured destinations.
+- Does it replace the telemetry backend? No. It sends the backend additional evidence.
+- What can an agent control? Odigos Enterprise MCP exposes service inspection, instrumentation and profiling controls subject to configured access.
+- Can it capture a value from a past request? Targeted capture records subsequent matching traffic.
+- Is it open source? Odigos has an Apache 2.0 open source distribution and a commercial Enterprise tier.
 
 ## Docs
 - [Documentation](https://docs.odigos.io): Full product documentation
@@ -53,6 +68,11 @@ leaves the cluster.
 - [GitHub](https://github.com/odigos-io/odigos): Open source repository, Apache 2.0
 
 ## Product
+- [Production Context Platform](https://odigos.io/): Runtime evidence for observability, security and coding agents
+- [Observability](https://odigos.io/observability): Connect request traces to function-level evidence
+- [Security](https://odigos.io/security): Investigate runtime behavior and enforce scoped policies
+- [Coding Agents](https://odigos.io/coding-agents): Inspect services and request instrumentation through Odigos Enterprise MCP
+- [Technology](https://odigos.io/technology): Odigos DeepBPF and the capture foundation
 - [Product](https://odigos.io/product): Capabilities and pipeline governance
 - [Pricing](https://odigos.io/pricing): Open source and Enterprise plans, plus FAQ
 - [Odigos vs OBI](https://odigos.io/comparisons/odigos-vs-obi): How the approaches differ
