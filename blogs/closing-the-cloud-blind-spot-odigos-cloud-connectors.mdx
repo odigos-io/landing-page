@@ -2,78 +2,72 @@
 pubDate: 'Sep 15 2026'
 author: Justin LeJeune
 authorImage: ''
-image: ''
-title: 'Closing the Cloud Blind Spot: Introducing Odigos Cloud Connectors'
-description: 'Discover and instrument Lambda, Fargate, and Cloud Run from Odigos Central — without hand-rolling layers on every function.'
-metadata: 'Odigos Central Cloud Connectors for AWS and GCP serverless observability'
+image: '/assets/blogs/closing-the-cloud-blind-spot-odigos-cloud-connectors/lambda-instrumented.png'
+title: 'Serverless Without Blind Spots: Introducing Odigos Cloud Connectors'
+description: 'Discover and instrument AWS Lambda, Fargate, and Cloud Run from Odigos Central.'
+metadata: 'Odigos Central Cloud Connectors for serverless observability on AWS and GCP'
 category: 'Odigos'
-tags: [odigos, observability, opentelemetry, aws, gcp, kubernetes]
+tags: [odigos, observability, opentelemetry, serverless, aws, gcp, kubernetes]
 ---
 
-Odigos Central already gave you one place to manage observability across Kubernetes clusters and VMs. Cloud Connectors extend that same control plane into your cloud accounts — so Lambda, Fargate, and Cloud Run stop being the missing hops in your traces.
+Odigos Central already manages observability across Kubernetes clusters and VMs. Cloud Connectors extend that control plane into your cloud accounts, so serverless workloads can be discovered and instrumented from the same UI.
 
-## The gap after the cluster
+## The problem
 
-Modern systems rarely live only in Kubernetes. A request often leaves a service mesh, hits an API Gateway, and lands in a Lambda — or fans out to a Fargate worker, or a Cloud Run service. On the cluster side, auto-instrumentation is straightforward. Outside it, teams still wire OpenTelemetry by hand: layers on every function, sidecars in every task definition, env vars copied across regions.
+Requests often leave the cluster and land in Lambda, Fargate, or Cloud Run. On Kubernetes, auto-instrumentation is straightforward. On serverless, teams still attach layers, inject sidecars, and manage environment variables per function or task. That does not scale, and traces usually break at the boundary.
 
-That work doesn’t scale, and the traces usually don’t either. You get a clean story inside the cluster, then a black box in the cloud.
-
-## What Cloud Connectors are
+## What Cloud Connectors do
 
 [Cloud Connectors](https://docs.odigos.io/cloud-connectors/overview) are the third connection type in Odigos Central, alongside remote clusters and the VM Agent.
 
-Each connector maps to one cloud account boundary — an AWS account or a GCP project. From Central you:
+Each connector maps to one cloud account boundary: an AWS account or a GCP project. From Central you can:
 
-1. **Discover** instrumentable workloads in that account
-2. **Choose** which ones to observe by creating Sources
-3. **Track** instrumentation status as telemetry starts flowing
+1. Discover instrumentable workloads in that account
+2. Create Sources for the ones you want to observe
+3. Track instrumentation status as telemetry starts flowing
 
 Nothing is instrumented until you create a Source. Discovery is inventory; Sources are intent.
 
-## You stay in control of access
+When a connector is online, it appears in the Central Connections view:
 
-Cloud Connectors are not blanket admin access to your cloud. Scope is layered:
+![AWS Cloud Connector showing Connected in Odigos Central](/assets/blogs/closing-the-cloud-blind-spot-odigos-cloud-connectors/connections.png)
 
-1. **IAM / service account permissions** — the role you grant defines which APIs the connector can call
-2. **Connector capabilities** — per resource type, you choose discovery-only vs discovery + instrumentation
-3. **Sources** — even discovered workloads stay untouched until you opt them in
+## Access control
 
-Credentials live as Kubernetes Secrets in the Central cluster. One connector owns one account, so ownership and blast radius stay clear. For AWS, prefer Assume Role with an External ID over long-lived admin keys — see [Add an AWS Connector](https://docs.odigos.io/cloud-connectors/add-connectors/add-aws-connector).
+Cloud Connectors do not require blanket admin access. When you add a connector, you choose an access level:
 
-## Managed by Odigos, or by your IaC
+- **Discovery only** - list workloads, no changes
+- **Discovery + instrumentation** - discover and apply instrumentation
+- **Custom** - choose which resource types can be discovered or instrumented
 
-For each workload type you can choose:
+![Choosing Discovery + instrumentation for an AWS connector](/assets/blogs/closing-the-cloud-blind-spot-odigos-cloud-connectors/access-level.png)
 
-| Mode | Who changes the resource |
-| --- | --- |
-| **Odigos-managed** | Odigos attaches and reconciles instrumentation (e.g. a Lambda layer, or a Fargate sidecar) |
-| **Self-managed** | You apply changes via CloudFormation, CDK, or Terraform; Odigos discovers and reports status only |
+The UI shows the IAM policy for the level you selected. Credentials are stored as Kubernetes Secrets in the Central cluster. One connector owns one account, which keeps ownership and blast radius clear. For AWS, prefer Assume Role with an External ID - see [Add an AWS Connector](https://docs.odigos.io/cloud-connectors/add-connectors/add-aws-connector).
 
-Use Odigos-managed when you want instrumentation without touching pipelines. Use self-managed when IaC is the source of truth. Don’t do both on the same workload — reconcile fights are no fun.
+For each workload type you can also choose:
 
-## What’s covered today
+- **Odigos-managed** - Odigos attaches and reconciles instrumentation (for example a Lambda layer or Fargate sidecar)
+- **Self-managed** - you apply changes through CloudFormation, CDK, or Terraform; Odigos discovers and reports status only
 
-| Provider | Discover | Instrument |
-| --- | --- | --- |
-| AWS Lambda | Yes | Yes (managed or self-managed) |
-| Amazon ECS Fargate tasks | Yes | Yes (managed or self-managed) |
-| Amazon ECS / Fargate clusters | Yes | Agent install coming soon |
-| GCP Cloud Run | Yes | Yes |
-| GKE / Compute Engine | Yes | Coming soon |
+Use one approach per workload, not both.
 
-Language support depends on the workload — for example Lambda covers Java, Python, Node.js, and Ruby; Fargate adds .NET and PHP; Cloud Run covers Java, Python, Node.js, and .NET. Full matrices live in the [overview](https://docs.odigos.io/cloud-connectors/overview).
+## Instrumenting workloads
 
-Instrumented cloud workloads export **OpenTelemetry over OTLP** to a destination you configure on the connector. That endpoint has to be reachable from the cloud environment itself (from Lambda’s network path, or from the Fargate task’s VPC) — not only from the Central cluster.
+After discovery, create a Source, configure an OTLP destination reachable from the cloud environment, and enable the Source. Central reports when the workload is instrumented and emitting telemetry:
+
+![Instrumented AWS Lambda Source emitting telemetry](/assets/blogs/closing-the-cloud-blind-spot-odigos-cloud-connectors/lambda-instrumented.png)
+
+Current coverage includes AWS Lambda and ECS Fargate tasks, plus GCP Cloud Run. Additional compute platforms are on the roadmap. Language support depends on the workload type - see the [overview](https://docs.odigos.io/cloud-connectors/overview) for the full matrix.
+
+Instrumented workloads export OpenTelemetry over OTLP. The destination must be reachable from Lambda or the Fargate VPC, not only from the Central cluster.
 
 ## Getting started
 
 1. Install [Odigos Central](https://docs.odigos.io/central/overview) and [enable Cloud Connectors](https://docs.odigos.io/cloud-connectors/enable)
-2. Add an [AWS](https://docs.odigos.io/cloud-connectors/add-connectors/add-aws-connector) or [GCP](https://docs.odigos.io/cloud-connectors/add-connectors/add-gcp-connector) connector with the access level you want
+2. Add an [AWS](https://docs.odigos.io/cloud-connectors/add-connectors/add-aws-connector) or [GCP](https://docs.odigos.io/cloud-connectors/add-connectors/add-gcp-connector) connector
 3. Wait until the connector is **Connected** and discovery finishes
-4. Attach an OTLP destination, create Sources for the workloads you care about, and watch status flip to instrumented — details in [Instrument Cloud Workloads](https://docs.odigos.io/cloud-connectors/instrument-workloads)
+4. Attach an OTLP destination, create Sources, and confirm telemetry - details in [Instrument Cloud Workloads](https://docs.odigos.io/cloud-connectors/instrument-workloads)
 
-## One control plane, every environment
+Cloud Connectors bring serverless into the same Central workflow as clusters and VMs: discover, select, and instrument, with scoped access and optional IaC ownership.
 
-Clusters, VMs, and cloud accounts used to mean three different instrumentation stories. Cloud Connectors fold the cloud side into the same Central UI — discover, select, instrument — without giving up least-privilege access or your existing IaC workflows.
-
-Ready to close the gap? Start with the [Cloud Connectors documentation](https://docs.odigos.io/cloud-connectors/overview), or [get a demo](https://odigos.io/) if you want to see it on your accounts.
+Start with the [Cloud Connectors documentation](https://docs.odigos.io/cloud-connectors/overview), or [get a demo](https://odigos.io/).
