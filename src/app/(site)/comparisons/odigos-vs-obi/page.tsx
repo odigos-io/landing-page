@@ -1,12 +1,8 @@
-'use client';
-
-import React from 'react';
 import { getComparisonBySlug } from '@/constants';
 import { LandingHeader, LandingComparison, LandingCTA, LandingFooter } from '@/containers/landing';
 
-const comparison = getComparisonBySlug('odigos-vs-obi');
-
 const OdigosVsObi = () => {
+  const comparison = getComparisonBySlug('odigos-vs-obi');
   if (!comparison) return null;
 
   return (
