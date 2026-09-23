@@ -282,8 +282,7 @@ const LanguageCoverage = ({ languages, side }: { languages: ComparisonLanguage[]
         {visible.map((lang) => (
           <LangChip key={lang.name}>
             <span className='ic'>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={lang.icon} alt={lang.name} width={12} height={12} />
+              <Image src={lang.icon} alt={lang.name} width={12} height={12} />
             </span>
             <span className='name'>{lang.name}</span>
           </LangChip>
