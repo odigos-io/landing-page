@@ -145,7 +145,7 @@ export const COMPARISONS: ComparisonPage[] = [
           icon: '/assets/icons/comparisons/network.svg',
         },
         {
-          title: 'No Java library-level',
+          title: 'No Java library-level instrumentation',
           body: 'Java coverage stays at protocol/network and runtime metrics, no library uprobes.',
           icon: '/assets/icons/comparisons/shallow.svg',
         },
