@@ -7,7 +7,7 @@ import { formatEventDateRange, getPlaceholderImage, isValidImageSrc } from '@/fu
 
 export const EventCard = ({ slug, image, title, eventStartDate, eventEndDate, location, booth }: EventPost) => {
   const [imageInvalid, setImageInvalid] = useState(false);
-  const eventCover = (!imageInvalid && image && isValidImageSrc(image)) ? image : getPlaceholderImage();
+  const eventCover = (!imageInvalid && image && isValidImageSrc(image)) ? image : getPlaceholderImage(slug);
 
   const eventTags = useMemo(() => {
     const arr = [];

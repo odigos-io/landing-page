@@ -22,7 +22,6 @@ const Absolute = styled.div`
   z-index: -1;
 `;
 
-const DEFAULT_EVENT_IMAGE = getPlaceholderImage();
 const SCENE = 'https://prod.spline.design/8ms3ev7XsGwJPjy0/scene.splinecode';
 const ASPECT_RATIO = 1440 / 460;
 
@@ -31,7 +30,7 @@ export const EventHeader = ({ event }: EventHeaderProps) => {
 
   return (
     <Relative>
-      <BannerImage src={event.image || ''} alt={event.title} fallbackImage={DEFAULT_EVENT_IMAGE} />
+      <BannerImage src={event.image || ''} alt={event.title} fallbackImage={getPlaceholderImage(event.slug)} />
     </Relative>
   );
 };

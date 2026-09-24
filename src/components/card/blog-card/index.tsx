@@ -7,7 +7,7 @@ import { calculateReadingTime, getPlaceholderImage, isValidImageSrc } from '@/fu
 
 export const BlogCard = ({ slug, image, title, description, content, pubDate, boldTag }: BlogPost) => {
   const [imageInvalid, setImageInvalid] = useState(false);
-  const blogCover = (!imageInvalid && image && isValidImageSrc(image)) ? image : getPlaceholderImage();
+  const blogCover = (!imageInvalid && image && isValidImageSrc(image)) ? image : getPlaceholderImage(slug);
 
   const blogTags = useMemo(() => {
     const arr = [];

@@ -290,7 +290,7 @@ export const EventsContent = () => {
             {events.length > 0 ? (
               <Grid>
                 {events.map((event, i) => {
-                  const cover = !event.image || !isValidImageSrc(event.image) ? getPlaceholderImage() : event.image;
+                  const cover = !event.image || !isValidImageSrc(event.image) ? getPlaceholderImage(event.slug) : event.image;
                   const dateRange = formatEventDateRange(event.eventStartDate, event.eventEndDate);
                   return (
                     <Reveal key={event.slug} delay={i * 60}>

@@ -1,3 +1,4 @@
+export * from './announcement';
 export * from './header';
 export * from './hero';
 export * from './logos';
