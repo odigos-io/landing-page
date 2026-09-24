@@ -177,7 +177,7 @@ export const LandingBlogs = ({ exclude, title = 'Latest from the blog.' }: { exc
 
         <Grid>
           {posts.map((b, i) => {
-            const cover = !b.image || !isValidImageSrc(b.image) ? getPlaceholderImage() : b.image;
+            const cover = !b.image || !isValidImageSrc(b.image) ? getPlaceholderImage(b.slug) : b.image;
             return (
               <Reveal key={b.slug} delay={i * 70}>
                 <CardLink href={`/blog/${b.slug}`}>
