@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import { LandingHeader, LandingHero, LandingLogos, LandingOldWay, LandingFit, LandingDoors, LandingCTA, LandingFooter } from '@/containers/landing';
+import { LandingAnnouncement, LandingHeader, LandingHero, LandingLogos, LandingOldWay, LandingFit, LandingDoors, LandingCTA, LandingFooter } from '@/containers/landing';
 
 const HomeContent = () => {
   return (
     <div className='landing-root'>
+      <LandingAnnouncement />
       <LandingHeader />
       <main>
         <LandingHero />

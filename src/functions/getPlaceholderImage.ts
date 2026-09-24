@@ -13,6 +13,10 @@ const PLACEHOLDERS = [
   '/assets/blogs/_placeholder_10.svg',
 ];
 
-export const getPlaceholderImage = () => {
-  return PLACEHOLDERS[Math.floor(Math.random() * PLACEHOLDERS.length)];
+// Deterministic per seed (e.g. slug) so server and client render the same image
+// and hydration doesn't mismatch.
+export const getPlaceholderImage = (seed = '') => {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  return PLACEHOLDERS[hash % PLACEHOLDERS.length];
 };
