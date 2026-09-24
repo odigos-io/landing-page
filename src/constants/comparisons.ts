@@ -150,8 +150,8 @@ export const COMPARISONS: ComparisonPage[] = [
           icon: '/assets/icons/comparisons/shallow.svg',
         },
         {
-          title: 'Encrypted traffic only on direct hops',
-          body: 'Works for direct app-to-app HTTPS when every service is instrumented. Breaks across load balancers, service mesh, managed Kafka, and other hops where OBI cannot run.',
+          title: 'Limited TLS context propagation',
+          body: 'Can monitor encrypted traffic, but context propagation needs OBI on both ends, or Go TLS. Load balancers, service mesh, and managed hops still break the chain.',
           icon: '/assets/icons/comparisons/lock-off.svg',
         },
         {
@@ -194,9 +194,14 @@ export const COMPARISONS: ComparisonPage[] = [
         competitor: false,
       },
       {
-        feature: 'Encrypted traffic visibility',
-        odigos: 'LB, mesh, and managed hops',
-        competitor: 'Direct app-to-app only',
+        feature: 'Encrypted traffic monitoring',
+        odigos: true,
+        competitor: true,
+      },
+      {
+        feature: 'TLS context propagation',
+        odigos: 'Across LB, mesh, and managed hops',
+        competitor: 'OBI end-to-end, or Go TLS only',
       },
       {
         feature: 'Kafka producer/consumer message body capture',
