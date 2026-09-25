@@ -1,9 +1,18 @@
+export interface ComparisonLanguage {
+  name: string;
+  icon: string;
+  odigos: boolean | string;
+  competitor: boolean | string;
+}
+
 export interface ComparisonPillar {
   name: string;
   tagline: string;
   description: string;
   docsUrl?: string;
   docsLabel?: string;
+  secondaryDocsUrl?: string;
+  secondaryDocsLabel?: string;
   points: { title: string; body: string; icon: string }[];
 }
 
@@ -22,6 +31,7 @@ export interface ComparisonPage {
   subtitle: string;
   description: string;
   logos: { src: string; alt: string }[];
+  libraryLanguages: ComparisonLanguage[];
   odigos: ComparisonPillar;
   competitor: ComparisonPillar;
   matrixIntro: string;
@@ -35,21 +45,71 @@ export const COMPARISONS: ComparisonPage[] = [
     competitorName: 'OpenTelemetry eBPF Instrumentation (OBI)',
     competitorShort: 'OBI',
     title: 'Odigos vs OBI',
-    subtitle: 'Application-level eBPF instrumentation vs network level visibility',
+    subtitle: 'Deep library-level eBPF across languages vs network tracing with limited Go-library support',
     description:
-      'Compare Odigos userspace eBPF instrumentation with OpenTelemetry eBPF Instrumentation (OBI). See how library-level probes, encrypted traffic, pipeline management, and dynamic instrumentation differ.',
+      'Compare Odigos userspace eBPF instrumentation with OpenTelemetry eBPF Instrumentation (OBI). OBI offers language-agnostic protocol tracing plus a small set of Go library probes, Odigos adds deep library-level coverage for Go, Java, and custom code.',
     logos: [
       { src: '/assets/odigos/logo_white.svg', alt: 'Odigos' },
       { src: '/assets/opentelemetry.svg', alt: 'OpenTelemetry' },
     ],
+    libraryLanguages: [
+      {
+        name: 'Go',
+        icon: '/assets/icons/comparisons/languages/go.svg',
+        odigos: true,
+        competitor: true,
+      },
+      {
+        name: 'Java',
+        icon: '/assets/icons/comparisons/languages/java.png',
+        odigos: true,
+        competitor: false,
+      },
+      {
+        name: 'Python',
+        icon: '/assets/icons/comparisons/languages/python.svg',
+        odigos: true,
+        competitor: false,
+      },
+      {
+        name: 'Node.js',
+        icon: '/assets/icons/comparisons/languages/nodejs.svg',
+        odigos: true,
+        competitor: false,
+      },
+      {
+        name: 'C++',
+        icon: '/assets/icons/comparisons/languages/cpp.svg',
+        odigos: true,
+        competitor: false,
+      },
+      {
+        name: 'Ruby',
+        icon: '/assets/icons/comparisons/languages/ruby.svg',
+        odigos: true,
+        competitor: false,
+      },
+      {
+        name: '.NET',
+        icon: '/assets/icons/comparisons/languages/dotnet.svg',
+        odigos: true,
+        competitor: false,
+      },
+      {
+        name: 'PHP',
+        icon: '/assets/icons/comparisons/languages/php.svg',
+        odigos: true,
+        competitor: false,
+      },
+    ],
     odigos: {
       name: 'Odigos',
       tagline: 'Application-level eBPF platform',
-      description: 'Instrument real application functions at runtime. No code changes or restarts required.',
+      description: 'Instrument real application and library functions at runtime, across Go, Java, Python, Node.js, C++, Ruby, .NET, PHP, and custom code. No code changes or restarts required.',
       points: [
         {
-          title: 'Library-level probes',
-          body: 'Uprobes on all application and library functions, not just syscalls.',
+          title: 'Broad library-level probes',
+          body: '30+ Go libraries and 60+ Java libraries via uprobes, not just syscalls or network flows.',
           icon: '/assets/icons/comparisons/probe.svg',
         },
         {
@@ -59,7 +119,7 @@ export const COMPARISONS: ComparisonPage[] = [
         },
         {
           title: 'Encrypted Traffic & mesh-aware',
-          body: 'TLS context propagation and service-mesh context.',
+          body: 'TLS context propagation across load balancers, service mesh, and managed hops, not just direct app-to-app HTTPS.',
           icon: '/assets/icons/comparisons/lock.svg',
         },
         {
@@ -71,25 +131,28 @@ export const COMPARISONS: ComparisonPage[] = [
     },
     competitor: {
       name: 'OBI',
-      tagline: 'Syscall & network eBPF',
-      description: 'Language-agnostic tracing via syscalls for broad but shallow coverage.',
+      tagline: 'Network eBPF + limited Go library probes',
+      description:
+        'Language-agnostic protocol and syscall tracing, with library-level uprobes limited to a small set of Go libraries. No Java library-level instrumentation.',
       docsUrl: 'https://opentelemetry.io/docs/zero-code/obi/',
       docsLabel: 'OpenTelemetry OBI docs',
+      secondaryDocsUrl: 'https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation/blob/main/SUPPORT_MATRIX.md#go-library-instrumentation',
+      secondaryDocsLabel: 'OBI Go library support matrix',
       points: [
         {
-          title: 'Syscall / network only',
-          body: 'Kernel-level visibility without library context.',
+          title: 'Go library probes only',
+          body: 'Library-level instrumentation for ~13 Go libraries.',
           icon: '/assets/icons/comparisons/network.svg',
         },
         {
-          title: 'No encrypted traffic',
-          body: 'Broken trace context propagation across load-balancers and encrypted traffic.',
-          icon: '/assets/icons/comparisons/lock-off.svg',
+          title: 'No Java library-level instrumentation',
+          body: 'Java coverage stays at protocol/network and runtime metrics, no library uprobes.',
+          icon: '/assets/icons/comparisons/shallow.svg',
         },
         {
-          title: 'Limited app depth',
-          body: 'No stack traces, HTTP payloads, JVM metrics, or internal DB spans.',
-          icon: '/assets/icons/comparisons/shallow.svg',
+          title: 'Limited TLS context propagation',
+          body: 'Can monitor encrypted traffic, but context propagation needs OBI on both ends, or Go TLS. Load balancers, service mesh, and managed hops still break the chain.',
+          icon: '/assets/icons/comparisons/lock-off.svg',
         },
         {
           title: 'Instrumentation only',
@@ -101,9 +164,14 @@ export const COMPARISONS: ComparisonPage[] = [
     matrixIntro: 'Detailed capability comparison for production observability',
     matrix: [
       {
-        feature: 'Library-level instrumentation (vs syscalls)',
-        odigos: true,
-        competitor: 'Syscalls / network only',
+        feature: 'Library-level Go instrumentation',
+        odigos: '30+ libraries',
+        competitor: '~13 libraries',
+      },
+      {
+        feature: 'Library-level Java instrumentation',
+        odigos: '60+ libraries',
+        competitor: false,
       },
       {
         feature: 'Custom code instrumentation without code changes',
@@ -126,12 +194,17 @@ export const COMPARISONS: ComparisonPage[] = [
         competitor: false,
       },
       {
-        feature: 'Encrypted traffic visibility',
+        feature: 'Encrypted traffic monitoring',
         odigos: true,
-        competitor: false,
+        competitor: true,
       },
       {
-        feature: 'Kafka message payloads',
+        feature: 'TLS context propagation',
+        odigos: 'Across LB, mesh, and managed hops',
+        competitor: 'OBI end-to-end, or Go TLS only',
+      },
+      {
+        feature: 'Kafka producer/consumer message body capture',
         odigos: true,
         competitor: false,
       },
@@ -163,12 +236,12 @@ export const COMPARISONS: ComparisonPage[] = [
       {
         feature: 'JVM Metrics',
         odigos: true,
-        competitor: false,
+        competitor: true,
       },
       {
         feature: 'Log Capture',
         odigos: true,
-        competitor: false,
+        competitor: true,
       },
     ],
   },

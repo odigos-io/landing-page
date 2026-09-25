@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
-import type { ComparisonPage, ComparisonPillar } from '@/constants';
+import type { ComparisonLanguage, ComparisonPage, ComparisonPillar } from '@/constants';
 import { COMPARISONS } from '@/constants';
 import { Container, Eyebrow, Reveal } from './primitives';
 
@@ -101,17 +101,6 @@ const Col = styled.div<{ $ours?: boolean }>`
     line-height: 1.55;
     color: var(--ink-soft);
   }
-  a.docs {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 14px;
-    color: var(--ink-mute);
-    border-bottom: 1px solid var(--line-strong);
-    text-decoration: none;
-    &:hover {
-      color: var(--ink);
-    }
-  }
 `;
 const Points = styled.ul`
   margin: 22px 0 0;
@@ -151,6 +140,69 @@ const Points = styled.ul`
     font-size: 14px;
     line-height: 1.5;
     color: var(--ink-mute);
+  }
+`;
+
+const LangBlock = styled.div`
+  margin-top: 12px;
+  .label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+`;
+const LangGrid = styled.div`
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+`;
+const LangChip = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px 3px 4px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  .ic {
+    width: 12px;
+    height: 12px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .ic img {
+    width: 12px;
+    height: 12px;
+    filter: invert(1) brightness(0.28);
+  }
+  .name {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    line-height: 1;
+  }
+`;
+const DocsLinks = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+  a.docs {
+    display: inline-block;
+    margin-top: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--ink-faint);
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    width: fit-content;
+    &:hover {
+      color: var(--ink-mute);
+    }
   }
 `;
 
@@ -219,16 +271,41 @@ const Cell = ({ v }: { v: boolean | string }) => {
   return <span className='cell'>{v}</span>;
 };
 
-const Pillar = ({ p, ours }: { p: ComparisonPillar; ours?: boolean }) => (
+const LanguageCoverage = ({ languages, side }: { languages: ComparisonLanguage[]; side: 'odigos' | 'competitor' }) => {
+  const visible = languages.filter((lang) => lang[side] !== false);
+  if (!visible.length) return null;
+
+  return (
+    <LangBlock>
+      <div className='label'>Library-level languages</div>
+      <LangGrid>
+        {visible.map((lang) => (
+          <LangChip key={lang.name}>
+            <span className='ic'>
+              <Image src={lang.icon} alt={lang.name} width={12} height={12} />
+            </span>
+            <span className='name'>{lang.name}</span>
+          </LangChip>
+        ))}
+      </LangGrid>
+    </LangBlock>
+  );
+};
+
+const Pillar = ({
+  p,
+  ours,
+  languages,
+}: {
+  p: ComparisonPillar;
+  ours?: boolean;
+  languages: ComparisonLanguage[];
+}) => (
   <Col $ours={ours}>
     <span className='tag'>{ours ? 'Odigos' : 'The alternative'}</span>
     <h3>{p.tagline}</h3>
     <p className='lede'>{p.description}</p>
-    {p.docsUrl && (
-      <a className='docs' href={p.docsUrl} target='_blank' rel='noreferrer'>
-        {p.docsLabel || 'Docs'}
-      </a>
-    )}
+    <LanguageCoverage languages={languages} side={ours ? 'odigos' : 'competitor'} />
     <Points>
       {p.points.map((pt) => (
         <li key={pt.title}>
@@ -242,6 +319,20 @@ const Pillar = ({ p, ours }: { p: ComparisonPillar; ours?: boolean }) => (
         </li>
       ))}
     </Points>
+    {(p.docsUrl || p.secondaryDocsUrl) && (
+      <DocsLinks>
+        {p.docsUrl && (
+          <a className='docs' href={p.docsUrl} target='_blank' rel='noreferrer'>
+            {p.docsLabel || 'Docs'}
+          </a>
+        )}
+        {p.secondaryDocsUrl && (
+          <a className='docs' href={p.secondaryDocsUrl} target='_blank' rel='noreferrer'>
+            {p.secondaryDocsLabel || 'Support matrix'}
+          </a>
+        )}
+      </DocsLinks>
+    )}
   </Col>
 );
 
@@ -261,8 +352,8 @@ export const LandingComparison = ({ comparison }: { comparison: ComparisonPage }
         </Reveal>
         <Reveal delay={70}>
           <Cols>
-            <Pillar p={comparison.odigos} ours />
-            <Pillar p={comparison.competitor} />
+            <Pillar p={comparison.odigos} ours languages={comparison.libraryLanguages ?? []} />
+            <Pillar p={comparison.competitor} languages={comparison.libraryLanguages ?? []} />
           </Cols>
         </Reveal>
       </Inner>

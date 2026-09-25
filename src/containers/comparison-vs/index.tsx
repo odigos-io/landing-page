@@ -145,6 +145,38 @@ const PointCopy = styled(FlexColumn)`
   min-width: 0;
 `;
 
+const LangSection = styled(FlexColumn)`
+  gap: 10px;
+`;
+
+const LangGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+
+const LangChip = styled(FlexRow)`
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px 4px 6px;
+  border-radius: 999px;
+  background: ${({ theme }) => theme.colors.black};
+  border: 1px solid ${({ theme }) => theme.colors.grey_darker};
+`;
+
+const LangIconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+
+  img {
+    filter: brightness(0) invert(1);
+  }
+`;
+
 const MatrixHeader = styled.div<{ $isMobile: boolean }>`
   display: flex;
   flex-direction: ${({ $isMobile }) => ($isMobile ? 'column' : 'row')};
@@ -252,6 +284,37 @@ const CellValue = ({ value, isMobile }: { value: boolean | string; isMobile: boo
   return <MatrixTag>{value}</MatrixTag>;
 };
 
+const LanguageCoverage = ({
+  languages,
+  side,
+}: {
+  languages: ComparisonPage['libraryLanguages'];
+  side: 'odigos' | 'competitor';
+}) => {
+  const visible = languages.filter((lang) => lang[side] !== false);
+  if (!visible.length) return null;
+
+  return (
+    <LangSection>
+      <Text fontSize={11} fontWeight={600} style={{ letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+        Library-level languages
+      </Text>
+      <LangGrid>
+        {visible.map((lang) => (
+          <LangChip key={lang.name}>
+            <LangIconWrap>
+              <Image src={lang.icon} alt={lang.name} width={12} height={12} />
+            </LangIconWrap>
+            <Text fontSize={11} fontWeight={600}>
+              {lang.name}
+            </Text>
+          </LangChip>
+        ))}
+      </LangGrid>
+    </LangSection>
+  );
+};
+
 export const ComparisonVs = ({ comparison }: { comparison: ComparisonPage }) => {
   const theme = useTheme();
   const { isMobile: isM, screenWidth } = useMobile();
@@ -301,6 +364,7 @@ export const ComparisonVs = ({ comparison }: { comparison: ComparisonPage }) => 
               <Text fontSize={16} color={theme.colors.grey} lineHeight='150%'>
                 {comparison.odigos.description}
               </Text>
+              <LanguageCoverage languages={comparison.libraryLanguages} side='odigos' />
               <PointList>
                 {comparison.odigos.points.map((point) => (
                   <Point key={point.title}>
@@ -333,11 +397,7 @@ export const ComparisonVs = ({ comparison }: { comparison: ComparisonPage }) => 
               <Text fontSize={16} color={theme.colors.grey} lineHeight='150%'>
                 {comparison.competitor.description}
               </Text>
-              {comparison.competitor.docsUrl && (
-                <DocsLink href={comparison.competitor.docsUrl} target='_blank' rel='noopener noreferrer'>
-                  {comparison.competitor.docsLabel ?? 'Learn more'} →
-                </DocsLink>
-              )}
+              <LanguageCoverage languages={comparison.libraryLanguages} side='competitor' />
               <PointList>
                 {comparison.competitor.points.map((point) => (
                   <Point key={point.title}>
@@ -355,6 +415,20 @@ export const ComparisonVs = ({ comparison }: { comparison: ComparisonPage }) => 
                   </Point>
                 ))}
               </PointList>
+              {(comparison.competitor.docsUrl || comparison.competitor.secondaryDocsUrl) && (
+                <FlexColumn $gap={6}>
+                  {comparison.competitor.docsUrl && (
+                    <DocsLink href={comparison.competitor.docsUrl} target='_blank' rel='noopener noreferrer'>
+                      {comparison.competitor.docsLabel ?? 'Learn more'} →
+                    </DocsLink>
+                  )}
+                  {comparison.competitor.secondaryDocsUrl && (
+                    <DocsLink href={comparison.competitor.secondaryDocsUrl} target='_blank' rel='noopener noreferrer'>
+                      {comparison.competitor.secondaryDocsLabel ?? 'Support matrix'} →
+                    </DocsLink>
+                  )}
+                </FlexColumn>
+              )}
             </PillarCard>
           </PillarGrid>
         </FlexColumn>

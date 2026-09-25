@@ -4,7 +4,7 @@ import React from 'react';
 import { ModalType, useModalStore } from '@/store';
 import { ContactUsModal } from './contact-us-modal';
 import { DemoModal } from './demo-modal';
-import { LandingTrialModal } from '@/containers/landing';
+import { LandingTrialModal } from '@/containers/landing/trial-modal';
 
 const Modals = () => {
   const { modal, setModal } = useModalStore();
