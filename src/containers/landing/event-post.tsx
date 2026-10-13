@@ -6,7 +6,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import type { EventPost } from '@/types';
 import { useContactForm } from '@/hooks';
-import { isFreeEmail, validateEmail, isValidImageSrc } from '@/functions';
+import { isFreeEmail, validateEmail, isValidImageSrc, formatEventDateRange } from '@/functions';
 import { Container, Eyebrow } from './primitives';
 import { Markdown, Prose } from './prose';
 import { HtmlEmbed } from '@/components';
@@ -121,6 +121,11 @@ const Card = styled.form`
     line-height: 1.5;
     color: var(--ink-mute);
   }
+  > .err {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #d63a6f;
+  }
   @media (max-width: 1000px) {
     position: static;
   }
@@ -145,6 +150,7 @@ const Field = styled.label`
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 15px;
     letter-spacing: -0.01em;
+    text-transform: none;
     color: var(--ink);
     background: var(--paper);
     border: 1px solid var(--line-strong);
@@ -197,29 +203,13 @@ const Note = styled.p`
   color: #0e9a6c;
 `;
 
-const fmtRange = (a?: string, b?: string) => {
-  const one = (d?: string) => {
-    if (!d) return null;
-    const p = new Date(d);
-    return Number.isNaN(p.getTime()) ? null : p;
-  };
-  const s = one(a);
-  const e = one(b);
-  if (!s) return null;
-  const month = s.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
-  if (e && e.getMonth() === s.getMonth() && e.getFullYear() === s.getFullYear() && e.getDate() !== s.getDate()) {
-    return `${month} ${s.getDate()}-${e.getDate()}, ${s.getFullYear()}`;
-  }
-  return s.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-};
-
 export const LandingEventPost = ({ event }: { event: EventPost }) => {
   const { formData, handleFormDataChange, formErrors, handleFormErrorChange, resetFormErrors, submitToContactService } = useContactForm();
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState('');
   const [isDone, setIsDone] = useState(false);
 
-  const when = fmtRange(event.eventStartDate, event.eventEndDate);
+  const when = formatEventDateRange(event.eventStartDate, event.eventEndDate);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     resetFormErrors();
@@ -247,7 +237,7 @@ export const LandingEventPost = ({ event }: { event: EventPost }) => {
     const resError = await submitToContactService(event.title);
     setIsLoading(false);
     if (resError) {
-      setApiError(resError);
+      setApiError('Something went wrong. Please try again or email us at hello@odigos.io.');
       return;
     }
     setIsDone(true);
