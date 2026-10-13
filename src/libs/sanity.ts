@@ -1,5 +1,6 @@
 import { createClient } from 'next-sanity';
 import type { BlogPost, EventPost, WebinarPost, DinnerEvent } from '@/types';
+import { applyEventOverride } from '@/constants/event-overrides';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ulvtmsy9';
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
@@ -62,12 +63,12 @@ const EVENT_FIELDS = `
 
 export const getAllEvents = async (): Promise<EventPost[]> => {
   const events = await client.fetch<EventPost[]>(`*[_type == "event"] | order(pubDate desc) { ${EVENT_FIELDS} }`, {}, { next: { revalidate: 60 } });
-  return events.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
+  return events.map(applyEventOverride).sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 };
 
 export const getEventBySlug = async (slug: string): Promise<EventPost | null> => {
   const event = await client.fetch<EventPost | null>(`*[_type == "event" && slug.current == $slug][0] { ${EVENT_FIELDS} }`, { slug }, { next: { revalidate: 60 } });
-  return event;
+  return event && applyEventOverride(event);
 };
 
 // ─── Webinar Queries ────────────────────────────────────────────────────────────
