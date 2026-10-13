@@ -23,7 +23,7 @@ const ANNOUNCEMENTS: Announcement[] = [
   },
   {
     id: 'observability-sre-summit-london-2026',
-    text: 'Ari Recht speaks at the Observability & SRE Summit · London, Oct 21-22',
+    text: 'Meet the Odigos team at the Observability & SRE Summit · London, Oct 21-22',
     href: '/events/observability-sre-summit-london-2026',
     until: '2026-10-22',
   },
