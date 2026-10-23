@@ -46,7 +46,7 @@ export interface InfrastructureResult extends CategorySavings {
 }
 
 export const ROI_AGENTS: RoiAgent[] = [
-  { id: 'otel', name: 'Otel Agent', cpuLessPct: 51.4 },
+  { id: 'otel', name: 'Otel Agent', cpuLessPct: 30.0 },
   { id: 'datadog', name: 'DataDog', cpuLessPct: 22.0 },
   { id: 'dynatrace', name: 'Dynatrace', cpuLessPct: 20.7 },
   { id: 'newrelic', name: 'New Relic', cpuLessPct: 36.9 },
