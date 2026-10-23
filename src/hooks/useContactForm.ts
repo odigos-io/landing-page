@@ -46,6 +46,24 @@ const sendToService = async (url: string, body: unknown): Promise<string> => {
   }
 };
 
+// The Slack Lambda posts the message and then answers 502 with no CORS headers, so
+// a normal fetch reports a failure for a lead that did land. Send it as a simple
+// request instead: no preflight, an opaque response, and only a network failure
+// counts as an error.
+const sendToSlack = async (body: unknown): Promise<string> => {
+  try {
+    await fetch(SLACK_CONTACT_API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(body),
+    });
+    return '';
+  } catch (error) {
+    return error instanceof Error ? error.message : String(error);
+  }
+};
+
 export const useContactForm = () => {
   const { trackEvent } = usePlausible();
 
@@ -117,23 +135,26 @@ export const useContactForm = () => {
       source_page: window.location.pathname,
     });
 
-    const contactError = await sendToService(CONTACT_API_URL, {
-      fullName,
-      businessEmail: email,
-      phoneNumber,
-      organizationName: company,
-      message,
-    });
-    if (contactError) return contactError;
-
-    const slackError = await sendToService(SLACK_CONTACT_API_URL, {
-      name: fullName,
-      email,
-      phone: phoneNumber,
-      organization: company,
-      message,
-    });
-    if (slackError) return slackError;
+    // Both sinks get every lead, in parallel. One landing is enough: these used to
+    // run in sequence, so a failing contact API dropped the lead before Slack ever
+    // saw it and showed the visitor an error for a signup we could have kept.
+    const [contactError, slackError] = await Promise.all([
+      sendToService(CONTACT_API_URL, {
+        fullName,
+        businessEmail: email,
+        phoneNumber,
+        organizationName: company,
+        message,
+      }),
+      sendToSlack({
+        name: fullName,
+        email,
+        phone: phoneNumber,
+        organization: company,
+        message,
+      }),
+    ]);
+    if (contactError && slackError) return contactError;
 
     return '';
   };
