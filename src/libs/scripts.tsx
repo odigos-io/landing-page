@@ -1,9 +1,39 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 import { IS_DEV } from '@/constants';
 
+const CONTENTSQUARE_TAG_ID = 'ee52a1739bb8c';
+
+const contentsquarePagePath = () =>
+  window.location.pathname + window.location.hash.replace('#', '?__');
+
+declare global {
+  interface Window {
+    _uxa?: unknown[];
+    CS_CONF?: unknown;
+  }
+}
+
 const Scripts = () => {
+  const pathname = usePathname();
+  const hasTrackedInitial = useRef(false);
+
+  // Next.js client navigations don't reload the page — fire Contentsquare pageviews on route changes.
+  useEffect(() => {
+    if (IS_DEV || typeof window === 'undefined') return;
+
+    if (!hasTrackedInitial.current) {
+      hasTrackedInitial.current = true;
+      return;
+    }
+
+    window._uxa = window._uxa || [];
+    window._uxa.push(['trackPageview', contentsquarePagePath()]);
+  }, [pathname]);
+
   if (IS_DEV) return null;
 
   return (
@@ -94,18 +124,34 @@ const Scripts = () => {
           })();
         `}
       </Script>
-      <Script id='hotjar-tracking' strategy='lazyOnload'>
-        {`
-          (function(h,o,t,j,a,r){
-              h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-              h._hjSettings={hjid:6491105,hjsv:6};
-              a=o.getElementsByTagName('head')[0];
-              r=o.createElement('script');r.async=1;
-              r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-              a.appendChild(r);
-          })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-        `}
-      </Script>
+      <Script
+        id='contentsquare-tracking'
+        strategy='afterInteractive'
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function () {
+              window._uxa = window._uxa || [];
+              if (typeof CS_CONF === 'undefined') {
+                window._uxa.push([
+                  'setPath',
+                  window.location.pathname + window.location.hash.replace('#', '?__'),
+                  { lifespan: 'onNextPageviewOnly' }
+                ]);
+                var mt = document.createElement('script');
+                mt.type = 'text/javascript';
+                mt.async = true;
+                mt.src = 'https://t.contentsquare.net/uxa/${CONTENTSQUARE_TAG_ID}.js';
+                document.getElementsByTagName('head')[0].appendChild(mt);
+              } else {
+                window._uxa.push([
+                  'trackPageview',
+                  window.location.pathname + window.location.hash.replace('#', '?__')
+                ]);
+              }
+            })();
+          `,
+        }}
+      />
     </>
   );
 };
