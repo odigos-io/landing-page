@@ -502,7 +502,7 @@ export const CoverageFigure = () => (
     </Tiles>
     <TileFoot>
       <b>from ebpf</b>
-      <span>One runtime on each Kubernetes node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU, measured across more than a million production cores. The node sensor is open source.</span>
+      <span>One runtime on each Kubernetes node, reading the calls from the kernel. Java, Node, Python and Go. Under 1% CPU, measured across more than a million production cores.</span>
     </TileFoot>
   </>
 );

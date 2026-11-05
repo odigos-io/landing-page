@@ -7,7 +7,7 @@ import { LandingHeader, LandingFooter } from '@/containers/landing';
 import { Container, Eyebrow, Reveal, TrialCTA, DemoCTA } from '@/containers/landing/primitives';
 import { ModalType, useModalStore } from '@/store';
 import { usePlausible } from '@/hooks';
-import { PLANS, FAQ, GITHUB_LINK } from '@/constants';
+import { PLANS, FAQ } from '@/constants';
 
 const HUBSPOT_DEMO_URL =
   'https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/redirect?encryptedPayload=AVxigLKKpYFkaGHLV2SjisuKL8vGZv8GBmHLZBbEO8WEPKpvVFGLbCJ75h5TYp0EunqgNph6y6otczaQIcIVW%2Bjg6QKGujbcqjfJbc0ppMX0vfLpYVru76VnnU3%2FWnz91xJehZPt8GVQCH9oQWAKvhLTOMypjCua0VKp16%2Bf%2BFCDMSrqktcXUfrk&webInteractiveContentId=208657275164&portalId=50932826';
@@ -98,7 +98,8 @@ const HeroNote = styled.p`
 ----------------------------------------------------------------- */
 const Tiers = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 640px;
   gap: 18px;
   @media (max-width: 820px) {
     grid-template-columns: 1fr;
@@ -190,33 +191,6 @@ const TierActions = styled.div`
   }
 `;
 
-const GitHubBtn = styled(Link)`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  height: 50px;
-  padding: 0 22px;
-  border-radius: 12px;
-  font-family: var(--font-display), 'Geist', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-  background: var(--paper-2);
-  color: var(--ink);
-  border: 1px solid var(--line-strong);
-  transition: border-color 0.2s ease, background 0.2s ease;
-  &:hover {
-    border-color: var(--ink);
-  }
-  &:active {
-    transform: translateY(1px);
-  }
-`;
-
 const SalesBtn = styled(Link)`
   position: relative;
   display: inline-flex;
@@ -255,7 +229,7 @@ const Compare = styled.div`
 
 const ColHead = styled.div`
   display: grid;
-  grid-template-columns: 1fr 160px 160px;
+  grid-template-columns: minmax(0, 1fr) 160px;
   align-items: center;
   gap: 12px;
   padding: 0 24px 14px;
@@ -287,16 +261,9 @@ const ColHead = styled.div`
     border-radius: 50%;
     background: var(--accent);
   }
-  .col.oss::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--signal);
-  }
 
   @media (max-width: 720px) {
-    grid-template-columns: 1fr 88px 88px;
+    grid-template-columns: minmax(0, 1fr) 100px;
     gap: 8px;
     padding: 0 16px 12px;
     .col {
@@ -322,7 +289,7 @@ const RowList = styled.div`
 
 const Row = styled.div`
   display: grid;
-  grid-template-columns: 1fr 160px 160px;
+  grid-template-columns: minmax(0, 1fr) 160px;
   align-items: center;
   gap: 12px;
   padding: 14px 24px;
@@ -347,7 +314,7 @@ const Row = styled.div`
   }
 
   @media (max-width: 720px) {
-    grid-template-columns: 1fr 88px 88px;
+    grid-template-columns: minmax(0, 1fr) 100px;
     gap: 8px;
     padding: 12px 16px;
     .feature {
@@ -625,17 +592,6 @@ const CtaNote = styled.p`
 /* ----------------------------------------------------------------
    Icons
 ----------------------------------------------------------------- */
-const GitIcon = () => (
-  <svg width='22' height='22' viewBox='0 0 24 24' fill='none' aria-hidden>
-    <path
-      d='M12 3a9 9 0 0 0-2.85 17.54c.45.08.62-.2.62-.43v-1.7c-2.5.55-3.03-1.06-3.03-1.06-.41-1.04-1-1.32-1-1.32-.82-.56.06-.55.06-.55.9.06 1.38.93 1.38.93.8 1.38 2.1.98 2.62.75.08-.58.32-.98.57-1.2-2-.23-4.1-1-4.1-4.45 0-.98.35-1.79.93-2.42-.1-.23-.4-1.15.08-2.4 0 0 .76-.24 2.5.93a8.6 8.6 0 0 1 4.55 0c1.73-1.17 2.5-.93 2.5-.93.48 1.25.18 2.17.09 2.4.58.63.92 1.44.92 2.42 0 3.46-2.1 4.22-4.11 4.44.33.28.61.83.61 1.67v2.47c0 .24.16.52.62.43A9 9 0 0 0 12 3Z'
-      stroke='currentColor'
-      strokeWidth='1.4'
-      strokeLinejoin='round'
-    />
-  </svg>
-);
-
 const EnterpriseIcon = () => (
   <svg width='22' height='22' viewBox='0 0 24 24' fill='none' aria-hidden>
     <path d='M4 20V7l7-3 7 3v13' stroke='currentColor' strokeWidth='1.6' strokeLinejoin='round' />
@@ -660,15 +616,15 @@ export const PricingContent = () => {
             <Reveal>
               <HeroHead>
                 <Eyebrow>Pricing</Eyebrow>
-                <h1>Start free. Scale to production.</h1>
+                <h1>Try Enterprise free for 14 days.</h1>
                 <p>
-                  Run Odigos open source yourself, or start a 14-day enterprise trial with full eBPF depth, multi-cluster, security, and support. No credit card.
+                  Start a 14-day Enterprise trial with full eBPF depth, multi-cluster, security, and support. No credit card.
                 </p>
                 <HeroCtas>
                   <TrialCTA />
                   <DemoCTA label='Talk to sales' />
                 </HeroCtas>
-                <HeroNote>Open source · Exports to OpenTelemetry, zero lock-in · No code changes</HeroNote>
+                <HeroNote>Exports to OpenTelemetry, zero lock-in · No code changes</HeroNote>
               </HeroHead>
             </Reveal>
           </Hero>
@@ -679,34 +635,14 @@ export const PricingContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Two ways to run</Eyebrow>
-                <h2>Pick the path that fits your stack.</h2>
-                <p>The same zero-code capture underneath. Self-host the open source project, or get production-grade depth and support with Enterprise.</p>
+                <Eyebrow>Enterprise</Eyebrow>
+                <h2>Built for your production environment.</h2>
+                <p>Get deep eBPF instrumentation, fleet-wide control, and support. Talk to our team for pricing based on your environment.</p>
               </Head>
             </Reveal>
 
             <Tiers>
-              <Reveal delay={0}>
-                <Tier>
-                  <span className='ic'>
-                    <GitIcon />
-                  </span>
-                  <h3>Open Source</h3>
-                  <div className='price'>
-                    <span className='amount'>Free</span>
-                    <span className='unit'>Apache 2.0</span>
-                  </div>
-                  <p className='desc'>Free and open source. Run it yourself.</p>
-                  <TierActions>
-                    <GitHubBtn href={GITHUB_LINK} target='_blank' rel='noreferrer' data-track='cta' data-track-label='GitHub' onClick={() => trackClick('GitHub')}>
-                      <GitIcon />
-                      GitHub
-                    </GitHubBtn>
-                  </TierActions>
-                </Tier>
-              </Reveal>
-
-              <Reveal delay={60}>
+              <Reveal>
                 <Tier $featured>
                   <FeaturedTag>14-day trial</FeaturedTag>
                   <span className='ic'>
@@ -735,9 +671,9 @@ export const PricingContent = () => {
           <Inner>
             <Reveal>
               <Head>
-                <Eyebrow>Compare plans</Eyebrow>
-                <h2>Everything in each plan, line by line.</h2>
-                <p>Open source covers core OpenTelemetry tracing. Enterprise adds low-overhead eBPF depth, database tracing, multi-cluster administration, and 24/7 support.</p>
+                <Eyebrow>Enterprise capabilities</Eyebrow>
+                <h2>What Enterprise includes.</h2>
+                <p>Enterprise includes low-overhead eBPF instrumentation, database tracing, multi-cluster administration, and 24/7 support.</p>
               </Head>
             </Reveal>
 
@@ -745,7 +681,6 @@ export const PricingContent = () => {
               <Compare>
                 <ColHead>
                   <span className='label'>Capability</span>
-                  <span className='col oss'>Open Source</span>
                   <span className='col enterprise'>Enterprise</span>
                 </ColHead>
 
@@ -753,7 +688,6 @@ export const PricingContent = () => {
                   {PLANS.base.map((item) => (
                     <Row key={item.label}>
                       <span className='feature'>{item.label}</span>
-                      <Cell value={item.oss} />
                       <Cell value={item.enterprise} accent />
                     </Row>
                   ))}
@@ -764,7 +698,6 @@ export const PricingContent = () => {
                   {PLANS.ebpf.map((item) => (
                     <Row key={item.label}>
                       <span className='feature'>{item.label}</span>
-                      <Cell value={item.oss} />
                       <Cell value={item.enterprise} accent />
                     </Row>
                   ))}
@@ -775,7 +708,6 @@ export const PricingContent = () => {
                   {PLANS.databases.map((item) => (
                     <Row key={item.label}>
                       <span className='feature'>{item.label}</span>
-                      <Cell value={item.oss} />
                       <Cell value={item.enterprise} accent />
                     </Row>
                   ))}
@@ -814,7 +746,7 @@ export const PricingContent = () => {
                 <CtaMesh />
                 <CtaGlow />
                 <CtaEyebrow>Live in production in minutes</CtaEyebrow>
-                <CtaTitle>Start free today. Move to production when you are ready.</CtaTitle>
+                <CtaTitle>Start your 14-day Enterprise trial.</CtaTitle>
                 <CtaButtons>
                   <CtaPrimary
                     data-track='cta'

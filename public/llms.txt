@@ -60,12 +60,11 @@ and virtually patching an offending function without an application release.
 - Does it replace the telemetry backend? No. It sends the backend additional evidence.
 - What can an agent control? Odigos Enterprise MCP exposes service inspection, instrumentation and profiling controls subject to configured access.
 - Can it capture a value from a past request? Targeted capture records subsequent matching traffic.
-- Is it open source? Odigos has an Apache 2.0 open source distribution and a commercial Enterprise tier.
+- How can I try Odigos? Start a 14-day Enterprise trial or contact sales at https://odigos.io/pricing.
 
 ## Docs
 - [Documentation](https://docs.odigos.io): Full product documentation
 - [Quickstart](https://docs.odigos.io/quickstart/introduction): Install and capture in minutes
-- [GitHub](https://github.com/odigos-io/odigos): Open source repository, Apache 2.0
 
 ## Product
 - [Production Context Platform](https://odigos.io/): Runtime evidence for observability, security and coding agents
@@ -74,7 +73,7 @@ and virtually patching an offending function without an application release.
 - [Coding Agents](https://odigos.io/coding-agents): Inspect services and request instrumentation through Odigos Enterprise MCP
 - [Technology](https://odigos.io/technology): Odigos DeepBPF and the capture foundation
 - [Product](https://odigos.io/product): Capabilities and pipeline governance
-- [Pricing](https://odigos.io/pricing): Open source and Enterprise plans, plus FAQ
+- [Pricing](https://odigos.io/pricing): Enterprise capabilities, 14-day trial, and pricing FAQ
 - [Odigos vs OBI](https://odigos.io/comparisons/odigos-vs-obi): How the approaches differ
 
 ## Full text

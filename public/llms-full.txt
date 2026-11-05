@@ -1,8 +1,8 @@
 # Odigos: OpenTelemetry guides
 
 > Full text of the Odigos engineering guides on OpenTelemetry, eBPF instrumentation
-> and distributed tracing. Odigos is an open source, eBPF-based OpenTelemetry
-> distribution that produces OpenTelemetry from any service with no code change.
+> and distributed tracing. Odigos provides eBPF-based instrumentation and produces
+> OpenTelemetry without code changes. Start a 14-day Enterprise trial at https://odigos.io/pricing.
 > https://odigos.io
 
 ## Getting Started with OpenTelemetry

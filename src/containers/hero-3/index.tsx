@@ -2,10 +2,9 @@
 
 import React from 'react';
 import { useMobile } from '@/contexts';
-import { GITHUB_LINK } from '@/constants';
 import { FlexColumn, FlexRow } from '@/styles';
 import styled, { css } from 'styled-components';
-import { Button, ContactUsButton, Render3D, Text } from '@/components';
+import { TrialButton, ContactUsButton, Render3D, Text } from '@/components';
 
 const Relative = styled.div<{ $isMobile: boolean }>`
   position: relative;
@@ -67,9 +66,7 @@ export const Hero3 = () => {
 
           <FlexRow $gap={32}>
             <ContactUsButton />
-            <Button variant='secondary' leftIconSrc='/assets/github.svg' href={GITHUB_LINK}>
-              GitHub
-            </Button>
+            <TrialButton variant='secondary' />
           </FlexRow>
         </FlexColumn>
       </Absolute>

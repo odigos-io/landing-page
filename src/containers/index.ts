@@ -22,7 +22,6 @@ export * from './learn-more-blogs';
 export * from './learn-more-events';
 export * from './modals';
 export * from './navigation';
-export * from './plans';
 export * from './principles';
 export * from './product-preview';
 export * from './statement-card';

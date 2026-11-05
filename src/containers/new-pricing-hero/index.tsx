@@ -1,7 +1,9 @@
 'use client';
 
 import styled from 'styled-components';
-import { CONTACT_SALES_LINK, QUICKSTART_LINK } from '@/constants';
+import { ModalType, useModalStore } from '@/store';
+import { usePlausible } from '@/hooks';
+import { CONTACT_SALES_LINK } from '@/constants';
 
 const Hero = styled.section`
   width: min(100% - 48px, 1360px);
@@ -65,6 +67,8 @@ const Action = styled.a<{ $primary?: boolean }>`
   color: ${({ $primary }) => ($primary ? 'var(--nd-button-text)' : 'var(--nd-text-strong)')};
   font-size: 16px;
   text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.82;
@@ -84,17 +88,24 @@ const Action = styled.a<{ $primary?: boolean }>`
 `;
 
 export const NewPricingHero = () => {
+  const setModal = useModalStore((s) => s.setModal);
+  const { trackClick } = usePlausible();
+  const startTrial = () => {
+    trackClick('Start 14-day trial');
+    setModal(ModalType.TRIAL);
+  };
+
   return (
     <Hero>
       <Eyebrow>Pricing</Eyebrow>
-      <Title>Start free. Scale to production.</Title>
+      <Title>Try Enterprise free for 14 days.</Title>
       <Description>
-        Run Odigos open source yourself, or start a 14-day Enterprise trial with full eBPF depth, multi-cluster
+        Start a 14-day Enterprise trial with full eBPF depth, multi-cluster
         control, security, and support. No credit card.
       </Description>
       <Actions>
-        <Action $primary href={QUICKSTART_LINK} target='_blank' rel='noopener noreferrer'>
-          Start with open source →
+        <Action $primary as='button' type='button' onClick={startTrial}>
+          Start 14-day trial
         </Action>
         <Action href={CONTACT_SALES_LINK} target='_blank' rel='noopener noreferrer'>
           Talk to sales →

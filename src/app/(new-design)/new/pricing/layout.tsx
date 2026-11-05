@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Pricing | Odigos',
   description:
-    'Run Odigos Open Source for free or start a 14-day Enterprise trial with deep eBPF observability and multi-cluster control.',
+    'Try Odigos Enterprise free for 14 days with deep eBPF observability and multi-cluster control. Contact sales for pricing.',
   alternates: {
     canonical: 'https://odigos.io/new/pricing',
   },
