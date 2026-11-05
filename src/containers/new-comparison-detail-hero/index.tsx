@@ -3,7 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { CONTACT_SALES_LINK, GITHUB_LINK } from '@/constants';
+import { ModalType, useModalStore } from '@/store';
+import { usePlausible } from '@/hooks';
+import { CONTACT_SALES_LINK } from '@/constants';
 import type { ComparisonPage } from '@/constants/comparisons';
 
 const Hero = styled.section`
@@ -95,6 +97,8 @@ const Action = styled.a<{ $primary?: boolean }>`
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.82;
@@ -108,6 +112,13 @@ const Action = styled.a<{ $primary?: boolean }>`
 
 export const NewComparisonDetailHero = ({ comparison }: { comparison: ComparisonPage }) => {
   const { title, subtitle, logos } = comparison;
+
+  const setModal = useModalStore((s) => s.setModal);
+  const { trackClick } = usePlausible();
+  const startTrial = () => {
+    trackClick('Start 14-day trial');
+    setModal(ModalType.TRIAL);
+  };
 
   return (
     <Hero>
@@ -127,8 +138,8 @@ export const NewComparisonDetailHero = ({ comparison }: { comparison: Comparison
         <Action $primary href={CONTACT_SALES_LINK} target='_blank' rel='noopener noreferrer'>
           Talk to sales →
         </Action>
-        <Action href={GITHUB_LINK} target='_blank' rel='noopener noreferrer'>
-          GitHub
+        <Action as='button' type='button' onClick={startTrial}>
+          Start 14-day trial
         </Action>
       </Actions>
     </Hero>

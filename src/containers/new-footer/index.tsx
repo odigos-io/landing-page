@@ -8,10 +8,8 @@ import {
   CAREERS_LINK,
   CONTACT_SALES_LINK,
   DOCS_LINK,
-  GITHUB_LINK,
   PRIVACY_POLICY_LINK,
   QUICKSTART_LINK,
-  SLACK_INVITE_LINK,
   SOC_LINK,
   TRUST_CENTER_LINK,
 } from '@/constants';
@@ -55,7 +53,7 @@ const Brand = styled.a`
 
 const Columns = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 28px;
   padding-bottom: 72px;
 
@@ -178,15 +176,6 @@ export const NewFooter = () => {
             </FooterLink>
             <FooterLink href={SOC_LINK} {...externalProps}>
               SOC 2
-            </FooterLink>
-          </Column>
-          <Column>
-            <ColumnTitle>Connect</ColumnTitle>
-            <FooterLink href={GITHUB_LINK} {...externalProps}>
-              GitHub
-            </FooterLink>
-            <FooterLink href={SLACK_INVITE_LINK} {...externalProps}>
-              Slack
             </FooterLink>
           </Column>
         </Columns>

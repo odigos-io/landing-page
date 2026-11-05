@@ -1,7 +1,9 @@
 'use client';
 
 import styled from 'styled-components';
-import { CONTACT_SALES_LINK, GITHUB_LINK } from '@/constants';
+import { ModalType, useModalStore } from '@/store';
+import { usePlausible } from '@/hooks';
+import { CONTACT_SALES_LINK } from '@/constants';
 
 const Section = styled.section`
   width: min(100% - 48px, 1360px);
@@ -16,7 +18,8 @@ const Section = styled.section`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 800px;
   gap: 8px;
 
   @media (max-width: 760px) {
@@ -133,6 +136,8 @@ const Action = styled.a<{ $secondary?: boolean; $enterprise?: boolean }>`
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.8;
@@ -145,40 +150,34 @@ const Action = styled.a<{ $secondary?: boolean; $enterprise?: boolean }>`
 `;
 
 export const NewPricingPlans = () => {
+  const setModal = useModalStore((s) => s.setModal);
+  const { trackClick } = usePlausible();
+  const startTrial = () => {
+    trackClick('Start 14-day trial');
+    setModal(ModalType.TRIAL);
+  };
+
   return (
     <Section aria-label='Odigos plans'>
       <Grid>
-        <Card>
-          <PlanType>Open source</PlanType>
-          <Name>Free</Name>
-          <Price>Run it yourself.</Price>
-          <Tagline>Automatic OpenTelemetry instrumentation and pipelines, available forever under an open license.</Tagline>
-          <Features>
-            <Feature>Zero-code tracing for Kubernetes</Feature>
-            <Feature>Sampling and instrumentation actions</Feature>
-            <Feature>Community-supported OpenTelemetry integrations</Feature>
-            <Feature>Full source code and GitOps workflows</Feature>
-          </Features>
-          <Actions>
-            <Action href={GITHUB_LINK} target='_blank' rel='noopener noreferrer'>
-              View on GitHub →
-            </Action>
-          </Actions>
-        </Card>
         <Card $enterprise>
-          <PlanType $enterprise>Enterprise</PlanType>
-          <Price>No credit card.</Price>
+          <PlanType $enterprise>14-day trial</PlanType>
+          <Name>Enterprise</Name>
+          <Price>Custom pricing</Price>
           <Tagline $enterprise>
-            Production-grade depth, fleet-wide control, security, and expert support for demanding environments.
+            Production-grade depth, fleet-wide control, security, and expert support. Try it for 14 days, no credit card required.
           </Tagline>
           <Features>
-            <Feature $enterprise>Everything in open source</Feature>
+            <Feature $enterprise>Zero-code OpenTelemetry tracing and pipelines</Feature>
             <Feature $enterprise>Deep eBPF tracing for VMs, bare metal, and databases</Feature>
             <Feature $enterprise>Multi-cluster administration and RBAC</Feature>
             <Feature $enterprise>24/7 premium support</Feature>
           </Features>
           <Actions>
-            <Action $enterprise href={CONTACT_SALES_LINK} target='_blank' rel='noopener noreferrer'>
+            <Action $enterprise as='button' type='button' onClick={startTrial}>
+              Start 14-day trial
+            </Action>
+            <Action $enterprise $secondary href={CONTACT_SALES_LINK} target='_blank' rel='noopener noreferrer'>
               Talk to sales →
             </Action>
           </Actions>

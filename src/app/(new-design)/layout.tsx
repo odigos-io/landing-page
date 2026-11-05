@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { NEW_COLOR_MODE_SCRIPT, NewColorModeProvider } from '@/contexts/useNewColorMode';
 import { getAllBlogs, getAllEvents } from '@/libs/markdown';
+import { NewTrialModal } from '@/containers/new-trial-modal';
 
 const ThemeProvider = dynamic(() => import('@/styles/theme-provider'));
 const BlogsProvider = dynamic(() => import('@/contexts/useBlogs'));
@@ -25,7 +26,10 @@ export default async function NewDesignLayout({ children }: NewDesignLayoutProps
       <script dangerouslySetInnerHTML={{ __html: NEW_COLOR_MODE_SCRIPT }} />
       <NewColorModeProvider>
         <BlogsProvider blogs={blogs}>
-          <EventsProvider events={events}>{children}</EventsProvider>
+          <EventsProvider events={events}>
+            {children}
+            <NewTrialModal />
+          </EventsProvider>
         </BlogsProvider>
       </NewColorModeProvider>
     </ThemeProvider>

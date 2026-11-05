@@ -53,7 +53,6 @@ const LD = [
         'Virtual patching at the function level without a redeploy',
         'Service communication maps for blast-radius assessment',
         'Thread and process mitigation options',
-        'Open-source node sensor',
       ],
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: '14-day trial' },
     },

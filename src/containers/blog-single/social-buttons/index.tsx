@@ -7,7 +7,6 @@ import {
   ShareFacebookButton,
   ShareLinkedinButton,
   ShareTwitterButton,
-  SlackInviteButton,
   Text,
 } from "@/components";
 
@@ -32,12 +31,6 @@ const Container = styled.div<{ $isMobile: boolean }>`
     `}
 `;
 
-const Divider = styled.div`
-  width: 1px;
-  height: 24px;
-  background-color: ${({ theme }) => theme.colors.grey};
-`;
-
 export const SocialButtons = ({ slug }: SocialButtonsProps) => {
   const { isMobile } = useMobile();
   const url = `https://odigos.io/blog/${slug}`;
@@ -48,8 +41,6 @@ export const SocialButtons = ({ slug }: SocialButtonsProps) => {
       <ShareLinkedinButton url={url} />
       <ShareFacebookButton url={url} />
       <ShareTwitterButton url={url} />
-      {!isMobile && <Divider />}
-      <SlackInviteButton />
     </Container>
   );
 };

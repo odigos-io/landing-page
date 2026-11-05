@@ -12,7 +12,7 @@ export const ORGANIZATION_LD = {
   logo: { '@type': 'ImageObject', url: `${SITE}/icon.png`, width: 512, height: 512 },
   description:
     'Odigos gives AI the power to investigate production. Its Production Context Platform lets agents request missing evidence from running code to investigate incidents, understand attacks and verify code changes.',
-  sameAs: ['https://github.com/odigos-io/odigos', 'https://www.linkedin.com/company/odigoss', 'https://x.com/odigosio'],
+  sameAs: ['https://www.linkedin.com/company/odigoss', 'https://x.com/odigosio'],
 };
 
 export const WEBSITE_LD = {
@@ -33,7 +33,6 @@ export const SOFTWARE_LD = {
   applicationCategory: 'DeveloperApplication',
   operatingSystem: 'Kubernetes, Linux',
   url: SITE,
-  downloadUrl: 'https://github.com/odigos-io/odigos',
   softwareHelp: 'https://docs.odigos.io',
   publisher: { '@id': `${SITE}/#organization` },
   description:
@@ -48,7 +47,6 @@ export const SOFTWARE_LD = {
     'MCP instrumentation controls for coding agents with Odigos Enterprise',
   ],
   offers: [
-    { '@type': 'Offer', name: 'Open Source', price: '0', priceCurrency: 'USD', url: `${SITE}/pricing` },
     { '@type': 'Offer', name: 'Enterprise', url: `${SITE}/pricing`, availability: 'https://schema.org/InStock' },
   ],
 };
