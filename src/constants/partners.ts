@@ -28,13 +28,6 @@ export const CUSTOMERS = [
     height: 32,
   },
   {
-    src: '/assets/partners/avetta.svg',
-    alt: 'avetta',
-    href: 'https://avetta.com',
-    width: 130,
-    height: 20,
-  },
-  {
     src: '/assets/partners/hpe.png',
     alt: 'hp enterprise',
     href: 'https://hpe.com',
