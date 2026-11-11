@@ -4,9 +4,9 @@ import { FAQ, ldScript } from '@/constants';
 
 export const metadata: Metadata = {
   title: 'Pricing | Odigos',
-  description: 'Start free with open source Odigos and scale to Enterprise. Plans compared line by line, plus answers on eBPF overhead, language support and data governance.',
+  description: 'Try Odigos Enterprise free for 14 days. Explore eBPF instrumentation, multi-cluster control, security, and support. Contact sales for pricing.',
   alternates: { canonical: 'https://odigos.io/pricing' },
-  openGraph: { title: 'Pricing | Odigos', description: 'Start free with open source Odigos and scale to Enterprise. Plans compared line by line, plus answers on eBPF overhead, language support and data governance.', url: 'https://odigos.io/pricing' },
+  openGraph: { title: 'Pricing | Odigos', description: 'Try Odigos Enterprise free for 14 days. Explore eBPF instrumentation, multi-cluster control, security, and support. Contact sales for pricing.', url: 'https://odigos.io/pricing' },
 };
 
 /* Generated from the same constant the page renders, so the markup can never

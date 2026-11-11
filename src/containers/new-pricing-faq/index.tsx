@@ -10,14 +10,9 @@ const FAQ_ITEMS = [
       'The trial includes the complete Enterprise platform: deep eBPF instrumentation, database tracing, multi-cluster administration, security controls, and premium support. No credit card is required.',
   },
   {
-    question: 'Can I stay on open source forever?',
+    question: 'What support does Enterprise include?',
     answer:
-      'Yes. Odigos Open Source remains free to self-host. You can use its Kubernetes instrumentation, OpenTelemetry pipelines, and community integrations without moving to Enterprise.',
-  },
-  {
-    question: 'What support does each plan include?',
-    answer:
-      'Open Source is supported through the Odigos community. Enterprise includes 24/7 premium support and direct help operating Odigos in production.',
+      'Enterprise includes 24/7 premium support and direct help operating Odigos in production.',
   },
   {
     question: 'How is Enterprise priced after the trial?',

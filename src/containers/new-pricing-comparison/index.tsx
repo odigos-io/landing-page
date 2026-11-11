@@ -61,13 +61,13 @@ const Scroll = styled.div`
 `;
 
 const Table = styled.div`
-  min-width: 720px;
+  min-width: 0;
 `;
 
 const Row = styled.div<{ $header?: boolean; $group?: boolean }>`
   display: grid;
   min-height: ${({ $header, $group }) => ($header ? '76px' : $group ? '58px' : '56px')};
-  grid-template-columns: minmax(280px, 1.55fr) repeat(2, minmax(180px, 1fr));
+  grid-template-columns: minmax(280px, 1.55fr) minmax(180px, 1fr);
   align-items: center;
   border-bottom: 1px solid var(--nd-border);
   background: ${({ $header, $group }) =>
@@ -153,7 +153,7 @@ const MobilePlanHeader = styled.div`
   top: 58px;
   z-index: 2;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   border-bottom: 1px solid var(--nd-border);
   background: color-mix(in srgb, var(--nd-stage) 94%, transparent);
   backdrop-filter: blur(12px);
@@ -162,7 +162,6 @@ const MobilePlanHeader = styled.div`
 const MobilePlan = styled.div<{ $enterprise?: boolean }>`
   min-width: 0;
   padding: 13px 14px;
-  border-left: ${({ $enterprise }) => ($enterprise ? '1px solid var(--nd-border)' : '0')};
   background: ${({ $enterprise }) => ($enterprise ? 'rgba(112, 71, 235, 0.045)' : 'transparent')};
 `;
 
@@ -225,7 +224,7 @@ const MobileFeatureName = styled.div`
 
 const MobileValues = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 `;
 
 const MobileValue = styled.div<{ $enterprise?: boolean }>`
@@ -234,7 +233,6 @@ const MobileValue = styled.div<{ $enterprise?: boolean }>`
   min-height: 48px;
   align-items: center;
   padding: 8px 16px 14px;
-  border-left: ${({ $enterprise }) => ($enterprise ? '1px solid var(--nd-border)' : '0')};
   background: ${({ $enterprise }) => ($enterprise ? 'rgba(112, 71, 235, 0.025)' : 'transparent')};
 `;
 
@@ -248,21 +246,15 @@ export const NewPricingComparison = () => {
   return (
     <Section>
       <Header>
-        <Eyebrow>Compare plans</Eyebrow>
-        <Title>Choose the depth you need.</Title>
-        <Description>Start with the open-source foundation, then add production depth and control when you need it.</Description>
+        <Eyebrow>Enterprise capabilities</Eyebrow>
+        <Title>What Enterprise includes.</Title>
+        <Description>Deep eBPF instrumentation, fleet-wide control, and support for your production environment.</Description>
       </Header>
       <Scroll>
-        <Table role='table' aria-label='Odigos plan comparison'>
+        <Table role='table' aria-label='Odigos Enterprise capabilities'>
           <Row $header role='row'>
             <Cell $label role='columnheader'>
               Features
-            </Cell>
-            <Cell role='columnheader'>
-              <div>
-                <PlanName>Open source</PlanName>
-                <PlanNote>Free forever</PlanNote>
-              </div>
             </Cell>
             <Cell $enterprise role='columnheader'>
               <div>
@@ -277,15 +269,13 @@ export const NewPricingComparison = () => {
                 <Cell $label role='rowheader'>
                   <GroupTitle>{title}</GroupTitle>
                 </Cell>
-                <Cell aria-hidden='true' />
                 <Cell $enterprise aria-hidden='true' />
               </Row>
-              {PLANS[key].map(({ label, oss, enterprise }) => (
+              {PLANS[key].map(({ label, enterprise }) => (
                 <Row key={label} role='row'>
                   <Cell $label role='rowheader'>
                     {label}
                   </Cell>
-                  <Cell role='cell'>{renderValue(oss)}</Cell>
                   <Cell $enterprise role='cell'>
                     {renderValue(enterprise)}
                   </Cell>
@@ -295,12 +285,8 @@ export const NewPricingComparison = () => {
           ))}
         </Table>
       </Scroll>
-      <MobileComparison aria-label='Odigos plan comparison'>
+      <MobileComparison aria-label='Odigos Enterprise capabilities'>
         <MobilePlanHeader>
-          <MobilePlan>
-            <PlanName>Open source</PlanName>
-            <PlanNote>Free forever</PlanNote>
-          </MobilePlan>
           <MobilePlan $enterprise>
             <PlanName>Enterprise</PlanName>
             <PlanNote>14-day trial</PlanNote>
@@ -309,11 +295,10 @@ export const NewPricingComparison = () => {
         {GROUPS.map(({ key, title }, index) => (
           <MobileGroup key={key} open={index === 0 ? true : undefined}>
             <MobileGroupTitle>{title}</MobileGroupTitle>
-            {PLANS[key].map(({ label, oss, enterprise }) => (
+            {PLANS[key].map(({ label, enterprise }) => (
               <MobileFeature key={label}>
                 <MobileFeatureName>{label}</MobileFeatureName>
                 <MobileValues>
-                  <MobileValue>{renderValue(oss)}</MobileValue>
                   <MobileValue $enterprise>{renderValue(enterprise)}</MobileValue>
                 </MobileValues>
               </MobileFeature>

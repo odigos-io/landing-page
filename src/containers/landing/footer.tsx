@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { GITHUB_LINK, DOCS_LINK, CAREERS_LINK, PRIVACY_POLICY_LINK, TRUST_CENTER_LINK, SOC_LINK } from '@/constants';
+import { DOCS_LINK, CAREERS_LINK, PRIVACY_POLICY_LINK, TRUST_CENTER_LINK, SOC_LINK } from '@/constants';
 import { Container } from './primitives';
 
 const Foot = styled.footer`
@@ -134,9 +134,6 @@ export const LandingFooter = () => {
           <Image src='/assets/odigos/logo_text_black.svg' alt='Odigos' width={128} height={29} />
           <p>The Production Context Platform. Give AI the power to investigate production.</p>
           <Socials>
-            <Social href={GITHUB_LINK} target='_blank' aria-label='GitHub'>
-              <Image src='/assets/github.svg' alt='GitHub' width={17} height={17} />
-            </Social>
             <Social href='https://www.linkedin.com/company/odigoss' target='_blank' aria-label='LinkedIn'>
               <Image src='/assets/linkedin.svg' alt='LinkedIn' width={17} height={17} />
             </Social>
@@ -172,7 +169,6 @@ export const LandingFooter = () => {
           <Link href={TRUST_CENTER_LINK} target='_blank'>Trust Center</Link>
           <Link href={SOC_LINK} target='_blank'>SOC 2</Link>
           <Link href={PRIVACY_POLICY_LINK} target='_blank'>Privacy Policy</Link>
-          <Link href={GITHUB_LINK} target='_blank'>Open source</Link>
         </Col>
       </Top>
 

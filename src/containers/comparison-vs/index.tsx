@@ -3,8 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button, ContactUsButton, Text, TextLayers, TrialButton } from '@/components';
-import { ComparisonPage, GITHUB_LINK } from '@/constants';
+import { ContactUsButton, Text, TextLayers, TrialButton } from '@/components';
+import { ComparisonPage } from '@/constants';
 import { useMobile } from '@/contexts';
 import { ConstrainedWrapper, FlexColumn, FlexRow } from '@/styles';
 import styled, { css, useTheme } from 'styled-components';
@@ -342,9 +342,6 @@ export const ComparisonVs = ({ comparison }: { comparison: ComparisonPage }) => 
       <CtaRow $isMobile={isMobile} $gap={16} $align='center'>
         <TrialButton variant='primary' />
         <ContactUsButton variant='secondary' label='Talk to sales' />
-        <Button variant='secondary' leftIconSrc='/assets/github.svg' href={GITHUB_LINK}>
-          GitHub
-        </Button>
       </CtaRow>
 
       <ConstrainedWrapper $isMobile={isMobile} $overrideMaxWidth={1312} $paddingTop={16} $paddingBottom={16}>

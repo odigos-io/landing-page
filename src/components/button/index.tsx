@@ -14,7 +14,6 @@ export * from './quickstart-button';
 export * from './share-facebook-button';
 export * from './share-linkedin-button';
 export * from './share-twitter-button';
-export * from './slack-invite-button';
 export * from './trial-button';
 export * from './watch-demo-button';
 

@@ -4,8 +4,8 @@ import React, { CSSProperties, useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useMobile } from '@/contexts';
 import { DEMO_VIDEO_LINK } from '@/constants';
-import styled, { useTheme } from 'styled-components';
-import { Modal, SlackInviteButton, Text } from '@/components';
+import styled from 'styled-components';
+import { Modal, ContactUsButton } from '@/components';
 
 interface DemoModalProps {
   isOpen: boolean;
@@ -45,7 +45,6 @@ const ASPECT_RATIO = 1114 / 720;
 const QUERY_KEY = 'demo';
 
 export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
-  const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
   const { isMobile } = useMobile();
@@ -80,9 +79,7 @@ export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
       </VideoWrapper>
 
       <BottomWrapper $isMobile={isMobile}>
-        <Text color={theme.colors.grey}>Join our slack community to get the latest updates and ask questions</Text>
-
-        <SlackInviteButton variant='primary' fullWidth={isMobile} />
+        <ContactUsButton variant='primary' label='Talk to sales' fullWidth={isMobile} />
       </BottomWrapper>
     </Modal>
   );
